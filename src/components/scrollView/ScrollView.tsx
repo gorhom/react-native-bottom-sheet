@@ -55,16 +55,12 @@ const ScrollView = forwardRef(
 
     // styles
     const contentContainerStyle = useMemo(() => {
-      const {
-        //@ts-ignore
-        paddingBottom = 0,
-        // @ts-ignore
-        ...restContentContainerStyle
-      } = _contentContainerStyle;
-
       return {
-        ...restContentContainerStyle,
-        paddingBottom: contentPaddingBottom + Math.max(paddingBottom ?? 0, 0),
+        // @ts-ignore
+        ...(_contentContainerStyle ?? {}),
+        paddingBottom:
+          contentPaddingBottom +
+          Math.max(_contentContainerStyle?.paddingBottom ?? 0, 0),
       };
     }, [_contentContainerStyle, contentPaddingBottom]);
 
