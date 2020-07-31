@@ -31,7 +31,8 @@
   "scripts": {
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "build": "bob build",
+    "build": "bob build && yarn copy-dts",
+    "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" lib/typescript",
     "release": "release-it",
     "example": "yarn --cwd example",
     "bootstrap": "yarn install && yarn example"
@@ -49,6 +50,7 @@
     "@types/react": "^16.9.19",
     "@types/react-native": "0.61.10",
     "auto-changelog": "^2.2.0",
+    "copyfiles": "^2.3.0",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",

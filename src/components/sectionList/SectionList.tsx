@@ -14,7 +14,10 @@ import {
 import Reanimated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
-import { BottomSheetSectionListProps, BottomSheetSectionList } from './types';
+import type {
+  BottomSheetSectionListProps,
+  BottomSheetSectionList,
+} from './types';
 
 const AnimatedSectionList = Reanimated.createAnimatedComponent(
   RNSectionList

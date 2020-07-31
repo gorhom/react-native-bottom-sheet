@@ -14,7 +14,10 @@ import {
 import Reanimated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
-import { BottomSheetScrollView, BottomSheetScrollViewProps } from './types';
+import type {
+  BottomSheetScrollView,
+  BottomSheetScrollViewProps,
+} from './types';
 
 const AnimatedScrollView = Reanimated.createAnimatedComponent(
   RNScrollView

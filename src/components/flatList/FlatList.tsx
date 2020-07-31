@@ -14,7 +14,7 @@ import {
 import Reanimated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
-import { BottomSheetFlatListProps, BottomSheetFlatList } from './types';
+import type { BottomSheetFlatListProps, BottomSheetFlatList } from './types';
 
 const AnimatedFlatList = Reanimated.createAnimatedComponent(
   RNFlatList
