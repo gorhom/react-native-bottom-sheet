@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import ScrollBottomSheet, { SectionList } from '@gorhom/bottom-sheet';
+import BottomSheet, { SectionList } from '@gorhom/bottom-sheet';
 import { useSafeArea } from 'react-native-safe-area-context';
 import Handle from '../components/Handle';
 import Button from '../components/button';
@@ -10,7 +10,7 @@ import { createContactSectionsMockData } from '../utils';
 
 const SectionListExample = () => {
   // hooks
-  const sheetRef = useRef<ScrollBottomSheet>(null);
+  const sheetRef = useRef<BottomSheet>(null);
   const { bottom: bottomSafeArea } = useSafeArea();
   const headerHeight = useHeaderHeight();
 
@@ -68,7 +68,7 @@ const SectionListExample = () => {
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(2)}
       />
-      <ScrollBottomSheet
+      <BottomSheet
         ref={sheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={2}
@@ -86,7 +86,7 @@ const SectionListExample = () => {
             Platform.OS === 'android' && sections.length > 0
           }
         />
-      </ScrollBottomSheet>
+      </BottomSheet>
     </View>
   );
 };

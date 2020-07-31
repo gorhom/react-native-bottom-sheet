@@ -14,6 +14,7 @@ import {
 import Reanimated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
+import { BottomSheetSectionListProps, BottomSheetSectionList } from './types';
 
 const AnimatedSectionList = Reanimated.createAnimatedComponent(
   RNSectionList
@@ -22,19 +23,14 @@ const AnimatedSectionList = Reanimated.createAnimatedComponent(
   any
 >;
 
-type SectionListProps<T> = Omit<
-  RNSectionListProps<T>,
-  | 'overScrollMode'
-  | 'bounces'
-  | 'decelerationRate'
-  | 'onScrollBeginDrag'
-  | 'scrollEventThrottle'
->;
-
 const SectionList = forwardRef(
-  (props: SectionListProps<any>, ref: Ref<RNSectionList>) => {
+  (props: BottomSheetSectionListProps<any>, ref: Ref<RNSectionList>) => {
     // props
-    const { contentContainerStyle: _contentContainerStyle, ...rest } = props;
+    const {
+      contentContainerStyle: _contentContainerStyle,
+      focusHook: useFocusHook = useEffect,
+      ...rest
+    } = props;
 
     // refs
     const sectionListRef = useRef<RNSectionList>(null);
@@ -65,7 +61,7 @@ const SectionList = forwardRef(
     // effects
     // @ts-ignore
     useImperativeHandle(ref, () => sectionListRef.current!.getNode());
-    useEffect(() => {
+    useFocusHook(() => {
       setScrollableRef(sectionListRef);
       return () => {
         removeScrollableRef(sectionListRef);
@@ -94,4 +90,4 @@ const SectionList = forwardRef(
   }
 );
 
-export default (SectionList as any) as typeof RNSectionList;
+export default (SectionList as any) as typeof BottomSheetSectionList;

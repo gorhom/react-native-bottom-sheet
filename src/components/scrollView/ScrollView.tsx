@@ -14,6 +14,7 @@ import {
 import Reanimated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
+import { BottomSheetScrollView, BottomSheetScrollViewProps } from './types';
 
 const AnimatedScrollView = Reanimated.createAnimatedComponent(
   RNScrollView
@@ -22,21 +23,14 @@ const AnimatedScrollView = Reanimated.createAnimatedComponent(
   any
 >;
 
-type ScrollViewProps = Omit<
-  RNScrollViewProps,
-  | 'overScrollMode'
-  | 'bounces'
-  | 'decelerationRate'
-  | 'onScrollBeginDrag'
-  | 'scrollEventThrottle'
-> & {
-  children: React.ReactNode[] | React.ReactNode;
-};
-
 const ScrollView = forwardRef(
-  (props: ScrollViewProps, ref: Ref<RNScrollView>) => {
+  (props: BottomSheetScrollViewProps, ref: Ref<RNScrollView>) => {
     // props
-    const { contentContainerStyle: _contentContainerStyle, ...rest } = props;
+    const {
+      contentContainerStyle: _contentContainerStyle,
+      focusHook: useFocusHook = useEffect,
+      ...rest
+    } = props;
 
     // refs
     const scrollViewRef = useRef<RNScrollView>(null);
@@ -67,7 +61,7 @@ const ScrollView = forwardRef(
     // effects
     // @ts-ignore
     useImperativeHandle(ref, () => scrollViewRef.current!.getNode());
-    useEffect(() => {
+    useFocusHook(() => {
       setScrollableRef(scrollViewRef);
       return () => {
         removeScrollableRef(scrollViewRef);
@@ -95,4 +89,4 @@ const ScrollView = forwardRef(
   }
 );
 
-export default ScrollView;
+export default (ScrollView as any) as typeof BottomSheetScrollView;

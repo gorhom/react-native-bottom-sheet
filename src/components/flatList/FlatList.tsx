@@ -14,6 +14,7 @@ import {
 import Reanimated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
+import { BottomSheetFlatListProps, BottomSheetFlatList } from './types';
 
 const AnimatedFlatList = Reanimated.createAnimatedComponent(
   RNFlatList
@@ -22,28 +23,23 @@ const AnimatedFlatList = Reanimated.createAnimatedComponent(
   any
 >;
 
-type FlatListProps<T> = Omit<
-  RNFlatListProps<T>,
-  | 'overScrollMode'
-  | 'bounces'
-  | 'decelerationRate'
-  | 'onScrollBeginDrag'
-  | 'scrollEventThrottle'
->;
-
 const FlatList = forwardRef(
-  (props: FlatListProps<any>, ref: Ref<RNFlatList>) => {
+  (props: BottomSheetFlatListProps<any>, ref: Ref<RNFlatList>) => {
     // props
-    const { contentContainerStyle: _contentContainerStyle, ...rest } = props;
+    const {
+      contentContainerStyle: _contentContainerStyle,
+      focusHook: useFocusHook = useEffect,
+      ...rest
+    } = props;
 
     // refs
     const flatListRef = useRef<RNFlatList>(null);
 
     // hooks
     const {
-      scrollComponentRef,
       masterDrawerRef,
       drawerContentRef,
+      scrollComponentRef,
       decelerationRate,
       contentPaddingBottom,
       setScrollableRef,
@@ -65,7 +61,7 @@ const FlatList = forwardRef(
     // effects
     // @ts-ignore
     useImperativeHandle(ref, () => flatListRef.current!.getNode());
-    useEffect(() => {
+    useFocusHook(() => {
       setScrollableRef(flatListRef);
       return () => {
         removeScrollableRef(flatListRef);
@@ -94,4 +90,4 @@ const FlatList = forwardRef(
   }
 );
 
-export default (FlatList as any) as typeof RNFlatList;
+export default (FlatList as any) as typeof BottomSheetFlatList;

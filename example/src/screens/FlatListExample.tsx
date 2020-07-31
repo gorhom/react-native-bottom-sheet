@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import ScrollBottomSheet, { FlatList } from '@gorhom/bottom-sheet';
+import BottomSheet, { FlatList } from '@gorhom/bottom-sheet';
 import { useSafeArea } from 'react-native-safe-area-context';
 import Handle from '../components/Handle';
 import Button from '../components/button';
@@ -10,7 +10,7 @@ import { createContactListMockData } from '../utils';
 
 const FlatListExample = () => {
   // hooks
-  const sheetRef = useRef<ScrollBottomSheet>(null);
+  const sheetRef = useRef<BottomSheet>(null);
   const { bottom: bottomSafeArea } = useSafeArea();
   const headerHeight = useHeaderHeight();
 
@@ -57,7 +57,7 @@ const FlatListExample = () => {
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(2)}
       />
-      <ScrollBottomSheet
+      <BottomSheet
         ref={sheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={2}
@@ -70,7 +70,7 @@ const FlatListExample = () => {
           renderItem={renderItem}
           contentContainerStyle={contentContainerStyle}
         />
-      </ScrollBottomSheet>
+      </BottomSheet>
     </View>
   );
 };

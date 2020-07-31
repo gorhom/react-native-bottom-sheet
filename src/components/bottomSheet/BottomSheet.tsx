@@ -36,11 +36,11 @@ import Animated, {
   Value,
 } from 'react-native-reanimated';
 import {
-  NativeViewGestureHandler,
   PanGestureHandler,
-  PanGestureHandlerProperties,
   State as GestureState,
   TapGestureHandler,
+  PanGestureHandlerGestureEvent,
+  NativeViewGestureHandler,
 } from 'react-native-gesture-handler';
 import { BottomSheetInternalProvider } from '../../context';
 import { Scrollable, ScrollableRef } from '../../types';
@@ -155,7 +155,6 @@ export class BottomSheet extends Component<BottomSheetProps> {
   private drawerHandleRef = React.createRef<PanGestureHandler>();
   private drawerContentRef = React.createRef<PanGestureHandler>();
   private scrollComponentRef = React.createRef<NativeViewGestureHandler>();
-
   private scrollableRef = React.createRef<ScrollableRef>();
 
   /**
@@ -167,8 +166,8 @@ export class BottomSheet extends Component<BottomSheetProps> {
   /**
    * Pan gesture handler events for drawer handle and content
    */
-  private onHandleGestureEvent: PanGestureHandlerProperties['onGestureEvent'];
-  private onDrawerGestureEvent: PanGestureHandlerProperties['onGestureEvent'];
+  private onHandleGestureEvent: (event: PanGestureHandlerGestureEvent) => void;
+  private onDrawerGestureEvent: (event: PanGestureHandlerGestureEvent) => void;
   /**
    * Main Animated Value that drives the top position of the UI drawer at any point in time
    */
@@ -615,9 +614,9 @@ export class BottomSheet extends Component<BottomSheetProps> {
           <Animated.View style={styles.container}>
             <BottomSheetInternalProvider
               value={{
-                scrollComponentRef: this.scrollComponentRef,
                 masterDrawerRef: this.masterDrawer,
                 drawerContentRef: this.drawerContentRef,
+                scrollComponentRef: this.scrollComponentRef,
                 decelerationRate: this.decelerationRate,
                 contentPaddingBottom: this.getNormalisedSnapPoints()[0],
                 setScrollableRef: this.setScrollableRef,
