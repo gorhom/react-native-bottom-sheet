@@ -1,6 +1,7 @@
 export type AppStackParamsList = {
   Root: undefined;
-  Home: undefined;
+  BasicExample: undefined;
+  NavigatorExample: undefined;
   FlatListExample: undefined;
   SectionListExample: undefined;
   ScrollViewExample: undefined;

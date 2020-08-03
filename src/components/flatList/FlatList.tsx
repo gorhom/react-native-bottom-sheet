@@ -5,21 +5,27 @@ import React, {
   useRef,
   useImperativeHandle,
   useEffect,
+  useCallback,
 } from 'react';
 import {
   FlatList as RNFlatList,
   FlatListProps as RNFlatListProps,
   ViewStyle,
 } from 'react-native';
-import Reanimated from 'react-native-reanimated';
-import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import Animated, { event } from 'react-native-reanimated';
+import {
+  NativeViewGestureHandler,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetFlatListProps, BottomSheetFlatList } from './types';
 
-const AnimatedFlatList = Reanimated.createAnimatedComponent(
+import { styles } from './styles';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(
   RNFlatList
 ) as React.ComponentClass<
-  Reanimated.AnimateProps<ViewStyle, RNFlatListProps<any>>,
+  Animated.AnimateProps<ViewStyle, RNFlatListProps<any>>,
   any
 >;
 
@@ -33,18 +39,21 @@ const FlatList = forwardRef(
     } = props;
 
     // refs
+    const panGestureRef = useRef<PanGestureHandler>(null);
+    const scrollableWrapperRef = useRef<NativeViewGestureHandler>(null);
     const flatListRef = useRef<RNFlatList>(null);
 
     // hooks
     const {
       masterDrawerRef,
-      drawerContentRef,
-      scrollComponentRef,
       decelerationRate,
       contentPaddingBottom,
+      dragY,
+      velocityY,
+      drawerGestureState,
+      drawerOldGestureState,
+      lastStartScrollY,
       setScrollableRef,
-      removeScrollableRef,
-      onScrollBeginDrag,
     } = useBottomSheetInternal();
 
     // styles
@@ -58,34 +67,72 @@ const FlatList = forwardRef(
       };
     }, [_contentContainerStyle, contentPaddingBottom]);
 
+    // callbacks
+    const handleGestureEvent = useMemo(
+      () =>
+        event([
+          {
+            nativeEvent: {
+              translationY: dragY,
+              oldState: drawerOldGestureState,
+              state: drawerGestureState,
+              velocityY: velocityY,
+            },
+          },
+        ]),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    );
+    const handleOnScrollBeginDrag = useMemo(
+      () =>
+        event([
+          {
+            nativeEvent: {
+              contentOffset: { y: lastStartScrollY },
+            },
+          },
+        ]),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    );
+    const handleFocus = useCallback(() => {
+      setScrollableRef(flatListRef);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     // effects
     // @ts-ignore
     useImperativeHandle(ref, () => flatListRef.current!.getNode());
-    useFocusHook(() => {
-      setScrollableRef(flatListRef);
-      return () => {
-        removeScrollableRef(flatListRef);
-      };
-    }, [setScrollableRef, removeScrollableRef]);
+    useFocusHook(handleFocus);
 
     // render
     return (
-      <NativeViewGestureHandler
-        ref={scrollComponentRef}
-        waitFor={masterDrawerRef}
-        simultaneousHandlers={drawerContentRef}
+      <PanGestureHandler
+        ref={panGestureRef}
+        simultaneousHandlers={[scrollableWrapperRef, masterDrawerRef]}
+        shouldCancelWhenOutside={false}
+        onGestureEvent={handleGestureEvent}
+        onHandlerStateChange={handleGestureEvent}
       >
-        <AnimatedFlatList
-          {...rest}
-          ref={flatListRef}
-          overScrollMode="never"
-          bounces={false}
-          decelerationRate={decelerationRate}
-          onScrollBeginDrag={onScrollBeginDrag}
-          scrollEventThrottle={1}
-          contentContainerStyle={contentContainerStyle}
-        />
-      </NativeViewGestureHandler>
+        <Animated.View style={styles.container}>
+          <NativeViewGestureHandler
+            ref={scrollableWrapperRef}
+            waitFor={masterDrawerRef}
+            simultaneousHandlers={panGestureRef}
+          >
+            <AnimatedFlatList
+              {...rest}
+              ref={flatListRef}
+              overScrollMode="never"
+              bounces={false}
+              decelerationRate={decelerationRate}
+              onScrollBeginDrag={handleOnScrollBeginDrag}
+              scrollEventThrottle={1}
+              contentContainerStyle={contentContainerStyle}
+            />
+          </NativeViewGestureHandler>
+        </Animated.View>
+      </PanGestureHandler>
     );
   }
 );

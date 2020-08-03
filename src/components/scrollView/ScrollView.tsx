@@ -5,24 +5,30 @@ import React, {
   useEffect,
   forwardRef,
   Ref,
+  useCallback,
 } from 'react';
 import {
   ScrollView as RNScrollView,
   ScrollViewProps as RNScrollViewProps,
   ViewStyle,
 } from 'react-native';
-import Reanimated from 'react-native-reanimated';
-import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import Animated, { event } from 'react-native-reanimated';
+import {
+  NativeViewGestureHandler,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
 import type {
   BottomSheetScrollView,
   BottomSheetScrollViewProps,
 } from './types';
 
-const AnimatedScrollView = Reanimated.createAnimatedComponent(
+import { styles } from './styles';
+
+const AnimatedScrollView = Animated.createAnimatedComponent(
   RNScrollView
 ) as React.ComponentClass<
-  Reanimated.AnimateProps<ViewStyle, RNScrollViewProps>,
+  Animated.AnimateProps<ViewStyle, RNScrollViewProps>,
   any
 >;
 
@@ -36,18 +42,21 @@ const ScrollView = forwardRef(
     } = props;
 
     // refs
+    const panGestureRef = useRef<PanGestureHandler>(null);
+    const scrollableWrapperRef = useRef<NativeViewGestureHandler>(null);
     const scrollViewRef = useRef<RNScrollView>(null);
 
     // hooks
     const {
-      scrollComponentRef,
       masterDrawerRef,
-      drawerContentRef,
       decelerationRate,
       contentPaddingBottom,
+      dragY,
+      velocityY,
+      drawerGestureState,
+      drawerOldGestureState,
+      lastStartScrollY,
       setScrollableRef,
-      removeScrollableRef,
-      onScrollBeginDrag,
     } = useBottomSheetInternal();
 
     // styles
@@ -61,33 +70,71 @@ const ScrollView = forwardRef(
       };
     }, [_contentContainerStyle, contentPaddingBottom]);
 
+    // callbacks
+    const handleGestureEvent = useMemo(
+      () =>
+        event([
+          {
+            nativeEvent: {
+              translationY: dragY,
+              oldState: drawerOldGestureState,
+              state: drawerGestureState,
+              velocityY: velocityY,
+            },
+          },
+        ]),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    );
+    const handleOnScrollBeginDrag = useMemo(
+      () =>
+        event([
+          {
+            nativeEvent: {
+              contentOffset: { y: lastStartScrollY },
+            },
+          },
+        ]),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    );
+    const handleFocus = useCallback(() => {
+      setScrollableRef(scrollViewRef);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     // effects
     // @ts-ignore
     useImperativeHandle(ref, () => scrollViewRef.current!.getNode());
-    useFocusHook(() => {
-      setScrollableRef(scrollViewRef);
-      return () => {
-        removeScrollableRef(scrollViewRef);
-      };
-    }, [setScrollableRef, removeScrollableRef]);
+    useFocusHook(handleFocus);
 
     return (
-      <NativeViewGestureHandler
-        ref={scrollComponentRef}
-        waitFor={masterDrawerRef}
-        simultaneousHandlers={drawerContentRef}
+      <PanGestureHandler
+        ref={panGestureRef}
+        simultaneousHandlers={[scrollableWrapperRef, masterDrawerRef]}
+        shouldCancelWhenOutside={false}
+        onGestureEvent={handleGestureEvent}
+        onHandlerStateChange={handleGestureEvent}
       >
-        <AnimatedScrollView
-          {...rest}
-          ref={scrollViewRef}
-          overScrollMode="never"
-          bounces={false}
-          decelerationRate={decelerationRate}
-          onScrollBeginDrag={onScrollBeginDrag}
-          scrollEventThrottle={1}
-          contentContainerStyle={contentContainerStyle}
-        />
-      </NativeViewGestureHandler>
+        <Animated.View style={styles.container}>
+          <NativeViewGestureHandler
+            ref={scrollableWrapperRef}
+            waitFor={masterDrawerRef}
+            simultaneousHandlers={panGestureRef}
+          >
+            <AnimatedScrollView
+              {...rest}
+              ref={scrollViewRef}
+              overScrollMode="never"
+              bounces={false}
+              decelerationRate={decelerationRate}
+              onScrollBeginDrag={handleOnScrollBeginDrag}
+              scrollEventThrottle={1}
+              contentContainerStyle={contentContainerStyle}
+            />
+          </NativeViewGestureHandler>
+        </Animated.View>
+      </PanGestureHandler>
     );
   }
 );

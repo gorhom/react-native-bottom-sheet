@@ -1,12 +1,41 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
+import { View, StyleSheet } from 'react-native';
+import { useHeaderHeight, createStackNavigator } from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Handle from '../components/Handle';
 import Button from '../components/button';
-import ContactList from '../components/contactList';
+import createDummyScreen from './DummyScreen';
 
-const SectionListExample = () => {
+const Stack = createStackNavigator();
+const ScreenA = createDummyScreen({
+  title: 'FlatList Screen',
+  nextScreen: 'ScreenB',
+  type: 'FlatList',
+});
+
+const ScreenB = createDummyScreen({
+  title: 'ScrollView Screen',
+  nextScreen: 'ScreenC',
+  type: 'ScrollView',
+});
+
+const ScreenC = createDummyScreen({
+  title: 'SectionList Screen',
+  nextScreen: 'ScreenA',
+  type: 'SectionList',
+});
+
+const Navigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="ScreenA" component={ScreenA} />
+      <Stack.Screen name="ScreenB" component={ScreenB} />
+      <Stack.Screen name="ScreenC" component={ScreenC} />
+    </Stack.Navigator>
+  );
+};
+
+const NavigatorExample = () => {
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
   const headerHeight = useHeaderHeight();
@@ -20,10 +49,7 @@ const SectionListExample = () => {
   }, []);
 
   // renders
-  const renderHandle = useCallback(() => {
-    return <Handle />;
-  }, []);
-
+  const renderHandle = useCallback(() => <Handle />, []);
   return (
     <View style={styles.container}>
       <Button
@@ -44,11 +70,11 @@ const SectionListExample = () => {
       <BottomSheet
         ref={sheetRef}
         snapPoints={snapPoints}
-        initialSnapIndex={2}
+        initialSnapIndex={1}
         topInset={headerHeight}
         renderHandle={renderHandle}
       >
-        <ContactList type="SectionList" />
+        <Navigator />
       </BottomSheet>
     </View>
   );
@@ -64,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SectionListExample;
+export default NavigatorExample;

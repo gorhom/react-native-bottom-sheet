@@ -1,31 +1,18 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import BottomSheet, { ScrollView } from '@gorhom/bottom-sheet';
-import { useSafeArea } from 'react-native-safe-area-context';
+import BottomSheet from '@gorhom/bottom-sheet';
 import Handle from '../components/Handle';
 import Button from '../components/button';
-import ContactItem from '../components/contactItem';
-import { createContactListMockData } from '../utils';
+import ContactList from '../components/contactList';
 
 const ScrollViewExample = () => {
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
-  const { bottom: bottomSafeArea } = useSafeArea();
   const headerHeight = useHeaderHeight();
 
   // variables
-  const data = useMemo(() => createContactListMockData(), []);
   const snapPoints = useMemo(() => ['10%', '50%', '80%'], []);
-
-  // styles
-  const contentContainerStyle = useMemo(
-    () => ({
-      ...styles.contentContainerStyle,
-      paddingBottom: bottomSafeArea,
-    }),
-    [bottomSafeArea]
-  );
 
   // callbacks
   const handleSnapPress = useCallback(index => {
@@ -34,12 +21,6 @@ const ScrollViewExample = () => {
 
   // renders
   const renderHandle = useCallback(() => <Handle />, []);
-  const renderItem = useCallback(
-    item => (
-      <ContactItem key={item.name} title={item.name} subTitle={item.jobTitle} />
-    ),
-    []
-  );
   return (
     <View style={styles.container}>
       <Button
@@ -64,9 +45,7 @@ const ScrollViewExample = () => {
         topInset={headerHeight}
         renderHandle={renderHandle}
       >
-        <ScrollView contentContainerStyle={contentContainerStyle}>
-          {data.map(renderItem)}
-        </ScrollView>
+        <ContactList type="ScrollView" />
       </BottomSheet>
     </View>
   );
@@ -76,11 +55,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-  },
-  contentContainerStyle: {
-    paddingTop: 12,
-    paddingHorizontal: 24,
-    backgroundColor: 'white',
   },
   buttonContainer: {
     marginBottom: 6,

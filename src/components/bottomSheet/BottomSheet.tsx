@@ -1,12 +1,10 @@
-import React, { Component, RefObject } from 'react';
+import React, { Component, RefObject, createRef } from 'react';
 import {
   Dimensions,
   Platform,
   StyleSheet,
   View,
   ViewStyle,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
   findNodeHandle,
 } from 'react-native';
 import Animated, {
@@ -40,7 +38,6 @@ import {
   State as GestureState,
   TapGestureHandler,
   PanGestureHandlerGestureEvent,
-  NativeViewGestureHandler,
 } from 'react-native-gesture-handler';
 import { BottomSheetInternalProvider } from '../../context';
 import { Scrollable, ScrollableRef } from '../../types';
@@ -153,21 +150,12 @@ export class BottomSheet extends Component<BottomSheetProps> {
    */
   private masterDrawer = React.createRef<TapGestureHandler>();
   private drawerHandleRef = React.createRef<PanGestureHandler>();
-  private drawerContentRef = React.createRef<PanGestureHandler>();
-  private scrollComponentRef = React.createRef<NativeViewGestureHandler>();
   private scrollableRef = React.createRef<ScrollableRef>();
 
-  /**
-   * ScrollView prop
-   */
-  private onScrollBeginDrag: (
-    event: NativeSyntheticEvent<NativeScrollEvent>
-  ) => void;
   /**
    * Pan gesture handler events for drawer handle and content
    */
   private onHandleGestureEvent: (event: PanGestureHandlerGestureEvent) => void;
-  private onDrawerGestureEvent: (event: PanGestureHandlerGestureEvent) => void;
   /**
    * Main Animated Value that drives the top position of the UI drawer at any point in time
    */
@@ -207,7 +195,7 @@ export class BottomSheet extends Component<BottomSheetProps> {
   private prevTranslateYOffset: Animated.Value<number>;
   private translationY: Animated.Value<number>;
   private destSnapPoint = new Value(0);
-
+  private currnetSnapIndex = createRef<number>();
   private lastSnap: Animated.Value<number>;
   private dragWithHandle = new Value(0);
   private scrollUpAndPullDown = new Value(0);
@@ -218,6 +206,11 @@ export class BottomSheet extends Component<BottomSheetProps> {
   private calculateNextSnapPoint: (
     i?: number
   ) => number | Animated.Node<number>;
+
+  private handleGestureState = new Value<GestureState>(-1);
+  private handleOldGestureState = new Value<GestureState>(-1);
+  private drawerGestureState = new Value<GestureState>(-1);
+  private drawerOldGestureState = new Value<GestureState>(-1);
 
   convertPercentageToDp = (str: string) =>
     (Number(str.split('%')[0]) * (windowHeight - this.props.topInset)) / 100;
@@ -234,6 +227,8 @@ export class BottomSheet extends Component<BottomSheetProps> {
     const closedPosition = snapPoints[snapPoints.length - 1];
     const initialSnap = snapPoints[initialSnapIndex];
     this.nextSnapIndex = new Value(initialSnapIndex);
+    // @ts-ignore
+    this.currnetSnapIndex.current = initialSnapIndex;
 
     const initialDecelerationRate = Platform.select({
       android:
@@ -241,11 +236,6 @@ export class BottomSheet extends Component<BottomSheetProps> {
       ios: IOS_NORMAL_DECELERATION_RATE,
     });
     this.decelerationRate = new Value(initialDecelerationRate);
-
-    const handleGestureState = new Value<GestureState>(-1);
-    const handleOldGestureState = new Value<GestureState>(-1);
-    const drawerGestureState = new Value<GestureState>(-1);
-    const drawerOldGestureState = new Value<GestureState>(-1);
 
     const lastSnapInRange = new Value(1);
     this.prevTranslateYOffset = new Value(initialSnap);
@@ -257,48 +247,34 @@ export class BottomSheet extends Component<BottomSheetProps> {
       {
         nativeEvent: {
           translationY: this.dragY,
-          oldState: handleOldGestureState,
-          state: handleGestureState,
+          oldState: this.handleOldGestureState,
+          state: this.handleGestureState,
           velocityY: this.velocityY,
-        },
-      },
-    ]);
-    this.onDrawerGestureEvent = event([
-      {
-        nativeEvent: {
-          translationY: this.dragY,
-          oldState: drawerOldGestureState,
-          state: drawerGestureState,
-          velocityY: this.velocityY,
-        },
-      },
-    ]);
-    this.onScrollBeginDrag = event([
-      {
-        nativeEvent: {
-          contentOffset: { y: this.lastStartScrollY },
         },
       },
     ]);
 
-    const didHandleGestureBegin = eq(handleGestureState, GestureState.ACTIVE);
+    const didHandleGestureBegin = eq(
+      this.handleGestureState,
+      GestureState.ACTIVE
+    );
 
     const isAnimationInterrupted = and(
       or(
-        eq(handleGestureState, GestureState.BEGAN),
-        eq(drawerGestureState, GestureState.BEGAN)
+        eq(this.handleGestureState, GestureState.BEGAN),
+        eq(this.drawerGestureState, GestureState.BEGAN)
       ),
       clockRunning(this.animationClock)
     );
 
     this.didGestureFinish = or(
       and(
-        eq(handleOldGestureState, GestureState.ACTIVE),
-        eq(handleGestureState, GestureState.END)
+        eq(this.handleOldGestureState, GestureState.ACTIVE),
+        eq(this.handleGestureState, GestureState.END)
       ),
       and(
-        eq(drawerOldGestureState, GestureState.ACTIVE),
-        eq(drawerGestureState, GestureState.END)
+        eq(this.drawerOldGestureState, GestureState.ACTIVE),
+        eq(this.drawerGestureState, GestureState.END)
       )
     );
 
@@ -436,8 +412,8 @@ export class BottomSheet extends Component<BottomSheetProps> {
               this.prevSnapIndex = value;
             }),
             // Resetting appropriate values
-            set(drawerOldGestureState, GestureState.END),
-            set(handleOldGestureState, GestureState.END),
+            set(this.drawerOldGestureState, GestureState.END),
+            set(this.handleOldGestureState, GestureState.END),
             set(this.prevTranslateYOffset, state.position),
             cond(eq(this.scrollUpAndPullDown, 1), [
               set(
@@ -477,8 +453,8 @@ export class BottomSheet extends Component<BottomSheetProps> {
         set(this.animationFinished, 1),
         set(this.translationY, 0),
         // Resetting appropriate values
-        set(drawerOldGestureState, GestureState.END),
-        set(handleOldGestureState, GestureState.END),
+        set(this.drawerOldGestureState, GestureState.END),
+        set(this.handleOldGestureState, GestureState.END),
         // By forcing that frameTime exceeds duration, it has the effect of stopping the animation
         set(this.animationFrameTime, add(animationDuration, 1000)),
         stopClock(this.animationClock),
@@ -555,15 +531,11 @@ export class BottomSheet extends Component<BottomSheetProps> {
         type,
         node: ref.current!,
       };
-    }
-  };
 
-  private removeScrollableRef = (ref: RefObject<Scrollable>) => {
-    let id = findNodeHandle(ref.current);
-
-    if (this.scrollableRef.current?.id === id) {
-      // @ts-ignore
-      this.scrollableRef.current = null;
+      this.lastStartScrollY.setValue(0);
+      this.drawerOldGestureState.setValue(GestureState.ACTIVE);
+      this.drawerGestureState.setValue(GestureState.END);
+      this.snapTo(this.currnetSnapIndex.current ?? 0);
     }
   };
 
@@ -604,30 +576,22 @@ export class BottomSheet extends Component<BottomSheetProps> {
         >
           <Animated.View>{renderHandle()}</Animated.View>
         </PanGestureHandler>
-        <PanGestureHandler
-          ref={this.drawerContentRef}
-          simultaneousHandlers={[this.scrollComponentRef, this.masterDrawer]}
-          shouldCancelWhenOutside={false}
-          onGestureEvent={this.onDrawerGestureEvent}
-          onHandlerStateChange={this.onDrawerGestureEvent}
+        <BottomSheetInternalProvider
+          value={{
+            dragY: this.dragY,
+            velocityY: this.velocityY,
+            drawerGestureState: this.drawerGestureState,
+            drawerOldGestureState: this.drawerOldGestureState,
+            lastStartScrollY: this.lastStartScrollY,
+
+            masterDrawerRef: this.masterDrawer,
+            decelerationRate: this.decelerationRate,
+            contentPaddingBottom: this.getNormalisedSnapPoints()[0],
+            setScrollableRef: this.setScrollableRef,
+          }}
         >
-          <Animated.View style={styles.container}>
-            <BottomSheetInternalProvider
-              value={{
-                masterDrawerRef: this.masterDrawer,
-                drawerContentRef: this.drawerContentRef,
-                scrollComponentRef: this.scrollComponentRef,
-                decelerationRate: this.decelerationRate,
-                contentPaddingBottom: this.getNormalisedSnapPoints()[0],
-                setScrollableRef: this.setScrollableRef,
-                removeScrollableRef: this.removeScrollableRef,
-                onScrollBeginDrag: this.onScrollBeginDrag,
-              }}
-            >
-              {children}
-            </BottomSheetInternalProvider>
-          </Animated.View>
-        </PanGestureHandler>
+          {children}
+        </BottomSheetInternalProvider>
         {this.props.animatedPosition && (
           <Animated.Code
             exec={onChange(
@@ -692,6 +656,9 @@ export class BottomSheet extends Component<BottomSheetProps> {
               ),
               call([this.lastSnap], ([value]) => {
                 // This is the TapGHandler trick
+                //@ts-ignore
+                this.currnetSnapIndex.current =
+                  this.getNormalisedSnapPoints().indexOf(value) ?? 0;
                 // @ts-ignore
                 this.masterDrawer?.current?.setNativeProps({
                   maxDeltaY: value - this.getNormalisedSnapPoints()[0],
@@ -722,6 +689,9 @@ export class BottomSheet extends Component<BottomSheetProps> {
                 set(this.lastSnap, this.manualYOffset),
                 call([this.lastSnap], ([value]) => {
                   // This is the TapGHandler trick
+                  //@ts-ignore
+                  this.currnetSnapIndex.current =
+                    this.getNormalisedSnapPoints().indexOf(value) ?? 0;
                   // @ts-ignore
                   this.masterDrawer?.current?.setNativeProps({
                     maxDeltaY: value - this.getNormalisedSnapPoints()[0],
@@ -740,8 +710,8 @@ export class BottomSheet extends Component<BottomSheetProps> {
     if (Platform.OS === 'android') {
       return (
         <TapGestureHandler
-          maxDurationMs={100000}
           ref={this.masterDrawer}
+          maxDurationMs={100000}
           maxDeltaY={initialSnap - this.getNormalisedSnapPoints()[0]}
           shouldCancelWhenOutside={false}
         >
@@ -755,8 +725,8 @@ export class BottomSheet extends Component<BottomSheetProps> {
     // Stopping the gesture
     return (
       <TapGestureHandler
-        maxDurationMs={100000}
         ref={this.masterDrawer}
+        maxDurationMs={100000}
         maxDeltaY={initialSnap - this.getNormalisedSnapPoints()[0]}
       >
         <View style={StyleSheet.absoluteFillObject} pointerEvents="box-none">
@@ -768,9 +738,3 @@ export class BottomSheet extends Component<BottomSheetProps> {
 }
 
 export default BottomSheet;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

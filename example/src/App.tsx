@@ -2,6 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import RootScreen from './screens/Root';
+import NavigatorExampleScreen from './screens/NavigatorExample';
 import FlatListExampleScreen from './screens/FlatListExample';
 import SectionListExampleScreen from './screens/SectionListExample';
 import ScrollViewExampleScreen from './screens/ScrollViewExample';
@@ -16,6 +17,10 @@ function App() {
           name="Root"
           component={RootScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="NavigatorExample"
+          component={NavigatorExampleScreen}
         />
         <Stack.Screen
           name="FlatListExample"
