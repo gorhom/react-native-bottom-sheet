@@ -32,6 +32,7 @@ import Animated, {
   sub,
   timing,
   Value,
+  defined,
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
@@ -163,6 +164,7 @@ export class BottomSheet extends Component<BottomSheetProps> {
   /**
    * Animated value that keeps track of the position: 0 => closed, 1 => opened
    */
+  // @ts-ignore
   private position: Animated.Node<number>;
   /**
    * Flag to indicate imperative snapping
@@ -567,6 +569,18 @@ export class BottomSheet extends Component<BottomSheetProps> {
           },
         ]}
       >
+        <Animated.Code
+          exec={cond(defined(this.props.animatedPosition), [
+            cond(
+              eq(this.props.animatedPosition!, -1),
+              set(this.props.animatedPosition!, this.translateY)
+            ),
+            onChange(
+              this.translateY,
+              set(this.props.animatedPosition!, this.translateY)
+            ),
+          ])}
+        />
         <PanGestureHandler
           ref={this.drawerHandleRef}
           shouldCancelWhenOutside={false}
@@ -592,14 +606,6 @@ export class BottomSheet extends Component<BottomSheetProps> {
         >
           {children}
         </BottomSheetInternalProvider>
-        {this.props.animatedPosition && (
-          <Animated.Code
-            exec={onChange(
-              this.position,
-              set(this.props.animatedPosition, this.position)
-            )}
-          />
-        )}
         <Animated.Code
           exec={onChange(
             this.dragY,
