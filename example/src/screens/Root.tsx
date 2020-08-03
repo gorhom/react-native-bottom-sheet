@@ -5,6 +5,15 @@ import { version, description } from '../../../package.json';
 
 const data = [
   {
+    title: 'Navigator',
+    data: [
+      {
+        name: 'Default',
+        slug: 'NavigatorExample',
+      },
+    ],
+  },
+  {
     title: 'FlatList',
     data: [
       {
