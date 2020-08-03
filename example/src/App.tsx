@@ -6,13 +6,15 @@ import NavigatorExampleScreen from './screens/NavigatorExample';
 import FlatListExampleScreen from './screens/FlatListExample';
 import SectionListExampleScreen from './screens/SectionListExample';
 import ScrollViewExampleScreen from './screens/ScrollViewExample';
+import BasicExampleScreen from './screens/BasicExample';
 import { AppStackParamsList } from './types';
 
 const Stack = createStackNavigator<AppStackParamsList>();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Root">
+      <Stack.Navigator initialRouteName="BasicExample">
+        <Stack.Screen name="BasicExample" component={BasicExampleScreen} />
         <Stack.Screen
           name="Root"
           component={RootScreen}
