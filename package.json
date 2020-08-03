@@ -1,6 +1,6 @@
 {
   "name": "@gorhom/bottom-sheet",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
