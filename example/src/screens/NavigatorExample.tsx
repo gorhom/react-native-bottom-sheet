@@ -8,21 +8,21 @@ import createDummyScreen from './DummyScreen';
 
 const Stack = createStackNavigator();
 const ScreenA = createDummyScreen({
-  title: 'ScreenA',
+  title: 'FlatList Screen',
   nextScreen: 'ScreenB',
   type: 'FlatList',
 });
 
 const ScreenB = createDummyScreen({
-  title: 'ScreenB',
+  title: 'ScrollView Screen',
   nextScreen: 'ScreenC',
-  type: 'FlatList',
+  type: 'ScrollView',
 });
 
 const ScreenC = createDummyScreen({
-  title: 'ScreenC',
+  title: 'SectionList Screen',
   nextScreen: 'ScreenA',
-  type: 'FlatList',
+  type: 'SectionList',
 });
 
 const Navigator = () => {
@@ -70,7 +70,7 @@ const NavigatorExample = () => {
       <BottomSheet
         ref={sheetRef}
         snapPoints={snapPoints}
-        initialSnapIndex={2}
+        initialSnapIndex={1}
         topInset={headerHeight}
         renderHandle={renderHandle}
       >
