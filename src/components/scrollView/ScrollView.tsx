@@ -35,40 +35,22 @@ const AnimatedScrollView = Animated.createAnimatedComponent(
 const ScrollView = forwardRef(
   (props: BottomSheetScrollViewProps, ref: Ref<RNScrollView>) => {
     // props
-    const {
-      contentContainerStyle: _contentContainerStyle,
-      focusHook: useFocusHook = useEffect,
-      ...rest
-    } = props;
+    const { focusHook: useFocusHook = useEffect, ...rest } = props;
 
     // refs
     const panGestureRef = useRef<PanGestureHandler>(null);
-    const scrollableWrapperRef = useRef<NativeViewGestureHandler>(null);
+    const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
     const scrollViewRef = useRef<RNScrollView>(null);
 
     // hooks
     const {
-      masterDrawerRef,
-      decelerationRate,
-      contentPaddingBottom,
-      dragY,
-      velocityY,
-      drawerGestureState,
-      drawerOldGestureState,
-      lastStartScrollY,
+      rootTapGestureRef,
+      sheetPanGestureState,
+      sheetPanGestureTranslationY,
+      sheetPanGestureVelocityY,
+      scrollableContentOffsetY,
       setScrollableRef,
     } = useBottomSheetInternal();
-
-    // styles
-    const contentContainerStyle = useMemo(() => {
-      return {
-        // @ts-ignore
-        ...(_contentContainerStyle ?? {}),
-        paddingBottom:
-          contentPaddingBottom +
-          Math.max(_contentContainerStyle?.paddingBottom ?? 0, 0),
-      };
-    }, [_contentContainerStyle, contentPaddingBottom]);
 
     // callbacks
     const handleGestureEvent = useMemo(
@@ -76,22 +58,21 @@ const ScrollView = forwardRef(
         event([
           {
             nativeEvent: {
-              translationY: dragY,
-              oldState: drawerOldGestureState,
-              state: drawerGestureState,
-              velocityY: velocityY,
+              state: sheetPanGestureState,
+              translationY: sheetPanGestureTranslationY,
+              velocityY: sheetPanGestureVelocityY,
             },
           },
         ]),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
-    const handleOnScrollBeginDrag = useMemo(
+    const handleScrollEvent = useMemo(
       () =>
         event([
           {
             nativeEvent: {
-              contentOffset: { y: lastStartScrollY },
+              contentOffset: { y: scrollableContentOffsetY },
             },
           },
         ]),
@@ -111,15 +92,15 @@ const ScrollView = forwardRef(
     return (
       <PanGestureHandler
         ref={panGestureRef}
-        simultaneousHandlers={[scrollableWrapperRef, masterDrawerRef]}
+        simultaneousHandlers={[rootTapGestureRef, nativeGestureRef]}
         shouldCancelWhenOutside={false}
         onGestureEvent={handleGestureEvent}
         onHandlerStateChange={handleGestureEvent}
       >
         <Animated.View style={styles.container}>
           <NativeViewGestureHandler
-            ref={scrollableWrapperRef}
-            waitFor={masterDrawerRef}
+            ref={nativeGestureRef}
+            waitFor={rootTapGestureRef}
             simultaneousHandlers={panGestureRef}
           >
             <AnimatedScrollView
@@ -127,10 +108,12 @@ const ScrollView = forwardRef(
               ref={scrollViewRef}
               overScrollMode="never"
               bounces={false}
-              decelerationRate={decelerationRate}
-              onScrollBeginDrag={handleOnScrollBeginDrag}
+              decelerationRate={0.99999}
               scrollEventThrottle={1}
-              contentContainerStyle={contentContainerStyle}
+              onScrollBeginDrag={handleScrollEvent}
+              onScrollEndDrag={handleScrollEvent}
+              onMomentumScrollBegin={handleScrollEvent}
+              onMomentumScrollEnd={handleScrollEvent}
             />
           </NativeViewGestureHandler>
         </Animated.View>
