@@ -50,6 +50,7 @@ const SectionList = forwardRef(
       sheetPanGestureVelocityY,
       scrollableContentOffsetY,
       setScrollableRef,
+      removeScrollableRef,
     } = useBottomSheetInternal();
 
     // callbacks
@@ -81,6 +82,10 @@ const SectionList = forwardRef(
     );
     const handleFocus = useCallback(() => {
       setScrollableRef(sectionListRef);
+
+      return () => {
+        removeScrollableRef(sectionListRef);
+      };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

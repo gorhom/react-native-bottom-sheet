@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useCallback, RefObject } from 'react';
-import { ViewStyle, FlatList } from 'react-native';
+import { ViewStyle } from 'react-native';
 import Animated, {
   concat,
   useCode,
@@ -23,11 +23,15 @@ import {
   useTapGestureHandler,
 } from 'react-native-redash';
 import { useTransition } from './useTransition';
-import { normalizeSnapPoints, useStableCallback } from '../../utilities';
+import {
+  normalizeSnapPoints,
+  useStableCallback,
+  useScrollable,
+} from '../../utilities';
 import Handle from '../handle';
 import { styles } from './styles';
 import { BottomSheetInternalProvider } from '../../context';
-import { Scrollable } from 'src/types';
+import { Scrollable } from '../../types';
 
 interface BottomSheetProps {
   initialSnapIndex?: number;
@@ -48,9 +52,14 @@ const BottomSheet = ({
 }: BottomSheetProps) => {
   const rootTapGestureRef = useRef<TapGestureHandler>(null);
   const handlePanGestureRef = useRef<PanGestureHandler>(null);
-  const scrollableRef = useRef<FlatList>(null);
 
   //#region variables
+  const {
+    setScrollableRef,
+    removeScrollableRef,
+    scrollToTop,
+    flashScrollableIndicators,
+  } = useScrollable();
   const { snapPoints, sheetHeight } = useMemo(() => {
     const normalizedSnapPoints = normalizeSnapPoints(_snapPoints, topInset);
     const maxSnapPoint = normalizedSnapPoints[normalizedSnapPoints.length - 1];
@@ -117,20 +126,17 @@ const BottomSheet = ({
   });
   const handleSettingScrollableRef = useCallback(
     (ref: RefObject<Scrollable>) => {
-      if (ref && ref.current) {
-        //@ts-ignore
-        scrollableRef.current = ref.current;
-
-        /**
-         * @TODO handle when sheet is half open
-         */
-        // @ts-ignore
-        rootTapGestureRef.current.setNativeProps({
-          maxDeltaY: 0,
-        });
-      }
+      console.log('handleSettingScrollableRef', ref);
+      setScrollableRef(ref);
+      /**
+       * @TODO handle when sheet is half open
+       */
+      // @ts-ignore
+      rootTapGestureRef.current.setNativeProps({
+        maxDeltaY: 0,
+      });
     },
-    []
+    [setScrollableRef]
   );
 
   const internalContextVariables = useMemo(
@@ -141,6 +147,7 @@ const BottomSheet = ({
       sheetPanGestureVelocityY,
       scrollableContentOffsetY,
       setScrollableRef: handleSettingScrollableRef,
+      removeScrollableRef,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -157,8 +164,7 @@ const BottomSheet = ({
             handleOnChange(currentIndex);
 
             if (currentIndex === snapPoints.length - 1) {
-              // @ts-ignore
-              scrollableRef.current!.getNode().flashScrollIndicators();
+              flashScrollableIndicators();
               // @ts-ignore
               rootTapGestureRef.current.setNativeProps({
                 maxDeltaY: 0,
@@ -179,13 +185,7 @@ const BottomSheet = ({
             neq(position, 0)
           ),
           call([], () => {
-            // @ts-ignore
-            scrollableRef.current?.getNode().scrollToIndex({
-              animated: false,
-              index: 0,
-              viewPosition: 0,
-              viewOffset: 1000,
-            });
+            scrollToTop();
           })
         ),
       ]),

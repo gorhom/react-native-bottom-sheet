@@ -46,6 +46,7 @@ const FlatList = forwardRef(
       sheetPanGestureVelocityY,
       scrollableContentOffsetY,
       setScrollableRef,
+      removeScrollableRef,
     } = useBottomSheetInternal();
 
     // callbacks
@@ -77,6 +78,10 @@ const FlatList = forwardRef(
     );
     const handleFocus = useCallback(() => {
       setScrollableRef(flatListRef);
+
+      return () => {
+        removeScrollableRef(flatListRef);
+      };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -108,9 +113,9 @@ const FlatList = forwardRef(
               decelerationRate={0.99999}
               scrollEventThrottle={1}
               onScrollBeginDrag={handleScrollEvent}
-              onScrollEndDrag={handleScrollEvent}
-              onMomentumScrollBegin={handleScrollEvent}
-              onMomentumScrollEnd={handleScrollEvent}
+              // onScrollEndDrag={handleScrollEvent}
+              // onMomentumScrollBegin={handleScrollEvent}
+              // onMomentumScrollEnd={handleScrollEvent}
             />
           </NativeViewGestureHandler>
         </Animated.View>

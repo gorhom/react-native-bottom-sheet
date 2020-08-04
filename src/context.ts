@@ -1,4 +1,4 @@
-import { createContext, RefObject, Ref } from 'react';
+import { createContext, Ref, RefObject } from 'react';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { Scrollable } from './types';
@@ -10,6 +10,7 @@ export interface BottomSheetInternalContextType {
   sheetPanGestureVelocityY: Animated.Value<number>;
   scrollableContentOffsetY: Animated.Value<number>;
   setScrollableRef: (ref: RefObject<Scrollable>) => void;
+  removeScrollableRef: (ref: RefObject<Scrollable>) => void;
 }
 
 export const BottomSheetInternalContext = createContext<
@@ -21,6 +22,7 @@ export const BottomSheetInternalContext = createContext<
   sheetPanGestureVelocityY: new Animated.Value(0),
   scrollableContentOffsetY: new Animated.Value(0),
   setScrollableRef: () => {},
+  removeScrollableRef: () => {},
 });
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;
