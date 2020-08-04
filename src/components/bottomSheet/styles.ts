@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     left: 20,
     top: 25,
+    backgroundColor: 'rgba(0, 0,0,0.5)',
   },
   debugText: {
     fontSize: 24,

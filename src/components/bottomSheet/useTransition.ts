@@ -15,14 +15,12 @@ import Animated, {
   stopClock,
   multiply,
 } from 'react-native-reanimated';
-import { State, PanGestureHandler } from 'react-native-gesture-handler';
+import { State } from 'react-native-gesture-handler';
 import { useClock, snapPoint } from 'react-native-redash';
 
 const { cond, block } = Animated;
 
 interface TransitionProps {
-  sheetRef: RefObject<PanGestureHandler>;
-  scrollableRef: RefObject<PanGestureHandler>;
   scrollableContentOffsetY: Animated.Value<number>;
   state: Animated.Value<State>;
   translateY: Animated.Value<number>;
