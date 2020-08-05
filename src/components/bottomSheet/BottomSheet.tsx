@@ -1,15 +1,21 @@
-import React, { useMemo, useRef, useCallback, RefObject } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useCallback,
+  RefObject,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import { ViewStyle } from 'react-native';
 import Animated, {
-  concat,
   useCode,
   onChange,
   call,
   eq,
-  block,
   cond,
   neq,
   and,
+  concat,
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
@@ -18,9 +24,9 @@ import {
 } from 'react-native-gesture-handler';
 import {
   usePanGestureHandler,
-  ReText,
   useValue,
   useTapGestureHandler,
+  ReText,
 } from 'react-native-redash';
 import { useTransition } from './useTransition';
 import {
@@ -42,122 +48,158 @@ interface BottomSheetProps {
   onChange?: (index: number) => void;
 }
 
-const BottomSheet = ({
-  initialSnapIndex = 0,
-  snapPoints: _snapPoints = [],
-  topInset = 0,
-  onChange: _onChange,
-  handleComponent: HandleComponent = Handle,
-  children,
-}: BottomSheetProps) => {
-  const rootTapGestureRef = useRef<TapGestureHandler>(null);
-  const handlePanGestureRef = useRef<PanGestureHandler>(null);
+interface BottomSheet {
+  snapTo: (index: number) => void;
+  close: () => void;
+}
 
-  //#region variables
-  const {
-    setScrollableRef,
-    removeScrollableRef,
-    scrollToTop,
-    flashScrollableIndicators,
-  } = useScrollable();
-  const { snapPoints, sheetHeight } = useMemo(() => {
-    const normalizedSnapPoints = normalizeSnapPoints(_snapPoints, topInset);
-    const maxSnapPoint = normalizedSnapPoints[normalizedSnapPoints.length - 1];
-    return {
-      snapPoints: normalizedSnapPoints.map(
-        normalizedSnapPoint => maxSnapPoint - normalizedSnapPoint
-      ),
-      sheetHeight: maxSnapPoint,
-    };
-  }, [_snapPoints, topInset]);
-  //#endregion
-
-  //#region gestures
-  const {
-    state: sheetPanGestureState,
-    translation: { y: sheetPanGestureTranslationY },
-    velocity: { y: sheetPanGestureVelocityY },
-    gestureHandler: sheetPanGestureHandler,
-  } = usePanGestureHandler();
-
-  const {
-    state: tapGestureState,
-    absolutePosition: { y: tapGestureY },
-    gestureHandler: tapGestureHandler,
-  } = useTapGestureHandler();
-
-  const scrollableContentOffsetY = useValue(0);
-  //#endregion
-
-  //#region animation
-  const { position, currentPosition } = useTransition({
-    scrollableContentOffsetY,
-    state: sheetPanGestureState,
-    translateY: sheetPanGestureTranslationY,
-    velocity: sheetPanGestureVelocityY,
-    snapPoints,
-    initialSnapIndex,
-  });
-  //#endregion
-
-  //#region styles
-  const containerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
-    () => ({
-      ...styles.container,
-      height: sheetHeight,
-    }),
-    [sheetHeight]
-  );
-  const contentContainerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
-    () => ({
-      ...styles.container,
-      height: sheetHeight,
-      transform: [{ translateY: position }],
-    }),
-    [sheetHeight, position]
-  );
-  //#endregion
-
-  //#region callbacks
-  const handleOnChange = useStableCallback((index: number) => {
-    if (_onChange) {
-      _onChange(index);
-    }
-  });
-  const handleSettingScrollableRef = useCallback(
-    (ref: RefObject<Scrollable>) => {
-      console.log('handleSettingScrollableRef', ref);
-      setScrollableRef(ref);
-      /**
-       * @TODO handle when sheet is half open
-       */
-      // @ts-ignore
-      rootTapGestureRef.current.setNativeProps({
-        maxDeltaY: 0,
-      });
+const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
+  (
+    {
+      initialSnapIndex = 0,
+      snapPoints: _snapPoints = [],
+      topInset = 0,
+      onChange: _onChange,
+      handleComponent: HandleComponent = Handle,
+      children,
     },
-    [setScrollableRef]
-  );
+    ref
+  ) => {
+    const rootTapGestureRef = useRef<TapGestureHandler>(null);
+    const handlePanGestureRef = useRef<PanGestureHandler>(null);
 
-  const internalContextVariables = useMemo(
-    () => ({
-      rootTapGestureRef,
-      sheetPanGestureState,
-      sheetPanGestureTranslationY,
-      sheetPanGestureVelocityY,
-      scrollableContentOffsetY,
-      setScrollableRef: handleSettingScrollableRef,
+    //#region variables
+    const {
+      setScrollableRef,
       removeScrollableRef,
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-  //#endregion
+      scrollToTop,
+      flashScrollableIndicators,
+    } = useScrollable();
 
-  //#region effects
-  useCode(
-    () =>
-      block([
+    const { snapPoints, sheetHeight } = useMemo(() => {
+      const normalizedSnapPoints = normalizeSnapPoints(_snapPoints, topInset);
+      const maxSnapPoint =
+        normalizedSnapPoints[normalizedSnapPoints.length - 1];
+      return {
+        snapPoints: normalizedSnapPoints.map(
+          normalizedSnapPoint => maxSnapPoint - normalizedSnapPoint
+        ),
+        sheetHeight: maxSnapPoint,
+      };
+    }, [_snapPoints, topInset]);
+    //#endregion
+
+    //#region gestures
+    const {
+      state: sheetPanGestureState,
+      translation: { y: sheetPanGestureTranslationY },
+      velocity: { y: sheetPanGestureVelocityY },
+      gestureHandler: sheetPanGestureHandler,
+    } = usePanGestureHandler();
+
+    const {
+      state: tapGestureState,
+      gestureHandler: tapGestureHandler,
+    } = useTapGestureHandler();
+
+    const scrollableContentOffsetY = useValue<number>(0);
+    const autoSnapTo = useValue<number>(-1);
+    //#endregion
+
+    //#region animation
+    const { position, currentPosition } = useTransition({
+      autoSnapTo,
+      scrollableContentOffsetY,
+      state: sheetPanGestureState,
+      translateY: sheetPanGestureTranslationY,
+      velocity: sheetPanGestureVelocityY,
+      snapPoints,
+      initialSnapIndex,
+    });
+    //#endregion
+
+    //#region styles
+    const containerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
+      () => ({
+        ...styles.container,
+        height: sheetHeight,
+      }),
+      [sheetHeight]
+    );
+    const contentContainerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
+      () => ({
+        ...styles.container,
+        height: sheetHeight,
+        transform: [{ translateY: position }],
+      }),
+      [sheetHeight, position]
+    );
+    //#endregion
+
+    //#region callbacks
+    const handleOnChange = useStableCallback((index: number) => {
+      if (_onChange) {
+        _onChange(index);
+      }
+    });
+    const handleSettingScrollableRef = useCallback(
+      (scrollableRef: RefObject<Scrollable>) => {
+        setScrollableRef(scrollableRef);
+        /**
+         * @TODO handle when sheet is half open
+         */
+        // @ts-ignore
+        rootTapGestureRef.current.setNativeProps({
+          maxDeltaY: 0,
+        });
+      },
+      [setScrollableRef]
+    );
+    const handleOnSnapTo = useCallback(
+      (index: number) => {
+        autoSnapTo.setValue(snapPoints[index]);
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [snapPoints]
+    );
+    const handleClose = useCallback(() => {
+      autoSnapTo.setValue(sheetHeight);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sheetHeight]);
+    //#endregion
+
+    //#region
+    const internalContextVariables = useMemo(
+      () => ({
+        rootTapGestureRef,
+        sheetPanGestureState,
+        sheetPanGestureTranslationY,
+        sheetPanGestureVelocityY,
+        scrollableContentOffsetY,
+        setScrollableRef: handleSettingScrollableRef,
+        removeScrollableRef,
+      }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    );
+    //#endregion
+
+    //#region effects
+    useImperativeHandle(ref, () => ({
+      snapTo: handleOnSnapTo,
+      close: handleClose,
+    }));
+
+    /**
+     * @DEV
+     * here we track the current position and
+     * - call on change ( if provided ).
+     * - flash scrollable component scroll indicators.
+     * - manipulate the root tap gesture handler maxDeltaY,
+     *   which allows the scrollable component to be activated.
+     */
+    useCode(
+      () =>
         onChange(currentPosition, [
           call([currentPosition], args => {
             const currentIndex = snapPoints.indexOf(args[0]);
@@ -170,7 +212,6 @@ const BottomSheet = ({
                 maxDeltaY: 0,
               });
             } else {
-              console.log(args[0]);
               // @ts-ignore
               rootTapGestureRef.current.setNativeProps({
                 maxDeltaY: Math.round(args[0]),
@@ -178,6 +219,17 @@ const BottomSheet = ({
             }
           }),
         ]),
+      [snapPoints]
+    );
+
+    /**
+     * @DEV
+     * Once the root tap gesture handler states change to failed
+     * and the sheet not fully extended, we make sure to prevent the
+     * scrollable component from scrolling.
+     */
+    useCode(
+      () =>
         cond(
           and(
             eq(tapGestureState, State.FAILED),
@@ -188,73 +240,73 @@ const BottomSheet = ({
             scrollToTop();
           })
         ),
-      ]),
-    [snapPoints, sheetHeight]
-  );
-  //#endregion
+      []
+    );
+    //#endregion
 
-  // render
-  return (
-    <TapGestureHandler
-      ref={rootTapGestureRef}
-      maxDurationMs={1000000}
-      maxDeltaY={snapPoints[initialSnapIndex]}
-      shouldCancelWhenOutside={false}
-      {...tapGestureHandler}
-    >
-      <Animated.View style={containerStyle}>
-        <Animated.View style={contentContainerStyle}>
-          <PanGestureHandler
-            ref={handlePanGestureRef}
-            simultaneousHandlers={rootTapGestureRef}
-            shouldCancelWhenOutside={false}
-            {...sheetPanGestureHandler}
-          >
-            <Animated.View>
-              <HandleComponent />
+    // render
+    return (
+      <TapGestureHandler
+        ref={rootTapGestureRef}
+        maxDurationMs={1000000}
+        maxDeltaY={snapPoints[initialSnapIndex]}
+        shouldCancelWhenOutside={false}
+        {...tapGestureHandler}
+      >
+        <Animated.View pointerEvents="box-none" style={containerStyle}>
+          <Animated.View style={contentContainerStyle}>
+            <PanGestureHandler
+              ref={handlePanGestureRef}
+              simultaneousHandlers={rootTapGestureRef}
+              shouldCancelWhenOutside={false}
+              {...sheetPanGestureHandler}
+            >
+              <Animated.View>
+                <HandleComponent />
+              </Animated.View>
+            </PanGestureHandler>
+
+            <Animated.View style={styles.contentContainer}>
+              <BottomSheetInternalProvider value={internalContextVariables}>
+                {children}
+              </BottomSheetInternalProvider>
             </Animated.View>
-          </PanGestureHandler>
+          </Animated.View>
 
-          <Animated.View style={styles.contentContainer}>
-            <BottomSheetInternalProvider value={internalContextVariables}>
-              {children}
-            </BottomSheetInternalProvider>
+          <Animated.View pointerEvents="none" style={styles.debug}>
+            <ReText
+              style={styles.debugText}
+              text={concat('translationY: ', sheetPanGestureTranslationY)}
+            />
+            <ReText
+              style={styles.debugText}
+              text={concat('contentOffsetY: ', scrollableContentOffsetY)}
+            />
+            <ReText
+              style={styles.debugText}
+              text={concat('tap state: ', tapGestureState)}
+            />
+            <ReText
+              style={styles.debugText}
+              text={concat('autoSnap To: ', autoSnapTo)}
+            />
+            <ReText
+              style={styles.debugText}
+              text={concat('position: ', position)}
+            />
+            <ReText
+              style={styles.debugText}
+              text={concat('currentPosition: ', currentPosition)}
+            />
+            <ReText
+              style={styles.debugText}
+              text={concat('state: ', sheetPanGestureState)}
+            />
           </Animated.View>
         </Animated.View>
-
-        <Animated.View pointerEvents="none" style={styles.debug}>
-          <ReText
-            style={styles.debugText}
-            text={concat('translationY: ', sheetPanGestureTranslationY)}
-          />
-          <ReText
-            style={styles.debugText}
-            text={concat('contentOffsetY: ', scrollableContentOffsetY)}
-          />
-          <ReText
-            style={styles.debugText}
-            text={concat('tap state: ', tapGestureState)}
-          />
-          <ReText
-            style={styles.debugText}
-            text={concat('tap y: ', tapGestureY)}
-          />
-          <ReText
-            style={styles.debugText}
-            text={concat('position: ', position)}
-          />
-          <ReText
-            style={styles.debugText}
-            text={concat('currentPosition: ', currentPosition)}
-          />
-          <ReText
-            style={styles.debugText}
-            text={concat('state: ', sheetPanGestureState)}
-          />
-        </Animated.View>
-      </Animated.View>
-    </TapGestureHandler>
-  );
-};
+      </TapGestureHandler>
+    );
+  }
+);
 
 export default BottomSheet;

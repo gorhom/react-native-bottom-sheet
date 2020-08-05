@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   debug: {
     position: 'absolute',
     left: 20,
-    top: 25,
+    top: 100,
     backgroundColor: 'rgba(0, 0,0,0.5)',
   },
   debugText: {
