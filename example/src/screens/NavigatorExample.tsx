@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useHeaderHeight, createStackNavigator } from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Handle from '../components/Handle';
 import Button from '../components/button';
 import createDummyScreen from './DummyScreen';
 
@@ -26,9 +25,19 @@ const ScreenC = createDummyScreen({
 });
 
 const Navigator = () => {
+  const screenOptions = useMemo(
+    () => ({ headerShown: true, safeAreaInsets: { top: 0 } }),
+    []
+  );
+
+  const screenAOptions = useMemo(() => ({ headerLeft: () => null }), []);
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="ScreenA" component={ScreenA} />
+    <Stack.Navigator screenOptions={screenOptions} headerMode="screen">
+      <Stack.Screen
+        name="ScreenA"
+        options={screenAOptions}
+        component={ScreenA}
+      />
       <Stack.Screen name="ScreenB" component={ScreenB} />
       <Stack.Screen name="ScreenC" component={ScreenC} />
     </Stack.Navigator>
@@ -41,38 +50,48 @@ const NavigatorExample = () => {
   const headerHeight = useHeaderHeight();
 
   // variables
-  const snapPoints = useMemo(() => ['10%', '50%', '80%'], []);
+  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
 
   // callbacks
+  const handleSheetChange = useCallback(index => {
+    console.log('handleSheetChange', index);
+  }, []);
   const handleSnapPress = useCallback(index => {
     sheetRef.current?.snapTo(index);
   }, []);
+  const handleClosePress = useCallback(() => {
+    sheetRef.current?.close();
+  }, []);
 
   // renders
-  const renderHandle = useCallback(() => <Handle />, []);
   return (
     <View style={styles.container}>
       <Button
-        label="Extend"
+        label="Snap To 90%"
         style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
+        onPress={() => handleSnapPress(2)}
       />
       <Button
-        label="Open"
+        label="Snap To 50%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(1)}
       />
       <Button
+        label="Snap To 25%"
+        style={styles.buttonContainer}
+        onPress={() => handleSnapPress(0)}
+      />
+      <Button
         label="Close"
         style={styles.buttonContainer}
-        onPress={() => handleSnapPress(2)}
+        onPress={() => handleClosePress()}
       />
       <BottomSheet
         ref={sheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={headerHeight}
-        renderHandle={renderHandle}
+        onChange={handleSheetChange}
       >
         <Navigator />
       </BottomSheet>

@@ -3,9 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import RootScreen from './screens/Root';
 import NavigatorExampleScreen from './screens/NavigatorExample';
-import FlatListExampleScreen from './screens/FlatListExample';
-import SectionListExampleScreen from './screens/SectionListExample';
-import ScrollViewExampleScreen from './screens/ScrollViewExample';
+import {
+  FlatListExampleScreen,
+  SectionListExampleScreen,
+  ScrollViewExampleScreen,
+} from './screens/BasicExamples';
 import BasicExampleScreen from './screens/BasicExample';
 import { AppStackParamsList } from './types';
 
@@ -13,7 +15,7 @@ const Stack = createStackNavigator<AppStackParamsList>();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="BasicExample">
+      <Stack.Navigator initialRouteName="Root">
         <Stack.Screen name="BasicExample" component={BasicExampleScreen} />
         <Stack.Screen
           name="Root"

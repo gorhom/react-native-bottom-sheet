@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'white',
-    textTransform: 'capitalize',
   },
 });
 

@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { View } from 'react-native';
 import { styles } from './styles';
 
+// @ts-ignore
 interface HandleProps {}
 
 const HandleComponent = () => {

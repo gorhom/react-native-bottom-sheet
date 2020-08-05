@@ -11,7 +11,7 @@ import ContactItem from '../contactItem';
 
 interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView';
-  header?: React.ReactElement;
+  header?: (() => JSX.Element) | null;
 }
 
 const ContactList = ({ type, header = null }: ContactListProps) => {
@@ -47,7 +47,7 @@ const ContactList = ({ type, header = null }: ContactListProps) => {
       <ContactItem
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
-        subTitle={item.address}
+        subTitle={item.jobTitle}
       />
     ),
     [type]
@@ -76,6 +76,7 @@ const ContactList = ({ type, header = null }: ContactListProps) => {
       <FlatList
         data={data}
         keyExtractor={i => i.name}
+        windowSize={20}
         renderItem={renderFlatListItem}
         {...(header && {
           stickyHeaderIndices: [0],
@@ -91,7 +92,7 @@ const ContactList = ({ type, header = null }: ContactListProps) => {
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
       >
-        {header}
+        {header && header()}
         {data.map(renderScrollViewItem)}
       </ScrollView>
     );
@@ -100,12 +101,15 @@ const ContactList = ({ type, header = null }: ContactListProps) => {
       <SectionList
         contentContainerStyle={contentContainerStyle}
         stickySectionHeadersEnabled
+        windowSize={20}
         sections={sections}
         keyExtractor={i => i.name}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionItem}
-        stickyHeaderIndices={[0]}
-        ListHeaderComponent={header}
+        {...(header && {
+          stickyHeaderIndices: [0],
+          ListHeaderComponent: header,
+        })}
         removeClippedSubviews={Platform.OS === 'android' && sections.length > 0}
       />
     );
@@ -125,7 +129,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   contentContainer: {
-    paddingTop: 12,
     paddingHorizontal: 24,
     backgroundColor: 'white',
   },

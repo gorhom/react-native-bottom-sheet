@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Handle from '../components/Handle';
+// import Handle from '../components/Handle';
 import Button from '../components/button';
+import ContactList from '../components/contactList';
 
 const BasicExample = () => {
   // hooks
@@ -24,7 +25,15 @@ const BasicExample = () => {
   }, []);
 
   // renders
-  const renderHandle = useCallback(() => <Handle />, []);
+  const renderHeader = useCallback(() => {
+    return (
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>Basic Screen</Text>
+      </View>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // const renderHandle = useCallback(() => <Handle />, []);
 
   return (
     <View style={styles.container}>
@@ -112,6 +121,7 @@ const BasicExample = () => {
           style={styles.buttonContainer}
           onPress={() => handleSnapPress(1)}
         /> */}
+        <ContactList type="FlatList" header={renderHeader} />
       </BottomSheet>
     </View>
   );
@@ -125,6 +135,15 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingTop: 12,
     paddingHorizontal: 24,
+    backgroundColor: 'white',
+  },
+  title: {
+    fontSize: 46,
+    lineHeight: 46,
+    fontWeight: '800',
+  },
+  headerContainer: {
+    paddingVertical: 24,
     backgroundColor: 'white',
   },
   buttonContainer: {
