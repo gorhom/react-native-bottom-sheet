@@ -17,7 +17,7 @@ import Animated, {
   onChange,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
-import { useClock, snapPoint, clamp } from 'react-native-redash';
+import { useClock, snapPoint } from 'react-native-redash';
 
 const { cond, block } = Animated;
 
@@ -70,12 +70,6 @@ export const useTransition = ({
     multiply(scrollableContentOffsetY, -1)
   );
 
-  const clampedVelocity = clamp(
-    velocity,
-    (snapPoints[0] / 2) * -1,
-    snapPoints[0] / 2
-  );
-
   const isTimingInterrupted = and(eq(state, State.BEGAN), clockRunning(clock));
   const isManuallySnapping = neq(autoSnapTo, -1);
 
@@ -119,7 +113,7 @@ export const useTransition = ({
           config.toValue,
           snapPoint(
             add(currentPosition, translateYMinusContentOffset),
-            clampedVelocity,
+            velocity,
             snapPoints
           )
         ),
