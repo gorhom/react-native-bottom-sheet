@@ -5,12 +5,16 @@ import {
   ScrollView,
   SectionList,
 } from 'react-native';
+import { useValue } from 'react-native-reanimated';
 import { ScrollableRef, Scrollable } from '../types';
 
 export const useScrollable = () => {
   // refs
   const scrollableRef = useRef<ScrollableRef>(null);
   const previousScrollableRef = useRef<ScrollableRef>(null);
+
+  // variables
+  const scrollableContentOffsetY = useValue<number>(0);
 
   // callbacks
   const setScrollableRef = useCallback((ref: RefObject<Scrollable>) => {
@@ -111,6 +115,7 @@ export const useScrollable = () => {
 
   return {
     scrollableRef,
+    scrollableContentOffsetY,
     setScrollableRef,
     removeScrollableRef,
     scrollToTop,

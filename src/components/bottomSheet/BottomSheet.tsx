@@ -71,6 +71,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region variables
     const {
+      scrollableContentOffsetY,
       setScrollableRef,
       removeScrollableRef,
       scrollToTop,
@@ -103,7 +104,6 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       gestureHandler: tapGestureHandler,
     } = useTapGestureHandler();
 
-    const scrollableContentOffsetY = useValue<number>(0);
     const autoSnapTo = useValue<number>(-1);
     //#endregion
 
@@ -213,6 +213,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
                 maxDeltaY: 0,
               });
             } else {
+              scrollableContentOffsetY.setValue(0);
               // @ts-ignore
               rootTapGestureRef.current.setNativeProps({
                 maxDeltaY: Math.round(args[0]),

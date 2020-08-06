@@ -15,6 +15,8 @@ import Animated, {
   multiply,
   neq,
   onChange,
+  or,
+  debug,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import { useClock, snapPoint } from 'react-native-redash';
@@ -41,6 +43,7 @@ export const useTransition = ({
   initialSnapIndex,
 }: TransitionProps) => {
   const currentPosition = useValue(snapPoints[initialSnapIndex]);
+  const isAnimatingManually = useValue(0);
 
   const clock = useClock();
   const config = {
@@ -61,7 +64,7 @@ export const useTransition = ({
     set(currentPosition, config.toValue),
     set(animationState.frameTime, 0),
     set(animationState.time, 0),
-    set(autoSnapTo, -1),
+    set(isAnimatingManually, 0),
     stopClock(clock),
   ];
 
@@ -69,12 +72,18 @@ export const useTransition = ({
     translateY,
     multiply(scrollableContentOffsetY, -1)
   );
-
-  const isTimingInterrupted = and(eq(state, State.BEGAN), clockRunning(clock));
-  const isManuallySnapping = neq(autoSnapTo, -1);
+  const isSnapAnimationInterrupted = and(
+    eq(state, State.BEGAN),
+    clockRunning(clock)
+  );
+  const isManualAnimationInterrupted = and(
+    neq(autoSnapTo, -1),
+    isAnimatingManually
+  );
+  const shouldAnimateManually = or(neq(autoSnapTo, -1), isAnimatingManually);
 
   const position = block([
-    cond(isTimingInterrupted, [
+    cond(isSnapAnimationInterrupted, [
       finishTiming,
       set(currentPosition, animationState.position),
     ]),
@@ -106,7 +115,7 @@ export const useTransition = ({
       ),
     ]),
 
-    cond(and(eq(state, State.END), not(isManuallySnapping)), [
+    cond(and(eq(state, State.END), not(shouldAnimateManually)), [
       // debug('gesture ended', state),
       cond(and(not(clockRunning(clock)), not(animationState.finished)), [
         set(
@@ -126,14 +135,19 @@ export const useTransition = ({
       cond(animationState.finished, finishTiming),
     ]),
 
-    onChange(
-      autoSnapTo,
-      cond(isManuallySnapping, set(animationState.finished, 0))
-    ),
+    onChange(autoSnapTo, [
+      cond(isManualAnimationInterrupted, [
+        finishTiming,
+        set(currentPosition, animationState.position),
+      ]),
+      cond(shouldAnimateManually, set(animationState.finished, 0)),
+    ]),
 
-    cond(isManuallySnapping, [
+    cond(shouldAnimateManually, [
       cond(and(not(clockRunning(clock)), not(animationState.finished)), [
+        set(isAnimatingManually, 1),
         set(config.toValue, autoSnapTo),
+        set(autoSnapTo, -1),
         set(animationState.finished, 0),
         set(animationState.frameTime, 0),
         set(animationState.time, 0),
