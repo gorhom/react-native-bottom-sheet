@@ -80,7 +80,7 @@ export const useScrollable = () => {
         break;
 
       case 'ScrollView':
-        (node as ScrollView).scrollTo({
+        (node as ScrollView).scrollResponderScrollTo({
           y: 0,
           animated: false,
         });

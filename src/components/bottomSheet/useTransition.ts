@@ -16,7 +16,7 @@ import Animated, {
   neq,
   onChange,
   or,
-  debug,
+  // debug,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import { useClock, snapPoint } from 'react-native-redash';

@@ -29,6 +29,11 @@ const AnimatedScrollView = Animated.createAnimatedComponent(
   any
 >;
 
+Animated.addWhitelistedUIProps({
+  disableIntervalMomentum: true,
+  decelerationRate: true,
+});
+
 const ScrollView = forwardRef(
   (props: BottomSheetScrollViewProps, ref: Ref<RNScrollView>) => {
     // props
@@ -42,6 +47,8 @@ const ScrollView = forwardRef(
     const {
       rootTapGestureRef,
       scrollableContentOffsetY,
+      disableIntervalMomentum,
+      decelerationRate,
       setScrollableRef,
       removeScrollableRef,
     } = useBottomSheetInternal();
@@ -69,6 +76,7 @@ const ScrollView = forwardRef(
     }, []);
 
     // effects
+    // scrollViewRef.current?.scrollResponderScrollTo(0, 0, false)
     // @ts-ignore
     useImperativeHandle(ref, () => scrollViewRef.current!.getNode());
     useFocusHook(handleFocus);
@@ -87,7 +95,9 @@ const ScrollView = forwardRef(
             ref={scrollViewRef}
             overScrollMode="never"
             bounces={false}
-            decelerationRate={0.99999}
+            // @ts-ignore
+            disableIntervalMomentum={disableIntervalMomentum}
+            decelerationRate={decelerationRate}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
           />

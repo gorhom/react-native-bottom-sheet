@@ -9,20 +9,15 @@ export interface BottomSheetInternalContextType {
   sheetPanGestureTranslationY: Animated.Value<number>;
   sheetPanGestureVelocityY: Animated.Value<number>;
   scrollableContentOffsetY: Animated.Value<number>;
+  disableIntervalMomentum: Animated.Node<number>;
+  decelerationRate: Animated.Node<number>;
   setScrollableRef: (ref: RefObject<Scrollable>) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
 }
 
+// @ts-ignore
 export const BottomSheetInternalContext = createContext<
   BottomSheetInternalContextType
->({
-  rootTapGestureRef: null,
-  sheetPanGestureState: new Animated.Value(State.UNDETERMINED),
-  sheetPanGestureTranslationY: new Animated.Value(0),
-  sheetPanGestureVelocityY: new Animated.Value(0),
-  scrollableContentOffsetY: new Animated.Value(0),
-  setScrollableRef: () => {},
-  removeScrollableRef: () => {},
-});
+>();
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;

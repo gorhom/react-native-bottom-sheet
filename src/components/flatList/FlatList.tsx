@@ -39,6 +39,8 @@ const FlatList = forwardRef(
     const {
       rootTapGestureRef,
       scrollableContentOffsetY,
+      disableIntervalMomentum,
+      decelerationRate,
       setScrollableRef,
       removeScrollableRef,
     } = useBottomSheetInternal();
@@ -85,7 +87,9 @@ const FlatList = forwardRef(
             ref={flatListRef}
             overScrollMode="never"
             bounces={false}
-            decelerationRate={0.99999}
+            // @ts-ignore
+            disableIntervalMomentum={disableIntervalMomentum}
+            decelerationRate={decelerationRate}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
           />

@@ -15,7 +15,8 @@ import Animated, {
   cond,
   neq,
   and,
-  // concat,
+  concat,
+  greaterThan,
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
@@ -26,7 +27,7 @@ import {
   usePanGestureHandler,
   useValue,
   useTapGestureHandler,
-  // ReText,
+  ReText,
 } from 'react-native-redash';
 import DraggableView from '../draggableView';
 import { useTransition } from './useTransition';
@@ -117,16 +118,15 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       snapPoints,
       initialSnapIndex,
     });
+
+    /**
+     * Scrollable animated props.
+     */
+    const disableIntervalMomentum = greaterThan(position, 0);
+    const decelerationRate = cond(greaterThan(position, 0), 0, 0.999);
     //#endregion
 
     //#region styles
-    const containerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
-      () => ({
-        ...styles.container,
-        height: sheetHeight,
-      }),
-      [sheetHeight]
-    );
     const contentContainerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
       () => ({
         ...styles.container,
@@ -177,6 +177,8 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
         sheetPanGestureTranslationY,
         sheetPanGestureVelocityY,
         scrollableContentOffsetY,
+        disableIntervalMomentum,
+        decelerationRate,
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,
       }),
@@ -233,11 +235,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     useCode(
       () =>
         cond(
-          and(
-            eq(tapGestureState, State.FAILED),
-            neq(currentPosition, 0),
-            neq(position, 0)
-          ),
+          and(eq(tapGestureState, State.FAILED), neq(position, 0)),
           call([], () => {
             scrollToTop();
           })
@@ -255,25 +253,23 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
         shouldCancelWhenOutside={false}
         {...tapGestureHandler}
       >
-        <Animated.View pointerEvents="box-none" style={containerStyle}>
-          <Animated.View style={contentContainerStyle}>
-            <PanGestureHandler
-              ref={handlePanGestureRef}
-              simultaneousHandlers={rootTapGestureRef}
-              shouldCancelWhenOutside={false}
-              {...sheetPanGestureHandler}
-            >
-              <Animated.View>
-                <HandleComponent />
-              </Animated.View>
-            </PanGestureHandler>
+        <Animated.View style={contentContainerStyle}>
+          <PanGestureHandler
+            ref={handlePanGestureRef}
+            simultaneousHandlers={rootTapGestureRef}
+            shouldCancelWhenOutside={false}
+            {...sheetPanGestureHandler}
+          >
+            <Animated.View>
+              <HandleComponent />
+            </Animated.View>
+          </PanGestureHandler>
 
-            <BottomSheetInternalProvider value={internalContextVariables}>
-              <DraggableView style={styles.contentContainer}>
-                {children}
-              </DraggableView>
-            </BottomSheetInternalProvider>
-          </Animated.View>
+          <BottomSheetInternalProvider value={internalContextVariables}>
+            <DraggableView style={styles.contentContainer}>
+              {children}
+            </DraggableView>
+          </BottomSheetInternalProvider>
 
           {/* <Animated.View pointerEvents="none" style={styles.debug}>
             <ReText
