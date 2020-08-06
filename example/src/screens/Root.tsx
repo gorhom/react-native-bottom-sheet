@@ -40,6 +40,15 @@ const data = [
       },
     ],
   },
+  {
+    title: 'View',
+    data: [
+      {
+        name: 'Default',
+        slug: 'ViewExample',
+      },
+    ],
+  },
 ];
 
 const RootScreen = () => {

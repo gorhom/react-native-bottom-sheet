@@ -7,7 +7,7 @@ import { useHeaderHeight } from '@react-navigation/stack';
 
 interface ExampleScreenProps {
   title: string;
-  type: 'FlatList' | 'SectionList' | 'ScrollView';
+  type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
 }
 
 const createExampleScreen = ({ type }: ExampleScreenProps) =>
@@ -97,4 +97,9 @@ export const ScrollViewExampleScreen = createExampleScreen({
 export const SectionListExampleScreen = createExampleScreen({
   title: 'Title',
   type: 'SectionList',
+});
+
+export const ViewExampleScreen = createExampleScreen({
+  title: 'Title',
+  type: 'View',
 });

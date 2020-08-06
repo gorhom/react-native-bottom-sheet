@@ -31,7 +31,6 @@ const BasicExample = () => {
         <Text style={styles.title}>Basic Screen</Text>
       </View>
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // const renderHandle = useCallback(() => <Handle />, []);
 

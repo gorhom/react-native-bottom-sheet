@@ -13,10 +13,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import Animated, { event } from 'react-native-reanimated';
-import {
-  NativeViewGestureHandler,
-  PanGestureHandler,
-} from 'react-native-gesture-handler';
+import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import DraggableView from '../draggableView';
 import { useBottomSheetInternal } from '../../hooks';
 import type {
   BottomSheetSectionListProps,
@@ -38,36 +36,18 @@ const SectionList = forwardRef(
     const { focusHook: useFocusHook = useEffect, ...rest } = props;
 
     // refs
-    const panGestureRef = useRef<PanGestureHandler>(null);
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
     const sectionListRef = useRef<RNSectionList>(null);
 
     // hooks
     const {
       rootTapGestureRef,
-      sheetPanGestureState,
-      sheetPanGestureTranslationY,
-      sheetPanGestureVelocityY,
       scrollableContentOffsetY,
       setScrollableRef,
       removeScrollableRef,
     } = useBottomSheetInternal();
 
     // callbacks
-    const handleGestureEvent = useMemo(
-      () =>
-        event([
-          {
-            nativeEvent: {
-              state: sheetPanGestureState,
-              translationY: sheetPanGestureTranslationY,
-              velocityY: sheetPanGestureVelocityY,
-            },
-          },
-        ]),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
     const handleScrollEvent = useMemo(
       () =>
         event([
@@ -96,34 +76,25 @@ const SectionList = forwardRef(
 
     // render
     return (
-      <PanGestureHandler
-        ref={panGestureRef}
-        simultaneousHandlers={[rootTapGestureRef, nativeGestureRef]}
-        shouldCancelWhenOutside={false}
-        onGestureEvent={handleGestureEvent}
-        onHandlerStateChange={handleGestureEvent}
+      <DraggableView
+        style={styles.container}
+        nativeGestureRef={nativeGestureRef}
       >
-        <Animated.View style={styles.container}>
-          <NativeViewGestureHandler
-            ref={nativeGestureRef}
-            waitFor={rootTapGestureRef}
-            simultaneousHandlers={panGestureRef}
-          >
-            <AnimatedSectionList
-              {...rest}
-              ref={sectionListRef}
-              overScrollMode="never"
-              bounces={false}
-              decelerationRate={0.99999}
-              scrollEventThrottle={1}
-              onScrollBeginDrag={handleScrollEvent}
-              onScrollEndDrag={handleScrollEvent}
-              onMomentumScrollBegin={handleScrollEvent}
-              onMomentumScrollEnd={handleScrollEvent}
-            />
-          </NativeViewGestureHandler>
-        </Animated.View>
-      </PanGestureHandler>
+        <NativeViewGestureHandler
+          ref={nativeGestureRef}
+          waitFor={rootTapGestureRef}
+        >
+          <AnimatedSectionList
+            {...rest}
+            ref={sectionListRef}
+            overScrollMode="never"
+            bounces={false}
+            decelerationRate={0.99999}
+            scrollEventThrottle={1}
+            onScrollBeginDrag={handleScrollEvent}
+          />
+        </NativeViewGestureHandler>
+      </DraggableView>
     );
   }
 );

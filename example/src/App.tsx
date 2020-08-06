@@ -7,6 +7,7 @@ import {
   FlatListExampleScreen,
   SectionListExampleScreen,
   ScrollViewExampleScreen,
+  ViewExampleScreen,
 } from './screens/BasicExamples';
 import BasicExampleScreen from './screens/BasicExample';
 import { AppStackParamsList } from './types';
@@ -38,6 +39,7 @@ function App() {
           name="ScrollViewExample"
           component={ScrollViewExampleScreen}
         />
+        <Stack.Screen name="ViewExample" component={ViewExampleScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -15,7 +15,7 @@ import Animated, {
   cond,
   neq,
   and,
-  concat,
+  // concat,
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
@@ -26,8 +26,9 @@ import {
   usePanGestureHandler,
   useValue,
   useTapGestureHandler,
-  ReText,
+  // ReText,
 } from 'react-native-redash';
+import DraggableView from '../draggableView';
 import { useTransition } from './useTransition';
 import {
   normalizeSnapPoints,
@@ -266,14 +267,14 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
               </Animated.View>
             </PanGestureHandler>
 
-            <Animated.View style={styles.contentContainer}>
-              <BottomSheetInternalProvider value={internalContextVariables}>
+            <BottomSheetInternalProvider value={internalContextVariables}>
+              <DraggableView style={styles.contentContainer}>
                 {children}
-              </BottomSheetInternalProvider>
-            </Animated.View>
+              </DraggableView>
+            </BottomSheetInternalProvider>
           </Animated.View>
 
-          <Animated.View pointerEvents="none" style={styles.debug}>
+          {/* <Animated.View pointerEvents="none" style={styles.debug}>
             <ReText
               style={styles.debugText}
               text={concat('translationY: ', sheetPanGestureTranslationY)}
@@ -302,7 +303,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
               style={styles.debugText}
               text={concat('state: ', sheetPanGestureState)}
             />
-          </Animated.View>
+          </Animated.View> */}
         </Animated.View>
       </TapGestureHandler>
     );

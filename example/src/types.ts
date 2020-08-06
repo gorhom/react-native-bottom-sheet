@@ -5,4 +5,5 @@ export type AppStackParamsList = {
   FlatListExample: undefined;
   SectionListExample: undefined;
   ScrollViewExample: undefined;
+  ViewExample: undefined;
 };

@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform, View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlatList, ScrollView, SectionList } from '@gorhom/bottom-sheet';
@@ -10,7 +10,7 @@ import {
 import ContactItem from '../contactItem';
 
 interface ContactListProps {
-  type: 'FlatList' | 'SectionList' | 'ScrollView';
+  type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   header?: (() => JSX.Element) | null;
 }
 
@@ -112,6 +112,13 @@ const ContactList = ({ type, header = null }: ContactListProps) => {
         })}
         removeClippedSubviews={Platform.OS === 'android' && sections.length > 0}
       />
+    );
+  } else if (type === 'View') {
+    return (
+      <>
+        {header && header()}
+        {data.map(renderScrollViewItem)}
+      </>
     );
   }
 
