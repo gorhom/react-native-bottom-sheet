@@ -75,10 +75,10 @@ export const createContactListMockData = (count: number = 50): Contact[] => {
   }));
 };
 
-export const createContactSectionsMockData = () => {
-  return new Array(10).fill(0).map(() => ({
+export const createContactSectionsMockData = (count: number = 50) => {
+  return new Array(Math.round(count / 2)).fill(0).map(() => ({
     title: Faker.address.country(),
-    data: new Array(10).fill(0).map(() => ({
+    data: new Array(Math.round(count / 2)).fill(0).map(() => ({
       name: `${Faker.name.firstName()} ${Faker.name.lastName()}`,
       address: `${Faker.address.city()}, ${Faker.address.country()}`,
       jobTitle: Faker.name.jobTitle(),

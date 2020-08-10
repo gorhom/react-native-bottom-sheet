@@ -11,16 +11,17 @@ import ContactItem from '../contactItem';
 
 interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
+  count?: number;
   header?: (() => JSX.Element) | null;
 }
 
-const ContactList = ({ type, header = null }: ContactListProps) => {
+const ContactList = ({ type, count = 50, header = null }: ContactListProps) => {
   // hooks
   const { bottom: bottomSafeArea } = useSafeArea();
 
   // variables
-  const sections = useMemo(() => createContactSectionsMockData(), []);
-  const data = useMemo(() => createContactListMockData(), []);
+  const sections = useMemo(() => createContactSectionsMockData(count), [count]);
+  const data = useMemo(() => createContactListMockData(count), [count]);
 
   // styles
   const contentContainerStyle = useMemo(
@@ -76,7 +77,9 @@ const ContactList = ({ type, header = null }: ContactListProps) => {
       <FlatList
         data={data}
         keyExtractor={i => i.name}
+        initialNumToRender={10}
         windowSize={20}
+        maxToRenderPerBatch={5}
         renderItem={renderFlatListItem}
         {...(header && {
           stickyHeaderIndices: [0],
@@ -101,7 +104,9 @@ const ContactList = ({ type, header = null }: ContactListProps) => {
       <SectionList
         contentContainerStyle={contentContainerStyle}
         stickySectionHeadersEnabled
+        initialNumToRender={10}
         windowSize={20}
+        maxToRenderPerBatch={5}
         sections={sections}
         keyExtractor={i => i.name}
         renderSectionHeader={renderSectionHeader}
@@ -115,10 +120,10 @@ const ContactList = ({ type, header = null }: ContactListProps) => {
     );
   } else if (type === 'View') {
     return (
-      <>
+      <View style={styles.contentContainer}>
         {header && header()}
         {data.map(renderScrollViewItem)}
-      </>
+      </View>
     );
   }
 

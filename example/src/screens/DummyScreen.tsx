@@ -7,10 +7,16 @@ import Button from '../components/button';
 interface DummyScreenProps {
   title: string;
   nextScreen: string;
-  type: 'FlatList' | 'SectionList' | 'ScrollView';
+  type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
+  count?: number;
 }
 
-const createDummyScreen = ({ title, nextScreen, type }: DummyScreenProps) =>
+const createDummyScreen = ({
+  title,
+  nextScreen,
+  type,
+  count = 50,
+}: DummyScreenProps) =>
   memo(() => {
     const { navigate } = useNavigation();
 
@@ -35,7 +41,12 @@ const createDummyScreen = ({ title, nextScreen, type }: DummyScreenProps) =>
     );
 
     return (
-      <ContactList key={`${type}.list`} header={renderHeader} type={type} />
+      <ContactList
+        key={`${type}.list`}
+        count={count}
+        header={renderHeader}
+        type={type}
+      />
     );
   });
 

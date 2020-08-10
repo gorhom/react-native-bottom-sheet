@@ -120,7 +120,7 @@ const BasicExample = () => {
           style={styles.buttonContainer}
           onPress={() => handleSnapPress(1)}
         /> */}
-        <ContactList type="FlatList" header={renderHeader} />
+        <ContactList type="View" header={renderHeader} />
       </BottomSheet>
     </View>
   );

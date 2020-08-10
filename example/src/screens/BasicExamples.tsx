@@ -8,9 +8,10 @@ import { useHeaderHeight } from '@react-navigation/stack';
 interface ExampleScreenProps {
   title: string;
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
+  count?: number;
 }
 
-const createExampleScreen = ({ type }: ExampleScreenProps) =>
+const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
   memo(() => {
     // hooks
     const sheetRef = useRef<BottomSheet>(null);
@@ -59,7 +60,7 @@ const createExampleScreen = ({ type }: ExampleScreenProps) =>
           topInset={headerHeight}
           onChange={handleSheetChange}
         >
-          <ContactList key={`${type}.list`} type={type} />
+          <ContactList key={`${type}.list`} type={type} count={count} />
         </BottomSheet>
       </View>
     );
@@ -102,4 +103,5 @@ export const SectionListExampleScreen = createExampleScreen({
 export const ViewExampleScreen = createExampleScreen({
   title: 'Title',
   type: 'View',
+  count: 3,
 });

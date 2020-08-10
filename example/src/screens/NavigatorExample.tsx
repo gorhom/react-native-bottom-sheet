@@ -16,12 +16,21 @@ const ScreenB = createDummyScreen({
   title: 'ScrollView Screen',
   nextScreen: 'ScreenC',
   type: 'ScrollView',
+  count: 25,
 });
 
 const ScreenC = createDummyScreen({
   title: 'SectionList Screen',
-  nextScreen: 'ScreenA',
+  nextScreen: 'ScreenD',
   type: 'SectionList',
+  count: 20,
+});
+
+const ScreenD = createDummyScreen({
+  title: 'View Screen',
+  nextScreen: 'ScreenA',
+  type: 'View',
+  count: 3,
 });
 
 const Navigator = () => {
@@ -40,6 +49,7 @@ const Navigator = () => {
       />
       <Stack.Screen name="ScreenB" component={ScreenB} />
       <Stack.Screen name="ScreenC" component={ScreenC} />
+      <Stack.Screen name="ScreenD" component={ScreenD} />
     </Stack.Navigator>
   );
 };
