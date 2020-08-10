@@ -37,9 +37,14 @@ import {
   useScrollable,
 } from '../../utilities';
 import Handle from '../handle';
+import ContentWrapper from '../contentWrapper';
 import { styles } from './styles';
 import { BottomSheetInternalProvider } from '../../context';
 import { Scrollable } from '../../types';
+
+Animated.addWhitelistedUIProps({
+  maxDeltaY: true,
+});
 
 interface BottomSheetProps {
   initialSnapIndex?: number;
@@ -94,10 +99,16 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region gestures
     const {
-      state: sheetPanGestureState,
-      translation: { y: sheetPanGestureTranslationY },
-      velocity: { y: sheetPanGestureVelocityY },
-      gestureHandler: sheetPanGestureHandler,
+      state: handlePanGestureState,
+      translation: { y: handlePanGestureTranslationY },
+      velocity: { y: handlePanGestureVelocityY },
+      gestureHandler: handlePanGestureHandler,
+    } = usePanGestureHandler();
+
+    const {
+      state: contentPanGestureState,
+      translation: { y: contentPanGestureTranslationY },
+      velocity: { y: contentPanGestureVelocityY },
     } = usePanGestureHandler();
 
     const {
@@ -110,11 +121,14 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region animation
     const { position, currentPosition } = useTransition({
+      contentPanGestureState,
+      contentPanGestureTranslationY,
+      contentPanGestureVelocityY,
+      handlePanGestureState,
+      handlePanGestureTranslationY,
+      handlePanGestureVelocityY,
       autoSnapTo,
       scrollableContentOffsetY,
-      state: sheetPanGestureState,
-      translateY: sheetPanGestureTranslationY,
-      velocity: sheetPanGestureVelocityY,
       snapPoints,
       initialSnapIndex,
     });
@@ -123,10 +137,17 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
      * Scrollable animated props.
      */
     const disableIntervalMomentum = greaterThan(position, 0);
-    const decelerationRate = cond(greaterThan(position, 0), 0, 0.999);
+    const decelerationRate = cond(greaterThan(position, 0), 0.001, 0.999);
     //#endregion
 
     //#region styles
+    const containerStyle = useMemo<ViewStyle>(
+      () => ({
+        ...styles.container,
+        height: sheetHeight,
+      }),
+      [sheetHeight]
+    );
     const contentContainerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
       () => ({
         ...styles.container,
@@ -173,9 +194,9 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     const internalContextVariables = useMemo(
       () => ({
         rootTapGestureRef,
-        sheetPanGestureState,
-        sheetPanGestureTranslationY,
-        sheetPanGestureVelocityY,
+        contentPanGestureState,
+        contentPanGestureTranslationY,
+        contentPanGestureVelocityY,
         scrollableContentOffsetY,
         disableIntervalMomentum,
         decelerationRate,
@@ -215,7 +236,6 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
                 maxDeltaY: 0,
               });
             } else {
-              scrollableContentOffsetY.setValue(0);
               // @ts-ignore
               rootTapGestureRef.current.setNativeProps({
                 maxDeltaY: Math.round(args[0]),
@@ -246,63 +266,66 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
 
     // render
     return (
-      <TapGestureHandler
-        ref={rootTapGestureRef}
-        maxDurationMs={1000000}
-        maxDeltaY={snapPoints[initialSnapIndex]}
-        shouldCancelWhenOutside={false}
-        {...tapGestureHandler}
-      >
-        <Animated.View style={contentContainerStyle}>
-          <PanGestureHandler
-            ref={handlePanGestureRef}
-            simultaneousHandlers={rootTapGestureRef}
-            shouldCancelWhenOutside={false}
-            {...sheetPanGestureHandler}
-          >
-            <Animated.View>
-              <HandleComponent />
-            </Animated.View>
-          </PanGestureHandler>
+      <>
+        <ContentWrapper
+          ref={rootTapGestureRef}
+          initialMaxDeltaY={snapPoints[initialSnapIndex]}
+          style={containerStyle}
+          {...tapGestureHandler}
+        >
+          <Animated.View style={contentContainerStyle}>
+            <PanGestureHandler
+              ref={handlePanGestureRef}
+              simultaneousHandlers={rootTapGestureRef}
+              shouldCancelWhenOutside={false}
+              {...handlePanGestureHandler}
+            >
+              <Animated.View>
+                <HandleComponent />
+              </Animated.View>
+            </PanGestureHandler>
 
-          <BottomSheetInternalProvider value={internalContextVariables}>
-            <DraggableView style={styles.contentContainer}>
-              {children}
-            </DraggableView>
-          </BottomSheetInternalProvider>
-
-          {/* <Animated.View pointerEvents="none" style={styles.debug}>
-            <ReText
-              style={styles.debugText}
-              text={concat('translationY: ', sheetPanGestureTranslationY)}
-            />
-            <ReText
-              style={styles.debugText}
-              text={concat('contentOffsetY: ', scrollableContentOffsetY)}
-            />
-            <ReText
-              style={styles.debugText}
-              text={concat('tap state: ', tapGestureState)}
-            />
-            <ReText
-              style={styles.debugText}
-              text={concat('autoSnap To: ', autoSnapTo)}
-            />
-            <ReText
-              style={styles.debugText}
-              text={concat('position: ', position)}
-            />
-            <ReText
-              style={styles.debugText}
-              text={concat('currentPosition: ', currentPosition)}
-            />
-            <ReText
-              style={styles.debugText}
-              text={concat('state: ', sheetPanGestureState)}
-            />
-          </Animated.View> */}
+            <BottomSheetInternalProvider value={internalContextVariables}>
+              <DraggableView style={styles.contentContainer}>
+                {children}
+              </DraggableView>
+            </BottomSheetInternalProvider>
+          </Animated.View>
+        </ContentWrapper>
+        <Animated.View pointerEvents="none" style={styles.debug}>
+          <ReText
+            style={styles.debugText}
+            text={concat('tapState: ', tapGestureState)}
+          />
+          <ReText
+            style={styles.debugText}
+            text={concat('contentState: ', contentPanGestureState)}
+          />
+          {/* <ReText
+            style={styles.debugText}
+            text={concat(
+              'contentTranslationY: ',
+              contentPanGestureTranslationY
+            )}
+          /> */}
+          {/* <ReText
+            style={styles.debugText}
+            text={concat('scrollableOffsetY: ', scrollableContentOffsetY)}
+          /> */}
+          <ReText
+            style={styles.debugText}
+            text={concat('position: ', position)}
+          />
+          <ReText
+            style={styles.debugText}
+            text={concat('currentPosition: ', currentPosition)}
+          />
+          {/* <ReText
+            style={styles.debugText}
+            text={concat('disableIntervalMomentum: ', disableIntervalMomentum)}
+          /> */}
         </Animated.View>
-      </TapGestureHandler>
+      </>
     );
   }
 );

@@ -16,9 +16,9 @@ const DraggableView = (props: BottomSheetDraggableViewProps) => {
   // hooks
   const {
     rootTapGestureRef,
-    sheetPanGestureState,
-    sheetPanGestureTranslationY,
-    sheetPanGestureVelocityY,
+    contentPanGestureState,
+    contentPanGestureTranslationY,
+    contentPanGestureVelocityY,
   } = useBottomSheetInternal();
 
   // variables
@@ -42,9 +42,9 @@ const DraggableView = (props: BottomSheetDraggableViewProps) => {
       event([
         {
           nativeEvent: {
-            state: sheetPanGestureState,
-            translationY: sheetPanGestureTranslationY,
-            velocityY: sheetPanGestureVelocityY,
+            state: contentPanGestureState,
+            translationY: contentPanGestureTranslationY,
+            velocityY: contentPanGestureVelocityY,
           },
         },
       ]),

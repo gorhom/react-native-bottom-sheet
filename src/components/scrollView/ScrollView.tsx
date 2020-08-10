@@ -76,7 +76,6 @@ const ScrollView = forwardRef(
     }, []);
 
     // effects
-    // scrollViewRef.current?.scrollResponderScrollTo(0, 0, false)
     // @ts-ignore
     useImperativeHandle(ref, () => scrollViewRef.current!.getNode());
     useFocusHook(handleFocus);

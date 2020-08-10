@@ -5,9 +5,9 @@ import { Scrollable } from './types';
 
 export interface BottomSheetInternalContextType {
   rootTapGestureRef: Ref<TapGestureHandler>;
-  sheetPanGestureState: Animated.Value<State>;
-  sheetPanGestureTranslationY: Animated.Value<number>;
-  sheetPanGestureVelocityY: Animated.Value<number>;
+  contentPanGestureState: Animated.Value<State>;
+  contentPanGestureTranslationY: Animated.Value<number>;
+  contentPanGestureVelocityY: Animated.Value<number>;
   scrollableContentOffsetY: Animated.Value<number>;
   disableIntervalMomentum: Animated.Node<number>;
   decelerationRate: Animated.Node<number>;

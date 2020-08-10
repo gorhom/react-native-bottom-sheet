@@ -16,6 +16,7 @@ import Animated, {
   neq,
   onChange,
   or,
+  debug,
   // debug,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
@@ -24,26 +25,45 @@ import { useClock, snapPoint } from 'react-native-redash';
 const { cond, block } = Animated;
 
 interface TransitionProps {
+  contentPanGestureState: Animated.Value<State>;
+  contentPanGestureTranslationY: Animated.Value<number>;
+  contentPanGestureVelocityY: Animated.Value<number>;
+
+  handlePanGestureState: Animated.Value<State>;
+  handlePanGestureTranslationY: Animated.Value<number>;
+  handlePanGestureVelocityY: Animated.Value<number>;
+
   autoSnapTo: Animated.Value<number>;
   scrollableContentOffsetY: Animated.Value<number>;
-  state: Animated.Value<State>;
-  translateY: Animated.Value<number>;
-  velocity: Animated.Value<number>;
   snapPoints: number[];
   initialSnapIndex: number;
 }
 
+enum GESTURE {
+  UNDETERMINED = 0,
+  CONTENT,
+  HANDLE,
+}
+
 export const useTransition = ({
+  contentPanGestureState,
+  contentPanGestureTranslationY,
+  contentPanGestureVelocityY,
+  handlePanGestureState,
+  handlePanGestureTranslationY,
+  handlePanGestureVelocityY,
   autoSnapTo,
   scrollableContentOffsetY,
-  state,
-  translateY,
-  velocity,
   snapPoints,
   initialSnapIndex,
 }: TransitionProps) => {
+  const currentGesture = useValue<GESTURE>(0);
   const currentPosition = useValue(snapPoints[initialSnapIndex]);
-  const isAnimatingManually = useValue(0);
+
+  const isPanningContent = eq(contentPanGestureState, State.ACTIVE);
+  const isPanningHandle = eq(handlePanGestureState, State.ACTIVE);
+  const isPanning = or(isPanningContent, isPanningHandle);
+  const shouldAnimate = useValue(0);
 
   const clock = useClock();
   const config = {
@@ -60,94 +80,109 @@ export const useTransition = ({
   };
 
   const finishTiming = [
-    // debug('finishTiming', animationState.position),
+    set(shouldAnimate, 0),
     set(currentPosition, config.toValue),
     set(animationState.frameTime, 0),
     set(animationState.time, 0),
-    set(isAnimatingManually, 0),
     stopClock(clock),
   ];
 
-  const translateYMinusContentOffset = add(
-    translateY,
-    multiply(scrollableContentOffsetY, -1)
+  const translateY = cond(
+    eq(currentGesture, GESTURE.CONTENT),
+    cond(
+      eq(currentPosition, 0),
+      add(
+        contentPanGestureTranslationY,
+        multiply(scrollableContentOffsetY, -1)
+      ),
+      contentPanGestureTranslationY
+    ),
+    handlePanGestureTranslationY
   );
-  const isSnapAnimationInterrupted = and(
-    eq(state, State.BEGAN),
-    clockRunning(clock)
+  const velocityY = cond(
+    eq(currentGesture, GESTURE.CONTENT),
+    contentPanGestureVelocityY,
+    handlePanGestureVelocityY
   );
-  const isManualAnimationInterrupted = and(
-    neq(autoSnapTo, -1),
-    isAnimatingManually
+  const isAnimationInterrupted = and(
+    clockRunning(clock),
+    or(isPanning, neq(autoSnapTo, -1))
   );
-  const shouldAnimateManually = or(neq(autoSnapTo, -1), isAnimatingManually);
-
   const position = block([
-    cond(isSnapAnimationInterrupted, [
+    /**
+     * In case animation get interrupted, we execute the finishTiming node and
+     * set current position the the animated position.
+     */
+    cond(isAnimationInterrupted, [
+      debug('animation interrupted', isAnimationInterrupted),
       finishTiming,
       set(currentPosition, animationState.position),
     ]),
 
-    cond(eq(state, State.ACTIVE), [
-      // debug('start panning', clampedTranslateY),
+    /**
+     * Panning node
+     */
+    cond(isPanning, [
+      set(
+        currentGesture,
+        cond(isPanningContent, GESTURE.CONTENT, GESTURE.HANDLE)
+      ),
+      debug('start panning', translateY),
       cond(
-        not(greaterOrEq(add(currentPosition, translateYMinusContentOffset), 0)),
+        not(greaterOrEq(add(currentPosition, translateY), 0)),
         [set(animationState.position, 0), set(animationState.finished, 0)],
         cond(
-          not(
-            lessOrEq(
-              add(currentPosition, translateYMinusContentOffset),
-              snapPoints[0]
-            )
-          ),
+          not(lessOrEq(add(currentPosition, translateY), snapPoints[0])),
           [
             set(animationState.position, snapPoints[0]),
             set(animationState.finished, 0),
           ],
           [
-            set(
-              animationState.position,
-              add(currentPosition, translateYMinusContentOffset)
-            ),
+            set(animationState.position, add(currentPosition, translateY)),
             set(animationState.finished, 0),
           ]
         )
       ),
     ]),
 
-    cond(and(eq(state, State.END), not(shouldAnimateManually)), [
-      // debug('gesture ended', state),
-      cond(and(not(clockRunning(clock)), not(animationState.finished)), [
+    /**
+     * Gesture ended node.
+     */
+    cond(
+      or(
+        eq(contentPanGestureState, State.END),
+        eq(handlePanGestureState, State.END)
+      ),
+      [
+        set(contentPanGestureState, State.UNDETERMINED),
+        set(handlePanGestureState, State.UNDETERMINED),
         set(
           config.toValue,
-          snapPoint(
-            add(currentPosition, translateYMinusContentOffset),
-            velocity,
-            snapPoints
-          )
+          snapPoint(add(currentPosition, translateY), velocityY, snapPoints)
         ),
-        set(animationState.finished, 0),
-        set(animationState.frameTime, 0),
-        set(animationState.time, 0),
-        startClock(clock),
-      ]),
-      timing(clock, animationState, config),
-      cond(animationState.finished, finishTiming),
-    ]),
+        set(shouldAnimate, 1),
+      ]
+    ),
 
+    /**
+     * Manual snapping node.
+     */
     onChange(autoSnapTo, [
-      cond(isManualAnimationInterrupted, [
-        finishTiming,
-        set(currentPosition, animationState.position),
-      ]),
-      cond(shouldAnimateManually, set(animationState.finished, 0)),
-    ]),
-
-    cond(shouldAnimateManually, [
-      cond(and(not(clockRunning(clock)), not(animationState.finished)), [
-        set(isAnimatingManually, 1),
+      cond(neq(autoSnapTo, -1), [
+        debug('Manually snap to', autoSnapTo),
         set(config.toValue, autoSnapTo),
         set(autoSnapTo, -1),
+        set(animationState.finished, 0),
+        set(shouldAnimate, 1),
+      ]),
+    ]),
+
+    /**
+     * Animation Node.
+     */
+    cond(shouldAnimate, [
+      debug('start animating', shouldAnimate),
+      cond(and(not(clockRunning(clock)), not(animationState.finished)), [
         set(animationState.finished, 0),
         set(animationState.frameTime, 0),
         set(animationState.time, 0),
