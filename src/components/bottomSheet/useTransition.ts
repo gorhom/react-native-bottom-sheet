@@ -16,7 +16,6 @@ import Animated, {
   neq,
   onChange,
   or,
-  debug,
   // debug,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
@@ -114,7 +113,7 @@ export const useTransition = ({
      * set current position the the animated position.
      */
     cond(isAnimationInterrupted, [
-      debug('animation interrupted', isAnimationInterrupted),
+      // debug('animation interrupted', isAnimationInterrupted),
       finishTiming,
       set(currentPosition, animationState.position),
     ]),
@@ -127,7 +126,7 @@ export const useTransition = ({
         currentGesture,
         cond(isPanningContent, GESTURE.CONTENT, GESTURE.HANDLE)
       ),
-      debug('start panning', translateY),
+      // debug('start panning', translateY),
       cond(
         not(greaterOrEq(add(currentPosition, translateY), 0)),
         [set(animationState.position, 0), set(animationState.finished, 0)],
@@ -169,7 +168,7 @@ export const useTransition = ({
      */
     onChange(autoSnapTo, [
       cond(neq(autoSnapTo, -1), [
-        debug('Manually snap to', autoSnapTo),
+        // debug('Manually snap to', autoSnapTo),
         set(config.toValue, autoSnapTo),
         set(autoSnapTo, -1),
         set(animationState.finished, 0),
@@ -181,7 +180,7 @@ export const useTransition = ({
      * Animation Node.
      */
     cond(shouldAnimate, [
-      debug('start animating', shouldAnimate),
+      // debug('start animating', shouldAnimate),
       cond(and(not(clockRunning(clock)), not(animationState.finished)), [
         set(animationState.finished, 0),
         set(animationState.frameTime, 0),

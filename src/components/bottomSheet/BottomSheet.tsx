@@ -2,7 +2,6 @@ import React, {
   useMemo,
   useRef,
   useCallback,
-  RefObject,
   forwardRef,
   useImperativeHandle,
 } from 'react';
@@ -15,7 +14,7 @@ import Animated, {
   cond,
   neq,
   and,
-  concat,
+  // concat,
   greaterThan,
 } from 'react-native-reanimated';
 import {
@@ -27,20 +26,20 @@ import {
   usePanGestureHandler,
   useValue,
   useTapGestureHandler,
-  ReText,
+  // ReText,
 } from 'react-native-redash';
 import DraggableView from '../draggableView';
+import Handle from '../handle';
+import ContentWrapper from '../contentWrapper';
 import { useTransition } from './useTransition';
 import {
   normalizeSnapPoints,
   useStableCallback,
   useScrollable,
 } from '../../utilities';
-import Handle from '../handle';
-import ContentWrapper from '../contentWrapper';
-import { styles } from './styles';
 import { BottomSheetInternalProvider } from '../../context';
-import { Scrollable } from '../../types';
+import { ScrollableRef } from '../../types';
+import { styles } from './styles';
 
 Animated.addWhitelistedUIProps({
   maxDeltaY: true,
@@ -165,7 +164,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       }
     });
     const handleSettingScrollableRef = useCallback(
-      (scrollableRef: RefObject<Scrollable>) => {
+      (scrollableRef: ScrollableRef) => {
         setScrollableRef(scrollableRef);
         /**
          * @TODO handle when sheet is half open
@@ -292,7 +291,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
             </BottomSheetInternalProvider>
           </Animated.View>
         </ContentWrapper>
-        <Animated.View pointerEvents="none" style={styles.debug}>
+        {/* <Animated.View pointerEvents="none" style={styles.debug}>
           <ReText
             style={styles.debugText}
             text={concat('tapState: ', tapGestureState)}
@@ -301,17 +300,17 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
             style={styles.debugText}
             text={concat('contentState: ', contentPanGestureState)}
           />
-          {/* <ReText
+          <ReText
             style={styles.debugText}
             text={concat(
               'contentTranslationY: ',
               contentPanGestureTranslationY
             )}
-          /> */}
-          {/* <ReText
+          />
+          <ReText
             style={styles.debugText}
             text={concat('scrollableOffsetY: ', scrollableContentOffsetY)}
-          /> */}
+          />
           <ReText
             style={styles.debugText}
             text={concat('position: ', position)}
@@ -320,11 +319,11 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
             style={styles.debugText}
             text={concat('currentPosition: ', currentPosition)}
           />
-          {/* <ReText
+          <ReText
             style={styles.debugText}
             text={concat('disableIntervalMomentum: ', disableIntervalMomentum)}
-          /> */}
-        </Animated.View>
+          />
+        </Animated.View> */}
       </>
     );
   }

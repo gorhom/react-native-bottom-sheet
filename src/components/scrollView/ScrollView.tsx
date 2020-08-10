@@ -1,21 +1,20 @@
 import React, {
-  useMemo,
   useRef,
   useImperativeHandle,
   useEffect,
   forwardRef,
   Ref,
-  useCallback,
 } from 'react';
 import {
   ScrollView as RNScrollView,
   ScrollViewProps as RNScrollViewProps,
   ViewStyle,
 } from 'react-native';
-import Animated, { event } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import DraggableView from '../draggableView';
 import { useBottomSheetInternal } from '../../hooks';
+import { useScrollableInternal } from '../../utilities/useScrollable';
 import type {
   BottomSheetScrollView,
   BottomSheetScrollViewProps,
@@ -41,44 +40,23 @@ const ScrollView = forwardRef(
 
     // refs
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
-    const scrollViewRef = useRef<RNScrollView>(null);
 
     // hooks
     const {
+      scrollableRef,
+      handleScrollEvent,
+      handleSettingScrollable,
+    } = useScrollableInternal('ScrollView');
+    const {
       rootTapGestureRef,
-      scrollableContentOffsetY,
       disableIntervalMomentum,
       decelerationRate,
-      setScrollableRef,
-      removeScrollableRef,
     } = useBottomSheetInternal();
-
-    // callbacks
-    const handleScrollEvent = useMemo(
-      () =>
-        event([
-          {
-            nativeEvent: {
-              contentOffset: { y: scrollableContentOffsetY },
-            },
-          },
-        ]),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
-    const handleFocus = useCallback(() => {
-      setScrollableRef(scrollViewRef);
-
-      return () => {
-        removeScrollableRef(scrollViewRef);
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     // effects
     // @ts-ignore
-    useImperativeHandle(ref, () => scrollViewRef.current!.getNode());
-    useFocusHook(handleFocus);
+    useImperativeHandle(ref, () => scrollableRef.current!.getNode());
+    useFocusHook(handleSettingScrollable);
 
     return (
       <DraggableView
@@ -91,7 +69,7 @@ const ScrollView = forwardRef(
         >
           <AnimatedScrollView
             {...rest}
-            ref={scrollViewRef}
+            ref={scrollableRef}
             overScrollMode="never"
             bounces={false}
             // @ts-ignore

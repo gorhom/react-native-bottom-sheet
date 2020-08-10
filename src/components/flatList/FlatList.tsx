@@ -1,21 +1,20 @@
 import React, {
   forwardRef,
-  useMemo,
   Ref,
   useRef,
   useImperativeHandle,
   useEffect,
-  useCallback,
 } from 'react';
 import {
   FlatList as RNFlatList,
   FlatListProps as RNFlatListProps,
   ViewStyle,
 } from 'react-native';
-import Animated, { event } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import DraggableView from '../draggableView';
 import { useBottomSheetInternal } from '../../hooks';
+import { useScrollableInternal } from '../../utilities/useScrollable';
 import type { BottomSheetFlatListProps, BottomSheetFlatList } from './types';
 import { styles } from './styles';
 
@@ -33,44 +32,23 @@ const FlatList = forwardRef(
 
     // refs
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
-    const flatListRef = useRef<RNFlatList>(null);
 
     // hooks
     const {
+      scrollableRef,
+      handleScrollEvent,
+      handleSettingScrollable,
+    } = useScrollableInternal('FlatList');
+    const {
       rootTapGestureRef,
-      scrollableContentOffsetY,
       disableIntervalMomentum,
       decelerationRate,
-      setScrollableRef,
-      removeScrollableRef,
     } = useBottomSheetInternal();
-
-    // callbacks
-    const handleScrollEvent = useMemo(
-      () =>
-        event([
-          {
-            nativeEvent: {
-              contentOffset: { y: scrollableContentOffsetY },
-            },
-          },
-        ]),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
-    const handleFocus = useCallback(() => {
-      setScrollableRef(flatListRef);
-
-      return () => {
-        removeScrollableRef(flatListRef);
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     // effects
     // @ts-ignore
-    useImperativeHandle(ref, () => flatListRef.current!.getNode());
-    useFocusHook(handleFocus);
+    useImperativeHandle(ref, () => scrollableRef.current!.getNode());
+    useFocusHook(handleSettingScrollable);
 
     // render
     return (
@@ -84,7 +62,8 @@ const FlatList = forwardRef(
         >
           <AnimatedFlatList
             {...rest}
-            ref={flatListRef}
+            // @ts-ignore
+            ref={scrollableRef}
             overScrollMode="never"
             bounces={false}
             // @ts-ignore
