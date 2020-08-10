@@ -1,7 +1,12 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useHeaderHeight, createStackNavigator } from '@react-navigation/stack';
-import BottomSheet from '@gorhom/bottom-sheet';
+import {
+  useHeaderHeight,
+  createStackNavigator,
+  HeaderBackButton,
+  StackNavigationOptions,
+} from '@react-navigation/stack';
+import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
 import Button from '../components/button';
 import createDummyScreen from './DummyScreen';
 
@@ -34,8 +39,16 @@ const ScreenD = createDummyScreen({
 });
 
 const Navigator = () => {
-  const screenOptions = useMemo(
-    () => ({ headerShown: true, safeAreaInsets: { top: 0 } }),
+  const screenOptions = useMemo<StackNavigationOptions>(
+    () => ({
+      headerShown: true,
+      safeAreaInsets: { top: 0 },
+      headerLeft: ({ onPress, ...props }) => (
+        <TouchableOpacity onPress={onPress}>
+          <HeaderBackButton {...props} />
+        </TouchableOpacity>
+      ),
+    }),
     []
   );
 
@@ -56,7 +69,7 @@ const Navigator = () => {
 
 const NavigatorExample = () => {
   // hooks
-  const sheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const headerHeight = useHeaderHeight();
 
   // variables
@@ -67,10 +80,10 @@ const NavigatorExample = () => {
     console.log('handleSheetChange', index);
   }, []);
   const handleSnapPress = useCallback(index => {
-    sheetRef.current?.snapTo(index);
+    bottomSheetRef.current?.snapTo(index);
   }, []);
   const handleClosePress = useCallback(() => {
-    sheetRef.current?.close();
+    bottomSheetRef.current?.close();
   }, []);
 
   // renders
@@ -97,7 +110,7 @@ const NavigatorExample = () => {
         onPress={() => handleClosePress()}
       />
       <BottomSheet
-        ref={sheetRef}
+        ref={bottomSheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={headerHeight}
