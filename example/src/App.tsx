@@ -16,7 +16,7 @@ const Stack = createStackNavigator<AppStackParamsList>();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="NavigatorExample">
+      <Stack.Navigator initialRouteName="Root">
         <Stack.Screen name="BasicExample" component={BasicExampleScreen} />
         <Stack.Screen
           name="Root"
