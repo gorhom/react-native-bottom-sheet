@@ -14,7 +14,7 @@ import Animated, {
   cond,
   neq,
   and,
-  concat,
+  // concat,
   greaterThan,
 } from 'react-native-reanimated';
 import {
@@ -26,7 +26,7 @@ import {
   usePanGestureHandler,
   useValue,
   useTapGestureHandler,
-  ReText,
+  // ReText,
 } from 'react-native-redash';
 import DraggableView from '../draggableView';
 import Handle from '../handle';
@@ -298,7 +298,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
             </BottomSheetInternalProvider>
           </Animated.View>
         </ContentWrapper>
-        <Animated.View pointerEvents="none" style={styles.debug}>
+        {/* <Animated.View pointerEvents="none" style={styles.debug}>
           <ReText
             style={styles.debugText}
             text={concat('tapState: ', tapGestureState)}
@@ -330,7 +330,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
             style={styles.debugText}
             text={concat('disableIntervalMomentum: ', disableIntervalMomentum)}
           />
-        </Animated.View>
+        </Animated.View> */}
       </>
     );
   }
