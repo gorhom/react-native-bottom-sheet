@@ -5,8 +5,7 @@
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
-  "react-native": "src/index",
-  "source": "src/index",
+  "react-native": "src/index.ts",
   "files": [
     "src",
     "lib"
@@ -59,15 +58,15 @@
     "react": "~16.9.0",
     "react-native": "^0.62.2",
     "react-native-gesture-handler": "^1.7.0",
-    "react-native-reanimated": "^1.10.1",
+    "react-native-reanimated": "^1.11.0",
     "release-it": "^13.6.5",
     "typescript": "^3.9.7"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-gesture-handler": "*",
-    "react-native-reanimated": "*"
+    "react-native-gesture-handler": ">=1.6.1",
+    "react-native-reanimated": ">=1.8.0"
   },
   "husky": {
     "hooks": {
