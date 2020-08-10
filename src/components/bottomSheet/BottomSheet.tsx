@@ -14,7 +14,7 @@ import Animated, {
   cond,
   neq,
   and,
-  // concat,
+  concat,
   greaterThan,
 } from 'react-native-reanimated';
 import {
@@ -26,7 +26,7 @@ import {
   usePanGestureHandler,
   useValue,
   useTapGestureHandler,
-  // ReText,
+  ReText,
 } from 'react-native-redash';
 import DraggableView from '../draggableView';
 import Handle from '../handle';
@@ -71,6 +71,8 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     },
     ref
   ) => {
+    // refs
+    const currentPositionIndexRef = useRef<number>(initialSnapIndex);
     const rootTapGestureRef = useRef<TapGestureHandler>(null);
     const handlePanGestureRef = useRef<PanGestureHandler>(null);
 
@@ -158,6 +160,21 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region callbacks
+    const refreshUIElements = useCallback(() => {
+      const currentPositionIndex = currentPositionIndexRef.current;
+      if (currentPositionIndex === snapPoints.length - 1) {
+        flashScrollableIndicators();
+        // @ts-ignore
+        rootTapGestureRef.current.setNativeProps({
+          maxDeltaY: 0,
+        });
+      } else {
+        // @ts-ignore
+        rootTapGestureRef.current.setNativeProps({
+          maxDeltaY: Math.round(snapPoints[currentPositionIndex]),
+        });
+      }
+    }, [snapPoints, flashScrollableIndicators]);
     const handleOnChange = useStableCallback((index: number) => {
       if (_onChange) {
         _onChange(index);
@@ -166,15 +183,9 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     const handleSettingScrollableRef = useCallback(
       (scrollableRef: ScrollableRef) => {
         setScrollableRef(scrollableRef);
-        /**
-         * @TODO handle when sheet is half open
-         */
-        // @ts-ignore
-        rootTapGestureRef.current.setNativeProps({
-          maxDeltaY: 0,
-        });
+        refreshUIElements();
       },
-      [setScrollableRef]
+      [setScrollableRef, refreshUIElements]
     );
     const handleOnSnapTo = useCallback(
       (index: number) => {
@@ -225,24 +236,20 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       () =>
         onChange(currentPosition, [
           call([currentPosition], args => {
-            const currentIndex = snapPoints.indexOf(args[0]);
-            handleOnChange(currentIndex);
+            const currentPositionIndex = snapPoints.indexOf(args[0]);
 
-            if (currentIndex === snapPoints.length - 1) {
-              flashScrollableIndicators();
-              // @ts-ignore
-              rootTapGestureRef.current.setNativeProps({
-                maxDeltaY: 0,
-              });
-            } else {
-              // @ts-ignore
-              rootTapGestureRef.current.setNativeProps({
-                maxDeltaY: Math.round(args[0]),
-              });
+            /**
+             * if animation was interrupted, we ignore the change.
+             */
+            if (currentPositionIndex === -1) {
+              return;
             }
+            currentPositionIndexRef.current = currentPositionIndex;
+            handleOnChange(currentPositionIndex);
+            refreshUIElements();
           }),
         ]),
-      [snapPoints]
+      [snapPoints, refreshUIElements]
     );
 
     /**
@@ -291,7 +298,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
             </BottomSheetInternalProvider>
           </Animated.View>
         </ContentWrapper>
-        {/* <Animated.View pointerEvents="none" style={styles.debug}>
+        <Animated.View pointerEvents="none" style={styles.debug}>
           <ReText
             style={styles.debugText}
             text={concat('tapState: ', tapGestureState)}
@@ -323,7 +330,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
             style={styles.debugText}
             text={concat('disableIntervalMomentum: ', disableIntervalMomentum)}
           />
-        </Animated.View> */}
+        </Animated.View>
       </>
     );
   }

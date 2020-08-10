@@ -1,5 +1,6 @@
 export { default } from './components/bottomSheet';
-export { default as FlatList } from './components/flatList';
-export { default as SectionList } from './components/sectionList';
-export { default as ScrollView } from './components/scrollView';
-export { default as DraggableView } from './components/draggableView';
+export { default as BottomSheetFlatList } from './components/flatList';
+export { default as BottomSheetSectionList } from './components/sectionList';
+export { default as BottomSheetScrollView } from './components/scrollView';
+export { default as BottomSheetDraggableView } from './components/draggableView';
+export { default as BottomSheetView } from './components/view';

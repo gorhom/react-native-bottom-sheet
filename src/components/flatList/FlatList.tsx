@@ -4,6 +4,7 @@ import React, {
   useRef,
   useImperativeHandle,
   useEffect,
+  memo,
 } from 'react';
 import {
   FlatList as RNFlatList,
@@ -15,7 +16,10 @@ import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import DraggableView from '../draggableView';
 import { useBottomSheetInternal } from '../../hooks';
 import { useScrollableInternal } from '../../utilities/useScrollable';
-import type { BottomSheetFlatListProps, BottomSheetFlatList } from './types';
+import type {
+  BottomSheetFlatListProps,
+  BottomSheetFlatListType,
+} from './types';
 import { styles } from './styles';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(
@@ -25,7 +29,7 @@ const AnimatedFlatList = Animated.createAnimatedComponent(
   any
 >;
 
-const FlatList = forwardRef(
+const BottomSheetFlatListComponent = forwardRef(
   (props: BottomSheetFlatListProps<any>, ref: Ref<RNFlatList>) => {
     // props
     const { focusHook: useFocusHook = useEffect, ...rest } = props;
@@ -78,4 +82,6 @@ const FlatList = forwardRef(
   }
 );
 
-export default (FlatList as any) as typeof BottomSheetFlatList;
+const BottomSheetFlatList = memo(BottomSheetFlatListComponent);
+
+export default (BottomSheetFlatList as any) as typeof BottomSheetFlatListType;

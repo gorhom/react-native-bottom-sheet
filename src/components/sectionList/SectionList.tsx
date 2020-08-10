@@ -4,6 +4,7 @@ import React, {
   useRef,
   Ref,
   forwardRef,
+  memo,
 } from 'react';
 import {
   SectionList as RNSectionList,
@@ -17,7 +18,7 @@ import { useBottomSheetInternal } from '../../hooks';
 import { useScrollableInternal } from '../../utilities/useScrollable';
 import type {
   BottomSheetSectionListProps,
-  BottomSheetSectionList,
+  BottomSheetSectionListType,
 } from './types';
 import { styles } from './styles';
 
@@ -28,7 +29,7 @@ const AnimatedSectionList = Animated.createAnimatedComponent(
   any
 >;
 
-const SectionList = forwardRef(
+const BottomSheetSectionListComponent = forwardRef(
   (props: BottomSheetSectionListProps<any>, ref: Ref<RNSectionList>) => {
     // props
     const { focusHook: useFocusHook = useEffect, ...rest } = props;
@@ -80,4 +81,6 @@ const SectionList = forwardRef(
   }
 );
 
-export default (SectionList as any) as typeof BottomSheetSectionList;
+const BottomSheetSectionList = memo(BottomSheetSectionListComponent);
+
+export default (BottomSheetSectionList as any) as typeof BottomSheetSectionListType;

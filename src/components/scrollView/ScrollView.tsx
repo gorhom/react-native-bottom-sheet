@@ -4,6 +4,7 @@ import React, {
   useEffect,
   forwardRef,
   Ref,
+  memo,
 } from 'react';
 import {
   ScrollView as RNScrollView,
@@ -16,7 +17,7 @@ import DraggableView from '../draggableView';
 import { useBottomSheetInternal } from '../../hooks';
 import { useScrollableInternal } from '../../utilities/useScrollable';
 import type {
-  BottomSheetScrollView,
+  BottomSheetScrollViewType,
   BottomSheetScrollViewProps,
 } from './types';
 import { styles } from './styles';
@@ -33,7 +34,7 @@ Animated.addWhitelistedUIProps({
   decelerationRate: true,
 });
 
-const ScrollView = forwardRef(
+const BottomSheetScrollViewComponent = forwardRef(
   (props: BottomSheetScrollViewProps, ref: Ref<RNScrollView>) => {
     // props
     const { focusHook: useFocusHook = useEffect, ...rest } = props;
@@ -84,4 +85,6 @@ const ScrollView = forwardRef(
   }
 );
 
-export default (ScrollView as any) as typeof BottomSheetScrollView;
+const BottomSheetScrollView = memo(BottomSheetScrollViewComponent);
+
+export default (BottomSheetScrollView as any) as typeof BottomSheetScrollViewType;

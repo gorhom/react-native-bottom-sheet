@@ -2,7 +2,12 @@ import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, Text, Platform, View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { FlatList, ScrollView, SectionList } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetFlatList,
+  BottomSheetScrollView,
+  BottomSheetSectionList,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import {
   createContactListMockData,
   createContactSectionsMockData,
@@ -74,7 +79,7 @@ const ContactList = ({ type, count = 50, header = null }: ContactListProps) => {
 
   if (type === 'FlatList') {
     return (
-      <FlatList
+      <BottomSheetFlatList
         data={data}
         keyExtractor={i => i.name}
         initialNumToRender={10}
@@ -91,17 +96,17 @@ const ContactList = ({ type, count = 50, header = null }: ContactListProps) => {
     );
   } else if (type === 'ScrollView') {
     return (
-      <ScrollView
+      <BottomSheetScrollView
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
       >
         {header && header()}
         {data.map(renderScrollViewItem)}
-      </ScrollView>
+      </BottomSheetScrollView>
     );
   } else if (type === 'SectionList') {
     return (
-      <SectionList
+      <BottomSheetSectionList
         contentContainerStyle={contentContainerStyle}
         stickySectionHeadersEnabled
         initialNumToRender={10}
@@ -115,15 +120,16 @@ const ContactList = ({ type, count = 50, header = null }: ContactListProps) => {
           stickyHeaderIndices: [0],
           ListHeaderComponent: header,
         })}
+        focusHook={useFocusEffect}
         removeClippedSubviews={Platform.OS === 'android' && sections.length > 0}
       />
     );
   } else if (type === 'View') {
     return (
-      <View style={styles.contentContainer}>
+      <BottomSheetView style={styles.contentContainer}>
         {header && header()}
         {data.map(renderScrollViewItem)}
-      </View>
+      </BottomSheetView>
     );
   }
 

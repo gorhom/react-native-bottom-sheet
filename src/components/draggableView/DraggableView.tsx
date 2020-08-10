@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, memo } from 'react';
 import Animated, { event } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
@@ -6,10 +6,12 @@ import type { BottomSheetDraggableViewProps } from './types';
 
 import { styles } from './styles';
 
-const DraggableView = (props: BottomSheetDraggableViewProps) => {
-  // props
-  const { children, style, nativeGestureRef, ...rest } = props;
-
+const BottomSheetDraggableViewComponent = ({
+  children,
+  style,
+  nativeGestureRef,
+  ...rest
+}: BottomSheetDraggableViewProps) => {
   // refs
   const panGestureRef = useRef<PanGestureHandler>(null);
 
@@ -69,4 +71,6 @@ const DraggableView = (props: BottomSheetDraggableViewProps) => {
   );
 };
 
-export default DraggableView;
+const BottomSheetDraggableView = memo(BottomSheetDraggableViewComponent);
+
+export default BottomSheetDraggableView;

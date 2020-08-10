@@ -30,7 +30,7 @@ const ScreenD = createDummyScreen({
   title: 'View Screen',
   nextScreen: 'ScreenA',
   type: 'View',
-  count: 3,
+  count: 5,
 });
 
 const Navigator = () => {
