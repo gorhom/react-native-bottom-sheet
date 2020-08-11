@@ -4,8 +4,10 @@ import React, {
   useCallback,
   forwardRef,
   useImperativeHandle,
+  memo,
 } from 'react';
 import { ViewStyle } from 'react-native';
+import isEqual from 'lodash.isequal';
 import Animated, {
   useCode,
   onChange,
@@ -60,7 +62,7 @@ Animated.addWhitelistedUIProps({
   maxDeltaY: true,
 });
 
-const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
+const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
   (
     {
       // animations
@@ -376,5 +378,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     );
   }
 );
+
+const BottomSheet = memo(BottomSheetComponent, isEqual);
 
 export default BottomSheet;

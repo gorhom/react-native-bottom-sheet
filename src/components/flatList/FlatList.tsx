@@ -11,6 +11,7 @@ import {
   FlatListProps as RNFlatListProps,
   ViewStyle,
 } from 'react-native';
+import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import DraggableView from '../draggableView';
@@ -82,6 +83,6 @@ const BottomSheetFlatListComponent = forwardRef(
   }
 );
 
-const BottomSheetFlatList = memo(BottomSheetFlatListComponent);
+const BottomSheetFlatList = memo(BottomSheetFlatListComponent, isEqual);
 
 export default (BottomSheetFlatList as any) as typeof BottomSheetFlatListType;

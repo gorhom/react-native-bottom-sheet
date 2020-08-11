@@ -1,8 +1,9 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, memo } from 'react';
+import isEqual from 'lodash.isequal';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import type { BottomSheetContentWrapperProps } from './types';
 
-const ContentWrapper = forwardRef<
+const ContentWrapperComponent = forwardRef<
   TapGestureHandler,
   BottomSheetContentWrapperProps
 >(
@@ -24,5 +25,7 @@ const ContentWrapper = forwardRef<
     );
   }
 );
+
+const ContentWrapper = memo(ContentWrapperComponent, isEqual);
 
 export default ContentWrapper;
