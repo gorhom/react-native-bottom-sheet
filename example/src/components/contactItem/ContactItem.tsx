@@ -1,51 +1,18 @@
 import React, { memo } from 'react';
-// @ts-ignore
-import { Text, StyleSheet, View, Appearance } from 'react-native';
-import { useEffect } from 'react';
-import { useCallback } from 'react';
-import { useState } from 'react';
-import { useMemo } from 'react';
+import { Text, StyleSheet, View } from 'react-native';
 
 interface ContactItemProps {
   title: string;
   subTitle?: string;
 }
 
-const _colorScheme = Appearance.getColorScheme();
-
 const ContactItemComponent = ({ title, subTitle }: ContactItemProps) => {
-  // state
-  const [appearance, setAppearance] = useState(_colorScheme);
-
-  // styles
-  const titleStyle = useMemo(
-    () => ({
-      ...styles.title,
-      color: appearance === 'dark' ? 'white' : '#111',
-    }),
-    [appearance]
-  );
-
-  // callback
-  const handleAppearanceChange = useCallback(({ colorScheme }) => {
-    setAppearance(colorScheme);
-  }, []);
-
-  // effects
-  useEffect(() => {
-    Appearance.addChangeListener(handleAppearanceChange);
-
-    return () => {
-      Appearance.removeChangeListener(handleAppearanceChange);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   // render
   return (
     <View style={styles.container}>
       <View style={styles.thumbnail} />
       <View style={styles.contentContainer}>
-        <Text style={titleStyle}>{title}</Text>
+        <Text style={styles.title}>{title}</Text>
         {subTitle && <Text style={styles.subtitle}>{subTitle}</Text>}
       </View>
       <View style={styles.icon} />
@@ -78,6 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.125)',
   },
   title: {
+    color: '#111',
     fontSize: 16,
     marginBottom: 4,
     textTransform: 'capitalize',

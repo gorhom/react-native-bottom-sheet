@@ -24,3 +24,11 @@ export const createContactSectionsMockData = (count: number = 50) => {
     })),
   }));
 };
+
+export const createLocationListMockData = (count: number = 50): Contact[] => {
+  return new Array(count).fill(0).map(() => ({
+    name: `${Faker.company.companyName()}`,
+    address: `${Faker.address.city()}, ${Faker.address.country()}`,
+    jobTitle: '',
+  }));
+};

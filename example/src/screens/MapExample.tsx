@@ -14,9 +14,10 @@ import Animated, {
   Extrapolate,
 } from 'react-native-reanimated';
 import { useSafeArea } from 'react-native-safe-area-context';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import SearchHandle from '../components/searchHandle';
-import ContactList from '../components/contactList';
+import LocationItem from '../components/locationItem';
+import { createLocationListMockData } from '../utils';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -26,6 +27,7 @@ const MapExample = () => {
   const { top: topSafeArea } = useSafeArea();
 
   // variables
+  const data = useMemo(() => createLocationListMockData(15), []);
   const snapPoints = useMemo(
     () => [
       200,
@@ -82,6 +84,16 @@ const MapExample = () => {
       ),
     []
   );
+  const renderItem = useCallback(
+    (item, index) => (
+      <LocationItem
+        key={`${item.name}.${index}`}
+        title={item.name}
+        subTitle={item.address}
+      />
+    ),
+    []
+  );
   return (
     <View style={styles.container}>
       <MapView
@@ -100,7 +112,13 @@ const MapExample = () => {
         backgroundComponent={renderBackground}
         onChange={handleSheetChanges}
       >
-        <ContactList type="FlatList" style={styles.contentContainerStyle} />
+        <BottomSheetScrollView
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="never"
+          style={styles.contentContainerStyle}
+        >
+          {data.map(renderItem)}
+        </BottomSheetScrollView>
       </BottomSheet>
     </View>
   );
@@ -115,7 +133,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   contentContainerStyle: {
-    backgroundColor: 'transparent',
+    flex: 1,
+    paddingHorizontal: 16,
   },
   blurContainer: {
     ...StyleSheet.absoluteFillObject,

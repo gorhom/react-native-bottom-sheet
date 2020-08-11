@@ -36,15 +36,18 @@ const BottomSheetHandleComponent = () => {
 
   // render
   return (
-    <View style={styles.container}>
-      <View style={styles.indicator} />
-      <TextInput
-        style={styles.input}
-        value={value}
-        onChange={handleInputChange}
-        onFocus={handleInputFocus}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <View style={styles.indicator} />
+        <TextInput
+          style={styles.input}
+          value={value}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+        />
+      </View>
+      <View style={styles.separator} />
+    </>
   );
 };
 
@@ -52,7 +55,7 @@ const BottomSheetHandle = memo(BottomSheetHandleComponent, isEqual);
 
 export const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     paddingVertical: 5,
   },
   input: {
@@ -68,6 +71,10 @@ export const styles = StyleSheet.create({
     height: 4,
     borderRadius: 4,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  separator: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.125)',
   },
 });
 

@@ -92,8 +92,6 @@ const ContactList = ({
         initialNumToRender={10}
         windowSize={20}
         maxToRenderPerBatch={5}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="never"
         renderItem={renderFlatListItem}
         {...(header && {
           stickyHeaderIndices: [0],
