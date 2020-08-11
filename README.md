@@ -18,15 +18,15 @@ A performant interactive bottom sheet with fully configurable options 🚀
 1. [Features](#features)
 2. [Installation](#installation)
 3. [Usage](#usage)
-   - [Custom Handle](./docs/custom-handle)
-   - [React Navigation Integration](./docs/react-navigation)
-   - [Touchables](./docs/touchables)
+   - [Custom Handle](./docs/custom-handle.md)
+   - [React Navigation Integration](./docs/react-navigation.md)
+   - [Touchables](./docs/touchables.md)
 4. [Props](#props)
 5. [Scrollables](#scrollables)
-   - [BottomSheetFlatList](./docs/flatlist)
-   - [BottomSheetSectionList](./docs/sectionlist)
-   - [BottomSheetScrollView](./docs/scrollview)
-   - [BottomSheetView](./docs/flatlist)
+   - [BottomSheetFlatList](./docs/flatlist.md)
+   - [BottomSheetSectionList](./docs/sectionlist.md)
+   - [BottomSheetScrollView](./docs/scrollview.md)
+   - [BottomSheetView](./docs/flatlist.md)
 6. [To Do](#to-do)
 7. [Credits](#built-with)
 8. [License](#license)
@@ -164,10 +164,10 @@ A scrollable node or normal view.
 
 This library provides a pre-integrated views that utilise an internal functionalities with the bottom sheet to allow smooth interactions. These views i called them `Scrollables` and they are:
 
-- [BottomSheetFlatList](./docs/flatlist)
-- [BottomSheetSectionList](./docs/sectionlist)
-- [BottomSheetScrollView](./docs/scrollview)
-- [BottomSheetView](./docs/flatlist)
+- [BottomSheetFlatList](./docs/flatlist.md)
+- [BottomSheetSectionList](./docs/sectionlist.md)
+- [BottomSheetScrollView](./docs/scrollview.md)
+- [BottomSheetView](./docs/flatlist.md)
 
 ## To Do
 
