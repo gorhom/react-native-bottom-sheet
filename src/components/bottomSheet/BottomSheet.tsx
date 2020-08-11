@@ -60,7 +60,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
   (
     {
       initialSnapIndex = 0,
-      snapPoints: _snapPoints = [],
+      snapPoints: _snapPoints,
       topInset = 0,
       animatedPosition: _animatedPosition,
       animatedPositionIndex: _animatedPositionIndex,
@@ -99,6 +99,9 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
         sheetHeight: maxSnapPoint,
       };
     }, [_snapPoints, topInset]);
+    const initialPosition = useMemo(() => {
+      return initialSnapIndex < 0 ? sheetHeight : snapPoints[initialSnapIndex];
+    }, [initialSnapIndex, sheetHeight, snapPoints]);
     //#endregion
 
     //#region gestures
@@ -134,7 +137,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       autoSnapTo,
       scrollableContentOffsetY,
       snapPoints,
-      initialSnapIndex,
+      initialPosition,
     });
 
     const animatedPositionIndex = interpolate(position, {
@@ -279,12 +282,6 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
         ),
       []
     );
-
-    // useCode(
-    //   () =>
-    //     cond(defined(_position), set(_position, sub(sheetHeight, position))),
-    //   []
-    // );
     //#endregion
 
     // render
@@ -292,7 +289,7 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       <>
         <ContentWrapper
           ref={rootTapGestureRef}
-          initialMaxDeltaY={snapPoints[initialSnapIndex]}
+          initialMaxDeltaY={snapPoints[Math.max(initialSnapIndex, 0)]}
           style={containerStyle}
           {...tapGestureHandler}
         >

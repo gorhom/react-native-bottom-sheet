@@ -35,7 +35,7 @@ interface TransitionProps {
   autoSnapTo: Animated.Value<number>;
   scrollableContentOffsetY: Animated.Value<number>;
   snapPoints: number[];
-  initialSnapIndex: number;
+  initialPosition: number;
 }
 
 enum GESTURE {
@@ -54,10 +54,10 @@ export const useTransition = ({
   autoSnapTo,
   scrollableContentOffsetY,
   snapPoints,
-  initialSnapIndex,
+  initialPosition,
 }: TransitionProps) => {
   const currentGesture = useValue<GESTURE>(0);
-  const currentPosition = useValue(snapPoints[initialSnapIndex]);
+  const currentPosition = useValue(initialPosition);
 
   const isPanningContent = eq(contentPanGestureState, State.ACTIVE);
   const isPanningHandle = eq(handlePanGestureState, State.ACTIVE);
@@ -73,7 +73,7 @@ export const useTransition = ({
 
   const animationState = {
     finished: useValue(0),
-    position: useValue(snapPoints[initialSnapIndex]),
+    position: useValue(initialPosition),
     frameTime: useValue(0),
     time: useValue(0),
   };

@@ -5,7 +5,7 @@ import type { BottomSheetHandleProps } from '../handle';
 export interface BottomSheetProps {
   initialSnapIndex?: number;
   snapPoints: Array<string | number>;
-  topInset: number;
+  topInset?: number;
   animatedPosition?: Animated.Value<number>;
   animatedPositionIndex?: Animated.Value<number>;
   handleComponent?: React.FC<BottomSheetHandleProps>;
