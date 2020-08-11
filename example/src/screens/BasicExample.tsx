@@ -87,7 +87,7 @@ const BasicExample = () => {
         initialSnapIndex={1}
         handleComponent={Handle}
         topInset={headerHeight}
-        position={position}
+        animatedPosition={position}
         onChange={handleSheetChanges}
       >
         {/* <View

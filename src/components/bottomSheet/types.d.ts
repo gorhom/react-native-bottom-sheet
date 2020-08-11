@@ -3,14 +3,51 @@ import type Animated from 'react-native-reanimated';
 import type { BottomSheetHandleProps } from '../handle';
 
 export interface BottomSheetProps extends BottomSheetAnimationConfigs {
+  /**
+   * Initial snap index, you also could provide {`-1`} to initiate bottom sheet in closed state.
+   * @type number
+   * @default 0
+   */
   initialSnapIndex?: number;
+  /**
+   * Points for the bottom sheet to snap to. It accepts array of number, string or mix.
+   * String values should be a percentage.
+   * @type Array<string | number>
+   * @example
+   * [100, '50%', '90%']
+   */
   snapPoints: Array<string | number>;
+  /**
+   * Top inset value helps to calculate percentage snap points values. usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
+   * @type number
+   */
   topInset?: number;
+  /**
+   * Animated value to be used as a callback of the position node internally.
+   * @type Animated.Value<number>
+   */
   animatedPosition?: Animated.Value<number>;
+  /**
+   * Animated value to be used as a callback for the position index node internally.
+   * @type Animated.Value<number>
+   */
   animatedPositionIndex?: Animated.Value<number>;
+  /**
+   * Component to be placed as a sheet handle.
+   * @see {BottomSheetHandleProps}
+   * @type React.FC\<BottomSheetHandleProps\>
+   */
   handleComponent?: React.FC<BottomSheetHandleProps>;
-  children: React.ReactNode[] | React.ReactNode;
+  /**
+   * Callback when sheet position changed to a provided point.
+   * @type (index: number) => void;
+   */
   onChange?: (index: number) => void;
+  /**
+   * A scrollable node or normal view.
+   * @type React.ReactNode[] | React.ReactNode
+   */
+  children: React.ReactNode[] | React.ReactNode;
 }
 
 export interface BottomSheetAnimationConfigs {
