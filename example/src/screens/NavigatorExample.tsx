@@ -5,6 +5,7 @@ import {
   createStackNavigator,
   HeaderBackButton,
   StackNavigationOptions,
+  TransitionPresets,
 } from '@react-navigation/stack';
 import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
 import Button from '../components/button';
@@ -41,6 +42,7 @@ const ScreenD = createDummyScreen({
 const Navigator = () => {
   const screenOptions = useMemo<StackNavigationOptions>(
     () => ({
+      ...TransitionPresets.SlideFromRightIOS,
       headerShown: true,
       safeAreaInsets: { top: 0 },
       headerLeft: ({ onPress, ...props }) => (
