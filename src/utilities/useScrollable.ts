@@ -5,7 +5,7 @@ import {
   ScrollView,
   SectionList,
 } from 'react-native';
-import {
+import Animated, {
   useValue,
   event,
   useCode,
@@ -22,7 +22,7 @@ export const useScrollable = () => {
   const previousScrollableRef = useRef<ScrollableRef>(null);
 
   // variables
-  const scrollableContentOffsetY = useValue<number>(0);
+  const scrollableContentOffsetY: Animated.Value<number> = useValue<number>(0);
 
   // callbacks
   const setScrollableRef = useCallback((ref: ScrollableRef) => {
