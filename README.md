@@ -142,6 +142,12 @@ Component to be placed as a sheet handle.
 
 > `required:` NO | `type:` React.FC<[BottomSheetHandleProps](./src/components/handle/types.d.ts)>
 
+#### `backgroundComponent`
+
+Component to be placed as a background.
+
+> `required:` NO | `type:` React.FC<ViewProps>
+
 #### `onChange`
 
 Callback when sheet position changed to a provided point.

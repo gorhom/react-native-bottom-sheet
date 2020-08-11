@@ -41,7 +41,7 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
   handleComponent?: React.FC<BottomSheetHandleProps>;
   /**
    * Component to be placed as a background.
-   * @type React.FC
+   * @type React.FC\<ViewProps\>
    */
   backgroundComponent?: React.FC<ViewProps>;
   /**
