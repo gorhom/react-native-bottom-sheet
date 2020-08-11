@@ -16,6 +16,11 @@ import Animated, {
   and,
   // concat,
   greaterThan,
+  interpolate,
+  Extrapolate,
+  set,
+  // defined,
+  sub,
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
@@ -38,26 +43,18 @@ import {
   useScrollable,
 } from '../../utilities';
 import { BottomSheetInternalProvider } from '../../context';
-import { ScrollableRef } from '../../types';
+import type { ScrollableRef } from '../../types';
+import type { BottomSheetProps } from './types';
 import { styles } from './styles';
-
-Animated.addWhitelistedUIProps({
-  maxDeltaY: true,
-});
-
-interface BottomSheetProps {
-  initialSnapIndex?: number;
-  snapPoints: Array<string | number>;
-  topInset: number;
-  handleComponent?: React.FC;
-  children: React.ReactNode[] | React.ReactNode;
-  onChange?: (index: number) => void;
-}
 
 interface BottomSheet {
   snapTo: (index: number) => void;
   close: () => void;
 }
+
+Animated.addWhitelistedUIProps({
+  maxDeltaY: true,
+});
 
 const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
   (
@@ -65,16 +62,19 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       initialSnapIndex = 0,
       snapPoints: _snapPoints = [],
       topInset = 0,
+      animatedPosition: _animatedPosition,
+      animatedPositionIndex: _animatedPositionIndex,
       onChange: _onChange,
       handleComponent: HandleComponent = Handle,
       children,
     },
     ref
   ) => {
-    // refs
+    //#region refs
     const currentPositionIndexRef = useRef<number>(initialSnapIndex);
     const rootTapGestureRef = useRef<TapGestureHandler>(null);
     const handlePanGestureRef = useRef<PanGestureHandler>(null);
+    //#endregion
 
     //#region variables
     const {
@@ -85,6 +85,9 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       flashScrollableIndicators,
     } = useScrollable();
 
+    /**
+     *
+     */
     const { snapPoints, sheetHeight } = useMemo(() => {
       const normalizedSnapPoints = normalizeSnapPoints(_snapPoints, topInset);
       const maxSnapPoint =
@@ -134,6 +137,14 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
       initialSnapIndex,
     });
 
+    const animatedPositionIndex = interpolate(position, {
+      inputRange: snapPoints.slice().reverse(),
+      outputRange: snapPoints
+        .slice()
+        .map((_, index) => index)
+        .reverse(),
+      extrapolate: Extrapolate.CLAMP,
+    });
     /**
      * Scrollable animated props.
      */
@@ -268,6 +279,12 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
         ),
       []
     );
+
+    // useCode(
+    //   () =>
+    //     cond(defined(_position), set(_position, sub(sheetHeight, position))),
+    //   []
+    // );
     //#endregion
 
     // render
@@ -287,7 +304,9 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
               {...handlePanGestureHandler}
             >
               <Animated.View>
-                <HandleComponent />
+                <HandleComponent
+                  animatedPositionIndex={animatedPositionIndex}
+                />
               </Animated.View>
             </PanGestureHandler>
 
@@ -298,6 +317,18 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
             </BottomSheetInternalProvider>
           </Animated.View>
         </ContentWrapper>
+
+        {_animatedPosition && (
+          <Animated.Code
+            exec={set(_animatedPosition, sub(sheetHeight, position))}
+          />
+        )}
+
+        {_animatedPositionIndex && (
+          <Animated.Code
+            exec={set(_animatedPositionIndex, animatedPositionIndex)}
+          />
+        )}
         {/* <Animated.View pointerEvents="none" style={styles.debug}>
           <ReText
             style={styles.debugText}

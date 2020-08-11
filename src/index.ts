@@ -11,3 +11,5 @@ export const {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } = BottomSheetTouchable;
+
+export type { BottomSheetHandleProps } from './components/handle';

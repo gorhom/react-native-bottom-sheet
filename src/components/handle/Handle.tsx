@@ -2,10 +2,7 @@ import React, { memo } from 'react';
 import { View } from 'react-native';
 import { styles } from './styles';
 
-// @ts-ignore
-interface HandleProps {}
-
-const HandleComponent = () => {
+const BottomSheetHandleComponent = () => {
   return (
     <>
       <View pointerEvents="none" style={styles.shadow} />
@@ -16,6 +13,6 @@ const HandleComponent = () => {
   );
 };
 
-const Handle = memo(HandleComponent);
+const BottomSheetHandle = memo(BottomSheetHandleComponent);
 
-export default Handle;
+export default BottomSheetHandle;
