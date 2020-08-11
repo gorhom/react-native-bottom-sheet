@@ -88,7 +88,7 @@ const ContactList = ({
     return (
       <BottomSheetFlatList
         data={data}
-        keyExtractor={i => i.name}
+        keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
         initialNumToRender={10}
         windowSize={20}
         maxToRenderPerBatch={5}
@@ -120,7 +120,7 @@ const ContactList = ({
         windowSize={20}
         maxToRenderPerBatch={5}
         sections={sections}
-        keyExtractor={i => i.name}
+        keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionItem}
         {...(header && {
