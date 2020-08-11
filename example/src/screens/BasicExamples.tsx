@@ -103,5 +103,5 @@ export const SectionListExampleScreen = createExampleScreen({
 export const ViewExampleScreen = createExampleScreen({
   title: 'Title',
   type: 'View',
-  count: 3,
+  count: 8,
 });

@@ -6,4 +6,6 @@ export type AppStackParamsList = {
   SectionListExample: undefined;
   ScrollViewExample: undefined;
   ViewExample: undefined;
+  CustomHandleExample: undefined;
+  ShadowOverlayExample: undefined;
 };

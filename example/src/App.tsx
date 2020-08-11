@@ -9,7 +9,8 @@ import {
   ScrollViewExampleScreen,
   ViewExampleScreen,
 } from './screens/BasicExamples';
-import BasicExampleScreen from './screens/BasicExample';
+import CustomHandleExampleScreen from './screens/CustomHandleExample';
+import ShadowOverlayExampleScreen from './screens/ShadowOverlayExample';
 import { AppStackParamsList } from './types';
 
 const Stack = createStackNavigator<AppStackParamsList>();
@@ -17,16 +18,12 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Root">
-        <Stack.Screen name="BasicExample" component={BasicExampleScreen} />
         <Stack.Screen
           name="Root"
           component={RootScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="NavigatorExample"
-          component={NavigatorExampleScreen}
-        />
+        {/* basic examples */}
         <Stack.Screen
           name="FlatListExample"
           component={FlatListExampleScreen}
@@ -40,6 +37,19 @@ function App() {
           component={ScrollViewExampleScreen}
         />
         <Stack.Screen name="ViewExample" component={ViewExampleScreen} />
+        {/* advanced examples */}
+        <Stack.Screen
+          name="NavigatorExample"
+          component={NavigatorExampleScreen}
+        />
+        <Stack.Screen
+          name="CustomHandleExample"
+          component={CustomHandleExampleScreen}
+        />
+        <Stack.Screen
+          name="ShadowOverlayExample"
+          component={ShadowOverlayExampleScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

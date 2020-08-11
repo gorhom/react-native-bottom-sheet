@@ -4,30 +4,27 @@ import { useHeaderHeight } from '@react-navigation/stack';
 import Animated, {
   useValue,
   interpolate,
-  concat,
   Extrapolate,
 } from 'react-native-reanimated';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Handle from '../components/handle';
 import Button from '../components/button';
 import ContactList from '../components/contactList';
-import { ReText } from 'react-native-redash';
 
-const BasicExample = () => {
+const ShadowOverlayExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
   const headerHeight = useHeaderHeight();
 
   // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
-  const position = useValue<number>(0);
+  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const animatedPositionIndex = useValue<number>(0);
 
   // styles
   const shadowOverlayStyle = useMemo(
     () => ({
       ...styles.shadowOverlay,
-      opacity: interpolate(position, {
-        inputRange: [300, 450],
+      opacity: interpolate(animatedPositionIndex, {
+        inputRange: [0, 2],
         outputRange: [0, 1],
         extrapolate: Extrapolate.CLAMP,
       }),
@@ -52,7 +49,7 @@ const BasicExample = () => {
   const renderHeader = useCallback(() => {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Basic Screen</Text>
+        <Text style={styles.title}>Shadow Overlay Example</Text>
       </View>
     );
   }, []);
@@ -60,17 +57,17 @@ const BasicExample = () => {
   return (
     <View style={styles.container}>
       <Button
-        label="Snap To 450"
+        label="Snap To 90%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(2)}
       />
       <Button
-        label="Snap To 300"
+        label="Snap To 50%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(1)}
       />
       <Button
-        label="Snap To 150"
+        label="Snap To 25%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
       />
@@ -79,81 +76,16 @@ const BasicExample = () => {
         style={styles.buttonContainer}
         onPress={() => handleClosePress()}
       />
-      <ReText text={concat('Position from bottom: ', position)} />
       <Animated.View pointerEvents="none" style={shadowOverlayStyle} />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={1}
-        handleComponent={Handle}
         topInset={headerHeight}
-        position={position}
+        animatedPositionIndex={animatedPositionIndex}
         onChange={handleSheetChanges}
       >
-        {/* <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            height: (25 * sheetHeight) / 100,
-            backgroundColor: 'rgba(0,0,0,0.25)',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            height: (50 * sheetHeight) / 100,
-            backgroundColor: 'rgba(0,0,0,0.50)',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: windowWidth / 2 - 25,
-            width: 50,
-            height: 10,
-            backgroundColor: 'red',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: windowWidth / 2 - 25,
-            bottom: 0,
-            width: 50,
-            height: 10,
-            backgroundColor: 'red',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            bottom: sheetHeight / 2 - 25,
-            width: 10,
-            height: 50,
-            backgroundColor: 'red',
-          }}
-        />
-
-        <View
-          style={{
-            position: 'absolute',
-            bottom: sheetHeight / 2 - 25,
-            right: 0,
-            width: 10,
-            height: 50,
-            backgroundColor: 'red',
-          }}
-        /> */}
-
-        {/* <Button
-          label="Open"
-          style={styles.buttonContainer}
-          onPress={() => handleSnapPress(1)}
-        /> */}
-        <ContactList type="ScrollView" header={renderHeader} />
+        <ContactList type="View" count={3} header={renderHeader} />
       </BottomSheet>
     </View>
   );
@@ -175,7 +107,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
   },
   title: {
     fontSize: 46,
@@ -191,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BasicExample;
+export default ShadowOverlayExample;

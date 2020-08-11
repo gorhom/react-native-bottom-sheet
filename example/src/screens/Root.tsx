@@ -32,6 +32,14 @@ const data = [
         name: 'React Navigation',
         slug: 'NavigatorExample',
       },
+      {
+        name: 'Custom Handle',
+        slug: 'CustomHandleExample',
+      },
+      {
+        name: 'Shadow Overlay',
+        slug: 'ShadowOverlayExample',
+      },
     ],
   },
 ];
