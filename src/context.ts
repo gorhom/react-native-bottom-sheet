@@ -21,3 +21,13 @@ export const BottomSheetInternalContext = createContext<
 >();
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;
+
+export interface BottomSheetContextType {
+  snapTo: (index: number) => void;
+  close: () => void;
+}
+
+// @ts-ignore
+export const BottomSheetContext = createContext<BottomSheetContextType>();
+
+export const BottomSheetProvider = BottomSheetContext.Provider;

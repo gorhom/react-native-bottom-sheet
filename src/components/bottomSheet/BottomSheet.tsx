@@ -44,7 +44,10 @@ import {
   useStableCallback,
   useScrollable,
 } from '../../utilities';
-import { BottomSheetInternalProvider } from '../../context';
+import {
+  BottomSheetInternalProvider,
+  BottomSheetProvider,
+} from '../../context';
 import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
@@ -79,6 +82,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       onChange: _onChange,
       // components
       handleComponent: HandleComponent = Handle,
+      backgroundComponent: BackgroundComponent = null,
       children,
     },
     ref
@@ -245,6 +249,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
+    const contextVariables = useMemo(
+      () => ({
+        snapTo: handleOnSnapTo,
+        close: handleClose,
+      }),
+      [handleOnSnapTo, handleClose]
+    );
     //#endregion
 
     //#region effects
@@ -309,24 +320,29 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           {...tapGestureHandler}
         >
           <Animated.View style={contentContainerStyle}>
-            <PanGestureHandler
-              ref={handlePanGestureRef}
-              simultaneousHandlers={rootTapGestureRef}
-              shouldCancelWhenOutside={false}
-              {...handlePanGestureHandler}
-            >
-              <Animated.View>
-                <HandleComponent
-                  animatedPositionIndex={animatedPositionIndex}
-                />
-              </Animated.View>
-            </PanGestureHandler>
+            {BackgroundComponent && (
+              <BackgroundComponent pointerEvents="none" />
+            )}
+            <BottomSheetProvider value={contextVariables}>
+              <PanGestureHandler
+                ref={handlePanGestureRef}
+                simultaneousHandlers={rootTapGestureRef}
+                shouldCancelWhenOutside={false}
+                {...handlePanGestureHandler}
+              >
+                <Animated.View>
+                  <HandleComponent
+                    animatedPositionIndex={animatedPositionIndex}
+                  />
+                </Animated.View>
+              </PanGestureHandler>
 
-            <BottomSheetInternalProvider value={internalContextVariables}>
-              <DraggableView style={styles.contentContainer}>
-                {children}
-              </DraggableView>
-            </BottomSheetInternalProvider>
+              <BottomSheetInternalProvider value={internalContextVariables}>
+                <DraggableView style={styles.contentContainer}>
+                  {children}
+                </DraggableView>
+              </BottomSheetInternalProvider>
+            </BottomSheetProvider>
           </Animated.View>
         </ContentWrapper>
 

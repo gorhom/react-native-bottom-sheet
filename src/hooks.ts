@@ -1,6 +1,10 @@
 import { useContext } from 'react';
-import { BottomSheetInternalContext } from './context';
+import { BottomSheetInternalContext, BottomSheetContext } from './context';
 
 export const useBottomSheetInternal = () => {
   return useContext(BottomSheetInternalContext);
+};
+
+export const useBottomSheet = () => {
+  return useContext(BottomSheetContext);
 };

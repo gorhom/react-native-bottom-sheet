@@ -1,6 +1,7 @@
 import type React from 'react';
 import type Animated from 'react-native-reanimated';
 import type { BottomSheetHandleProps } from '../handle';
+import type { ViewProps } from 'react-native';
 
 export interface BottomSheetProps extends BottomSheetAnimationConfigs {
   /**
@@ -38,6 +39,11 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * @type React.FC\<BottomSheetHandleProps\>
    */
   handleComponent?: React.FC<BottomSheetHandleProps>;
+  /**
+   * Component to be placed as a background.
+   * @type React.FC
+   */
+  backgroundComponent?: React.FC<ViewProps>;
   /**
    * Callback when sheet position changed to a provided point.
    * @type (index: number) => void;

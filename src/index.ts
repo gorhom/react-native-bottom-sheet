@@ -13,3 +13,5 @@ export const {
 } = BottomSheetTouchable;
 
 export type { BottomSheetHandleProps } from './components/handle';
+
+export { useBottomSheet } from './hooks';

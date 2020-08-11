@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: 'black',
   },
   debug: {
     position: 'absolute',
