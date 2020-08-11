@@ -18,6 +18,9 @@ A performant interactive bottom sheet with fully configurable options 🚀
 1. [Features](#features)
 2. [Installation](#installation)
 3. [Usage](#usage)
+   - [Custom Handle](./docs/custom-handle)
+   - [React Navigation Integration](./docs/react-navigation)
+   - [Touchables](./docs/touchables)
 4. [Props](#props)
 5. [Scrollables](#scrollables)
    - [BottomSheetFlatList](./docs/flatlist)
@@ -32,6 +35,7 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 - Smooth interactions & snapping animations.
 - Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions.
+- Support `React Navigation` Integration.
 - Written in `TypeScript`.
 
 ## Installation
