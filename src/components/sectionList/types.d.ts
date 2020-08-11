@@ -12,7 +12,7 @@ type BottomSheetSectionListProps<T> = Omit<
   focusHook?: (effect: EffectCallback, deps?: DependencyList) => void;
 };
 
-export class BottomSheetSectionList<T = any> extends Component<
+export class BottomSheetSectionListType<T = any> extends Component<
   BottomSheetSectionListProps<T>
 > {
   /**

@@ -5,38 +5,40 @@ import { version, description } from '../../../package.json';
 
 const data = [
   {
-    title: 'Navigator',
+    title: 'Basic',
     data: [
       {
-        name: 'Default',
-        slug: 'NavigatorExample',
+        name: 'View',
+        slug: 'ViewExample',
       },
-    ],
-  },
-  {
-    title: 'FlatList',
-    data: [
       {
-        name: 'Default',
+        name: 'ScrollView',
+        slug: 'ScrollViewExample',
+      },
+      {
+        name: 'FlatList',
         slug: 'FlatListExample',
       },
-    ],
-  },
-  {
-    title: 'SectionList',
-    data: [
       {
-        name: 'Default',
+        name: 'SectionList',
         slug: 'SectionListExample',
       },
     ],
   },
   {
-    title: 'ScrollView',
+    title: 'Advanced',
     data: [
       {
-        name: 'Default',
-        slug: 'ScrollViewExample',
+        name: 'React Navigation',
+        slug: 'NavigatorExample',
+      },
+      {
+        name: 'Custom Handle',
+        slug: 'CustomHandleExample',
+      },
+      {
+        name: 'Shadow Overlay',
+        slug: 'ShadowOverlayExample',
       },
     ],
   },
@@ -57,8 +59,8 @@ const RootScreen = () => {
       name="Bottom Sheet"
       description={description}
       author={{
-        username: 'Raul Gomez Acuña',
-        url: 'https://github.com/rgommezz',
+        username: 'Mo Gorhom',
+        url: 'https://gorhom.dev',
       }}
       data={data}
       handleOnPress={handleOnPress}

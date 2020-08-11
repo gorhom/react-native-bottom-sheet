@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ContactList from '../components/contactList';
@@ -7,38 +7,48 @@ import Button from '../components/button';
 interface DummyScreenProps {
   title: string;
   nextScreen: string;
-  type: 'FlatList' | 'SectionList' | 'ScrollView';
+  type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
+  count?: number;
 }
 
 const createDummyScreen = ({
   title,
   nextScreen,
   type,
-}: DummyScreenProps) => () => {
-  const { navigate } = useNavigation();
+  count = 50,
+}: DummyScreenProps) =>
+  memo(() => {
+    const { navigate } = useNavigation();
 
-  const handleNavigatePress = useCallback(() => {
-    navigate(nextScreen);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const handleNavigatePress = useCallback(() => {
+      console.log('navigateTo', nextScreen);
+      navigate(nextScreen);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Button
-          label={`Navigate to ${nextScreen}`}
-          onPress={handleNavigatePress}
-        />
-      </View>
+    const renderHeader = useCallback(
+      () => (
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>{title}</Text>
+          <Button
+            label={`Navigate to ${nextScreen}`.toUpperCase()}
+            onPress={handleNavigatePress}
+          />
+        </View>
+      ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  return (
-    <ContactList key={`${type}.list`} header={renderHeader()} type={type} />
-  );
-};
+    return (
+      <ContactList
+        key={`${type}.list`}
+        count={count}
+        header={renderHeader}
+        type={type}
+      />
+    );
+  });
 
 const styles = StyleSheet.create({
   title: {

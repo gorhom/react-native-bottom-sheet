@@ -3,9 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import RootScreen from './screens/Root';
 import NavigatorExampleScreen from './screens/NavigatorExample';
-import FlatListExampleScreen from './screens/FlatListExample';
-import SectionListExampleScreen from './screens/SectionListExample';
-import ScrollViewExampleScreen from './screens/ScrollViewExample';
+import {
+  FlatListExampleScreen,
+  SectionListExampleScreen,
+  ScrollViewExampleScreen,
+  ViewExampleScreen,
+} from './screens/BasicExamples';
+import CustomHandleExampleScreen from './screens/CustomHandleExample';
+import ShadowOverlayExampleScreen from './screens/ShadowOverlayExample';
 import { AppStackParamsList } from './types';
 
 const Stack = createStackNavigator<AppStackParamsList>();
@@ -18,10 +23,7 @@ function App() {
           component={RootScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="NavigatorExample"
-          component={NavigatorExampleScreen}
-        />
+        {/* basic examples */}
         <Stack.Screen
           name="FlatListExample"
           component={FlatListExampleScreen}
@@ -33,6 +35,20 @@ function App() {
         <Stack.Screen
           name="ScrollViewExample"
           component={ScrollViewExampleScreen}
+        />
+        <Stack.Screen name="ViewExample" component={ViewExampleScreen} />
+        {/* advanced examples */}
+        <Stack.Screen
+          name="NavigatorExample"
+          component={NavigatorExampleScreen}
+        />
+        <Stack.Screen
+          name="CustomHandleExample"
+          component={CustomHandleExampleScreen}
+        />
+        <Stack.Screen
+          name="ShadowOverlayExample"
+          component={ShadowOverlayExampleScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

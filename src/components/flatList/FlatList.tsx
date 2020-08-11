@@ -1,25 +1,26 @@
 import React, {
   forwardRef,
-  useMemo,
   Ref,
   useRef,
   useImperativeHandle,
   useEffect,
-  useCallback,
+  memo,
 } from 'react';
 import {
   FlatList as RNFlatList,
   FlatListProps as RNFlatListProps,
   ViewStyle,
 } from 'react-native';
-import Animated, { event } from 'react-native-reanimated';
-import {
-  NativeViewGestureHandler,
-  PanGestureHandler,
-} from 'react-native-gesture-handler';
+import isEqual from 'lodash.isequal';
+import Animated from 'react-native-reanimated';
+import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import DraggableView from '../draggableView';
 import { useBottomSheetInternal } from '../../hooks';
-import type { BottomSheetFlatListProps, BottomSheetFlatList } from './types';
-
+import { useScrollableInternal } from '../../utilities/useScrollable';
+import type {
+  BottomSheetFlatListProps,
+  BottomSheetFlatListType,
+} from './types';
 import { styles } from './styles';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(
@@ -29,112 +30,59 @@ const AnimatedFlatList = Animated.createAnimatedComponent(
   any
 >;
 
-const FlatList = forwardRef(
+const BottomSheetFlatListComponent = forwardRef(
   (props: BottomSheetFlatListProps<any>, ref: Ref<RNFlatList>) => {
     // props
-    const {
-      contentContainerStyle: _contentContainerStyle,
-      focusHook: useFocusHook = useEffect,
-      ...rest
-    } = props;
+    const { focusHook: useFocusHook = useEffect, ...rest } = props;
 
     // refs
-    const panGestureRef = useRef<PanGestureHandler>(null);
-    const scrollableWrapperRef = useRef<NativeViewGestureHandler>(null);
-    const flatListRef = useRef<RNFlatList>(null);
+    const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
 
     // hooks
     const {
-      masterDrawerRef,
+      scrollableRef,
+      handleScrollEvent,
+      handleSettingScrollable,
+    } = useScrollableInternal('FlatList');
+    const {
+      rootTapGestureRef,
+      disableIntervalMomentum,
       decelerationRate,
-      contentPaddingBottom,
-      dragY,
-      velocityY,
-      drawerGestureState,
-      drawerOldGestureState,
-      lastStartScrollY,
-      setScrollableRef,
     } = useBottomSheetInternal();
-
-    // styles
-    const contentContainerStyle = useMemo(() => {
-      return {
-        // @ts-ignore
-        ...(_contentContainerStyle ?? {}),
-        paddingBottom:
-          contentPaddingBottom +
-          Math.max(_contentContainerStyle?.paddingBottom ?? 0, 0),
-      };
-    }, [_contentContainerStyle, contentPaddingBottom]);
-
-    // callbacks
-    const handleGestureEvent = useMemo(
-      () =>
-        event([
-          {
-            nativeEvent: {
-              translationY: dragY,
-              oldState: drawerOldGestureState,
-              state: drawerGestureState,
-              velocityY: velocityY,
-            },
-          },
-        ]),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
-    const handleOnScrollBeginDrag = useMemo(
-      () =>
-        event([
-          {
-            nativeEvent: {
-              contentOffset: { y: lastStartScrollY },
-            },
-          },
-        ]),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
-    const handleFocus = useCallback(() => {
-      setScrollableRef(flatListRef);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     // effects
     // @ts-ignore
-    useImperativeHandle(ref, () => flatListRef.current!.getNode());
-    useFocusHook(handleFocus);
+    useImperativeHandle(ref, () => scrollableRef.current!.getNode());
+    useFocusHook(handleSettingScrollable);
 
     // render
     return (
-      <PanGestureHandler
-        ref={panGestureRef}
-        simultaneousHandlers={[scrollableWrapperRef, masterDrawerRef]}
-        shouldCancelWhenOutside={false}
-        onGestureEvent={handleGestureEvent}
-        onHandlerStateChange={handleGestureEvent}
+      <DraggableView
+        style={styles.container}
+        nativeGestureRef={nativeGestureRef}
       >
-        <Animated.View style={styles.container}>
-          <NativeViewGestureHandler
-            ref={scrollableWrapperRef}
-            waitFor={masterDrawerRef}
-            simultaneousHandlers={panGestureRef}
-          >
-            <AnimatedFlatList
-              {...rest}
-              ref={flatListRef}
-              overScrollMode="never"
-              bounces={false}
-              decelerationRate={decelerationRate}
-              onScrollBeginDrag={handleOnScrollBeginDrag}
-              scrollEventThrottle={1}
-              contentContainerStyle={contentContainerStyle}
-            />
-          </NativeViewGestureHandler>
-        </Animated.View>
-      </PanGestureHandler>
+        <NativeViewGestureHandler
+          ref={nativeGestureRef}
+          waitFor={rootTapGestureRef}
+        >
+          <AnimatedFlatList
+            {...rest}
+            // @ts-ignore
+            ref={scrollableRef}
+            overScrollMode="never"
+            bounces={false}
+            // @ts-ignore
+            disableIntervalMomentum={disableIntervalMomentum}
+            decelerationRate={decelerationRate}
+            scrollEventThrottle={1}
+            onScrollBeginDrag={handleScrollEvent}
+          />
+        </NativeViewGestureHandler>
+      </DraggableView>
     );
   }
 );
 
-export default (FlatList as any) as typeof BottomSheetFlatList;
+const BottomSheetFlatList = memo(BottomSheetFlatListComponent, isEqual);
+
+export default (BottomSheetFlatList as any) as typeof BottomSheetFlatListType;

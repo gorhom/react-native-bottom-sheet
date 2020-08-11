@@ -1,8 +1,13 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useHeaderHeight, createStackNavigator } from '@react-navigation/stack';
-import BottomSheet from '@gorhom/bottom-sheet';
-import Handle from '../components/Handle';
+import {
+  useHeaderHeight,
+  createStackNavigator,
+  HeaderBackButton,
+  StackNavigationOptions,
+  TransitionPresets,
+} from '@react-navigation/stack';
+import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
 import Button from '../components/button';
 import createDummyScreen from './DummyScreen';
 
@@ -17,62 +22,101 @@ const ScreenB = createDummyScreen({
   title: 'ScrollView Screen',
   nextScreen: 'ScreenC',
   type: 'ScrollView',
+  count: 25,
 });
 
 const ScreenC = createDummyScreen({
   title: 'SectionList Screen',
-  nextScreen: 'ScreenA',
+  nextScreen: 'ScreenD',
   type: 'SectionList',
+  count: 20,
+});
+
+const ScreenD = createDummyScreen({
+  title: 'View Screen',
+  nextScreen: 'ScreenA',
+  type: 'View',
+  count: 5,
 });
 
 const Navigator = () => {
+  const screenOptions = useMemo<StackNavigationOptions>(
+    () => ({
+      ...TransitionPresets.SlideFromRightIOS,
+      headerShown: true,
+      safeAreaInsets: { top: 0 },
+      headerLeft: ({ onPress, ...props }) => (
+        <TouchableOpacity onPress={onPress}>
+          <HeaderBackButton {...props} />
+        </TouchableOpacity>
+      ),
+    }),
+    []
+  );
+
+  const screenAOptions = useMemo(() => ({ headerLeft: () => null }), []);
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="ScreenA" component={ScreenA} />
+    <Stack.Navigator screenOptions={screenOptions} headerMode="screen">
+      <Stack.Screen
+        name="ScreenA"
+        options={screenAOptions}
+        component={ScreenA}
+      />
       <Stack.Screen name="ScreenB" component={ScreenB} />
       <Stack.Screen name="ScreenC" component={ScreenC} />
+      <Stack.Screen name="ScreenD" component={ScreenD} />
     </Stack.Navigator>
   );
 };
 
 const NavigatorExample = () => {
   // hooks
-  const sheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const headerHeight = useHeaderHeight();
 
   // variables
-  const snapPoints = useMemo(() => ['10%', '50%', '80%'], []);
+  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
 
   // callbacks
+  const handleSheetChange = useCallback(index => {
+    console.log('handleSheetChange', index);
+  }, []);
   const handleSnapPress = useCallback(index => {
-    sheetRef.current?.snapTo(index);
+    bottomSheetRef.current?.snapTo(index);
+  }, []);
+  const handleClosePress = useCallback(() => {
+    bottomSheetRef.current?.close();
   }, []);
 
   // renders
-  const renderHandle = useCallback(() => <Handle />, []);
   return (
     <View style={styles.container}>
       <Button
-        label="Extend"
+        label="Snap To 90%"
         style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
+        onPress={() => handleSnapPress(2)}
       />
       <Button
-        label="Open"
+        label="Snap To 50%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(1)}
       />
       <Button
+        label="Snap To 25%"
+        style={styles.buttonContainer}
+        onPress={() => handleSnapPress(0)}
+      />
+      <Button
         label="Close"
         style={styles.buttonContainer}
-        onPress={() => handleSnapPress(2)}
+        onPress={() => handleClosePress()}
       />
       <BottomSheet
-        ref={sheetRef}
+        ref={bottomSheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={headerHeight}
-        renderHandle={renderHandle}
+        onChange={handleSheetChange}
       >
         <Navigator />
       </BottomSheet>

@@ -1,31 +1,23 @@
-import { createContext, RefObject, Ref } from 'react';
+import { createContext, Ref, RefObject } from 'react';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
+import { Scrollable, ScrollableRef } from './types';
 
 export interface BottomSheetInternalContextType {
-  lastStartScrollY: Animated.Value<number>;
-  dragY: Animated.Value<number>;
-  velocityY: Animated.Value<number>;
-  drawerGestureState: Animated.Value<State>;
-  drawerOldGestureState: Animated.Value<State>;
-  masterDrawerRef: Ref<TapGestureHandler>;
-  decelerationRate: Animated.Value<number>;
-  contentPaddingBottom: number;
-  setScrollableRef: (ref: RefObject<any>) => void;
+  rootTapGestureRef: Ref<TapGestureHandler>;
+  contentPanGestureState: Animated.Value<State>;
+  contentPanGestureTranslationY: Animated.Value<number>;
+  contentPanGestureVelocityY: Animated.Value<number>;
+  scrollableContentOffsetY: Animated.Value<number>;
+  disableIntervalMomentum: Animated.Node<number>;
+  decelerationRate: Animated.Node<number>;
+  setScrollableRef: (ref: ScrollableRef) => void;
+  removeScrollableRef: (ref: RefObject<Scrollable>) => void;
 }
 
+// @ts-ignore
 export const BottomSheetInternalContext = createContext<
   BottomSheetInternalContextType
->({
-  lastStartScrollY: new Animated.Value(0),
-  dragY: new Animated.Value(0),
-  velocityY: new Animated.Value(0),
-  drawerGestureState: new Animated.Value(State.UNDETERMINED),
-  drawerOldGestureState: new Animated.Value(State.UNDETERMINED),
-  masterDrawerRef: null,
-  decelerationRate: new Animated.Value(0),
-  contentPaddingBottom: 0,
-  setScrollableRef: () => {},
-});
+>();
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;

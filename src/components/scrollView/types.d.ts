@@ -24,7 +24,7 @@ declare class BottomSheetScrollViewComponent extends Component<
 declare const BottomSheetScrollViewBase: Constructor<ScrollResponderMixin> &
   typeof BottomSheetScrollViewComponent;
 
-export class BottomSheetScrollView extends BottomSheetScrollViewBase {
+export class BottomSheetScrollViewType extends BottomSheetScrollViewBase {
   /**
    * Scrolls to a given x, y offset, either immediately or with a smooth animation.
    * Syntax:
