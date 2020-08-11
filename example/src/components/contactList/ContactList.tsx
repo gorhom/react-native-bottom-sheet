@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { StyleSheet, Text, Platform, View } from 'react-native';
+import { StyleSheet, Text, Platform, View, ViewStyle } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import {
@@ -18,9 +18,15 @@ interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
   header?: (() => JSX.Element) | null;
+  style?: ViewStyle;
 }
 
-const ContactList = ({ type, count = 50, header = null }: ContactListProps) => {
+const ContactList = ({
+  type,
+  count = 50,
+  header = null,
+  style,
+}: ContactListProps) => {
   // hooks
   const { bottom: bottomSafeArea } = useSafeArea();
 
@@ -32,9 +38,10 @@ const ContactList = ({ type, count = 50, header = null }: ContactListProps) => {
   const contentContainerStyle = useMemo(
     () => ({
       ...styles.contentContainer,
+      ...style,
       paddingBottom: bottomSafeArea,
     }),
-    [bottomSafeArea]
+    [style, bottomSafeArea]
   );
 
   // renders
@@ -85,6 +92,8 @@ const ContactList = ({ type, count = 50, header = null }: ContactListProps) => {
         initialNumToRender={10}
         windowSize={20}
         maxToRenderPerBatch={5}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="never"
         renderItem={renderFlatListItem}
         {...(header && {
           stickyHeaderIndices: [0],

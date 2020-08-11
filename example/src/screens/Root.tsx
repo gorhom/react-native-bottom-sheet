@@ -40,6 +40,10 @@ const data = [
         name: 'Shadow Overlay',
         slug: 'ShadowOverlayExample',
       },
+      {
+        name: 'Map',
+        slug: 'MapExample',
+      },
     ],
   },
 ];

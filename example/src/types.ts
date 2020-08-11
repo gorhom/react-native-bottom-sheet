@@ -8,4 +8,5 @@ export type AppStackParamsList = {
   ViewExample: undefined;
   CustomHandleExample: undefined;
   ShadowOverlayExample: undefined;
+  MapExample: undefined;
 };

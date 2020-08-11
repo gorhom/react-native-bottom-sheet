@@ -11,6 +11,7 @@ import {
 } from './screens/BasicExamples';
 import CustomHandleExampleScreen from './screens/CustomHandleExample';
 import ShadowOverlayExampleScreen from './screens/ShadowOverlayExample';
+import MapExampleScreen from './screens/MapExample';
 import { AppStackParamsList } from './types';
 
 const Stack = createStackNavigator<AppStackParamsList>();
@@ -49,6 +50,13 @@ function App() {
         <Stack.Screen
           name="ShadowOverlayExample"
           component={ShadowOverlayExampleScreen}
+        />
+        <Stack.Screen
+          name="MapExample"
+          options={{
+            headerShown: false,
+          }}
+          component={MapExampleScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

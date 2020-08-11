@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@gorhom/showcase-template": "^0.3.1",
+    "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
@@ -18,6 +19,7 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.7.0",
+    "react-native-maps": "^0.27.1",
     "react-native-reanimated": "^1.11.0",
     "react-native-redash": "^14.2.3",
     "react-native-safe-area-context": "0.7.3",
