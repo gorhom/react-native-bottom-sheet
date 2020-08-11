@@ -194,7 +194,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region callbacks
     const refreshUIElements = useCallback(() => {
-      const currentPositionIndex = currentPositionIndexRef.current;
+      const currentPositionIndex = Math.max(currentPositionIndexRef.current, 0);
       if (currentPositionIndex === snapPoints.length - 1) {
         flashScrollableIndicators();
         // @ts-ignore
@@ -204,7 +204,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       } else {
         // @ts-ignore
         rootTapGestureRef.current.setNativeProps({
-          maxDeltaY: Math.round(snapPoints[currentPositionIndex]),
+          maxDeltaY: snapPoints[currentPositionIndex],
         });
       }
     }, [snapPoints, flashScrollableIndicators]);

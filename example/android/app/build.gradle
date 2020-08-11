@@ -127,7 +127,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.reactnativebottomsheet"
+        applicationId "dev.gorhom.bottomsheet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
