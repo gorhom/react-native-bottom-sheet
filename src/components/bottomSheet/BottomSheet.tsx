@@ -43,6 +43,10 @@ import {
   useScrollable,
 } from '../../utilities';
 import { BottomSheetInternalProvider } from '../../context';
+import {
+  DEFAULT_ANIMATION_EASING,
+  DEFAULT_ANIMATION_DURATION,
+} from '../../constants';
 import type { ScrollableRef } from '../../types';
 import type { BottomSheetProps } from './types';
 import { styles } from './styles';
@@ -59,12 +63,19 @@ Animated.addWhitelistedUIProps({
 const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
   (
     {
+      // animations
+      animationDuration = DEFAULT_ANIMATION_DURATION,
+      animationEasing = DEFAULT_ANIMATION_EASING,
+      // general
       initialSnapIndex = 0,
       snapPoints: _snapPoints,
       topInset = 0,
+      // animated nodes callback
       animatedPosition: _animatedPosition,
       animatedPositionIndex: _animatedPositionIndex,
+      // callbacks
       onChange: _onChange,
+      // components
       handleComponent: HandleComponent = Handle,
       children,
     },
@@ -128,6 +139,8 @@ const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region animation
     const { position, currentPosition } = useTransition({
+      animationDuration,
+      animationEasing,
       contentPanGestureState,
       contentPanGestureTranslationY,
       contentPanGestureVelocityY,

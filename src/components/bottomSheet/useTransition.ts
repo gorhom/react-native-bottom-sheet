@@ -1,7 +1,6 @@
 import Animated, {
   eq,
   useValue,
-  Easing,
   set,
   add,
   greaterOrEq,
@@ -20,10 +19,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import { useClock, snapPoint } from 'react-native-redash';
+import { BottomSheetAnimationConfigs } from './types';
 
 const { cond, block } = Animated;
 
-interface TransitionProps {
+interface TransitionProps extends Required<BottomSheetAnimationConfigs> {
   contentPanGestureState: Animated.Value<State>;
   contentPanGestureTranslationY: Animated.Value<number>;
   contentPanGestureVelocityY: Animated.Value<number>;
@@ -45,6 +45,8 @@ enum GESTURE {
 }
 
 export const useTransition = ({
+  animationDuration,
+  animationEasing,
   contentPanGestureState,
   contentPanGestureTranslationY,
   contentPanGestureVelocityY,
@@ -67,8 +69,8 @@ export const useTransition = ({
   const clock = useClock();
   const config = {
     toValue: useValue(0),
-    duration: 500,
-    easing: Easing.out(Easing.back(0.75)),
+    duration: animationDuration,
+    easing: animationEasing,
   };
 
   const animationState = {
