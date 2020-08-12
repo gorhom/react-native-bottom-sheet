@@ -23,7 +23,15 @@ export const BottomSheetInternalContext = createContext<
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;
 
 export interface BottomSheetContextType {
+  /**
+   * Snap to one of the provided points from `snapPoints`.
+   * @type (index: number) => void
+   */
   snapTo: (index: number) => void;
+  /**
+   * Close the bottom sheet.
+   * @type () => void
+   */
   close: () => void;
 }
 

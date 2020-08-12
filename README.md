@@ -22,14 +22,16 @@ A performant interactive bottom sheet with fully configurable options 🚀
    - [React Navigation Integration](./docs/react-navigation.md)
    - [Touchables](./docs/touchables.md)
 4. [Props](#props)
-5. [Scrollables](#scrollables)
+5. [Methods](#methods)
+6. [Hooks](#hooks)
+7. [Scrollables](#scrollables)
    - [BottomSheetFlatList](./docs/flatlist.md)
    - [BottomSheetSectionList](./docs/sectionlist.md)
    - [BottomSheetScrollView](./docs/scrollview.md)
    - [BottomSheetView](./docs/flatlist.md)
-6. [To Do](#to-do)
-7. [Credits](#built-with)
-8. [License](#license)
+8. [To Do](#to-do)
+9. [Credits](#built-with)
+10. [License](#license)
 
 ## Features
 
@@ -159,6 +161,28 @@ Callback when sheet position changed to a provided point.
 A scrollable node or normal view.
 
 > `required:` YES | `type:` React.ReactNode[] | React.ReactNode
+
+## Methods
+
+#### `snapTo`
+
+Snap to one of the provided points from `snapPoints`.
+
+> `type:` (index: number) => void
+
+#### `close`
+
+Close the bottom sheet.
+
+> `type:` () => void
+
+## Hooks
+
+#### `useBottomSheet`
+
+The library provide `useBottomSheet` hook to provide the bottom sheet methods, anywhere inside the sheet content.
+
+> `type:` { snapTo: () => void, close: () => void }
 
 ## Scrollables
 
