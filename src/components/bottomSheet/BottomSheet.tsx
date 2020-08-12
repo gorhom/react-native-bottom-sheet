@@ -40,35 +40,21 @@ import DraggableView from '../draggableView';
 import Handle from '../handle';
 import ContentWrapper from '../contentWrapper';
 import { useTransition } from './useTransition';
-import {
-  normalizeSnapPoints,
-  useStableCallback,
-  useScrollable,
-} from '../../utilities';
+import { useStableCallback, useScrollable } from '../../hooks';
+import { normalizeSnapPoints } from '../../utilities';
 import {
   BottomSheetInternalProvider,
   BottomSheetProvider,
-} from '../../context';
+} from '../../contexts';
 import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
 } from '../../constants';
-import type { ScrollableRef } from '../../types';
+import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
 import { styles } from './styles';
 
-interface BottomSheet {
-  /**
-   * Snap to one of the provided points from `snapPoints`.
-   * @type (index: number) => void
-   */
-  snapTo: (index: number) => void;
-  /**
-   * Close the bottom sheet.
-   * @type () => void
-   */
-  close: () => void;
-}
+type BottomSheet = BottomSheetMethods;
 
 Animated.addWhitelistedUIProps({
   maxDeltaY: true,
@@ -295,6 +281,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       autoSnapTo.setValue(sheetHeight);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sheetHeight]);
+    const handleExpand = useCallback(() => {
+      autoSnapTo.setValue(snapPoints[snapPoints.length - 1]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sheetHeight]);
+    const handleCollapse = useCallback(() => {
+      autoSnapTo.setValue(snapPoints[0]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sheetHeight]);
     //#endregion
 
     //#region
@@ -313,18 +307,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
-    const contextVariables = useMemo(
+    const externalContextVariables = useMemo(
       () => ({
         snapTo: handleSnapTo,
+        expand: handleExpand,
+        collapse: handleCollapse,
         close: handleClose,
       }),
-      [handleSnapTo, handleClose]
+      [handleSnapTo, handleExpand, handleCollapse, handleClose]
     );
     //#endregion
 
     //#region effects
     useImperativeHandle(ref, () => ({
       snapTo: handleSnapTo,
+      expand: handleExpand,
+      collapse: handleCollapse,
       close: handleClose,
     }));
 
@@ -387,7 +385,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             {BackgroundComponent && (
               <BackgroundComponent pointerEvents="none" />
             )}
-            <BottomSheetProvider value={contextVariables}>
+            <BottomSheetProvider value={externalContextVariables}>
               <PanGestureHandler
                 ref={handlePanGestureRef}
                 simultaneousHandlers={rootTapGestureRef}

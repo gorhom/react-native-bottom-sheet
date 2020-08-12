@@ -14,7 +14,7 @@ interface ExampleScreenProps {
 const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
   memo(() => {
     // hooks
-    const sheetRef = useRef<BottomSheet>(null);
+    const bottomSheetRef = useRef<BottomSheet>(null);
     const headerHeight = useHeaderHeight();
 
     // variables
@@ -25,10 +25,16 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
       console.log('handleSheetChange', index);
     }, []);
     const handleSnapPress = useCallback(index => {
-      sheetRef.current?.snapTo(index);
+      bottomSheetRef.current?.snapTo(index);
+    }, []);
+    const handleExpandPress = useCallback(() => {
+      bottomSheetRef.current?.expand();
+    }, []);
+    const handleCollapsePress = useCallback(() => {
+      bottomSheetRef.current?.collapse();
     }, []);
     const handleClosePress = useCallback(() => {
-      sheetRef.current?.close();
+      bottomSheetRef.current?.close();
     }, []);
 
     return (
@@ -49,12 +55,22 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
           onPress={() => handleSnapPress(0)}
         />
         <Button
+          label="Expand"
+          style={styles.buttonContainer}
+          onPress={() => handleExpandPress()}
+        />
+        <Button
+          label="Collapse"
+          style={styles.buttonContainer}
+          onPress={() => handleCollapsePress()}
+        />
+        <Button
           label="Close"
           style={styles.buttonContainer}
           onPress={() => handleClosePress()}
         />
         <BottomSheet
-          ref={sheetRef}
+          ref={bottomSheetRef}
           snapPoints={snapPoints}
           initialSnapIndex={1}
           topInset={headerHeight}

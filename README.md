@@ -170,6 +170,18 @@ Snap to one of the provided points from `snapPoints`.
 
 > `type:` (index: number) => void
 
+#### `expand`
+
+Snap to the maximum provided point from `snapPoints`.
+
+> `type:` () => void
+
+#### `collapse`
+
+Snap to the minimum provided point from `snapPoints`.
+
+> `type:` () => void
+
 #### `close`
 
 Close the bottom sheet.
@@ -180,9 +192,9 @@ Close the bottom sheet.
 
 #### `useBottomSheet`
 
-The library provide `useBottomSheet` hook to provide the bottom sheet methods, anywhere inside the sheet content.
+The library provide `useBottomSheet` hook to provide the bottom sheet [methods](#methods), anywhere inside the sheet content.
 
-> `type:` { snapTo: () => void, close: () => void }
+> `type:` [BottomSheetMethods](./src/types.ts#L3)
 
 ## Scrollables
 

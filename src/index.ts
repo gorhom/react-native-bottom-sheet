@@ -14,4 +14,4 @@ export const {
 
 export type { BottomSheetHandleProps } from './components/handle';
 
-export { useBottomSheet } from './hooks';
+export { useBottomSheet } from './hooks/useBottomSheet';

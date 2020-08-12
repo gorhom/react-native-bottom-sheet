@@ -1,9 +1,9 @@
 import { createContext, Ref, RefObject } from 'react';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
-import { Scrollable, ScrollableRef } from './types';
+import type Animated from 'react-native-reanimated';
+import { Scrollable, ScrollableRef } from '../types';
 
-export interface BottomSheetInternalContextType {
+export type BottomSheetInternalContextType = {
   rootTapGestureRef: Ref<TapGestureHandler>;
   contentPanGestureState: Animated.Value<State>;
   contentPanGestureTranslationY: Animated.Value<number>;
@@ -13,7 +13,7 @@ export interface BottomSheetInternalContextType {
   decelerationRate: Animated.Node<number>;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
-}
+};
 
 // @ts-ignore
 export const BottomSheetInternalContext = createContext<
@@ -21,21 +21,3 @@ export const BottomSheetInternalContext = createContext<
 >();
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;
-
-export interface BottomSheetContextType {
-  /**
-   * Snap to one of the provided points from `snapPoints`.
-   * @type (index: number) => void
-   */
-  snapTo: (index: number) => void;
-  /**
-   * Close the bottom sheet.
-   * @type () => void
-   */
-  close: () => void;
-}
-
-// @ts-ignore
-export const BottomSheetContext = createContext<BottomSheetContextType>();
-
-export const BottomSheetProvider = BottomSheetContext.Provider;
