@@ -84,6 +84,12 @@ const NavigatorExample = () => {
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
   }, []);
+  const handleExpandPress = useCallback(() => {
+    bottomSheetRef.current?.expand();
+  }, []);
+  const handleCollapsePress = useCallback(() => {
+    bottomSheetRef.current?.collapse();
+  }, []);
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
@@ -105,6 +111,16 @@ const NavigatorExample = () => {
         label="Snap To 25%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
+      />
+      <Button
+        label="Expand"
+        style={styles.buttonContainer}
+        onPress={() => handleExpandPress()}
+      />
+      <Button
+        label="Collapse"
+        style={styles.buttonContainer}
+        onPress={() => handleCollapsePress()}
       />
       <Button
         label="Close"

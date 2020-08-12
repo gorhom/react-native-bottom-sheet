@@ -43,7 +43,7 @@ const MapExample = () => {
     console.log('handleSheetChanges', index);
   }, []);
   const handleTouchStart = useCallback(() => {
-    bottomSheetRef.current?.snapTo(0);
+    bottomSheetRef.current?.collapse();
   }, []);
   const handleRegionChangeComplete = useCallback(() => {
     bottomSheetRef.current?.snapTo(1);
