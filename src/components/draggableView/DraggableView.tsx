@@ -4,7 +4,6 @@ import Animated, { event } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetDraggableViewProps } from './types';
-
 import { styles } from './styles';
 
 const BottomSheetDraggableViewComponent = ({

@@ -15,8 +15,7 @@ import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import DraggableView from '../draggableView';
-import { useBottomSheetInternal } from '../../hooks';
-import { useScrollableInternal } from '../../utilities/useScrollable';
+import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
 import type {
   BottomSheetScrollViewType,
   BottomSheetScrollViewProps,

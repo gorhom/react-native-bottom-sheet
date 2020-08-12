@@ -15,13 +15,13 @@ import Animated, {
   neq,
   onChange,
   or,
+  cond,
+  block,
   // debug,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import { useClock, snapPoint } from 'react-native-redash';
-import { BottomSheetAnimationConfigs } from './types';
-
-const { cond, block } = Animated;
+import type { BottomSheetAnimationConfigs } from './types';
 
 interface TransitionProps extends Required<BottomSheetAnimationConfigs> {
   contentPanGestureState: Animated.Value<State>;
