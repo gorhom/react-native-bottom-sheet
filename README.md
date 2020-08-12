@@ -30,8 +30,9 @@ A performant interactive bottom sheet with fully configurable options 🚀
    - [BottomSheetScrollView](./docs/scrollview.md)
    - [BottomSheetView](./docs/flatlist.md)
 8. [To Do](#to-do)
-9. [Credits](#built-with)
-10. [License](#license)
+9. [FAQ](#faq)
+10. [Credits](#built-with)
+11. [License](#license)
 
 ## Features
 
@@ -208,6 +209,30 @@ This library provides a pre-integrated views that utilise an internal functional
 ## To Do
 
 - [ ] Add tablets support.
+- [ ] Add Reanimated v2 support.
+
+## FAQ
+
+#### How this library differ from `reanimated-bottom-sheet` or `react-native-scroll-bottom-sheet`?
+
+> This library was built to provide the most native-like experience and could fit any use-case that developers wants it to be.
+>
+> While both libraries providing similar experience, but they still missing the following:
+>
+> - `reanimated-bottom-sheet`
+>   - Seamless gesture interaction between the sheet and the content.
+> - `react-native-scroll-bottom-sheet`
+>   - Extracting scrollable content to allow developers customize the sheet content, like integrate `React Navigation` as the sheet >content.
+>
+> Both libraries are great! and I have used both of them at my work ❤️
+
+#### How can I integrate `React Navigation`?
+
+> here you go [React Navigation Integration](./docs/react-navigation.md) :)
+
+#### Will this library support `Reanimated v2`?
+
+> Sure! check out the [Feature Board](https://github.com/gorhom/react-native-bottom-sheet/projects/1)
 
 <h2 id="built-with">Built With ❤️</h2>
 
