@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { ViewStyle } from 'react-native';
 import isEqual from 'lodash.isequal';
+import invariant from 'invariant';
 import Animated, {
   useCode,
   onChange,
@@ -95,6 +96,54 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     },
     ref
   ) => {
+    //#region validate props
+    // validate `snapPoints`
+    invariant(
+      _snapPoints,
+      `'snapPoints' was not provided! please provide at least one snap point.`
+    );
+
+    invariant(
+      _snapPoints.length > 0,
+      `'snapPoints' was provided with no points! please provide at least one snap point.`
+    );
+
+    // validate `initialSnapIndex`
+    invariant(
+      typeof initialSnapIndex === 'number',
+      `'initialSnapIndex' was provided but with wrong type ! expected type is a number.`
+    );
+
+    invariant(
+      initialSnapIndex >= -1 && initialSnapIndex <= _snapPoints.length - 1,
+      `'initialSnapIndex' was provided but out of the provided snap points range! expected value to be between -1, ${
+        _snapPoints.length - 1
+      }`
+    );
+
+    // topInset
+    invariant(
+      typeof topInset === 'number',
+      `'topInset' was provided but with wrong type ! expected type is a number.`
+    );
+
+    // validate animations
+    invariant(
+      typeof animationDuration === 'number',
+      `'animationDuration' was provided but with wrong type ! expected type is a number.`
+    );
+
+    invariant(
+      animationDuration > 0,
+      `'animationDuration' was provided but the value is very low! expected value to be greater than 0`
+    );
+
+    invariant(
+      typeof animationEasing === 'function',
+      `'animationEasing' was provided but with wrong type ! expected type is a Animated.EasingFunction.`
+    );
+    //#endregion
+
     //#region refs
     const currentPositionIndexRef = useRef<number>(initialSnapIndex);
     const rootTapGestureRef = useRef<TapGestureHandler>(null);
@@ -110,9 +159,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       flashScrollableIndicators,
     } = useScrollable();
 
-    /**
-     *
-     */
+    // normalize snap points
     const { snapPoints, sheetHeight } = useMemo(() => {
       const normalizedSnapPoints = normalizeSnapPoints(_snapPoints, topInset);
       const maxSnapPoint =
@@ -228,8 +275,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [setScrollableRef, refreshUIElements]
     );
-    const handleOnSnapTo = useCallback(
+    //#endregion
+
+    //#region methods
+    const handleSnapTo = useCallback(
       (index: number) => {
+        invariant(
+          index >= -1 && index <= snapPoints.length - 1,
+          `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
+            snapPoints.length - 1
+          }`
+        );
         autoSnapTo.setValue(snapPoints[index]);
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -259,16 +315,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const contextVariables = useMemo(
       () => ({
-        snapTo: handleOnSnapTo,
+        snapTo: handleSnapTo,
         close: handleClose,
       }),
-      [handleOnSnapTo, handleClose]
+      [handleSnapTo, handleClose]
     );
     //#endregion
 
     //#region effects
     useImperativeHandle(ref, () => ({
-      snapTo: handleOnSnapTo,
+      snapTo: handleSnapTo,
       close: handleClose,
     }));
 
