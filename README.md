@@ -204,7 +204,7 @@ This library provides a pre-integrated views that utilise an internal functional
 - [BottomSheetFlatList](./docs/flatlist.md)
 - [BottomSheetSectionList](./docs/sectionlist.md)
 - [BottomSheetScrollView](./docs/scrollview.md)
-- [BottomSheetView](./docs/flatlist.md)
+- [BottomSheetView](./docs/view.md)
 
 ## To Do
 
