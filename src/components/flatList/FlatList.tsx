@@ -43,11 +43,7 @@ const BottomSheetFlatListComponent = forwardRef(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal('FlatList');
-    const {
-      rootTapGestureRef,
-      disableIntervalMomentum,
-      decelerationRate,
-    } = useBottomSheetInternal();
+    const { rootTapGestureRef, decelerationRate } = useBottomSheetInternal();
 
     // effects
     // @ts-ignore
@@ -70,8 +66,6 @@ const BottomSheetFlatListComponent = forwardRef(
             ref={scrollableRef}
             overScrollMode="never"
             bounces={false}
-            // @ts-ignore
-            disableIntervalMomentum={disableIntervalMomentum}
             decelerationRate={decelerationRate}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}

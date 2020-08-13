@@ -48,11 +48,7 @@ const BottomSheetScrollViewComponent = forwardRef(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal('ScrollView');
-    const {
-      rootTapGestureRef,
-      disableIntervalMomentum,
-      decelerationRate,
-    } = useBottomSheetInternal();
+    const { rootTapGestureRef, decelerationRate } = useBottomSheetInternal();
 
     // effects
     // @ts-ignore
@@ -73,8 +69,6 @@ const BottomSheetScrollViewComponent = forwardRef(
             ref={scrollableRef}
             overScrollMode="never"
             bounces={false}
-            // @ts-ignore
-            disableIntervalMomentum={disableIntervalMomentum}
             decelerationRate={decelerationRate}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
