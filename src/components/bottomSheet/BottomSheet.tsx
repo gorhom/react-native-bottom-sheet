@@ -211,7 +211,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     /**
      * Scrollable animated props.
      */
-    const disableIntervalMomentum = greaterThan(position, 0);
     const decelerationRate = cond(greaterThan(position, 0), 0.001, 0.999);
     //#endregion
 
@@ -299,7 +298,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         contentPanGestureTranslationY,
         contentPanGestureVelocityY,
         scrollableContentOffsetY,
-        disableIntervalMomentum,
         decelerationRate,
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,

@@ -9,7 +9,6 @@ export type BottomSheetInternalContextType = {
   contentPanGestureTranslationY: Animated.Value<number>;
   contentPanGestureVelocityY: Animated.Value<number>;
   scrollableContentOffsetY: Animated.Value<number>;
-  disableIntervalMomentum: Animated.Node<number>;
   decelerationRate: Animated.Node<number>;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
