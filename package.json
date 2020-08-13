@@ -41,7 +41,7 @@
     "react-native-redash": "^14.2.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^9.1.1",
+    "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^9.1.1",
     "@react-native-community/bob": "^0.16.2",
     "@react-native-community/eslint-config": "^2.0.0",
@@ -56,8 +56,9 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
+    "metro-react-native-babel-preset": "^0.62.0",
     "prettier": "^2.0.5",
-    "react": "~16.9.0",
+    "react": "^16.9.0",
     "react-native": "^0.62.2",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-reanimated": "^1.12.0",

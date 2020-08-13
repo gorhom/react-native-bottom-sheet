@@ -6,6 +6,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "web": "./node_modules/.bin/webpack-dev-server -d --config ./web/webpack.config.js --inline --hot --colors",
     "start": "react-native start"
   },
   "dependencies": {
@@ -16,22 +17,33 @@
     "@react-navigation/stack": "^5.9.0",
     "faker": "^4.1.0",
     "lodash.isequal": "^4.5.0",
-    "react": "16.11.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-maps": "^0.27.1",
     "react-native-reanimated": "^1.12.0",
     "react-native-redash": "^14.2.3",
     "react-native-safe-area-context": "0.7.3",
-    "react-native-screens": "^2.9.0"
+    "react-native-screens": "^2.9.0",
+    "react-native-web": "^0.13.7"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
+    "@babel/preset-typescript": "^7.10.4",
     "@babel/runtime": "^7.9.6",
     "@types/faker": "^4.1.12",
     "@types/react": "^16.9.23",
-    "@types/react-native": "^0.61.17",
+    "@types/react-native": "^0.61.23",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "babel-plugin-react-native-web": "^0.13.7",
+    "html-webpack-plugin": "^4.3.0",
     "metro-react-native-babel-preset": "^0.59.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }

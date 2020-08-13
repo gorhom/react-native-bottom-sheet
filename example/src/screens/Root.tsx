@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import Showcase from '@gorhom/showcase-template';
 import { useNavigation } from '@react-navigation/native';
 import { version, description } from '../../../package.json';
@@ -36,14 +37,18 @@ const data = [
         name: 'Custom Handle',
         slug: 'CustomHandleExample',
       },
-      {
-        name: 'Shadow Overlay',
-        slug: 'ShadowOverlayExample',
-      },
-      {
-        name: 'Map',
-        slug: 'MapExample',
-      },
+      ...(Platform.OS !== 'web'
+        ? [
+            {
+              name: 'Shadow Overlay',
+              slug: 'ShadowOverlayExample',
+            },
+            {
+              name: 'Map',
+              slug: 'MapExample',
+            },
+          ]
+        : []),
     ],
   },
 ];
