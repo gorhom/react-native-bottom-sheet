@@ -19,7 +19,6 @@ import Animated, {
   and,
   // concat,
   greaterThan,
-  interpolate,
   Extrapolate,
   set,
   // defined,
@@ -53,6 +52,12 @@ import {
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
 import { styles } from './styles';
+
+const {
+  interpolate: interpolateV1,
+  interpolateNode: interpolateV2,
+} = require('react-native-reanimated');
+const interpolate = interpolateV2 || interpolateV1;
 
 type BottomSheet = BottomSheetMethods;
 
