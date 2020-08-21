@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import Animated, {
   useValue,
@@ -7,10 +7,9 @@ import Animated, {
   concat,
   Extrapolate,
 } from 'react-native-reanimated';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import Handle from '../components/handle';
 import Button from '../components/button';
-import ContactList from '../components/contactList';
 import { ReText } from 'react-native-redash';
 
 const BasicExample = () => {
@@ -49,13 +48,13 @@ const BasicExample = () => {
   }, []);
 
   // renders
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>Basic Screen</Text>
-      </View>
-    );
-  }, []);
+  // const renderHeader = useCallback(() => {
+  //   return (
+  //     <View style={styles.headerContainer}>
+  //       <Text style={styles.title}>Basic Screen</Text>
+  //     </View>
+  //   );
+  // }, []);
 
   return (
     <View style={styles.container}>
@@ -153,7 +152,18 @@ const BasicExample = () => {
           style={styles.buttonContainer}
           onPress={() => handleSnapPress(1)}
         /> */}
-        <ContactList type="ScrollView" header={renderHeader} />
+        {/* <ContactList type="ScrollView" header={renderHeader} /> */}
+        <View style={{ height: 100, backgroundColor: 'blue' }} />
+        <BottomSheetFlatList
+          contentContainerStyle={{ flexGrow: 1, backgroundColor: '#fff' }}
+          data={[0, 1, 2, 3, 4, 5, 6, 7, 8]}
+          renderItem={() => (
+            <View
+              style={{ backgroundColor: 'red', height: 100, marginBottom: 20 }}
+            />
+          )}
+        />
+        <View style={{ height: 100, backgroundColor: 'green' }} />
       </BottomSheet>
     </View>
   );

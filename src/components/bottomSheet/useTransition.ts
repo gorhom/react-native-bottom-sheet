@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import Animated, {
   eq,
   useValue,
@@ -22,6 +23,7 @@ import Animated, {
 import { State } from 'react-native-gesture-handler';
 import { useClock, snapPoint } from 'react-native-redash';
 import type { BottomSheetAnimationConfigs } from './types';
+import { GESTURE } from '../../constants';
 
 interface TransitionProps extends Required<BottomSheetAnimationConfigs> {
   contentPanGestureState: Animated.Value<State>;
@@ -36,12 +38,6 @@ interface TransitionProps extends Required<BottomSheetAnimationConfigs> {
   scrollableContentOffsetY: Animated.Value<number>;
   snapPoints: number[];
   initialPosition: number;
-}
-
-enum GESTURE {
-  UNDETERMINED = 0,
-  CONTENT,
-  HANDLE,
 }
 
 export const useTransition = ({
@@ -67,26 +63,36 @@ export const useTransition = ({
   const shouldAnimate = useValue(0);
 
   const clock = useClock();
-  const config = {
-    toValue: useValue(0),
-    duration: animationDuration,
-    easing: animationEasing,
-  };
+  const config = useMemo(
+    () => ({
+      toValue: new Animated.Value(0),
+      duration: animationDuration,
+      easing: animationEasing,
+    }),
+    [animationEasing, animationDuration]
+  );
 
-  const animationState = {
-    finished: useValue(0),
-    position: useValue(initialPosition),
-    frameTime: useValue(0),
-    time: useValue(0),
-  };
+  const animationState = useMemo(
+    () => ({
+      finished: new Animated.Value(0),
+      position: new Animated.Value(initialPosition),
+      frameTime: new Animated.Value(0),
+      time: new Animated.Value(0),
+    }),
+    [initialPosition]
+  );
 
-  const finishTiming = [
-    set(shouldAnimate, 0),
-    set(currentPosition, config.toValue),
-    set(animationState.frameTime, 0),
-    set(animationState.time, 0),
-    stopClock(clock),
-  ];
+  const finishTiming = useMemo(
+    () => [
+      set(shouldAnimate, 0),
+      set(currentPosition, config.toValue),
+      set(animationState.frameTime, 0),
+      set(animationState.time, 0),
+      stopClock(clock),
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const translateY = cond(
     eq(currentGesture, GESTURE.CONTENT),
@@ -149,22 +155,28 @@ export const useTransition = ({
     /**
      * Gesture ended node.
      */
-    cond(
-      or(
-        eq(contentPanGestureState, State.END),
-        eq(handlePanGestureState, State.END)
-      ),
-      [
-        set(contentPanGestureState, State.UNDETERMINED),
-        set(handlePanGestureState, State.UNDETERMINED),
-        set(
-          config.toValue,
-          snapPoint(add(currentPosition, translateY), velocityY, snapPoints)
+    onChange(
+      add(contentPanGestureState, handlePanGestureState),
+      cond(
+        or(
+          and(
+            eq(currentGesture, GESTURE.CONTENT),
+            eq(contentPanGestureState, State.END)
+          ),
+          and(
+            neq(currentGesture, GESTURE.CONTENT),
+            eq(handlePanGestureState, State.END)
+          )
         ),
-        set(shouldAnimate, 1),
-      ]
+        [
+          set(
+            config.toValue,
+            snapPoint(add(currentPosition, translateY), velocityY, snapPoints)
+          ),
+          set(shouldAnimate, 1),
+        ]
+      )
     ),
-
     /**
      * Manual snapping node.
      */
@@ -199,5 +211,6 @@ export const useTransition = ({
   return {
     position,
     currentPosition,
+    currentGesture,
   };
 };

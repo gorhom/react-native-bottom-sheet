@@ -7,9 +7,10 @@ import type { BottomSheetDraggableViewProps } from './types';
 import { styles } from './styles';
 
 const BottomSheetDraggableViewComponent = ({
-  children,
-  style,
   nativeGestureRef,
+  gestureType = 'HANDLE',
+  style,
+  children,
   ...rest
 }: BottomSheetDraggableViewProps) => {
   // refs
@@ -18,6 +19,9 @@ const BottomSheetDraggableViewComponent = ({
   // hooks
   const {
     rootTapGestureRef,
+    handlePanGestureState,
+    handlePanGestureTranslationY,
+    handlePanGestureVelocityY,
     contentPanGestureState,
     contentPanGestureTranslationY,
     contentPanGestureVelocityY,
@@ -41,17 +45,27 @@ const BottomSheetDraggableViewComponent = ({
   // callbacks
   const handleGestureEvent = useMemo(
     () =>
-      event([
-        {
-          nativeEvent: {
-            state: contentPanGestureState,
-            translationY: contentPanGestureTranslationY,
-            velocityY: contentPanGestureVelocityY,
-          },
-        },
-      ]),
+      gestureType === 'CONTENT'
+        ? event([
+            {
+              nativeEvent: {
+                state: contentPanGestureState,
+                translationY: contentPanGestureTranslationY,
+                velocityY: contentPanGestureVelocityY,
+              },
+            },
+          ])
+        : event([
+            {
+              nativeEvent: {
+                state: handlePanGestureState,
+                translationY: handlePanGestureTranslationY,
+                velocityY: handlePanGestureVelocityY,
+              },
+            },
+          ]),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [gestureType]
   );
 
   // effects

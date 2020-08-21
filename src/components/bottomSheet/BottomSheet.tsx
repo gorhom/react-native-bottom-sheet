@@ -49,6 +49,7 @@ import {
 import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
+  GESTURE,
 } from '../../constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -185,7 +186,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region animation
-    const { position, currentPosition } = useTransition({
+    const { position, currentPosition, currentGesture } = useTransition({
       animationDuration,
       animationEasing,
       contentPanGestureState,
@@ -294,6 +295,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const internalContextVariables = useMemo(
       () => ({
         rootTapGestureRef,
+        handlePanGestureState,
+        handlePanGestureTranslationY,
+        handlePanGestureVelocityY,
         contentPanGestureState,
         contentPanGestureTranslationY,
         contentPanGestureVelocityY,
@@ -361,7 +365,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     useCode(
       () =>
         cond(
-          and(eq(tapGestureState, State.FAILED), neq(position, 0)),
+          and(
+            eq(tapGestureState, State.FAILED),
+            eq(currentGesture, GESTURE.CONTENT),
+            eq(contentPanGestureState, State.END),
+            eq(handlePanGestureState, State.END),
+            neq(position, 0)
+          ),
           call([], () => {
             scrollToTop();
           })
@@ -420,11 +430,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         {/* <Animated.View pointerEvents="none" style={styles.debug}>
           <ReText
             style={styles.debugText}
+            text={concat('currentGesture: ', currentGesture)}
+          />
+          <ReText
+            style={styles.debugText}
             text={concat('tapState: ', tapGestureState)}
           />
           <ReText
             style={styles.debugText}
             text={concat('contentState: ', contentPanGestureState)}
+          />
+          <ReText
+            style={styles.debugText}
+            text={concat('handleState: ', handlePanGestureState)}
           />
           <ReText
             style={styles.debugText}

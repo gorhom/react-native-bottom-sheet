@@ -52,8 +52,9 @@ const BottomSheetSectionListComponent = forwardRef(
     // render
     return (
       <DraggableView
-        style={styles.container}
         nativeGestureRef={nativeGestureRef}
+        gestureType="CONTENT"
+        style={styles.container}
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
