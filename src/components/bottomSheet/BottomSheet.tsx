@@ -31,8 +31,8 @@ import {
   State,
 } from 'react-native-gesture-handler';
 import {
-  usePanGestureHandler,
   useValue,
+  usePanGestureHandler,
   useTapGestureHandler,
   // ReText,
 } from 'react-native-redash';

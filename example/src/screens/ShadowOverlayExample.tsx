@@ -1,11 +1,8 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import Animated, {
-  useValue,
-  interpolate,
-  Extrapolate,
-} from 'react-native-reanimated';
+import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
+import { useValue } from 'react-native-redash';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Button from '../components/button';
 import ContactList from '../components/contactList';
