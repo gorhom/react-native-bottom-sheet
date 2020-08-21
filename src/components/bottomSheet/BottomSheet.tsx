@@ -19,7 +19,7 @@ import Animated, {
   and,
   // concat,
   greaterThan,
-  interpolate,
+  interpolateNode,
   Extrapolate,
   set,
   // defined,
@@ -200,7 +200,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       initialPosition,
     });
 
-    const animatedPositionIndex = interpolate(position, {
+    const animatedPositionIndex = interpolateNode(position, {
       inputRange: snapPoints.slice().reverse(),
       outputRange: snapPoints
         .slice()
