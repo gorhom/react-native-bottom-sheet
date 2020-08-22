@@ -1,13 +1,7 @@
 import { useCallback, useRef, useMemo } from 'react';
 import { findNodeHandle } from 'react-native';
-import {
-  useValue,
-  event,
-  useCode,
-  onChange,
-  set,
-  call,
-} from 'react-native-reanimated';
+import { event, useCode, onChange, set, call } from 'react-native-reanimated';
+import { useValue } from 'react-native-redash';
 import { useBottomSheetInternal } from '../hooks/useBottomSheetInternal';
 import type { Scrollable, ScrollableType } from '../types';
 

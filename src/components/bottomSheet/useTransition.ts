@@ -1,6 +1,5 @@
 import Animated, {
   eq,
-  useValue,
   set,
   add,
   greaterOrEq,
@@ -20,7 +19,7 @@ import Animated, {
   // debug,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
-import { useClock, snapPoint } from 'react-native-redash';
+import { useClock, useValue, snapPoint } from 'react-native-redash';
 import type { BottomSheetAnimationConfigs } from './types';
 
 interface TransitionProps extends Required<BottomSheetAnimationConfigs> {

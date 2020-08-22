@@ -8,11 +8,8 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import { BlurView } from '@react-native-community/blur';
-import Animated, {
-  useValue,
-  interpolate,
-  Extrapolate,
-} from 'react-native-reanimated';
+import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
+import { useValue } from 'react-native-redash';
 import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import SearchHandle from '../components/searchHandle';

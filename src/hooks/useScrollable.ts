@@ -5,7 +5,8 @@ import {
   ScrollView,
   SectionList,
 } from 'react-native';
-import Animated, { useValue } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import { useValue } from 'react-native-redash';
 import type { ScrollableRef, Scrollable } from '../types';
 
 export const useScrollable = () => {
