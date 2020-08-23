@@ -450,10 +450,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             style={styles.debugText}
             text={concat('currentPosition: ', currentPosition)}
           />
-          <ReText
-            style={styles.debugText}
-            text={concat('disableIntervalMomentum: ', disableIntervalMomentum)}
-          />
         </Animated.View> */}
       </>
     );
