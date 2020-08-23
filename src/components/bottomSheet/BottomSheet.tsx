@@ -373,8 +373,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           and(
             eq(tapGestureState, State.FAILED),
             eq(currentGesture, GESTURE.CONTENT),
-            eq(contentPanGestureState, State.END),
-            eq(handlePanGestureState, State.END),
             neq(position, 0)
           ),
           call([], () => {

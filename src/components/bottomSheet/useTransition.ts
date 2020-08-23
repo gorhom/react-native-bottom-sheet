@@ -53,7 +53,7 @@ export const useTransition = ({
   snapPoints,
   initialPosition,
 }: TransitionProps) => {
-  const currentGesture = useValue<GESTURE>(0);
+  const currentGesture = useValue<GESTURE>(GESTURE.UNDETERMINED);
   const currentPosition = useValue(initialPosition);
 
   const isPanningContent = eq(contentPanGestureState, State.ACTIVE);
@@ -83,6 +83,7 @@ export const useTransition = ({
 
   const finishTiming = useMemo(
     () => [
+      set(currentGesture, GESTURE.UNDETERMINED),
       set(shouldAnimate, 0),
       set(currentPosition, config.toValue),
       set(animationState.frameTime, 0),
