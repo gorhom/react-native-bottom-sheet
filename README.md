@@ -39,6 +39,8 @@ A performant interactive bottom sheet with fully configurable options 🚀
 - Smooth interactions & snapping animations.
 - Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions.
 - Support `React Navigation` Integration.
+- Compatible with `Reanimated` v1 & v2.
+- Compatible with `Expo`.
 - Written in `TypeScript`.
 
 ## Installation
@@ -209,7 +211,7 @@ This library provides a pre-integrated views that utilise an internal functional
 ## To Do
 
 - [ ] Add tablets support.
-- [ ] Add Reanimated v2 support.
+- [x] Add Reanimated v2 support.
 
 ## FAQ
 
@@ -232,7 +234,7 @@ This library provides a pre-integrated views that utilise an internal functional
 
 #### Will this library support `Reanimated v2`?
 
-> Sure! check out the [Feature Board](https://github.com/gorhom/react-native-bottom-sheet/projects/1)
+> Yes 🎉
 
 <h2 id="built-with">Built With ❤️</h2>
 
