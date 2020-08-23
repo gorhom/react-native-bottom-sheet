@@ -28,7 +28,7 @@ A performant interactive bottom sheet with fully configurable options 🚀
    - [BottomSheetFlatList](./docs/flatlist.md)
    - [BottomSheetSectionList](./docs/sectionlist.md)
    - [BottomSheetScrollView](./docs/scrollview.md)
-   - [BottomSheetView](./docs/flatlist.md)
+   - [BottomSheetView](./docs/view.md)
 8. [To Do](#to-do)
 9. [FAQ](#faq)
 10. [Credits](#built-with)

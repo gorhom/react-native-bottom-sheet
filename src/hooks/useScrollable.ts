@@ -5,7 +5,8 @@ import {
   ScrollView,
   SectionList,
 } from 'react-native';
-import Animated, { useValue } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import { useValue } from 'react-native-redash';
 import type { ScrollableRef, Scrollable } from '../types';
 
 export const useScrollable = () => {
@@ -59,11 +60,9 @@ export const useScrollable = () => {
 
     switch (type) {
       case 'FlatList':
-        (node as FlatList).scrollToIndex({
+        (node as FlatList).scrollToOffset({
           animated: false,
-          index: 0,
-          viewPosition: 0,
-          viewOffset: 1000,
+          offset: 0,
         });
         break;
 
@@ -75,6 +74,9 @@ export const useScrollable = () => {
         break;
 
       case 'SectionList':
+        if ((node as SectionList).props.sections.length === 0) {
+          return;
+        }
         (node as SectionList).scrollToLocation({
           itemIndex: 0,
           sectionIndex: 0,

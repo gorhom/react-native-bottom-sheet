@@ -19,7 +19,6 @@ import Animated, {
   and,
   // concat,
   greaterThan,
-  interpolate,
   Extrapolate,
   set,
   // defined,
@@ -31,8 +30,8 @@ import {
   State,
 } from 'react-native-gesture-handler';
 import {
-  usePanGestureHandler,
   useValue,
+  usePanGestureHandler,
   useTapGestureHandler,
   // ReText,
 } from 'react-native-redash';
@@ -54,6 +53,12 @@ import {
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
 import { styles } from './styles';
+
+const {
+  interpolate: interpolateV1,
+  interpolateNode: interpolateV2,
+} = require('react-native-reanimated');
+const interpolate = interpolateV2 || interpolateV1;
 
 type BottomSheet = BottomSheetMethods;
 
@@ -462,10 +467,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           <ReText
             style={styles.debugText}
             text={concat('currentPosition: ', currentPosition)}
-          />
-          <ReText
-            style={styles.debugText}
-            text={concat('disableIntervalMomentum: ', disableIntervalMomentum)}
           />
         </Animated.View> */}
       </>
