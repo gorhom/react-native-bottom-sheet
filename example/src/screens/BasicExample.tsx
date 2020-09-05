@@ -5,8 +5,8 @@ import { useValue, concat } from 'react-native-reanimated';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Handle from '../components/handle';
 import Button from '../components/button';
-import ContactList from '../components/contactList';
 import { ReText } from 'react-native-redash';
+import ContactList from '../components/contactList';
 
 const BasicExample = () => {
   // hooks
@@ -68,8 +68,6 @@ const BasicExample = () => {
         initialSnapIndex={1}
         handleComponent={Handle}
         topInset={headerHeight}
-        animatedPosition={position}
-        onChange={handleSheetChanges}
       >
         {/* <View
           style={{
@@ -134,7 +132,7 @@ const BasicExample = () => {
           style={styles.buttonContainer}
           onPress={() => handleSnapPress(1)}
         /> */}
-        <ContactList type="View" count={50} header={renderHeader} />
+        <ContactList type="ScrollView" count={50} header={renderHeader} />
       </BottomSheet>
     </View>
   );

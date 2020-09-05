@@ -21,7 +21,6 @@ import Animated, {
   // concat,
   Easing,
   greaterThan,
-  interpolate,
   Extrapolate,
   set,
   // defined,
@@ -32,6 +31,7 @@ import Animated, {
   concat,
   useDerivedValue,
   withTiming,
+  interpolate
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
@@ -60,6 +60,7 @@ import {
 import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
+  GESTURE,
 } from '../../constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -197,7 +198,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     });
     const handleSettingScrollableRef = useCallback(
       (scrollableRef: ScrollableRef) => {
-        console.log('handleSettingScrollableRef', scrollableRef)
+        console.log('handleSettingScrollableRef', scrollableRef);
         setScrollableRef(scrollableRef);
         refreshUIElements();
       },
@@ -207,17 +208,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region gestures
     const animatedPosition = useSharedValue(initialPosition);
-
-    const animatedPositionIndex = useDerivedValue(() =>
-      interpolate(
+    const animatedPositionIndex = useDerivedValue(() => {
+      console.log('X', snapPoints, initialPosition);
+      return interpolate(
         animatedPosition.value,
         snapPoints.slice().reverse(),
         snapPoints
           .slice()
           .map((_, index) => index)
           .reverse()
-      )
-    );
+      );
+    });
 
     const animateToPointCompleted = useCallback(
       isCancelled => {
@@ -341,6 +342,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const internalContextVariables = useMemo(
       () => ({
         rootTapGestureRef,
+        handlePanGestureState,
+        handlePanGestureTranslationY,
+        handlePanGestureVelocityY,
         contentPanGestureState,
         contentPanGestureTranslationY,
         contentPanGestureVelocityY,

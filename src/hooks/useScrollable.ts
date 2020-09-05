@@ -1,4 +1,4 @@
-import { useCallback, useRef, RefObject } from 'react';
+import { useCallback, RefObject } from 'react';
 import {
   findNodeHandle,
   FlatList,
@@ -6,7 +6,6 @@ import {
   SectionList,
 } from 'react-native';
 import Animated, {
-  useValue,
   useAnimatedRef,
   useSharedValue,
   useAnimatedScrollHandler,
@@ -66,11 +65,9 @@ export const useScrollable = () => {
 
     switch (type) {
       case 'FlatList':
-        (node as FlatList).scrollToIndex({
+        (node as FlatList).scrollToOffset({
           animated: false,
-          index: 0,
-          viewPosition: 0,
-          viewOffset: 1000,
+          offset: 0,
         });
         break;
 
@@ -82,6 +79,9 @@ export const useScrollable = () => {
         break;
 
       case 'SectionList':
+        if ((node as SectionList).props.sections.length === 0) {
+          return;
+        }
         (node as SectionList).scrollToLocation({
           itemIndex: 0,
           sectionIndex: 0,
@@ -97,7 +97,7 @@ export const useScrollable = () => {
     let type = scrollableRef.current?.type ?? undefined;
     let node = scrollableRef.current?.node ?? undefined;
 
-    console.log('X', type, node)
+    console.log('X', type, node);
 
     if (!type || !node) {
       return;

@@ -10,9 +10,10 @@ import type { BottomSheetDraggableViewProps } from './types';
 import { styles } from './styles';
 
 const BottomSheetDraggableViewComponent = ({
-  children,
-  style,
   nativeGestureRef,
+  gestureType = 'HANDLE',
+  style,
+  children,
   ...rest
 }: BottomSheetDraggableViewProps) => {
   // refs
@@ -21,7 +22,7 @@ const BottomSheetDraggableViewComponent = ({
   // hooks
   const {
     rootTapGestureRef,
-    contentPanGestureHandler
+    contentPanGestureHandler,
   } = useBottomSheetInternal();
 
   // variables
@@ -38,8 +39,6 @@ const BottomSheetDraggableViewComponent = ({
     () => (style ? [styles.container, style] : styles.container),
     [style]
   );
-
-  // effects
 
   return (
     <PanGestureHandler
