@@ -5,5 +5,5 @@ export interface BottomSheetHandleProps {
    * Animated value to be used as a callback for the position index node internally.
    * @type Animated.Value<number>
    */
-  animatedPositionIndex: Animated.Node<number>;
+  animatedPositionIndex: Animated.SharedValue<number>;
 }

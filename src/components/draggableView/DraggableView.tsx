@@ -1,6 +1,9 @@
 import React, { useMemo, useRef, memo } from 'react';
 import isEqual from 'lodash.isequal';
-import Animated, { event } from 'react-native-reanimated';
+import Animated, {
+  event,
+  useAnimatedGestureHandler,
+} from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetDraggableViewProps } from './types';
@@ -18,9 +21,7 @@ const BottomSheetDraggableViewComponent = ({
   // hooks
   const {
     rootTapGestureRef,
-    contentPanGestureState,
-    contentPanGestureTranslationY,
-    contentPanGestureVelocityY,
+    contentPanGestureHandler
   } = useBottomSheetInternal();
 
   // variables
@@ -38,22 +39,6 @@ const BottomSheetDraggableViewComponent = ({
     [style]
   );
 
-  // callbacks
-  const handleGestureEvent = useMemo(
-    () =>
-      event([
-        {
-          nativeEvent: {
-            state: contentPanGestureState,
-            translationY: contentPanGestureTranslationY,
-            velocityY: contentPanGestureVelocityY,
-          },
-        },
-      ]),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
   // effects
 
   return (
@@ -61,8 +46,7 @@ const BottomSheetDraggableViewComponent = ({
       ref={panGestureRef}
       simultaneousHandlers={simultaneousHandlers}
       shouldCancelWhenOutside={false}
-      onGestureEvent={handleGestureEvent}
-      onHandlerStateChange={handleGestureEvent}
+      onGestureEvent={contentPanGestureHandler}
     >
       <Animated.View style={containerStyle} {...rest}>
         {children}

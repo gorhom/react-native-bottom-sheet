@@ -1,12 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import Animated, {
-  useValue,
-  interpolate,
-  concat,
-  Extrapolate,
-} from 'react-native-reanimated';
+import { useValue, concat } from 'react-native-reanimated';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Handle from '../components/handle';
 import Button from '../components/button';
@@ -23,19 +18,6 @@ const BasicExample = () => {
   const position = useValue<number>(0);
 
   // styles
-  const shadowOverlayStyle = useMemo(
-    () => ({
-      ...styles.shadowOverlay,
-      opacity: interpolate(position, {
-        inputRange: [300, 450],
-        outputRange: [0, 1],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
@@ -80,7 +62,6 @@ const BasicExample = () => {
         onPress={() => handleClosePress()}
       />
       <ReText text={concat('Position from bottom: ', position)} />
-      <Animated.View pointerEvents="none" style={shadowOverlayStyle} />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -153,7 +134,7 @@ const BasicExample = () => {
           style={styles.buttonContainer}
           onPress={() => handleSnapPress(1)}
         /> */}
-        <ContactList type="ScrollView" header={renderHeader} />
+        <ContactList type="View" count={50} header={renderHeader} />
       </BottomSheet>
     </View>
   );

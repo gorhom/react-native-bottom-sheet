@@ -25,7 +25,7 @@ const BottomSheetViewComponent = ({
 
   // callback
   const handleSettingScrollable = useCallback(() => {
-    scrollableContentOffsetY.setValue(0);
+    // scrollableContentOffsetY.setValue(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

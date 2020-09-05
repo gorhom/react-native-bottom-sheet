@@ -5,16 +5,23 @@ import {
   ScrollView,
   SectionList,
 } from 'react-native';
-import Animated, { useValue } from 'react-native-reanimated';
+import Animated, {
+  useValue,
+  useAnimatedRef,
+  useSharedValue,
+  useAnimatedScrollHandler,
+} from 'react-native-reanimated';
 import type { ScrollableRef, Scrollable } from '../types';
 
 export const useScrollable = () => {
   // refs
-  const scrollableRef = useRef<ScrollableRef>(null);
-  const previousScrollableRef = useRef<ScrollableRef>(null);
+  const scrollableRef = useAnimatedRef<ScrollableRef>(null);
+  const previousScrollableRef = useAnimatedRef<ScrollableRef>(null);
 
   // variables
-  const scrollableContentOffsetY: Animated.Value<number> = useValue<number>(0);
+  const scrollableContentOffsetY: Animated.SharedValue<number> = useSharedValue<
+    number
+  >(0);
 
   // callbacks
   const setScrollableRef = useCallback((ref: ScrollableRef) => {
@@ -90,6 +97,8 @@ export const useScrollable = () => {
     let type = scrollableRef.current?.type ?? undefined;
     let node = scrollableRef.current?.node ?? undefined;
 
+    console.log('X', type, node)
+
     if (!type || !node) {
       return;
     }
@@ -100,6 +109,13 @@ export const useScrollable = () => {
       node.flashScrollIndicators();
     }
   }, []);
+
+  // events
+  const handleScrollEvent = useAnimatedScrollHandler({
+    onBeginDrag: event => {
+      scrollableContentOffsetY.value = event.contentOffset.y;
+    },
+  });
 
   return {
     scrollableRef,

@@ -1,21 +1,17 @@
-import { useCallback, useRef, useMemo } from 'react';
+import { useCallback } from 'react';
 import { findNodeHandle } from 'react-native';
 import {
-  useValue,
-  event,
-  useCode,
-  onChange,
-  set,
-  call,
+  useAnimatedScrollHandler,
+  useSharedValue,
+  useAnimatedRef,
 } from 'react-native-reanimated';
 import { useBottomSheetInternal } from '../hooks/useBottomSheetInternal';
 import type { Scrollable, ScrollableType } from '../types';
 
 export const useScrollableInternal = (type: ScrollableType) => {
   // refs
-  const scrollableContentOffsetYRef = useRef<number>(0);
-  const scrollableContentOffsetY = useValue<number>(0);
-  const scrollableRef = useRef<Scrollable>(null);
+  const scrollableContentOffsetY = useSharedValue<number>(0);
+  const scrollableRef = useAnimatedRef<Scrollable>(null);
 
   // hooks
   const {
@@ -25,29 +21,22 @@ export const useScrollableInternal = (type: ScrollableType) => {
   } = useBottomSheetInternal();
 
   // callbacks
-  const handleScrollEvent = useMemo(
-    () =>
-      event([
-        {
-          nativeEvent: {
-            contentOffset: { y: scrollableContentOffsetY },
-          },
-        },
-      ]),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const handleScrollEvent = useAnimatedScrollHandler({
+    onBeginDrag: event => {
+      scrollableContentOffsetY.value = event.contentOffset.y;
+    },
+  });
   const handleSettingScrollable = useCallback(() => {
-    _scrollableContentOffsetY.setValue(scrollableContentOffsetYRef.current);
+    'worklet';
+    _scrollableContentOffsetY.value = scrollableContentOffsetY.value;
 
     const id = findNodeHandle(scrollableRef.current);
-
     if (id) {
       setScrollableRef({
         id: id,
         type,
         // @ts-ignore
-        node: scrollableRef.current!.getNode(),
+        node: scrollableRef.current,
       });
     } else {
       console.warn(`Couldn't find the scrollable node handle id!`);
@@ -58,19 +47,6 @@ export const useScrollableInternal = (type: ScrollableType) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // effects
-  useCode(
-    () =>
-      onChange(scrollableContentOffsetY, [
-        set(_scrollableContentOffsetY, scrollableContentOffsetY),
-        call([scrollableContentOffsetY], args => {
-          scrollableContentOffsetYRef.current = args[0];
-        }),
-      ]),
-    []
-  );
-
   return {
     scrollableRef,
     handleScrollEvent,

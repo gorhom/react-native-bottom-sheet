@@ -7,11 +7,15 @@ const Stack = createStackNavigator<AppStackParamsList>();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Root">
+      <Stack.Navigator initialRouteName="BasicExample">
         <Stack.Screen
           name="Root"
           getComponent={() => require('./screens/Root').default}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BasicExample"
+          getComponent={() => require('./screens/BasicExample').default}
         />
         {/* basic examples */}
         <Stack.Screen
