@@ -116,6 +116,7 @@ export const useTransition = ({
     or(isPanning, neq(autoSnapTo, -1))
   );
   const position = block([
+    // debug('current gesture', currentGesture),
     /**
      * In case animation get interrupted, we execute the finishTiming node and
      * set current position the the animated position.
@@ -164,11 +165,12 @@ export const useTransition = ({
             eq(contentPanGestureState, State.END)
           ),
           and(
-            neq(currentGesture, GESTURE.CONTENT),
+            eq(currentGesture, GESTURE.HANDLE),
             eq(handlePanGestureState, State.END)
           )
         ),
         [
+          // debug('gesture end', currentGesture),
           set(
             config.toValue,
             snapPoint(add(currentPosition, translateY), velocityY, snapPoints)
