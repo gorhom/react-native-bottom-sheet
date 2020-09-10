@@ -33,7 +33,6 @@ interface TransitionProps extends Required<BottomSheetAnimationConfigs> {
   handlePanGestureTranslationY: Animated.Value<number>;
   handlePanGestureVelocityY: Animated.Value<number>;
 
-  autoSnapTo: Animated.Value<number>;
   scrollableContentOffsetY: Animated.Value<number>;
   snapPoints: number[];
   initialPosition: number;
@@ -48,7 +47,6 @@ export const useTransition = ({
   handlePanGestureState,
   handlePanGestureTranslationY,
   handlePanGestureVelocityY,
-  autoSnapTo,
   scrollableContentOffsetY,
   snapPoints,
   initialPosition,
@@ -60,6 +58,7 @@ export const useTransition = ({
   const isPanningHandle = eq(handlePanGestureState, State.ACTIVE);
   const isPanning = or(isPanningContent, isPanningHandle);
   const shouldAnimate = useValue(0);
+  const manualSnapToPoint = useValue<number>(-1);
 
   const clock = useClock();
   const config = useMemo(
@@ -113,7 +112,7 @@ export const useTransition = ({
   );
   const isAnimationInterrupted = and(
     clockRunning(clock),
-    or(isPanning, neq(autoSnapTo, -1))
+    or(isPanning, neq(manualSnapToPoint, -1))
   );
   const position = block([
     // debug('current gesture', currentGesture),
@@ -182,14 +181,12 @@ export const useTransition = ({
     /**
      * Manual snapping node.
      */
-    onChange(autoSnapTo, [
-      cond(neq(autoSnapTo, -1), [
-        // debug('Manually snap to', autoSnapTo),
-        set(config.toValue, autoSnapTo),
-        set(autoSnapTo, -1),
-        set(animationState.finished, 0),
-        set(shouldAnimate, 1),
-      ]),
+    cond(neq(manualSnapToPoint, -1), [
+      // debug('Manually snap to', manualSnapToPoint),
+      set(config.toValue, manualSnapToPoint),
+      set(animationState.finished, 0),
+      set(shouldAnimate, 1),
+      set(manualSnapToPoint, -1),
     ]),
 
     /**
@@ -212,6 +209,7 @@ export const useTransition = ({
 
   return {
     position,
+    manualSnapToPoint,
     currentPosition,
     currentGesture,
   };
