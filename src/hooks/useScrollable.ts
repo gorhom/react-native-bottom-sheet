@@ -1,26 +1,16 @@
-import { useCallback, RefObject } from 'react';
-import {
-  findNodeHandle,
-  FlatList,
-  ScrollView,
-  SectionList,
-} from 'react-native';
-import Animated, {
-  useAnimatedRef,
-  useSharedValue,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
+import { useCallback, RefObject, useRef } from 'react';
+import { findNodeHandle } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 import type { ScrollableRef, Scrollable } from '../types';
 
 export const useScrollable = () => {
   // refs
-  const scrollableRef = useAnimatedRef<ScrollableRef>(null);
-  const previousScrollableRef = useAnimatedRef<ScrollableRef>(null);
+  const scrollableRef = useRef<ScrollableRef>(null);
+  const previousScrollableRef = useRef<ScrollableRef>(null);
 
   // variables
-  const scrollableContentOffsetY: Animated.SharedValue<number> = useSharedValue<
-    number
-  >(0);
+  const scrollableContentOffsetY = useSharedValue<number>(0);
+  const scrollableDecelerationRate = useSharedValue<number>(0);
 
   // callbacks
   const setScrollableRef = useCallback((ref: ScrollableRef) => {
@@ -55,74 +45,27 @@ export const useScrollable = () => {
     }
   }, []);
 
-  const scrollToTop = useCallback(() => {
-    let type = scrollableRef.current?.type ?? undefined;
-    let node = scrollableRef.current?.node ?? undefined;
-
-    if (!type || !node) {
-      return;
-    }
-
-    switch (type) {
-      case 'FlatList':
-        (node as FlatList).scrollToOffset({
-          animated: false,
-          offset: 0,
-        });
-        break;
-
-      case 'ScrollView':
-        (node as ScrollView).scrollTo({
-          y: 0,
-          animated: false,
-        });
-        break;
-
-      case 'SectionList':
-        if ((node as SectionList).props.sections.length === 0) {
-          return;
-        }
-        (node as SectionList).scrollToLocation({
-          itemIndex: 0,
-          sectionIndex: 0,
-          viewPosition: 0,
-          viewOffset: 1000,
-          animated: false,
-        });
-        break;
-    }
-  }, []);
-
   const flashScrollableIndicators = useCallback(() => {
     let type = scrollableRef.current?.type ?? undefined;
     let node = scrollableRef.current?.node ?? undefined;
-
-    console.log('X', type, node);
 
     if (!type || !node) {
       return;
     }
 
     // @ts-ignore
-    if (node.flashScrollIndicators) {
+    if (node.current.flashScrollIndicators) {
       // @ts-ignore
-      node.flashScrollIndicators();
+      node.current.flashScrollIndicators();
     }
   }, []);
-
-  // events
-  const handleScrollEvent = useAnimatedScrollHandler({
-    onBeginDrag: event => {
-      scrollableContentOffsetY.value = event.contentOffset.y;
-    },
-  });
 
   return {
     scrollableRef,
     scrollableContentOffsetY,
+    scrollableDecelerationRate,
     setScrollableRef,
     removeScrollableRef,
-    scrollToTop,
     flashScrollableIndicators,
   };
 };

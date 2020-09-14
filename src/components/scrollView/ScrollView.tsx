@@ -15,7 +15,11 @@ import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import DraggableView from '../draggableView';
-import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
+import {
+  useScrollableInternal,
+  useBottomSheetInternal,
+  useScrollableAnimatedProps,
+} from '../../hooks';
 import type {
   BottomSheetScrollViewType,
   BottomSheetScrollViewProps,
@@ -30,7 +34,6 @@ const AnimatedScrollView = Animated.createAnimatedComponent(
 >;
 
 Animated.addWhitelistedUIProps({
-  disableIntervalMomentum: true,
   decelerationRate: true,
 });
 
@@ -48,11 +51,12 @@ const BottomSheetScrollViewComponent = forwardRef(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal('ScrollView');
-    const { rootTapGestureRef, decelerationRate } = useBottomSheetInternal();
+    const { contentWrapperTapGestureRef } = useBottomSheetInternal();
+    const animatedProps = useScrollableAnimatedProps();
 
     // effects
     // @ts-ignore
-    useImperativeHandle(ref, () => scrollableRef.current!.getNode());
+    useImperativeHandle(ref, () => scrollableRef.current!);
     useFocusHook(handleSettingScrollable);
 
     return (
@@ -63,16 +67,17 @@ const BottomSheetScrollViewComponent = forwardRef(
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
-          waitFor={rootTapGestureRef}
+          shouldCancelWhenOutside={false}
+          waitFor={contentWrapperTapGestureRef}
         >
           <AnimatedScrollView
             {...rest}
             ref={scrollableRef}
-            overScrollMode="never"
+            overScrollMode="always"
             bounces={false}
-            decelerationRate={decelerationRate}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
+            {...(animatedProps ? { animatedProps } : {})}
           />
         </NativeViewGestureHandler>
       </DraggableView>

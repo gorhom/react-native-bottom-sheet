@@ -14,7 +14,7 @@ const BasicExample = () => {
   const headerHeight = useHeaderHeight();
 
   // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
+  const snapPoints = useMemo(() => [150, 450], []);
   const position = useValue<number>(0);
 
   // styles
@@ -65,8 +65,8 @@ const BasicExample = () => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
-        handleComponent={Handle}
+        initialSnapIndex={0}
+        // handleComponent={Handle}
         topInset={headerHeight}
       >
         {/* <View

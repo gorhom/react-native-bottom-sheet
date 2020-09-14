@@ -12,6 +12,7 @@ export const DEFAULT_ANIMATION_EASING: Animated.EasingFunction = Easing.out(
 export const DEFAULT_ANIMATION_DURATION = 500;
 
 export enum GESTURE {
-  CONTENT = 0,
+  UNDETERMINED = 0,
+  CONTENT,
   HANDLE,
 }

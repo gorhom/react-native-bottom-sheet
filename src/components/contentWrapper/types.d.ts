@@ -1,13 +1,13 @@
 import type { RefAttributes } from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
-import type { TapGestureHandler } from 'react-native-gesture-handler';
+import type { TapGestureHandler, State } from 'react-native-gesture-handler';
+import type Animated from 'react-native-reanimated';
 
 export type BottomSheetContentWrapperProps = {
-  children: React.ReactNode;
+  gestureState: Animated.SharedValue<State>;
   initialMaxDeltaY: number;
   style: StyleProp<ViewStyle>;
-  onHandlerStateChange: (...args: any[]) => void;
-  onGestureEvent: (...args: any[]) => void;
+  children: React.ReactNode;
 };
 
 export type BottomSheetContentWrapper = React.ForwardRefExoticComponent<

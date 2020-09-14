@@ -1,9 +1,6 @@
 import React, { useMemo, useRef, memo } from 'react';
 import isEqual from 'lodash.isequal';
-import Animated, {
-  event,
-  useAnimatedGestureHandler,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetDraggableViewProps } from './types';
@@ -11,7 +8,6 @@ import { styles } from './styles';
 
 const BottomSheetDraggableViewComponent = ({
   nativeGestureRef,
-  gestureType = 'HANDLE',
   style,
   children,
   ...rest
@@ -21,7 +17,7 @@ const BottomSheetDraggableViewComponent = ({
 
   // hooks
   const {
-    rootTapGestureRef,
+    contentWrapperTapGestureRef,
     contentPanGestureHandler,
   } = useBottomSheetInternal();
 
@@ -29,9 +25,9 @@ const BottomSheetDraggableViewComponent = ({
   const simultaneousHandlers = useMemo(
     () =>
       nativeGestureRef
-        ? [rootTapGestureRef, nativeGestureRef]
-        : rootTapGestureRef,
-    [rootTapGestureRef, nativeGestureRef]
+        ? [contentWrapperTapGestureRef, nativeGestureRef]
+        : contentWrapperTapGestureRef,
+    [contentWrapperTapGestureRef, nativeGestureRef]
   );
 
   // styles

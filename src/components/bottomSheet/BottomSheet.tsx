@@ -7,7 +7,7 @@ import React, {
   memo,
   useEffect,
 } from 'react';
-import { ViewStyle, View, Text } from 'react-native';
+import { ViewStyle, View, Text, Platform } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import Animated, {
@@ -31,12 +31,13 @@ import Animated, {
   concat,
   useDerivedValue,
   withTiming,
-  interpolate
+  useAnimatedReaction,
+  interpolate,
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
-  TapGestureHandler,
   State,
+  TapGestureHandler,
 } from 'react-native-gesture-handler';
 import {
   useValue,
@@ -46,7 +47,6 @@ import {
 import DraggableView from '../draggableView';
 import Handle from '../handle';
 import ContentWrapper from '../contentWrapper';
-import { useTapGestureHandler } from './useTapGestureHandler';
 import {
   usePanGestureHandler,
   useStableCallback,
@@ -65,6 +65,7 @@ import {
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
 import { styles } from './styles';
+import DebugView from '../debugView/DebugView';
 
 type BottomSheet = BottomSheetMethods;
 
@@ -144,16 +145,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region refs
     const currentPositionIndexRef = useRef<number>(initialSnapIndex);
-    const rootTapGestureRef = useRef<TapGestureHandler>(null);
     const handlePanGestureRef = useRef<PanGestureHandler>(null);
     //#endregion
 
     //#region variables
     const {
       scrollableContentOffsetY,
+      scrollableDecelerationRate,
       setScrollableRef,
       removeScrollableRef,
-      scrollToTop,
       flashScrollableIndicators,
     } = useScrollable();
 
@@ -172,6 +172,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const initialPosition = useMemo(() => {
       return initialSnapIndex < 0 ? sheetHeight : snapPoints[initialSnapIndex];
     }, [initialSnapIndex, sheetHeight, snapPoints]);
+
+    // content wrapper
+    const contentWrapperTapGestureRef = useRef<TapGestureHandler>(null);
+    const contentWrapperTapGestureState = useSharedValue<State>(
+      State.UNDETERMINED
+    );
+    const contentWrapperInitialMaxDeltaY =
+      snapPoints[Math.max(initialSnapIndex, 0)];
     //#endregion
 
     //#region private methods
@@ -179,14 +187,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       const currentPositionIndex = Math.max(currentPositionIndexRef.current, 0);
 
       if (currentPositionIndex === snapPoints.length - 1) {
+        console.log('refreshUIElements', 'sheet extended');
         flashScrollableIndicators();
         // @ts-ignore
-        rootTapGestureRef.current.setNativeProps({
+        contentWrapperTapGestureRef.current.setNativeProps({
           maxDeltaY: 0,
         });
       } else {
+        console.log('refreshUIElements', 'sheet collapse');
         // @ts-ignore
-        rootTapGestureRef.current.setNativeProps({
+        contentWrapperTapGestureRef.current.setNativeProps({
           maxDeltaY: snapPoints[currentPositionIndex],
         });
       }
@@ -198,7 +208,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     });
     const handleSettingScrollableRef = useCallback(
       (scrollableRef: ScrollableRef) => {
-        console.log('handleSettingScrollableRef', scrollableRef);
         setScrollableRef(scrollableRef);
         refreshUIElements();
       },
@@ -207,25 +216,25 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region gestures
+    const lastActiveGesture = useSharedValue<GESTURE>(GESTURE.UNDETERMINED);
+
     const animatedPosition = useSharedValue(initialPosition);
-    const animatedPositionIndex = useDerivedValue(() => {
-      console.log('X', snapPoints, initialPosition);
-      return interpolate(
+    const animatedPositionIndex = useDerivedValue(() =>
+      interpolate(
         animatedPosition.value,
         snapPoints.slice().reverse(),
         snapPoints
           .slice()
           .map((_, index) => index)
           .reverse()
-      );
-    });
+      )
+    );
 
     const animateToPointCompleted = useCallback(
-      isCancelled => {
-        if (isCancelled) {
+      isFinished => {
+        if (!isFinished) {
           return;
         }
-
         const tempCurrentPositionIndex = Math.round(
           animatedPositionIndex.value
         );
@@ -256,36 +265,38 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [animatedPosition, animateToPointCompleted]
     );
 
-    const currentPosition = useSharedValue(0);
     const [
       handlePanGestureState,
       handlePanGestureTranslationY,
       handlePanGestureVelocityY,
       handlePanGestureHandler,
-    ] = usePanGestureHandler(animatedPosition, snapPoints, animateToPoint);
+    ] = usePanGestureHandler({
+      type: GESTURE.HANDLE,
+      animatedPosition,
+      snapPoints,
+      lastActiveGesture,
+      animateToPoint,
+    });
 
     const [
       contentPanGestureState,
       contentPanGestureTranslationY,
       contentPanGestureVelocityY,
       contentPanGestureHandler,
-    ] = usePanGestureHandler(animatedPosition, snapPoints, animateToPoint);
-
-    const [tapGestureState, tapGestureHandler] = useTapGestureHandler();
+    ] = usePanGestureHandler({
+      type: GESTURE.CONTENT,
+      animatedPosition,
+      snapPoints,
+      lastActiveGesture,
+      animateToPoint,
+      offset: scrollableContentOffsetY,
+    });
 
     const autoSnapTo = useValue<number>(-1);
     //#endregion
 
     //#region animation
 
-    /**
-     * Scrollable animated props.
-     */
-    const decelerationRate = cond(
-      greaterThan(animatedPosition.value, 0),
-      0.001,
-      0.999
-    );
     //#endregion
 
     //#region styles
@@ -341,7 +352,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region
     const internalContextVariables = useMemo(
       () => ({
-        rootTapGestureRef,
+        contentWrapperTapGestureRef,
         handlePanGestureState,
         handlePanGestureTranslationY,
         handlePanGestureVelocityY,
@@ -349,8 +360,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         contentPanGestureTranslationY,
         contentPanGestureVelocityY,
         contentPanGestureHandler,
+        animatedPosition,
         scrollableContentOffsetY,
-        decelerationRate,
+        scrollableDecelerationRate,
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,
       }),
@@ -410,6 +422,41 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * and the sheet not fully extended, we make sure to prevent the
      * scrollable component from scrolling.
      */
+    // useDerivedValue(() => {
+    //   // eq(tapGestureState, State.FAILED),
+    //   // eq(currentGesture, GESTURE.CONTENT),
+    //   // neq(position, 0)
+
+    //   // console.log(
+    //   //   `lastActiveGesture: ${lastActiveGesture.value}`,
+    //   //   `TapGestureState: ${contentWrapperTapGestureState.value}`,
+    //   //   `animatedPosition: ${animatedPosition.value}`,
+    //   //   `scrollableContentOffsetY: ${scrollableContentOffsetY.value}`,
+    //   //   lastActiveGesture.value === GESTURE.CONTENT &&
+    //   //     animatedPosition.value !== 0 &&
+    //   //     scrollableContentOffsetY.value !== 0
+    //   //   // lastActiveGesture.value === GESTURE.CONTENT &&
+    //   //   //   contentWrapperTapGestureState.value === State.FAILED &&
+    //   //   //   animatedPosition.value !== 0
+    //   // );
+
+    //   if (
+    //     lastActiveGesture.value === GESTURE.CONTENT &&
+    //     animatedPosition.value !== 0 &&
+    //     scrollableContentOffsetY.value !== 0
+    //   ) {
+    //     scrollToTop();
+    //   }
+    //   // if (
+    //   //   lastActiveGesture.value === GESTURE.CONTENT &&
+    //   //   contentWrapperTapGestureState.value === State.FAILED &&
+    //   //   animatedPosition.value !== 0
+    //   // ) {
+    //   //   // scrollToTop();
+    //   // }
+
+    //   return animatedPosition.value;
+    // });
     // useCode(
     //   () =>
     //     cond(
@@ -429,11 +476,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     return (
       <>
         <ContentWrapper
-          ref={rootTapGestureRef}
-          initialMaxDeltaY={snapPoints[Math.max(initialSnapIndex, 0)]}
+          ref={contentWrapperTapGestureRef}
+          gestureState={contentWrapperTapGestureState}
+          initialMaxDeltaY={contentWrapperInitialMaxDeltaY}
           style={containerStyle}
-          onGestureEvent={tapGestureHandler}
-          onHandlerStateChange={tapGestureHandler}
         >
           <Animated.View
             style={[contentContainerStyle, contentContainerAnimatedStyle]}
@@ -444,7 +490,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             <BottomSheetProvider value={externalContextVariables}>
               <PanGestureHandler
                 ref={handlePanGestureRef}
-                simultaneousHandlers={rootTapGestureRef}
+                simultaneousHandlers={contentWrapperTapGestureRef}
                 shouldCancelWhenOutside={false}
                 onGestureEvent={handlePanGestureHandler}
               >
@@ -466,8 +512,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             </BottomSheetProvider>
           </Animated.View>
         </ContentWrapper>
+        <DebugView
+          values={{
+            contentWrapperTapState: contentWrapperTapGestureState,
+            contentPanState: contentPanGestureState,
+            lastActiveGesture,
+            animatedPosition,
+          }}
+        />
 
-        {_animatedPosition && (
+        {/* {_animatedPosition && (
           <Animated.Code
             exec={set(
               _animatedPosition,
@@ -480,7 +534,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           <Animated.Code
             exec={set(_animatedPositionIndex, animatedPositionIndex)}
           />
-        )}
+        )} */}
       </>
     );
   }
