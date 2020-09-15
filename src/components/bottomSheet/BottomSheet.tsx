@@ -30,7 +30,6 @@ import {
   State,
 } from 'react-native-gesture-handler';
 import {
-  useValue,
   usePanGestureHandler,
   useTapGestureHandler,
   // ReText,
@@ -186,12 +185,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       state: tapGestureState,
       gestureHandler: tapGestureHandler,
     } = useTapGestureHandler();
-
-    const autoSnapTo = useValue<number>(-1);
     //#endregion
 
     //#region animation
-    const { position, currentPosition, currentGesture } = useTransition({
+    const {
+      position,
+      manualSnapToPoint,
+      currentPosition,
+      currentGesture,
+    } = useTransition({
       animationDuration,
       animationEasing,
       contentPanGestureState,
@@ -200,7 +202,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       handlePanGestureState,
       handlePanGestureTranslationY,
       handlePanGestureVelocityY,
-      autoSnapTo,
       scrollableContentOffsetY,
       snapPoints,
       initialPosition,
@@ -277,21 +278,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             snapPoints.length - 1
           }`
         );
-        autoSnapTo.setValue(snapPoints[index]);
+        manualSnapToPoint.setValue(snapPoints[index]);
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [snapPoints]
     );
     const handleClose = useCallback(() => {
-      autoSnapTo.setValue(sheetHeight);
+      manualSnapToPoint.setValue(sheetHeight);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sheetHeight]);
     const handleExpand = useCallback(() => {
-      autoSnapTo.setValue(snapPoints[snapPoints.length - 1]);
+      manualSnapToPoint.setValue(snapPoints[snapPoints.length - 1]);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sheetHeight]);
     const handleCollapse = useCallback(() => {
-      autoSnapTo.setValue(snapPoints[0]);
+      manualSnapToPoint.setValue(snapPoints[0]);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sheetHeight]);
     //#endregion
