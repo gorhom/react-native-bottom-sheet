@@ -53,7 +53,7 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode
    */
-  children: () => React.ReactNode | React.ReactNode[] | React.ReactNode;
+  children: (() => React.ReactNode) | React.ReactNode[] | React.ReactNode;
 }
 
 export interface BottomSheetAnimationConfigs {

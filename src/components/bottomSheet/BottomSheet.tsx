@@ -391,7 +391,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
               <BottomSheetInternalProvider value={internalContextVariables}>
                 <DraggableView style={styles.contentContainer}>
-                  {typeof children === 'function' ? children() : children}
+                  {typeof children === 'function'
+                    ? (children as Function)()
+                    : children}
                 </DraggableView>
               </BottomSheetInternalProvider>
             </BottomSheetProvider>

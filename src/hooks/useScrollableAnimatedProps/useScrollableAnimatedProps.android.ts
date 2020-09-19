@@ -1,7 +1,7 @@
 /** @TODO this should be fixed with reanimated alpha 7 */
 // @ts-ignore
 import { useAnimatedProps, useAnimatedReaction } from 'react-native-reanimated';
-import { ANIMATION_STATE } from 'src/constants';
+import { ANIMATION_STATE } from '../../constants';
 import { useBottomSheetInternal } from '../useBottomSheetInternal';
 
 export const useScrollableAnimatedProps = () => {
