@@ -1,12 +1,18 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import ContactList from '../components/contactList';
 import Button from '../components/button';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App = () => {
   // state
+  const [end, setEnd] = useState(false);
   const [mount, setMount] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
@@ -31,14 +37,15 @@ const App = () => {
   }, []);
 
   const handleAutoAnimatePress = useCallback(() => {
-    initialSnapPoint.current = -1;
-    handleMountPress();
+    // initialSnapPoint.current = -1;
+    // handleMountPress();
     let index = 0;
     let loop = 1;
 
     const timer = setInterval(() => {
       if (loop === 4) {
         clearInterval(timer);
+        setEnd(state => !state);
         return;
       }
 
@@ -53,22 +60,32 @@ const App = () => {
     return () => {
       clearInterval(timer);
     };
-  }, [snapPoints, handleMountPress]);
+  }, [snapPoints]);
 
+  // effects
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleMountPress();
+      clearTimeout(timeout);
+    }, 5000);
+
+    const timeout2 = setTimeout(() => {
+      handleAutoAnimatePress();
+      clearTimeout(timeout2);
+    }, 10000);
+
+    return () => {
+      clearTimeout(timeout);
+      clearTimeout(timeout2);
+    };
+  }, [handleMountPress, handleAutoAnimatePress]);
   // render
-  return (
+  return end ? (
+    <View style={styles.endContainer} />
+  ) : (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <Button
-          label="Mount"
-          style={styles.buttonContainer}
-          onPress={handleMountPress}
-        />
-        <Button
-          label="Auto Animate"
-          style={styles.buttonContainer}
-          onPress={handleAutoAnimatePress}
-        />
+        <Text style={styles.version}>Bottom Sheet v2 alpha-0</Text>
         <Text style={styles.version}>Reanimated v2 alpha-6</Text>
 
         {showResult && (
@@ -83,11 +100,7 @@ const App = () => {
             initialSnapIndex={initialSnapPoint.current}
             snapPoints={snapPoints}
           >
-            <ContactList
-              type="View"
-              count={5}
-              onLayout={finishPerformanceTest}
-            />
+            <View style={styles.content} onLayout={finishPerformanceTest} />
           </BottomSheet>
         )}
       </SafeAreaView>
@@ -98,6 +111,15 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#555',
+  },
+  endContainer: {
+    flex: 1,
+    backgroundColor: 'red',
+  },
+  content: {
+    flex: 1,
+    backgroundColor: 'white',
   },
   buttonContainer: {
     marginHorizontal: 24,
@@ -107,10 +129,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     fontSize: 64,
     fontWeight: 'bold',
+    color: 'white',
   },
   version: {
     marginHorizontal: 24,
     marginTop: 12,
+    color: 'white',
     fontSize: 20,
   },
 });
