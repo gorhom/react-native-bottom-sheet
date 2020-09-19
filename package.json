@@ -38,7 +38,7 @@
   "dependencies": {
     "invariant": "^2.2.4",
     "lodash.isequal": "^4.5.0",
-    "react-native-redash": "^14.2.3"
+    "react-native-redash": "^15.1.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
