@@ -29,6 +29,8 @@ const AnimatedFlatList = Animated.createAnimatedComponent(
   any
 >;
 
+const BottomSheetFlatListName = 'FlatList';
+
 const BottomSheetFlatListComponent = forwardRef(
   (props: BottomSheetFlatListProps<any>, ref: Ref<RNFlatList>) => {
     // props
@@ -40,10 +42,11 @@ const BottomSheetFlatListComponent = forwardRef(
     // hooks
     const {
       scrollableRef,
+      scrollableAnimatedProps,
       handleScrollEvent,
       handleSettingScrollable,
-    } = useScrollableInternal('FlatList');
-    const { rootTapGestureRef, decelerationRate } = useBottomSheetInternal();
+    } = useScrollableInternal(BottomSheetFlatListName);
+    const { contentWrapperGestureRef } = useBottomSheetInternal();
 
     // effects
     // @ts-ignore
@@ -54,12 +57,11 @@ const BottomSheetFlatListComponent = forwardRef(
     return (
       <DraggableView
         nativeGestureRef={nativeGestureRef}
-        gestureType="CONTENT"
         style={styles.container}
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
-          waitFor={rootTapGestureRef}
+          waitFor={contentWrapperGestureRef}
         >
           <AnimatedFlatList
             {...rest}
@@ -67,9 +69,11 @@ const BottomSheetFlatListComponent = forwardRef(
             ref={scrollableRef}
             overScrollMode="never"
             bounces={false}
-            decelerationRate={decelerationRate}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
+            {...(scrollableAnimatedProps
+              ? { animatedProps: scrollableAnimatedProps }
+              : {})}
           />
         </NativeViewGestureHandler>
       </DraggableView>

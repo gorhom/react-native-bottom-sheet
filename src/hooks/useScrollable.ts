@@ -1,5 +1,5 @@
 import { useCallback, RefObject, useRef } from 'react';
-import { findNodeHandle } from 'react-native';
+import { findNodeHandle, Platform } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import type { ScrollableRef, Scrollable } from '../types';
 
@@ -48,6 +48,7 @@ export const useScrollable = () => {
   const flashScrollableIndicators = useCallback(() => {
     let type = scrollableRef.current?.type ?? undefined;
     let node = scrollableRef.current?.node ?? undefined;
+    let didResize = scrollableRef.current?.didResize ?? false;
 
     if (!type || !node) {
       return;
@@ -57,6 +58,20 @@ export const useScrollable = () => {
     if (node.current.flashScrollIndicators) {
       // @ts-ignore
       node.current.flashScrollIndicators();
+
+      /**
+       * this is a hack to resize the scroll indicator
+       * size on iOS.
+       */
+      if (Platform.OS === 'ios' && !didResize) {
+        // @ts-ignore
+        node.current.setNativeProps({
+          bottom: 0.5,
+        });
+
+        // @ts-ignore
+        scrollableRef.current.didResize = true;
+      }
     }
   }, []);
 

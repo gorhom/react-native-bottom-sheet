@@ -1,8 +1,12 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
-import { useValue } from 'react-native-redash';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  interpolate,
+  Extrapolate,
+} from 'react-native-reanimated';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Button from '../components/button';
 import ContactList from '../components/contactList';
@@ -14,19 +18,21 @@ const ShadowOverlayExample = () => {
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-  const animatedPositionIndex = useValue<number>(0);
+  const animatedPositionIndex = useSharedValue<number>(0);
 
   // styles
-  const shadowOverlayStyle = useMemo(
+
+  const shadowOverlayAnimatedStyle = useAnimatedStyle(
     () => ({
-      ...styles.shadowOverlay,
-      opacity: interpolate(animatedPositionIndex, {
-        inputRange: [0, 2],
-        outputRange: [0, 1],
-        extrapolate: Extrapolate.CLAMP,
-      }),
+      opacity: interpolate(
+        animatedPositionIndex.value,
+        [0, 2],
+        [0, 1],
+        Extrapolate.CLAMP
+      ),
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    /** @TODO this should be fixed with reanimated alpha 7 */
+    // @ts-ignore
     []
   );
 
@@ -88,7 +94,10 @@ const ShadowOverlayExample = () => {
         style={styles.buttonContainer}
         onPress={() => handleClosePress()}
       />
-      <Animated.View pointerEvents="none" style={shadowOverlayStyle} />
+      <Animated.View
+        pointerEvents="none"
+        style={[styles.shadowOverlay, shadowOverlayAnimatedStyle]}
+      />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}

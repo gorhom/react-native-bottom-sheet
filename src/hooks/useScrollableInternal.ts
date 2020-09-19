@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
-import { findNodeHandle } from 'react-native';
+import { findNodeHandle, NativeScrollEvent } from 'react-native';
 import {
   useAnimatedRef,
   useAnimatedScrollHandler,
   useSharedValue,
   scrollTo,
 } from 'react-native-reanimated';
-import { useBottomSheetInternal } from '../hooks/useBottomSheetInternal';
+import { useScrollableAnimatedProps } from './useScrollableAnimatedProps';
+import { useBottomSheetInternal } from './useBottomSheetInternal';
 import type { Scrollable, ScrollableType } from '../types';
 
 export const useScrollableInternal = (type: ScrollableType) => {
@@ -16,6 +17,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
   const scrollableContentOffsetY = useSharedValue<number>(0);
 
   // hooks
+  const scrollableAnimatedProps = useScrollableAnimatedProps();
   const {
     animatedPosition,
     scrollableContentOffsetY: _scrollableContentOffsetY,
@@ -24,37 +26,43 @@ export const useScrollableInternal = (type: ScrollableType) => {
   } = useBottomSheetInternal();
 
   // callbacks
-  const handleScrollEvent = useAnimatedScrollHandler({
-    onBeginDrag: ({ contentOffset: { y } }) => {
-      if (animatedPosition.value !== 0) {
-        return;
-      }
-
-      scrollableContentOffsetY.value = y;
-      scrollablePosition.value = y;
-      _scrollableContentOffsetY.value = y;
+  const handleScrollEvent = useAnimatedScrollHandler(
+    {
+      onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
+        if (animatedPosition.value !== 0) {
+          return;
+        }
+        scrollablePosition.value = y;
+        scrollableContentOffsetY.value = y;
+        _scrollableContentOffsetY.value = y;
+      },
+      onScroll: ({ contentOffset: { y } }: NativeScrollEvent) => {
+        if (animatedPosition.value !== 0) {
+          // @ts-ignore
+          scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+          return;
+        }
+        scrollablePosition.value = y;
+      },
+      onEndDrag: () => {
+        if (animatedPosition.value !== 0) {
+          // @ts-ignore
+          scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+          return;
+        }
+      },
+      onMomentumEnd: () => {
+        if (animatedPosition.value !== 0) {
+          // @ts-ignore
+          scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+          return;
+        }
+      },
     },
-    onScroll: ({ contentOffset: { y } }) => {
-      if (animatedPosition.value !== 0) {
-        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-        return;
-      }
-      scrollablePosition.value = y;
-    },
-    onEndDrag: () => {
-      if (animatedPosition.value !== 0) {
-        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-        return;
-      }
-    },
-    onMomentumEnd: ({ contentOffset: { y } }) => {
-      if (animatedPosition.value !== 0) {
-        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-        return;
-      }
-      scrollablePosition.value = y;
-    },
-  });
+    /** @TODO this should be fixed with reanimated alpha 7 */
+    // @ts-ignore
+    []
+  );
   const handleSettingScrollable = useCallback(() => {
     'worklet';
     // set current content offset
@@ -67,6 +75,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
         id: id,
         type,
         node: scrollableRef,
+        didResize: false,
       });
     } else {
       console.warn(`Couldn't find the scrollable node handle id!`);
@@ -80,6 +89,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
 
   return {
     scrollableRef,
+    scrollableAnimatedProps,
     handleScrollEvent,
     handleSettingScrollable,
   };

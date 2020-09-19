@@ -8,13 +8,18 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import { BlurView } from '@react-native-community/blur';
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
-import { useValue } from 'react-native-redash';
+import Animated, {
+  interpolate,
+  Extrapolate,
+  useSharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import SearchHandle from '../components/searchHandle';
 import LocationItem from '../components/locationItem';
 import { createLocationListMockData } from '../utils';
+import { clamp } from 'react-native-redash';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -33,7 +38,7 @@ const MapExample = () => {
     ],
     [topSafeArea]
   );
-  const position = useValue<number>(0);
+  const animatedPosition = useSharedValue<number>(0);
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
@@ -47,27 +52,34 @@ const MapExample = () => {
   }, []);
 
   // styles
-  const locationButtonStyle = useMemo(
-    () => ({
-      ...styles.locationButton,
-      transform: [
-        {
-          translateY: interpolate(position, {
-            inputRange: [200, 350],
-            outputRange: [-200, -350],
-            extrapolate: Extrapolate.CLAMP,
-          }),
-        },
-        {
-          scale: interpolate(position, {
-            inputRange: [350, 400],
-            outputRange: [1, 0],
-            extrapolate: Extrapolate.CLAMP,
-          }),
-        },
-      ],
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const locationButtonAnimatedStyle = useAnimatedStyle(
+    () => {
+      console.log(
+        'X',
+        animatedPosition.value - snapPoints[snapPoints.length - 1]
+      );
+      return {
+        transform: [
+          {
+            translateY: clamp(
+              animatedPosition.value - snapPoints[snapPoints.length - 1],
+              -350,
+              -200
+            ),
+          },
+          {
+            scale: interpolate(
+              animatedPosition.value - snapPoints[snapPoints.length - 1],
+              [-350, -400],
+              [1, 0],
+              Extrapolate.CLAMP
+            ),
+          },
+        ],
+      };
+    },
+    /** @TODO this should be fixed with reanimated alpha 7 */
+    // @ts-ignore
     []
   );
 
@@ -98,13 +110,15 @@ const MapExample = () => {
         onTouchStart={handleTouchStart}
         onRegionChangeComplete={handleRegionChangeComplete}
       />
-      <Animated.View style={locationButtonStyle} />
+      <Animated.View
+        style={[styles.locationButton, locationButtonAnimatedStyle]}
+      />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={topSafeArea}
-        animatedPosition={position}
+        animatedPosition={animatedPosition}
         handleComponent={SearchHandle}
         backgroundComponent={renderBackground}
         onChange={handleSheetChanges}

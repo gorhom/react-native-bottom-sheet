@@ -29,6 +29,8 @@ const AnimatedSectionList = Animated.createAnimatedComponent(
   any
 >;
 
+const BottomSheetSectionListName = 'SectionList';
+
 const BottomSheetSectionListComponent = forwardRef(
   (props: BottomSheetSectionListProps<any>, ref: Ref<RNSectionList>) => {
     // props
@@ -40,10 +42,12 @@ const BottomSheetSectionListComponent = forwardRef(
     // hooks
     const {
       scrollableRef,
+      scrollableAnimatedProps,
       handleScrollEvent,
       handleSettingScrollable,
-    } = useScrollableInternal('SectionList');
-    const { rootTapGestureRef, decelerationRate } = useBottomSheetInternal();
+    } = useScrollableInternal(BottomSheetSectionListName);
+    const { contentWrapperGestureRef } = useBottomSheetInternal();
+
     // effects
     // @ts-ignore
     useImperativeHandle(ref, () => scrollableRef.current!.getNode());
@@ -53,12 +57,11 @@ const BottomSheetSectionListComponent = forwardRef(
     return (
       <DraggableView
         nativeGestureRef={nativeGestureRef}
-        gestureType="CONTENT"
         style={styles.container}
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
-          waitFor={rootTapGestureRef}
+          waitFor={contentWrapperGestureRef}
         >
           <AnimatedSectionList
             {...rest}
@@ -66,9 +69,11 @@ const BottomSheetSectionListComponent = forwardRef(
             ref={scrollableRef}
             overScrollMode="never"
             bounces={false}
-            decelerationRate={decelerationRate}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
+            {...(scrollableAnimatedProps
+              ? { animatedProps: scrollableAnimatedProps }
+              : {})}
           />
         </NativeViewGestureHandler>
       </DraggableView>

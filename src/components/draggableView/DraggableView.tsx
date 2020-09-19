@@ -17,7 +17,7 @@ const BottomSheetDraggableViewComponent = ({
 
   // hooks
   const {
-    contentWrapperTapGestureRef,
+    contentWrapperGestureRef,
     contentPanGestureHandler,
   } = useBottomSheetInternal();
 
@@ -25,9 +25,9 @@ const BottomSheetDraggableViewComponent = ({
   const simultaneousHandlers = useMemo(
     () =>
       nativeGestureRef
-        ? [contentWrapperTapGestureRef, nativeGestureRef]
-        : contentWrapperTapGestureRef,
-    [contentWrapperTapGestureRef, nativeGestureRef]
+        ? [contentWrapperGestureRef, nativeGestureRef]
+        : contentWrapperGestureRef,
+    [contentWrapperGestureRef, nativeGestureRef]
   );
 
   // styles

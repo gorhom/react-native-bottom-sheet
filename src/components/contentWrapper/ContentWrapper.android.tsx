@@ -1,13 +1,13 @@
 import React, { forwardRef, memo } from 'react';
 import isEqual from 'lodash.isequal';
 import { TapGestureHandler } from 'react-native-gesture-handler';
-import { useTapGestureHandler } from './useTapGestureHandler';
+import { useTapGestureHandler } from '../../hooks/useTapGestureHandler';
 import type { BottomSheetContentWrapperProps } from './types';
 
 const ContentWrapperComponent = forwardRef<
   TapGestureHandler,
   BottomSheetContentWrapperProps
->(({ gestureState, initialMaxDeltaY, children }, ref) => {
+>(({ gestureState, maxDeltaY, children }, ref) => {
   // callbacks
   const handleGestureEvent = useTapGestureHandler(gestureState);
 
@@ -15,7 +15,7 @@ const ContentWrapperComponent = forwardRef<
     <TapGestureHandler
       ref={ref}
       maxDurationMs={1000000}
-      maxDeltaY={initialMaxDeltaY}
+      maxDeltaY={maxDeltaY}
       shouldCancelWhenOutside={false}
       onGestureEvent={handleGestureEvent}
       onHandlerStateChange={handleGestureEvent}

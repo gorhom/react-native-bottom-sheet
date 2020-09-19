@@ -27,12 +27,12 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * Animated value to be used as a callback of the position node internally.
    * @type Animated.Value<number>
    */
-  animatedPosition?: Animated.Value<number>;
+  animatedPosition?: Animated.SharedValue<number>;
   /**
    * Animated value to be used as a callback for the position index node internally.
    * @type Animated.Value<number>
    */
-  animatedPositionIndex?: Animated.Value<number>;
+  animatedPositionIndex?: Animated.SharedValue<number>;
   /**
    * Component to be placed as a sheet handle.
    * @see {BottomSheetHandleProps}
@@ -53,7 +53,7 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode
    */
-  children: React.ReactNode[] | React.ReactNode;
+  children: () => React.ReactNode | React.ReactNode[] | React.ReactNode;
 }
 
 export interface BottomSheetAnimationConfigs {

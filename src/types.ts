@@ -31,4 +31,5 @@ export type ScrollableRef = {
   id: number;
   node: React.RefObject<Scrollable>;
   type: ScrollableType;
+  didResize: boolean;
 };

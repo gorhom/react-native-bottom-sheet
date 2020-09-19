@@ -15,11 +15,7 @@ import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import DraggableView from '../draggableView';
-import {
-  useScrollableInternal,
-  useBottomSheetInternal,
-  useScrollableAnimatedProps,
-} from '../../hooks';
+import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
 import type {
   BottomSheetScrollViewType,
   BottomSheetScrollViewProps,
@@ -33,9 +29,7 @@ const AnimatedScrollView = Animated.createAnimatedComponent(
   any
 >;
 
-Animated.addWhitelistedUIProps({
-  decelerationRate: true,
-});
+const BottomSheetScrollViewName = 'ScrollView';
 
 const BottomSheetScrollViewComponent = forwardRef(
   (props: BottomSheetScrollViewProps, ref: Ref<RNScrollView>) => {
@@ -48,11 +42,11 @@ const BottomSheetScrollViewComponent = forwardRef(
     // hooks
     const {
       scrollableRef,
+      scrollableAnimatedProps,
       handleScrollEvent,
       handleSettingScrollable,
-    } = useScrollableInternal('ScrollView');
-    const { contentWrapperTapGestureRef } = useBottomSheetInternal();
-    const animatedProps = useScrollableAnimatedProps();
+    } = useScrollableInternal(BottomSheetScrollViewName);
+    const { contentWrapperGestureRef } = useBottomSheetInternal();
 
     // effects
     // @ts-ignore
@@ -62,22 +56,22 @@ const BottomSheetScrollViewComponent = forwardRef(
     return (
       <DraggableView
         nativeGestureRef={nativeGestureRef}
-        gestureType="CONTENT"
         style={styles.container}
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
-          shouldCancelWhenOutside={false}
-          waitFor={contentWrapperTapGestureRef}
+          waitFor={contentWrapperGestureRef}
         >
           <AnimatedScrollView
             {...rest}
             ref={scrollableRef}
-            overScrollMode="always"
+            overScrollMode="never"
             bounces={false}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
-            {...(animatedProps ? { animatedProps } : {})}
+            {...(scrollableAnimatedProps
+              ? { animatedProps: scrollableAnimatedProps }
+              : {})}
           />
         </NativeViewGestureHandler>
       </DraggableView>
