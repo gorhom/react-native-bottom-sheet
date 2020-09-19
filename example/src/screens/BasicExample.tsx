@@ -1,11 +1,8 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import { useValue, concat } from 'react-native-reanimated';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Handle from '../components/handle';
 import Button from '../components/button';
-import { ReText } from 'react-native-redash';
 import ContactList from '../components/contactList';
 
 const BasicExample = () => {
@@ -14,14 +11,10 @@ const BasicExample = () => {
   const headerHeight = useHeaderHeight();
 
   // variables
-  const snapPoints = useMemo(() => [150, 450], []);
-  const position = useValue<number>(0);
+  const snapPoints = useMemo(() => [150, 300, 450], []);
 
   // styles
   // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
   }, []);
@@ -38,6 +31,11 @@ const BasicExample = () => {
       </View>
     );
   }, []);
+
+  const renderSheetContent = useCallback(
+    () => <ContactList type="FlatList" count={50} header={renderHeader} />,
+    [renderHeader]
+  );
 
   return (
     <View style={styles.container}>
@@ -61,15 +59,16 @@ const BasicExample = () => {
         style={styles.buttonContainer}
         onPress={() => handleClosePress()}
       />
-      <ReText text={concat('Position from bottom: ', position)} />
+      {/* <ReText text={concat('Position from bottom: ', position)} /> */}
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={0}
         // handleComponent={Handle}
         topInset={headerHeight}
-      >
-        {/* <View
+        children={renderSheetContent}
+      />
+      {/* <View
           style={{
             position: 'absolute',
             left: 0,
@@ -127,13 +126,12 @@ const BasicExample = () => {
           }}
         /> */}
 
-        {/* <Button
+      {/* <Button
           label="Open"
           style={styles.buttonContainer}
           onPress={() => handleSnapPress(1)}
-        /> */}
-        <ContactList type="ScrollView" count={50} header={renderHeader} />
-      </BottomSheet>
+        /> 
+      </BottomSheet>*/}
     </View>
   );
 };

@@ -11,14 +11,15 @@ import {
 import {
   createContactListMockData,
   createContactSectionsMockData,
-} from '../../utils';
+} from '../../utilities';
 import ContactItem from '../contactItem';
 
 interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
-  header?: (() => JSX.Element) | null;
   style?: ViewStyle;
+  header?: (() => JSX.Element) | null;
+  onLayout?: () => void;
 }
 
 const ContactList = ({
@@ -26,6 +27,7 @@ const ContactList = ({
   count = 50,
   header = null,
   style,
+  onLayout,
 }: ContactListProps) => {
   // hooks
   const { bottom: bottomSafeArea } = useSafeArea();
@@ -136,6 +138,7 @@ const ContactList = ({
       <BottomSheetView style={styles.contentContainer}>
         {header && header()}
         {data.map(renderScrollViewItem)}
+        <View onLayout={onLayout} />
       </BottomSheetView>
     );
   }
