@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Button from '../components/button';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App = () => {

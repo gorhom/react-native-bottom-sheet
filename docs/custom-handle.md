@@ -10,8 +10,25 @@ Here is an example of a custom handle component:
 import React, { useMemo } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
-import { transformOrigin, toRad } from 'react-native-redash';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+  useDerivedValue,
+} from 'react-native-reanimated';
+import { toRad } from 'react-native-redash';
+
+// @ts-ignore
+export const transformOrigin = ({ x, y }, ...transformations) => {
+  'worklet';
+  return [
+    { translateX: x },
+    { translateY: y },
+    ...transformations,
+    { translateX: x * -1 },
+    { translateY: y * -1 },
+  ];
+};
 
 interface HandleProps extends BottomSheetHandleProps {
   style?: StyleProp<ViewStyle>;
@@ -19,78 +36,86 @@ interface HandleProps extends BottomSheetHandleProps {
 
 const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
   //#region animations
-  const borderTopRadius = interpolate(animatedPositionIndex, {
-    inputRange: [1, 2],
-    outputRange: [20, 0],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const indicatorTransformOriginY = interpolate(animatedPositionIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [-1, 0, 1],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const leftIndicatorRotate = interpolate(animatedPositionIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [toRad(-30), 0, toRad(30)],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const rightIndicatorRotate = interpolate(animatedPositionIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [toRad(30), 0, toRad(-30)],
-    extrapolate: Extrapolate.CLAMP,
-  });
+  const indicatorTransformOriginY = useDerivedValue(() =>
+    interpolate(
+      animatedPositionIndex.value,
+      [0, 1, 2],
+      [-1, 0, 1],
+      Extrapolate.CLAMP
+    )
+  );
   //#endregion
 
   //#region styles
-  const containerStyle = useMemo(
-    () => [
-      styles.header,
-      style,
-      {
-        borderTopLeftRadius: borderTopRadius,
-        borderTopRightRadius: borderTopRadius,
-      },
-    ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [style]
-  );
-  const leftIndicatorStyle = useMemo(
-    () => ({
-      ...styles.indicator,
-      ...styles.leftIndicator,
+  const containerStyle = useMemo(() => [styles.header, style], [style]);
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+    const borderTopRadius = interpolate(
+      animatedPositionIndex.value,
+      [1, 2],
+      [20, 0],
+      Extrapolate.CLAMP
+    );
+    return {
+      borderTopLeftRadius: borderTopRadius,
+      borderTopRightRadius: borderTopRadius,
+    };
+  });
+  const leftIndicatorAnimatedStyle = useAnimatedStyle(() => {
+    const leftIndicatorRotate = interpolate(
+      animatedPositionIndex.value,
+      [0, 1, 2],
+      [toRad(-30), 0, toRad(30)],
+      Extrapolate.CLAMP
+    );
+    return {
       transform: transformOrigin(
-        { x: 0, y: indicatorTransformOriginY },
+        { x: 0, y: indicatorTransformOriginY.value },
         {
-          rotate: leftIndicatorRotate,
+          rotate: `${leftIndicatorRotate}rad`,
+        },
+        {
           translateX: -5,
         }
       ),
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+    };
+  });
   const rightIndicatorStyle = useMemo(
     () => ({
       ...styles.indicator,
       ...styles.rightIndicator,
+    }),
+    []
+  );
+  const rightIndicatorAnimatedStyle = useAnimatedStyle(() => {
+    const rightIndicatorRotate = interpolate(
+      animatedPositionIndex.value,
+      [0, 1, 2],
+      [toRad(30), 0, toRad(-30)],
+      Extrapolate.CLAMP
+    );
+    return {
       transform: transformOrigin(
-        { x: 0, y: indicatorTransformOriginY },
+        { x: 0, y: indicatorTransformOriginY.value },
         {
-          rotate: rightIndicatorRotate,
+          rotate: `${rightIndicatorRotate}rad`,
+        },
+        {
           translateX: 5,
         }
       ),
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+    };
+  });
   //#endregion
 
   // render
   return (
-    <Animated.View style={containerStyle} renderToHardwareTextureAndroid={true}>
-      <Animated.View style={leftIndicatorStyle} />
-      <Animated.View style={rightIndicatorStyle} />
+    <Animated.View 
+      style={[containerStyle, containerAnimatedStyle]} renderToHardwareTextureAndroid={true}
+    >
+      <Animated.View style={[leftIndicatorStyle, leftIndicatorAnimatedStyle]} />
+      <Animated.View
+        style={[rightIndicatorStyle, rightIndicatorAnimatedStyle]}
+      />
     </Animated.View>
   );
 };

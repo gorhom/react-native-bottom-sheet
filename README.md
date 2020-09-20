@@ -51,7 +51,7 @@ yarn add @gorhom/bottom-sheet
 npm install @gorhom/bottom-sheet
 ```
 
-> ⚠️ You need to install [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) & [react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler) and follow their installation instructions.
+> ⚠️ You need to install [react-native-reanimated v2](https://github.com/software-mansion/react-native-reanimated) & [react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler) and follow their installation instructions.
 
 ## Usage
 
@@ -131,15 +131,15 @@ Snapping animation easing function.
 
 #### `animatedPosition`
 
-Animated value to be used as a callback for the position node internally.
+Animated shared value to be used as a callback for the position node internally.
 
-> `required:` NO | `type:` Animated.Value<number>
+> `required:` NO | `type:` Animated.SharedValue<number>
 
 #### `animatedPositionIndex`
 
-Animated value to be used as a callback for the position index node internally.
+Animated shared value to be used as a callback for the position index node internally.
 
-> `required:` NO | `type:` Animated.Value<number>
+> `required:` NO | `type:` Animated.SharedValue<number>
 
 #### `handleComponent`
 
@@ -163,7 +163,7 @@ Callback when sheet position changed to a provided point.
 
 A scrollable node or normal view.
 
-> `required:` YES | `type:` React.ReactNode[] | React.ReactNode
+> `required:` YES | `type:` () => React.ReactNode | React.ReactNode[] | React.ReactNode
 
 ## Methods
 
