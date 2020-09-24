@@ -75,6 +75,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       initialSnapIndex = 0,
       snapPoints: _snapPoints,
       topInset = 0,
+      enabled = true,
       // animated nodes callback
       animatedPosition: _animatedPosition,
       animatedPositionIndex: _animatedPositionIndex,
@@ -300,6 +301,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region
     const internalContextVariables = useMemo(
       () => ({
+        enabled,
         rootTapGestureRef,
         handlePanGestureState,
         handlePanGestureTranslationY,
@@ -313,7 +315,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         removeScrollableRef,
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
+      [enabled]
     );
     const externalContextVariables = useMemo(
       () => ({
@@ -399,6 +401,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             )}
             <BottomSheetProvider value={externalContextVariables}>
               <PanGestureHandler
+                enabled={enabled}
                 ref={handlePanGestureRef}
                 simultaneousHandlers={rootTapGestureRef}
                 shouldCancelWhenOutside={false}

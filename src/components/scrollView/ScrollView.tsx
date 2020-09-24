@@ -48,7 +48,11 @@ const BottomSheetScrollViewComponent = forwardRef(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal('ScrollView');
-    const { rootTapGestureRef, decelerationRate } = useBottomSheetInternal();
+    const {
+      enabled,
+      rootTapGestureRef,
+      decelerationRate,
+    } = useBottomSheetInternal();
 
     // effects
     // @ts-ignore
@@ -63,6 +67,7 @@ const BottomSheetScrollViewComponent = forwardRef(
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
+          enabled={enabled}
           waitFor={rootTapGestureRef}
         >
           <AnimatedScrollView
