@@ -43,7 +43,11 @@ const BottomSheetFlatListComponent = forwardRef(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal('FlatList');
-    const { rootTapGestureRef, decelerationRate } = useBottomSheetInternal();
+    const {
+      enabled,
+      rootTapGestureRef,
+      decelerationRate,
+    } = useBottomSheetInternal();
 
     // effects
     // @ts-ignore
@@ -59,6 +63,7 @@ const BottomSheetFlatListComponent = forwardRef(
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
+          enabled={enabled}
           waitFor={rootTapGestureRef}
         >
           <AnimatedFlatList

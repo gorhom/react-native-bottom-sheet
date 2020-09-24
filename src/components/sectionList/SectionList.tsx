@@ -43,7 +43,11 @@ const BottomSheetSectionListComponent = forwardRef(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal('SectionList');
-    const { rootTapGestureRef, decelerationRate } = useBottomSheetInternal();
+    const {
+      enabled,
+      rootTapGestureRef,
+      decelerationRate,
+    } = useBottomSheetInternal();
     // effects
     // @ts-ignore
     useImperativeHandle(ref, () => scrollableRef.current!.getNode());
@@ -58,6 +62,7 @@ const BottomSheetSectionListComponent = forwardRef(
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
+          enabled={enabled}
           waitFor={rootTapGestureRef}
         >
           <AnimatedSectionList

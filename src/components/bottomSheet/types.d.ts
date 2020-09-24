@@ -21,8 +21,15 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
   /**
    * Top inset value helps to calculate percentage snap points values. usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
    * @type number
+   * @default 0
    */
   topInset?: number;
+  /**
+   * To enable or disable user interaction with the sheet.
+   * @type boolean
+   * @default true
+   */
+  enabled?: boolean;
   /**
    * Animated value to be used as a callback of the position node internally.
    * @type Animated.Value<number>

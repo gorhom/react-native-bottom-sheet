@@ -1,4 +1,4 @@
-import React, { useCallback, memo, useRef, useMemo } from 'react';
+import React, { useCallback, memo, useRef, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ContactList from '../components/contactList';
@@ -13,12 +13,18 @@ interface ExampleScreenProps {
 
 const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
   memo(() => {
+    // state
+    const [enabled, setEnabled] = useState(true);
+
     // hooks
     const bottomSheetRef = useRef<BottomSheet>(null);
     const headerHeight = useHeaderHeight();
 
     // variables
     const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+    const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
+      enabled,
+    ]);
 
     // callbacks
     const handleSheetChange = useCallback(index => {
@@ -35,6 +41,9 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
     }, []);
     const handleClosePress = useCallback(() => {
       bottomSheetRef.current?.close();
+    }, []);
+    const handleEnablePress = useCallback(() => {
+      setEnabled(state => !state);
     }, []);
 
     return (
@@ -57,20 +66,26 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
         <Button
           label="Expand"
           style={styles.buttonContainer}
-          onPress={() => handleExpandPress()}
+          onPress={handleExpandPress}
         />
         <Button
           label="Collapse"
           style={styles.buttonContainer}
-          onPress={() => handleCollapsePress()}
+          onPress={handleCollapsePress}
         />
         <Button
           label="Close"
           style={styles.buttonContainer}
-          onPress={() => handleClosePress()}
+          onPress={handleClosePress}
+        />
+        <Button
+          label={enableButtonText}
+          style={styles.buttonContainer}
+          onPress={handleEnablePress}
         />
         <BottomSheet
           ref={bottomSheetRef}
+          enabled={enabled}
           snapPoints={snapPoints}
           initialSnapIndex={1}
           topInset={headerHeight}

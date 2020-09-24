@@ -141,6 +141,12 @@ Top inset value helps to calculate percentage snap points values. usually comes 
 
 > `required:` NO | `type:` number | `default:` 0
 
+#### `enabled`
+
+To enable or disable user interaction with the sheet.
+
+> `required:` NO | `type:` boolean | `default:` true
+
 #### `animationDuration`
 
 Snapping animation duration.
