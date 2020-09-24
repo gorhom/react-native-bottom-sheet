@@ -29,11 +29,6 @@ const AnimatedScrollView = Animated.createAnimatedComponent(
   any
 >;
 
-Animated.addWhitelistedUIProps({
-  disableIntervalMomentum: true,
-  decelerationRate: true,
-});
-
 const BottomSheetScrollViewComponent = forwardRef(
   (props: BottomSheetScrollViewProps, ref: Ref<RNScrollView>) => {
     // props

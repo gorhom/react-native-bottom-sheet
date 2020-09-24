@@ -62,7 +62,7 @@ const interpolate = interpolateV2 || interpolateV1;
 type BottomSheet = BottomSheetMethods;
 
 Animated.addWhitelistedUIProps({
-  maxDeltaY: true,
+  decelerationRate: true,
 });
 
 const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
