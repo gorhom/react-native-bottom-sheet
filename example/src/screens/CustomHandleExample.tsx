@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -7,14 +7,18 @@ import Button from '../components/button';
 import ContactList from '../components/contactList';
 
 const CustomHandleExample = () => {
+  // state
+  const [enabled, setEnabled] = useState(true);
+
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
   const headerHeight = useHeaderHeight();
 
   // variables
   const snapPoints = useMemo(() => [150, 300, 450], []);
-
-  // styles
+  const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
+    enabled,
+  ]);
 
   // callbacks
   const handleSnapPress = useCallback(index => {
@@ -28,6 +32,9 @@ const CustomHandleExample = () => {
   }, []);
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
+  }, []);
+  const handleEnablePress = useCallback(() => {
+    setEnabled(state => !state);
   }, []);
 
   // renders
@@ -59,20 +66,26 @@ const CustomHandleExample = () => {
       <Button
         label="Expand"
         style={styles.buttonContainer}
-        onPress={() => handleExpandPress()}
+        onPress={handleExpandPress}
       />
       <Button
         label="Collapse"
         style={styles.buttonContainer}
-        onPress={() => handleCollapsePress()}
+        onPress={handleCollapsePress}
       />
       <Button
         label="Close"
         style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
+        onPress={handleClosePress}
+      />
+      <Button
+        label={enableButtonText}
+        style={styles.buttonContainer}
+        onPress={handleEnablePress}
       />
       <BottomSheet
         ref={bottomSheetRef}
+        enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={headerHeight}

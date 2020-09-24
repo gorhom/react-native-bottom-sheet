@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
   useHeaderHeight,
@@ -70,12 +70,18 @@ const Navigator = () => {
 };
 
 const NavigatorExample = () => {
+  // state
+  const [enabled, setEnabled] = useState(true);
+
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
   const headerHeight = useHeaderHeight();
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
+    enabled,
+  ]);
 
   // callbacks
   const handleSheetChange = useCallback(index => {
@@ -92,6 +98,9 @@ const NavigatorExample = () => {
   }, []);
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
+  }, []);
+  const handleEnablePress = useCallback(() => {
+    setEnabled(state => !state);
   }, []);
 
   // renders
@@ -115,20 +124,26 @@ const NavigatorExample = () => {
       <Button
         label="Expand"
         style={styles.buttonContainer}
-        onPress={() => handleExpandPress()}
+        onPress={handleExpandPress}
       />
       <Button
         label="Collapse"
         style={styles.buttonContainer}
-        onPress={() => handleCollapsePress()}
+        onPress={handleCollapsePress}
       />
       <Button
         label="Close"
         style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
+        onPress={handleClosePress}
+      />
+      <Button
+        label={enableButtonText}
+        style={styles.buttonContainer}
+        onPress={handleEnablePress}
       />
       <BottomSheet
         ref={bottomSheetRef}
+        enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={headerHeight}
