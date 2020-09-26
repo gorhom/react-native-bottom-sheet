@@ -58,4 +58,10 @@ export type BottomSheetModalConfigs = {
    * @default true
    */
   dismissOnOverlayPress?: boolean;
+  /**
+   * Dismiss modal when scroll down.
+   * @type boolean
+   * @default true
+   */
+  dismissOnScrollDown?: boolean;
 } & Omit<BottomSheetProps, 'children'>;

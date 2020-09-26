@@ -44,12 +44,12 @@ import {
   BottomSheetInternalProvider,
   BottomSheetProvider,
 } from '../../contexts';
+import { GESTURE } from '../../constants';
 import {
   NORMAL_DECELERATION_RATE,
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
-  GESTURE,
-} from '../../constants';
+} from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
 import { styles } from './styles';
@@ -286,21 +286,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         );
         manualSnapToPoint.setValue(snapPoints[index]);
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [snapPoints]
+      [snapPoints, manualSnapToPoint]
     );
     const handleClose = useCallback(() => {
       manualSnapToPoint.setValue(sheetHeight);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sheetHeight]);
+    }, [sheetHeight, manualSnapToPoint]);
     const handleExpand = useCallback(() => {
       manualSnapToPoint.setValue(snapPoints[snapPoints.length - 1]);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [snapPoints]);
+    }, [snapPoints, manualSnapToPoint]);
     const handleCollapse = useCallback(() => {
       manualSnapToPoint.setValue(snapPoints[0]);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [snapPoints]);
+    }, [snapPoints, manualSnapToPoint]);
     //#endregion
 
     //#region
@@ -358,7 +354,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             /**
              * if animation was interrupted, we ignore the change.
              */
-            if (currentPositionIndex === -1) {
+            if (currentPositionIndex === -1 && args[0] !== sheetHeight) {
               return;
             }
             currentPositionIndexRef.current = currentPositionIndex;
@@ -442,7 +438,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         {/* <Animated.View pointerEvents="none" style={styles.debug}>
           <ReText
             style={styles.debugText}
-            text={concat('currentGesture: ', currentGesture)}
+            text={concat('manualSnapToPoint: ', manualSnapToPoint)}
           />
           <ReText
             style={styles.debugText}

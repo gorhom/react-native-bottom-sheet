@@ -36,7 +36,9 @@ const MultipleExample = () => {
   const handlePresentCPress = useCallback(() => {
     presentC(<ContactListContainer title="Modal C" type="SectionList" />, {
       snapPoints: [300, 450],
+      initialSnapIndex: 1,
       animationDuration: 250,
+      dismissOnScrollDown: false,
     });
   }, [presentC]);
   const handleDismissCPress = useCallback(() => {

@@ -11,6 +11,11 @@ import isEqual from 'lodash.isequal';
 import { useValue } from 'react-native-redash';
 import { Extrapolate, interpolate } from 'react-native-reanimated';
 import BottomSheet from '../bottomSheet';
+import {
+  DEFAULT_OVERLAY_OPACITY,
+  DEFAULT_DISMISS_ON_OVERLAY_PRESS,
+  DEFAULT_DISMISS_ON_SCROLL_DOWN,
+} from './constants';
 import type { BottomSheetModalType, BottomSheetModalProps } from './types';
 
 type BottomSheetModal = BottomSheetModalType;
@@ -20,19 +25,20 @@ const BottomSheetModalComponent = forwardRef<
   BottomSheetModalProps
 >(({ content, configs, unmount }, ref) => {
   const {
-    initialSnapIndex = 0,
+    initialSnapIndex: _initialSnapIndex = 0,
     snapPoints: _snapPoints,
     overlayComponent: OverlayComponent,
-    overlayOpacity = 0.5,
-    dismissOnOverlayPress = true,
-    onChange: _onChange,
+    overlayOpacity = DEFAULT_OVERLAY_OPACITY,
+    dismissOnOverlayPress = DEFAULT_DISMISS_ON_OVERLAY_PRESS,
+    dismissOnScrollDown = DEFAULT_DISMISS_ON_SCROLL_DOWN,
+    onChange,
     ...bottomSheetProps
   } = configs;
 
   //#region refs
   const bottomSheetRef = useRef<BottomSheet>(null);
   const isTemporaryClosing = useRef(false);
-  const lastSheetPosition = useRef(initialSnapIndex);
+  const lastSheetPosition = useRef(0);
   //#endregion
 
   //#region variables
@@ -46,25 +52,31 @@ const BottomSheetModalComponent = forwardRef<
       }),
     [animatedPositionIndex, overlayOpacity]
   );
-  const snapPoints = useMemo(() => [0, ..._snapPoints], [_snapPoints]);
+  const initialSnapIndex = useMemo(() => (dismissOnScrollDown ? 0 : -1), [
+    dismissOnScrollDown,
+  ]);
+  const snapPoints = useMemo(
+    () => (dismissOnScrollDown ? [0, ..._snapPoints] : _snapPoints),
+    [_snapPoints, dismissOnScrollDown]
+  );
   //#endregion
 
   //#region callbacks
   const handleChange = useCallback(
     index => {
-      if (_onChange) {
-        _onChange(index);
+      if (onChange) {
+        onChange(index);
       }
 
       if (!isTemporaryClosing.current) {
         lastSheetPosition.current = index;
 
-        if (index < 1) {
+        if (index < (dismissOnScrollDown ? 1 : 0)) {
           unmount();
         }
       }
     },
-    [unmount, _onChange]
+    [unmount, onChange, dismissOnScrollDown]
   );
   const handleClose = useCallback(() => {
     if (isTemporaryClosing.current) {
@@ -74,11 +86,18 @@ const BottomSheetModalComponent = forwardRef<
     bottomSheetRef.current?.close();
   }, [unmount]);
   const handleCollapse = useCallback(() => {
-    bottomSheetRef.current?.snapTo(1);
-  }, []);
-  const handleSnapTo = useCallback((index: number) => {
-    bottomSheetRef.current?.snapTo(index + 1);
-  }, []);
+    if (dismissOnScrollDown) {
+      bottomSheetRef.current?.snapTo(1);
+    } else {
+      bottomSheetRef.current?.collapse();
+    }
+  }, [dismissOnScrollDown]);
+  const handleSnapTo = useCallback(
+    (index: number) => {
+      bottomSheetRef.current?.snapTo(index + (dismissOnScrollDown ? 1 : 0));
+    },
+    [dismissOnScrollDown]
+  );
   const handleTemporaryCloseSheet = useCallback(() => {
     isTemporaryClosing.current = true;
     bottomSheetRef.current?.close();
@@ -102,7 +121,9 @@ const BottomSheetModalComponent = forwardRef<
     restoreSheetPosition: handleRestoreSheetPosition,
   }));
   useEffect(() => {
-    bottomSheetRef.current?.snapTo(initialSnapIndex + 1);
+    bottomSheetRef.current?.snapTo(
+      _initialSnapIndex + (dismissOnScrollDown ? 1 : 0)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //#endregion
@@ -119,7 +140,7 @@ const BottomSheetModalComponent = forwardRef<
       <BottomSheet
         ref={bottomSheetRef}
         {...bottomSheetProps}
-        initialSnapIndex={0}
+        initialSnapIndex={initialSnapIndex}
         snapPoints={snapPoints}
         animatedPositionIndex={animatedPositionIndex}
         onChange={handleChange}
