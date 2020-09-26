@@ -7,7 +7,7 @@ const Stack = createStackNavigator<AppStackParamsList>();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Modal/MultipleExample">
+      <Stack.Navigator initialRouteName="Root">
         <Stack.Screen
           name="Root"
           getComponent={() => require('./screens/Root').default}
