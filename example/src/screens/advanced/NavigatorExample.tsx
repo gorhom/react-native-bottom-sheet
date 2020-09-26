@@ -8,8 +8,8 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack';
 import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
-import Button from '../components/button';
-import createDummyScreen from './DummyScreen';
+import Button from '../../components/button';
+import createDummyScreen from '../DummyScreen';
 
 const Stack = createStackNavigator();
 const ScreenA = createDummyScreen({

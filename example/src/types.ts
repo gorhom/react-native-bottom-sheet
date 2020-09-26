@@ -1,12 +1,18 @@
 export type AppStackParamsList = {
   Root: undefined;
-  BasicExample: undefined;
-  NavigatorExample: undefined;
-  FlatListExample: undefined;
-  SectionListExample: undefined;
-  ScrollViewExample: undefined;
-  ViewExample: undefined;
-  CustomHandleExample: undefined;
-  ShadowOverlayExample: undefined;
-  MapExample: undefined;
+  // static
+  ['Static/BasicExample']: undefined;
+  ['Static/FlatListExample']: undefined;
+  ['Static/SectionListExample']: undefined;
+  ['Static/ScrollViewExample']: undefined;
+  ['Static/ViewExample']: undefined;
+  // modal
+  ['Modal/SimpleExample']: undefined;
+  ['Modal/OverlayExample']: undefined;
+  ['Modal/MultipleExample']: undefined;
+  // Advanced
+  ['Advanced/NavigatorExample']: undefined;
+  ['Advanced/CustomHandleExample']: undefined;
+  ['Advanced/OverlayExample']: undefined;
+  ['Advanced/MapExample']: undefined;
 };

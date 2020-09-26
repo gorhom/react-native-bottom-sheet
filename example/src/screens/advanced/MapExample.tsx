@@ -12,9 +12,9 @@ import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
 import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import SearchHandle from '../components/searchHandle';
-import LocationItem from '../components/locationItem';
-import { createLocationListMockData } from '../utils';
+import SearchHandle from '../../components/searchHandle';
+import LocationItem from '../../components/locationItem';
+import { createLocationListMockData } from '../../utils';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 

@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AppStackParamsList } from './types';
+import type { AppStackParamsList } from './types';
 
 const Stack = createStackNavigator<AppStackParamsList>();
 function App() {
@@ -13,50 +13,71 @@ function App() {
           getComponent={() => require('./screens/Root').default}
           options={{ headerShown: false }}
         />
-        {/* basic examples */}
+        {/* static examples */}
         <Stack.Screen
-          name="FlatListExample"
+          name="Static/FlatListExample"
           getComponent={() =>
-            require('./screens/BasicExamples').FlatListExampleScreen
+            require('./screens/static/BasicExamples').FlatListExampleScreen
           }
         />
         <Stack.Screen
-          name="SectionListExample"
+          name="Static/SectionListExample"
           getComponent={() =>
-            require('./screens/BasicExamples').SectionListExampleScreen
+            require('./screens/static/BasicExamples').SectionListExampleScreen
           }
         />
         <Stack.Screen
-          name="ScrollViewExample"
+          name="Static/ScrollViewExample"
           getComponent={() =>
-            require('./screens/BasicExamples').ScrollViewExampleScreen
+            require('./screens/static/BasicExamples').ScrollViewExampleScreen
           }
         />
         <Stack.Screen
-          name="ViewExample"
+          name="Static/ViewExample"
           getComponent={() =>
-            require('./screens/BasicExamples').ViewExampleScreen
+            require('./screens/static/BasicExamples').ViewExampleScreen
+          }
+        />
+        {/* modal examples */}
+        <Stack.Screen
+          name="Modal/SimpleExample"
+          getComponent={() => require('./screens/modal/SimpleExample').default}
+        />
+        <Stack.Screen
+          name="Modal/OverlayExample"
+          getComponent={() => require('./screens/modal/OverlayExample').default}
+        />
+        <Stack.Screen
+          name="Modal/MultipleExample"
+          getComponent={() =>
+            require('./screens/modal/MultipleExample').default
           }
         />
         {/* advanced examples */}
         <Stack.Screen
-          name="NavigatorExample"
-          getComponent={() => require('./screens/NavigatorExample').default}
+          name="Advanced/NavigatorExample"
+          getComponent={() =>
+            require('./screens/advanced/NavigatorExample').default
+          }
         />
         <Stack.Screen
-          name="CustomHandleExample"
-          getComponent={() => require('./screens/CustomHandleExample').default}
+          name="Advanced/CustomHandleExample"
+          getComponent={() =>
+            require('./screens/advanced/CustomHandleExample').default
+          }
         />
         <Stack.Screen
-          name="ShadowOverlayExample"
-          getComponent={() => require('./screens/ShadowOverlayExample').default}
+          name="Advanced/OverlayExample"
+          getComponent={() =>
+            require('./screens/advanced/OverlayExample').default
+          }
         />
         <Stack.Screen
-          name="MapExample"
+          name="Advanced/MapExample"
           options={{
             headerShown: false,
           }}
-          getComponent={() => require('./screens/MapExample').default}
+          getComponent={() => require('./screens/advanced/MapExample').default}
         />
       </Stack.Navigator>
     </NavigationContainer>

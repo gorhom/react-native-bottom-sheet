@@ -1,9 +1,9 @@
 import React, { useCallback, memo, useRef, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
-import ContactList from '../components/contactList';
-import Button from '../components/button';
 import { useHeaderHeight } from '@react-navigation/stack';
+import BottomSheet from '@gorhom/bottom-sheet';
+import ContactList from '../../components/contactList';
+import Button from '../../components/button';
 
 interface ExampleScreenProps {
   title: string;

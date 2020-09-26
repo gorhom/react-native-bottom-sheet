@@ -6,11 +6,10 @@ import Animated, {
   concat,
   Extrapolate,
 } from 'react-native-reanimated';
-import { useValue } from 'react-native-redash';
+import { ReText, useValue } from 'react-native-redash';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import Handle from '../components/handle';
-import Button from '../components/button';
-import { ReText } from 'react-native-redash';
+import Handle from '../../components/handle';
+import Button from '../../components/button';
 
 const BasicExample = () => {
   // state

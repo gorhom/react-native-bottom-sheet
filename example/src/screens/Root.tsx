@@ -6,23 +6,40 @@ import { useSafeArea } from 'react-native-safe-area-context';
 
 const data = [
   {
-    title: 'Basic',
+    title: 'Static',
     data: [
       {
         name: 'View',
-        slug: 'ViewExample',
+        slug: 'Static/ViewExample',
       },
       {
         name: 'ScrollView',
-        slug: 'ScrollViewExample',
+        slug: 'Static/ScrollViewExample',
       },
       {
         name: 'FlatList',
-        slug: 'FlatListExample',
+        slug: 'Static/FlatListExample',
       },
       {
         name: 'SectionList',
-        slug: 'SectionListExample',
+        slug: 'Static/SectionListExample',
+      },
+    ],
+  },
+  {
+    title: 'Modal',
+    data: [
+      {
+        name: 'Simple',
+        slug: 'Modal/SimpleExample',
+      },
+      {
+        name: 'Overlay',
+        slug: 'Modal/OverlayExample',
+      },
+      {
+        name: 'Multiple Modals',
+        slug: 'Modal/MultipleExample',
       },
     ],
   },
@@ -31,23 +48,23 @@ const data = [
     data: [
       {
         name: 'React Navigation',
-        slug: 'NavigatorExample',
+        slug: 'Advanced/NavigatorExample',
       },
       {
         name: 'Custom Handle',
-        slug: 'CustomHandleExample',
+        slug: 'Advanced/CustomHandleExample',
       },
       {
         name: 'Shadow Overlay',
-        slug: 'ShadowOverlayExample',
+        slug: 'Advanced/OverlayExample',
       },
       {
         name: 'Map',
-        slug: 'MapExample',
+        slug: 'Advanced/MapExample',
       },
     ],
   },
-];
+].reverse();
 
 const RootScreen = () => {
   // hooks
