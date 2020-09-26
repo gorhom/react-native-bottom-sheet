@@ -32,6 +32,7 @@
     "@types/react": "^16.9.23",
     "@types/react-native": "^0.61.17",
     "metro-react-native-babel-preset": "^0.59.0",
+    "nanoid": "^3.1.12",
     "typescript": "^3.9.7"
   }
 }

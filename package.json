@@ -38,6 +38,7 @@
   "dependencies": {
     "invariant": "^2.2.4",
     "lodash.isequal": "^4.5.0",
+    "nanoid": "^3.1.12",
     "react-native-redash": "^14.2.3"
   },
   "devDependencies": {
