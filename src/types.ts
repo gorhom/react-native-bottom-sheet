@@ -1,4 +1,7 @@
+import type { FC } from 'react';
 import type { FlatList, ScrollView, SectionList } from 'react-native';
+import type { BottomSheetProps } from './components/bottomSheet';
+import type { BottomSheetOverlayProps } from './components/overlay';
 
 export type BottomSheetMethods = {
   /**
@@ -32,3 +35,27 @@ export type ScrollableRef = {
   node: Scrollable;
   type: ScrollableType;
 };
+
+/**
+ * Modal types
+ */
+export type BottomSheetModalConfigs = {
+  /**
+   * Overlay component.
+   * @type (props: [BottomSheetOverlayProps](./components/overlay/types.d.ts)) => ReactNode
+   * @default null
+   */
+  overlayComponent?: FC<BottomSheetOverlayProps>;
+  /**
+   * Overlay opacity.
+   * @type number
+   * @default 0.5
+   */
+  overlayOpacity?: number;
+  /**
+   * Dismiss modal when press on overlay.
+   * @type boolean
+   * @default true
+   */
+  dismissOnOverlayPress?: boolean;
+} & Omit<BottomSheetProps, 'children'>;
