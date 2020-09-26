@@ -45,6 +45,7 @@ import {
   BottomSheetProvider,
 } from '../../contexts';
 import {
+  NORMAL_DECELERATION_RATE,
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
   GESTURE,
@@ -219,7 +220,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     /**
      * Scrollable animated props.
      */
-    const decelerationRate = cond(greaterThan(position, 0), 0.001, 0.999);
+    const decelerationRate = cond(
+      greaterThan(position, 0),
+      0.001,
+      NORMAL_DECELERATION_RATE
+    );
     //#endregion
 
     //#region styles
@@ -291,11 +296,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const handleExpand = useCallback(() => {
       manualSnapToPoint.setValue(snapPoints[snapPoints.length - 1]);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sheetHeight]);
+    }, [snapPoints]);
     const handleCollapse = useCallback(() => {
       manualSnapToPoint.setValue(snapPoints[0]);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sheetHeight]);
+    }, [snapPoints]);
     //#endregion
 
     //#region
@@ -357,8 +362,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               return;
             }
             currentPositionIndexRef.current = currentPositionIndex;
-            handleOnChange(currentPositionIndex);
             refreshUIElements();
+            handleOnChange(currentPositionIndex);
           }),
         ]),
       [snapPoints, refreshUIElements]
