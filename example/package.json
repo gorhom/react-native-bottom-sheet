@@ -9,7 +9,7 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "@gorhom/showcase-template": "^1.0.0",
+    "@gorhom/showcase-template": "^1.0.2",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.3",
@@ -33,6 +33,7 @@
     "@types/react-native": "^0.61.17",
     "metro-react-native-babel-preset": "^0.59.0",
     "nanoid": "^3.1.12",
+    "patch-package": "^6.2.2",
     "typescript": "^3.9.7"
   }
 }
