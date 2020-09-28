@@ -7,6 +7,7 @@ import type { BottomSheetOverlayProps } from './types';
 
 const BottomSheetOverlayComponent = ({
   color = 'black',
+  pointerEvents,
   animatedOpacity,
   onPress,
 }: BottomSheetOverlayProps) => {
@@ -24,11 +25,13 @@ const BottomSheetOverlayComponent = ({
   if (onPress) {
     return (
       <TouchableWithoutFeedback onPress={onPress} style={styles.container}>
-        <Animated.View style={containerStyle} />
+        <Animated.View pointerEvents={pointerEvents} style={containerStyle} />
       </TouchableWithoutFeedback>
     );
   } else {
-    return <Animated.View style={containerStyle} />;
+    return (
+      <Animated.View pointerEvents={pointerEvents} style={containerStyle} />
+    );
   }
   //#endregion
 };
