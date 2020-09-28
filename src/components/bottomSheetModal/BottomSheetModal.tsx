@@ -9,12 +9,17 @@ import React, {
 } from 'react';
 import isEqual from 'lodash.isequal';
 import { useValue } from 'react-native-redash';
-import { Extrapolate, interpolate } from 'react-native-reanimated';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  set,
+} from 'react-native-reanimated';
 import BottomSheet from '../bottomSheet';
 import {
   DEFAULT_OVERLAY_OPACITY,
   DEFAULT_DISMISS_ON_OVERLAY_PRESS,
   DEFAULT_DISMISS_ON_SCROLL_DOWN,
+  DEFAULT_ALLOW_TOUCH_THROUGH_OVERLAY,
 } from './constants';
 import type { BottomSheetModalType, BottomSheetModalProps } from './types';
 
@@ -27,6 +32,8 @@ const BottomSheetModalComponent = forwardRef<
   const {
     initialSnapIndex: _initialSnapIndex = 0,
     snapPoints: _snapPoints,
+    animatedPositionIndex: _animatedPositionIndex,
+    allowTouchThroughOverlay = DEFAULT_ALLOW_TOUCH_THROUGH_OVERLAY,
     overlayComponent: OverlayComponent,
     overlayOpacity = DEFAULT_OVERLAY_OPACITY,
     dismissOnOverlayPress = DEFAULT_DISMISS_ON_OVERLAY_PRESS,
@@ -58,6 +65,10 @@ const BottomSheetModalComponent = forwardRef<
   const snapPoints = useMemo(
     () => (dismissOnScrollDown ? [0, ..._snapPoints] : _snapPoints),
     [_snapPoints, dismissOnScrollDown]
+  );
+  const overlayPointerEvents = useMemo(
+    () => (allowTouchThroughOverlay ? 'none' : 'auto'),
+    [allowTouchThroughOverlay]
   );
   //#endregion
 
@@ -134,7 +145,14 @@ const BottomSheetModalComponent = forwardRef<
       {OverlayComponent && (
         <OverlayComponent
           animatedOpacity={animatedOverlayOpacity}
+          pointerEvents={overlayPointerEvents}
           {...(dismissOnOverlayPress ? { onPress: handleOverlayPress } : {})}
+        />
+      )}
+
+      {_animatedPositionIndex && (
+        <Animated.Code
+          exec={set(_animatedPositionIndex, animatedPositionIndex)}
         />
       )}
       <BottomSheet

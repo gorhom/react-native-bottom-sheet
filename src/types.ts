@@ -41,6 +41,12 @@ export type ScrollableRef = {
  */
 export type BottomSheetModalConfigs = {
   /**
+   * Allow touch through overlay component.
+   * @type boolean
+   * @default false
+   */
+  allowTouchThroughOverlay?: boolean;
+  /**
    * Overlay component.
    * @type (props: [BottomSheetOverlayProps](./components/overlay/types.d.ts)) => ReactNode
    * @default null
