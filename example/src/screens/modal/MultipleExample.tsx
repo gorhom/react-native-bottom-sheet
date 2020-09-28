@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactListContainer from '../../components/contactListContainer';
-import withModalProvider from './withModalProvider';
+import withModalProvider from '../withModalProvider';
 
 const MultipleExample = () => {
   const {

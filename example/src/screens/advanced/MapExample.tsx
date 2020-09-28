@@ -1,118 +1,179 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  StatusBar,
-  Platform,
-} from 'react-native';
+import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import MapView from 'react-native-maps';
-import { BlurView } from '@react-native-community/blur';
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
+import { interpolate, Extrapolate, Easing } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
 import { useSafeArea } from 'react-native-safe-area-context';
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import SearchHandle from '../../components/searchHandle';
+import BottomSheet, {
+  BottomSheetScrollView,
+  BottomSheetOverlay,
+  TouchableOpacity,
+  useBottomSheetModal,
+} from '@gorhom/bottom-sheet';
+import withModalProvider from '../withModalProvider';
+import { createLocationListMockData, Location } from '../../utils';
+import SearchHandle, {
+  SEARCH_HANDLE_HEIGHT,
+} from '../../components/searchHandle';
 import LocationItem from '../../components/locationItem';
-import { createLocationListMockData } from '../../utils';
+import LocationDetails, {
+  LOCATION_DETAILS_HEIGHT,
+} from '../../components/locationDetails';
+import LocationDetailsHandle from '../../components/locationDetailsHandle';
+import Weather from '../../components/weather';
+import BlurredBackground from '../../components/blurredBackground';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const MapExample = () => {
-  // hooks
+  // refs
+  const mapRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { top: topSafeArea } = useSafeArea();
+  const didRestoreMainSheetPosition = useRef(false);
 
-  // variables
+  // hooks
+  const { present, dismiss } = useBottomSheetModal();
+  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeArea();
+
+  //#region variables
   const data = useMemo(() => createLocationListMockData(15), []);
   const snapPoints = useMemo(
     () => [
-      200,
-      350,
+      SEARCH_HANDLE_HEIGHT + bottomSafeArea,
+      LOCATION_DETAILS_HEIGHT + bottomSafeArea,
       SCREEN_HEIGHT - topSafeArea - (StatusBar.currentHeight ?? 0),
     ],
-    [topSafeArea]
+    [topSafeArea, bottomSafeArea]
   );
-  const position = useValue<number>(0);
+  const animatedPosition = useValue<number>(0);
+  const animatedPositionIndex = useValue<number>(0);
+  const animatedOverlayOpacity = useMemo(
+    () =>
+      interpolate(animatedPosition, {
+        inputRange: [snapPoints[1], snapPoints[2]],
+        outputRange: [0, 0.25],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedPosition, snapPoints]
+  );
+  //#endregion
 
-  // callbacks
+  //#region callbacks
+  const handleLocationDetailSheetChanges = useCallback((index: number) => {
+    if (index === 0) {
+      if (!didRestoreMainSheetPosition.current) {
+        bottomSheetRef.current?.snapTo(1);
+      }
+      didRestoreMainSheetPosition.current = false;
+    }
+  }, []);
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
   const handleTouchStart = useCallback(() => {
     bottomSheetRef.current?.collapse();
   }, []);
-  const handleRegionChangeComplete = useCallback(() => {
+  const handleCloseLocationDetails = useCallback(() => {
+    didRestoreMainSheetPosition.current = true;
     bottomSheetRef.current?.snapTo(1);
-  }, []);
+    dismiss();
+  }, [dismiss]);
+  const handlePresentLocationDetails = useCallback(
+    (item: Location) => {
+      bottomSheetRef.current?.close();
+      present(
+        <LocationDetails onClose={handleCloseLocationDetails} {...item} />,
+        {
+          initialSnapIndex: 1,
+          snapPoints,
+          animatedPosition: animatedPosition,
+          animationDuration: 500,
+          animationEasing: Easing.out(Easing.exp),
+          onChange: handleLocationDetailSheetChanges,
+          handleComponent: LocationDetailsHandle,
+          backgroundComponent: BlurredBackground,
+        }
+      );
+    },
+    [
+      snapPoints,
+      animatedPosition,
+      present,
+      handleCloseLocationDetails,
+      handleLocationDetailSheetChanges,
+    ]
+  );
+  //#endregion
 
-  // styles
-  const locationButtonStyle = useMemo(
-    () => ({
-      ...styles.locationButton,
-      transform: [
-        {
-          translateY: interpolate(position, {
-            inputRange: [200, 350],
-            outputRange: [-200, -350],
-            extrapolate: Extrapolate.CLAMP,
-          }),
-        },
-        {
-          scale: interpolate(position, {
-            inputRange: [350, 400],
-            outputRange: [1, 0],
-            extrapolate: Extrapolate.CLAMP,
-          }),
-        },
-      ],
-    }),
+  //#region styles
+  const contentContainerStyle = useMemo(
+    () => [
+      styles.contentContainerStyle,
+      {
+        opacity: interpolate(animatedPositionIndex, {
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: Extrapolate.CLAMP,
+        }),
+      },
+    ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+  //#endregion
 
   // renders
-  const renderBackground = useCallback(
-    () =>
-      Platform.OS === 'ios' ? (
-        <BlurView blurType="ultraThinMaterial" style={styles.blurContainer} />
-      ) : (
-        <View style={styles.backgroundContainer} />
-      ),
-    []
-  );
   const renderItem = useCallback(
     (item, index) => (
-      <LocationItem
+      <TouchableOpacity
         key={`${item.name}.${index}`}
-        title={item.name}
-        subTitle={item.address}
-      />
+        onPress={() => handlePresentLocationDetails(item)}
+      >
+        <LocationItem title={item.name} subTitle={item.address} />
+      </TouchableOpacity>
     ),
-    []
+    [handlePresentLocationDetails]
   );
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
+        initialCamera={{
+          center: {
+            latitude: 52.3791,
+            longitude: 4.9003,
+          },
+          heading: 0,
+          pitch: 0,
+          zoom: 0,
+          altitude: 40000,
+        }}
+        zoomEnabled={false}
         style={styles.mapContainer}
         onTouchStart={handleTouchStart}
-        onRegionChangeComplete={handleRegionChangeComplete}
       />
-      <Animated.View style={locationButtonStyle} />
+      <BottomSheetOverlay
+        pointerEvents="none"
+        animatedOpacity={animatedOverlayOpacity}
+      />
+      <Weather animatedPosition={animatedPosition} snapPoints={snapPoints} />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={topSafeArea}
-        animatedPosition={position}
+        animatedPosition={animatedPosition}
+        animatedPositionIndex={animatedPositionIndex}
         handleComponent={SearchHandle}
-        backgroundComponent={renderBackground}
+        animationDuration={500}
+        animationEasing={Easing.out(Easing.exp)}
+        backgroundComponent={BlurredBackground}
         onChange={handleSheetChanges}
       >
         <BottomSheetScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="never"
-          style={styles.contentContainerStyle}
+          style={contentContainerStyle}
         >
           {data.map(renderItem)}
         </BottomSheetScrollView>
@@ -133,22 +194,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
   },
-  blurContainer: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  backgroundContainer: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#333',
-  },
-  locationButton: {
-    position: 'absolute',
-    right: 12,
-    bottom: 12,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#888',
-  },
 });
 
-export default MapExample;
+export default withModalProvider(MapExample);
