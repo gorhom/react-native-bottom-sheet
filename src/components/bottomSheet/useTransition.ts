@@ -54,9 +54,18 @@ export const useTransition = ({
   const currentGesture = useValue<GESTURE>(GESTURE.UNDETERMINED);
   const currentPosition = useValue(initialPosition);
 
-  const isPanningContent = eq(contentPanGestureState, State.ACTIVE);
-  const isPanningHandle = eq(handlePanGestureState, State.ACTIVE);
-  const isPanning = or(isPanningContent, isPanningHandle);
+  const isPanningContent = useMemo(
+    () => eq(contentPanGestureState, State.ACTIVE),
+    [contentPanGestureState]
+  );
+  const isPanningHandle = useMemo(
+    () => eq(handlePanGestureState, State.ACTIVE),
+    [handlePanGestureState]
+  );
+  const isPanning = useMemo(() => or(isPanningContent, isPanningHandle), [
+    isPanningContent,
+    isPanningHandle,
+  ]);
   const shouldAnimate = useValue(0);
   const manualSnapToPoint = useValue<number>(-1);
 
@@ -89,123 +98,153 @@ export const useTransition = ({
       set(animationState.time, 0),
       stopClock(clock),
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [
+      animationState.frameTime,
+      animationState.time,
+      clock,
+      config.toValue,
+      currentGesture,
+      currentPosition,
+      shouldAnimate,
+    ]
   );
 
-  const translateY = cond(
-    eq(currentGesture, GESTURE.CONTENT),
-    cond(
-      eq(currentPosition, 0),
-      add(
-        contentPanGestureTranslationY,
-        multiply(scrollableContentOffsetY, -1)
-      ),
-      contentPanGestureTranslationY
-    ),
-    handlePanGestureTranslationY
-  );
-  const velocityY = cond(
-    eq(currentGesture, GESTURE.CONTENT),
-    contentPanGestureVelocityY,
-    handlePanGestureVelocityY
-  );
-  const isAnimationInterrupted = and(
-    clockRunning(clock),
-    or(isPanning, neq(manualSnapToPoint, -1))
-  );
-  const position = block([
-    // debug('current gesture', currentGesture),
-    /**
-     * In case animation get interrupted, we execute the finishTiming node and
-     * set current position the the animated position.
-     */
-    cond(isAnimationInterrupted, [
-      // debug('animation interrupted', isAnimationInterrupted),
-      finishTiming,
-      set(currentPosition, animationState.position),
-    ]),
-
-    /**
-     * Panning node
-     */
-    cond(isPanning, [
-      set(
-        currentGesture,
-        cond(isPanningContent, GESTURE.CONTENT, GESTURE.HANDLE)
-      ),
-      // debug('start panning', translateY),
+  const translateY = useMemo(
+    () =>
       cond(
-        not(greaterOrEq(add(currentPosition, translateY), 0)),
-        [set(animationState.position, 0), set(animationState.finished, 0)],
+        eq(currentGesture, GESTURE.CONTENT),
         cond(
-          not(lessOrEq(add(currentPosition, translateY), snapPoints[0])),
-          [
-            set(animationState.position, snapPoints[0]),
-            set(animationState.finished, 0),
-          ],
-          [
-            set(animationState.position, add(currentPosition, translateY)),
-            set(animationState.finished, 0),
-          ]
-        )
-      ),
-    ]),
-
-    /**
-     * Gesture ended node.
-     */
-    onChange(
-      add(contentPanGestureState, handlePanGestureState),
-      cond(
-        or(
-          and(
-            eq(currentGesture, GESTURE.CONTENT),
-            eq(contentPanGestureState, State.END)
+          eq(currentPosition, 0),
+          add(
+            contentPanGestureTranslationY,
+            multiply(scrollableContentOffsetY, -1)
           ),
-          and(
-            eq(currentGesture, GESTURE.HANDLE),
-            eq(handlePanGestureState, State.END)
+          contentPanGestureTranslationY
+        ),
+        handlePanGestureTranslationY
+      ),
+    [
+      contentPanGestureTranslationY,
+      currentGesture,
+      currentPosition,
+      handlePanGestureTranslationY,
+      scrollableContentOffsetY,
+    ]
+  );
+  const velocityY = useMemo(
+    () =>
+      cond(
+        eq(currentGesture, GESTURE.CONTENT),
+        contentPanGestureVelocityY,
+        handlePanGestureVelocityY
+      ),
+    [contentPanGestureVelocityY, currentGesture, handlePanGestureVelocityY]
+  );
+  const isAnimationInterrupted = useMemo(
+    () => and(clockRunning(clock), or(isPanning, neq(manualSnapToPoint, -1))),
+    [clock, isPanning, manualSnapToPoint]
+  );
+  const position = useMemo(
+    () =>
+      block([
+        // debug('current gesture', currentGesture),
+        /**
+         * In case animation get interrupted, we execute the finishTiming node and
+         * set current position the the animated position.
+         */
+        cond(isAnimationInterrupted, [
+          // // debug('animation interrupted', isAnimationInterrupted),
+          finishTiming,
+          set(currentPosition, animationState.position),
+        ]),
+
+        /**
+         * Panning node
+         */
+        cond(isPanning, [
+          set(
+            currentGesture,
+            cond(isPanningContent, GESTURE.CONTENT, GESTURE.HANDLE)
+          ),
+          // debug('start panning', translateY),
+          cond(
+            not(greaterOrEq(add(currentPosition, translateY), 0)),
+            [set(animationState.position, 0), set(animationState.finished, 0)],
+            cond(
+              not(lessOrEq(add(currentPosition, translateY), snapPoints[0])),
+              [
+                set(animationState.position, snapPoints[0]),
+                set(animationState.finished, 0),
+              ],
+              [
+                set(animationState.position, add(currentPosition, translateY)),
+                set(animationState.finished, 0),
+              ]
+            )
+          ),
+        ]),
+
+        /**
+         * Gesture ended node.
+         */
+        onChange(
+          add(contentPanGestureState, handlePanGestureState),
+          cond(
+            or(
+              and(
+                eq(currentGesture, GESTURE.CONTENT),
+                eq(contentPanGestureState, State.END)
+              ),
+              and(
+                eq(currentGesture, GESTURE.HANDLE),
+                eq(handlePanGestureState, State.END)
+              )
+            ),
+            [
+              // debug('gesture end', currentGesture),
+              set(
+                config.toValue,
+                snapPoint(
+                  add(currentPosition, translateY),
+                  velocityY,
+                  snapPoints
+                )
+              ),
+              set(shouldAnimate, 1),
+            ]
           )
         ),
-        [
-          // debug('gesture end', currentGesture),
-          set(
-            config.toValue,
-            snapPoint(add(currentPosition, translateY), velocityY, snapPoints)
-          ),
+        /**
+         * Manual snapping node.
+         */
+        cond(neq(manualSnapToPoint, -1), [
+          // debug('Manually snap to', manualSnapToPoint),
+          set(config.toValue, manualSnapToPoint),
+          set(animationState.finished, 0),
           set(shouldAnimate, 1),
-        ]
-      )
-    ),
-    /**
-     * Manual snapping node.
-     */
-    cond(neq(manualSnapToPoint, -1), [
-      // debug('Manually snap to', manualSnapToPoint),
-      set(config.toValue, manualSnapToPoint),
-      set(animationState.finished, 0),
-      set(shouldAnimate, 1),
-      set(manualSnapToPoint, -1),
-    ]),
+          set(manualSnapToPoint, -1),
+        ]),
 
-    /**
-     * Animation Node.
-     */
-    cond(shouldAnimate, [
-      // debug('start animating', shouldAnimate),
-      cond(and(not(clockRunning(clock)), not(animationState.finished)), [
-        set(animationState.finished, 0),
-        set(animationState.frameTime, 0),
-        set(animationState.time, 0),
-        startClock(clock),
+        /**
+         * Animation Node.
+         */
+        cond(shouldAnimate, [
+          // debug('start animating', shouldAnimate),
+          cond(and(not(clockRunning(clock)), not(animationState.finished)), [
+            set(animationState.finished, 0),
+            set(animationState.frameTime, 0),
+            set(animationState.time, 0),
+            startClock(clock),
+          ]),
+          timing(clock, animationState, config),
+          cond(animationState.finished, finishTiming),
+        ]),
+
+        animationState.position,
       ]),
-      timing(clock, animationState, config),
-      cond(animationState.finished, finishTiming),
-    ]),
-
-    animationState.position,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [snapPoints]
+  );
 
   return {
     position,

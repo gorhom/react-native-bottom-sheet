@@ -209,21 +209,24 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       initialPosition,
     });
 
-    const animatedPositionIndex = interpolate(position, {
-      inputRange: snapPoints.slice().reverse(),
-      outputRange: snapPoints
-        .slice()
-        .map((_, index) => index)
-        .reverse(),
-      extrapolate: Extrapolate.CLAMP,
-    });
+    const animatedPositionIndex = useMemo(
+      () =>
+        interpolate(position, {
+          inputRange: snapPoints.slice().reverse(),
+          outputRange: snapPoints
+            .slice()
+            .map((_, index) => index)
+            .reverse(),
+          extrapolate: Extrapolate.CLAMP,
+        }),
+      [position, snapPoints]
+    );
     /**
      * Scrollable animated props.
      */
-    const decelerationRate = cond(
-      greaterThan(position, 0),
-      0.001,
-      NORMAL_DECELERATION_RATE
+    const decelerationRate = useMemo(
+      () => cond(greaterThan(position, 0), 0.001, NORMAL_DECELERATION_RATE),
+      [position]
     );
     //#endregion
 
