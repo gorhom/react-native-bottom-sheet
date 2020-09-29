@@ -65,7 +65,7 @@ Allow touch through overlay component.
 
 Overlay component.
 
-> `required:` NO | `type:` React.FC<[BottomSheetOverlayProps](./src/components/overlay/types.d.ts)>
+> `required:` NO | `type:` React.FC<[BottomSheetOverlayProps](../src/components/overlay/types.d.ts)>
 
 #### `overlayOpacity`
 
