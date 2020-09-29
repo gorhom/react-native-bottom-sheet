@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import MapView from 'react-native-maps';
-import { interpolate, Extrapolate, Easing } from 'react-native-reanimated';
+import { interpolate, Extrapolate, Easing, max } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
 import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet, {
@@ -46,6 +46,7 @@ const MapExample = () => {
     [topSafeArea, bottomSafeArea]
   );
   const animatedPosition = useValue<number>(0);
+  const animatedModalPosition = useValue<number>(0);
   const animatedPositionIndex = useValue<number>(0);
   const animatedOverlayOpacity = useMemo(
     () =>
@@ -55,6 +56,10 @@ const MapExample = () => {
         extrapolate: Extrapolate.CLAMP,
       }),
     [animatedPosition, snapPoints]
+  );
+  const weatherAnimatedPosition = useMemo(
+    () => max(animatedModalPosition, animatedPosition),
+    [animatedModalPosition, animatedPosition]
   );
   //#endregion
 
@@ -86,7 +91,7 @@ const MapExample = () => {
         {
           initialSnapIndex: 1,
           snapPoints,
-          animatedPosition: animatedPosition,
+          animatedPosition: animatedModalPosition,
           animationDuration: 500,
           animationEasing: Easing.out(Easing.exp),
           onChange: handleLocationDetailSheetChanges,
@@ -97,7 +102,7 @@ const MapExample = () => {
     },
     [
       snapPoints,
-      animatedPosition,
+      animatedModalPosition,
       present,
       handleCloseLocationDetails,
       handleLocationDetailSheetChanges,
@@ -156,7 +161,10 @@ const MapExample = () => {
         pointerEvents="none"
         animatedOpacity={animatedOverlayOpacity}
       />
-      <Weather animatedPosition={animatedPosition} snapPoints={snapPoints} />
+      <Weather
+        animatedPosition={weatherAnimatedPosition}
+        snapPoints={snapPoints}
+      />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
