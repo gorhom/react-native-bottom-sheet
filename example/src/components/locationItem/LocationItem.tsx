@@ -1,56 +1,38 @@
-import React, { memo } from 'react';
-// @ts-ignore
-import { Text, StyleSheet, View, Appearance } from 'react-native';
-import { useEffect } from 'react';
-import { useCallback } from 'react';
-import { useState } from 'react';
-import { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useAppearance } from '../../hooks';
+import Text from '../text';
 
 interface LocationItemProps {
   title: string;
   subTitle?: string;
 }
 
-const _colorScheme = Appearance.getColorScheme();
-
 const LocationItemComponent = ({ title, subTitle }: LocationItemProps) => {
-  // state
-  const [appearance, setAppearance] = useState(_colorScheme);
-
-  // styles
-  const titleStyle = useMemo(
-    () => ({
-      ...styles.title,
-      color: appearance === 'dark' ? 'white' : '#111',
-    }),
+  const { appearance } = useAppearance();
+  const separatorStyle = useMemo(
+    () => [
+      styles.separator,
+      {
+        backgroundColor:
+          appearance === 'light'
+            ? 'rgba(0,0,0,0.125)'
+            : 'rgba(255,255,255,0.125)',
+      },
+    ],
     [appearance]
   );
-
-  // callback
-  const handleAppearanceChange = useCallback(({ colorScheme }) => {
-    setAppearance(colorScheme);
-  }, []);
-
-  // effects
-  useEffect(() => {
-    Appearance.addChangeListener(handleAppearanceChange);
-
-    return () => {
-      Appearance.removeChangeListener(handleAppearanceChange);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   // render
   return (
     <>
       <View style={styles.container}>
         <View style={styles.thumbnail} />
         <View style={styles.contentContainer}>
-          <Text style={titleStyle}>{title}</Text>
+          <Text style={styles.title}>{title}</Text>
           {subTitle && <Text style={styles.subtitle}>{subTitle}</Text>}
         </View>
       </View>
-      <View style={styles.separator} />
+      <View style={separatorStyle} />
     </>
   );
 };
@@ -59,6 +41,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignContent: 'center',
+    alignItems: 'center',
     marginVertical: 12,
   },
   contentContainer: {
@@ -67,9 +50,9 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   thumbnail: {
-    width: 46,
-    height: 46,
-    borderRadius: 46,
+    width: 32,
+    height: 32,
+    borderRadius: 32,
     backgroundColor: 'rgba(0, 0, 0, 0.25)',
   },
   title: {
@@ -85,7 +68,6 @@ const styles = StyleSheet.create({
   separator: {
     flex: 1,
     height: 1,
-    backgroundColor: 'rgba(255,255,255,0.125)',
   },
 });
 

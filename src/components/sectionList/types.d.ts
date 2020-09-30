@@ -1,5 +1,10 @@
 import type { Component, EffectCallback, DependencyList } from 'react';
-import type { SectionListProps as RNSectionListProps } from 'react-native';
+import type {
+  SectionListProps as RNSectionListProps,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
+import type Animated from 'react-native-reanimated';
 
 type BottomSheetSectionListProps<T> = Omit<
   RNSectionListProps<T>,
@@ -8,7 +13,9 @@ type BottomSheetSectionListProps<T> = Omit<
   | 'decelerationRate'
   | 'onScrollBeginDrag'
   | 'scrollEventThrottle'
+  | 'style'
 > & {
+  style?: StyleProp<Animated.AnimateStyle<ViewStyle>>;
   /**
    * This needed when bottom sheet used with multiple scrollables to allow bottom sheet detect the current scrollable ref, especially when used with `React Navigation`. You will need to provide `useFocusEffect` from `@react-navigation/native`.
    * @type (effect: EffectCallback, deps?: DependencyList) => void

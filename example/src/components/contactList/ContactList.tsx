@@ -14,7 +14,7 @@ import {
 } from '../../utils';
 import ContactItem from '../contactItem';
 
-interface ContactListProps {
+export interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
   header?: (() => JSX.Element) | null;
@@ -23,7 +23,7 @@ interface ContactListProps {
 
 const ContactList = ({
   type,
-  count = 50,
+  count = 25,
   header = null,
   style,
 }: ContactListProps) => {
@@ -89,8 +89,8 @@ const ContactList = ({
       <BottomSheetFlatList
         data={data}
         keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
-        initialNumToRender={10}
-        windowSize={20}
+        initialNumToRender={5}
+        windowSize={10}
         maxToRenderPerBatch={5}
         renderItem={renderFlatListItem}
         {...(header && {
@@ -116,8 +116,8 @@ const ContactList = ({
       <BottomSheetSectionList
         contentContainerStyle={contentContainerStyle}
         stickySectionHeadersEnabled
-        initialNumToRender={10}
-        windowSize={20}
+        initialNumToRender={5}
+        windowSize={10}
         maxToRenderPerBatch={5}
         sections={sections}
         keyExtractor={(item, index) => `${type}.${item.name}.${index}`}

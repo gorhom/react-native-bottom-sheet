@@ -5,12 +5,9 @@ import { styles } from './styles';
 
 const BottomSheetHandleComponent = () => {
   return (
-    <>
-      <View pointerEvents="none" style={styles.shadow} />
-      <View style={styles.container}>
-        <View style={styles.indicator} />
-      </View>
-    </>
+    <View style={styles.container}>
+      <View style={styles.indicator} />
+    </View>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useCallback, useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,10 +9,10 @@ import {
 import { useBottomSheet } from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native-gesture-handler';
 import isEqual from 'lodash.isequal';
-import { useState } from 'react';
-import { useCallback } from 'react';
+import { useAppearance } from '../../hooks';
 
-const { width: windowWidth } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('screen');
+export const SEARCH_HANDLE_HEIGHT = 69;
 
 const BottomSheetHandleComponent = () => {
   // state
@@ -20,6 +20,21 @@ const BottomSheetHandleComponent = () => {
 
   // hooks
   const { snapTo } = useBottomSheet();
+  const { appearance } = useAppearance();
+
+  // styles
+  const indicatorStyle = useMemo(
+    () => [
+      styles.indicator,
+      {
+        backgroundColor:
+          appearance === 'light'
+            ? 'rgba(0, 0, 0, 0.25)'
+            : 'rgba(255, 255, 255, 0.25)',
+      },
+    ],
+    [appearance]
+  );
 
   // callbacks
   const handleInputChange = useCallback(
@@ -36,18 +51,17 @@ const BottomSheetHandleComponent = () => {
 
   // render
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.indicator} />
-        <TextInput
-          style={styles.input}
-          value={value}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-        />
-      </View>
-      <View style={styles.separator} />
-    </>
+    <View style={styles.container}>
+      <View style={indicatorStyle} />
+      <TextInput
+        style={styles.input}
+        value={value}
+        textContentType="location"
+        placeholder="Search for a place or address"
+        onChange={handleInputChange}
+        onFocus={handleInputFocus}
+      />
+    </View>
   );
 };
 
@@ -58,23 +72,21 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 5,
   },
-  input: {
-    marginTop: 5,
-    marginBottom: 10,
-    borderRadius: 8,
-    padding: 6,
-    backgroundColor: 'rgba(151, 151, 151, 0.25)',
-  },
   indicator: {
     alignSelf: 'center',
-    width: (7.5 * windowWidth) / 100,
-    height: 4,
+    width: (8 * SCREEN_WIDTH) / 100,
+    height: 5,
     borderRadius: 4,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  separator: {
-    height: 1,
-    backgroundColor: 'rgba(255,255,255,0.125)',
+  input: {
+    marginTop: 8,
+    marginBottom: 10,
+    borderRadius: 10,
+    fontSize: 16,
+    lineHeight: 20,
+    padding: 8,
+    backgroundColor: 'rgba(151, 151, 151, 0.25)',
   },
 });
 

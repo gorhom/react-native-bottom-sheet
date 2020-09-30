@@ -1,26 +1,39 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
+import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
+import { useValue } from 'react-native-redash';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Handle from '../components/handle';
-import Button from '../components/button';
-import ContactList from '../components/contactList';
+import Button from '../../components/button';
+import ContactList from '../../components/contactList';
 
-const CustomHandleExample = () => {
-  // state
-  const [enabled, setEnabled] = useState(true);
-
+const OverlayExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
   const headerHeight = useHeaderHeight();
 
   // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
-  const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
-    enabled,
-  ]);
+  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const animatedPositionIndex = useValue<number>(0);
+
+  // styles
+  const shadowOverlayStyle = useMemo(
+    () => ({
+      ...styles.shadowOverlay,
+      opacity: interpolate(animatedPositionIndex, {
+        inputRange: [0, 2],
+        outputRange: [0, 1],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
   }, []);
@@ -33,15 +46,12 @@ const CustomHandleExample = () => {
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
-  const handleEnablePress = useCallback(() => {
-    setEnabled(state => !state);
-  }, []);
 
   // renders
   const renderHeader = useCallback(() => {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Custom Handle Example</Text>
+        <Text style={styles.title}>Shadow Overlay Example</Text>
       </View>
     );
   }, []);
@@ -49,47 +59,43 @@ const CustomHandleExample = () => {
   return (
     <View style={styles.container}>
       <Button
-        label="Snap To 450"
+        label="Snap To 90%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(2)}
       />
       <Button
-        label="Snap To 300"
+        label="Snap To 50%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(1)}
       />
       <Button
-        label="Snap To 150"
+        label="Snap To 25%"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
       />
       <Button
         label="Expand"
         style={styles.buttonContainer}
-        onPress={handleExpandPress}
+        onPress={() => handleExpandPress()}
       />
       <Button
         label="Collapse"
         style={styles.buttonContainer}
-        onPress={handleCollapsePress}
+        onPress={() => handleCollapsePress()}
       />
       <Button
         label="Close"
         style={styles.buttonContainer}
-        onPress={handleClosePress}
+        onPress={() => handleClosePress()}
       />
-      <Button
-        label={enableButtonText}
-        style={styles.buttonContainer}
-        onPress={handleEnablePress}
-      />
+      <Animated.View pointerEvents="none" style={shadowOverlayStyle} />
       <BottomSheet
         ref={bottomSheetRef}
-        enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={headerHeight}
-        handleComponent={Handle}
+        animatedPositionIndex={animatedPositionIndex}
+        onChange={handleSheetChanges}
       >
         <ContactList type="View" count={3} header={renderHeader} />
       </BottomSheet>
@@ -113,7 +119,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
   },
   title: {
     fontSize: 46,
@@ -129,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomHandleExample;
+export default OverlayExample;

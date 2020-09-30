@@ -1,39 +1,26 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
-import { useValue } from 'react-native-redash';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Button from '../components/button';
-import ContactList from '../components/contactList';
+import Handle from '../../components/handle';
+import Button from '../../components/button';
+import ContactList from '../../components/contactList';
 
-const ShadowOverlayExample = () => {
+const CustomHandleExample = () => {
+  // state
+  const [enabled, setEnabled] = useState(true);
+
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
   const headerHeight = useHeaderHeight();
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-  const animatedPositionIndex = useValue<number>(0);
-
-  // styles
-  const shadowOverlayStyle = useMemo(
-    () => ({
-      ...styles.shadowOverlay,
-      opacity: interpolate(animatedPositionIndex, {
-        inputRange: [0, 2],
-        outputRange: [0, 1],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const snapPoints = useMemo(() => [150, 300, 450], []);
+  const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
+    enabled,
+  ]);
 
   // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
   }, []);
@@ -46,12 +33,15 @@ const ShadowOverlayExample = () => {
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
+  const handleEnablePress = useCallback(() => {
+    setEnabled(state => !state);
+  }, []);
 
   // renders
   const renderHeader = useCallback(() => {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Shadow Overlay Example</Text>
+        <Text style={styles.title}>Custom Handle Example</Text>
       </View>
     );
   }, []);
@@ -59,43 +49,47 @@ const ShadowOverlayExample = () => {
   return (
     <View style={styles.container}>
       <Button
-        label="Snap To 90%"
+        label="Snap To 450"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(2)}
       />
       <Button
-        label="Snap To 50%"
+        label="Snap To 300"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(1)}
       />
       <Button
-        label="Snap To 25%"
+        label="Snap To 150"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
       />
       <Button
         label="Expand"
         style={styles.buttonContainer}
-        onPress={() => handleExpandPress()}
+        onPress={handleExpandPress}
       />
       <Button
         label="Collapse"
         style={styles.buttonContainer}
-        onPress={() => handleCollapsePress()}
+        onPress={handleCollapsePress}
       />
       <Button
         label="Close"
         style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
+        onPress={handleClosePress}
       />
-      <Animated.View pointerEvents="none" style={shadowOverlayStyle} />
+      <Button
+        label={enableButtonText}
+        style={styles.buttonContainer}
+        onPress={handleEnablePress}
+      />
       <BottomSheet
         ref={bottomSheetRef}
+        enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={headerHeight}
-        animatedPositionIndex={animatedPositionIndex}
-        onChange={handleSheetChanges}
+        handleComponent={Handle}
       >
         <ContactList type="View" count={3} header={renderHeader} />
       </BottomSheet>
@@ -119,7 +113,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
   },
   title: {
     fontSize: 46,
@@ -135,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShadowOverlayExample;
+export default CustomHandleExample;

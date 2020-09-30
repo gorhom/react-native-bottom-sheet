@@ -9,7 +9,7 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "@gorhom/showcase-template": "^0.3.1",
+    "@gorhom/showcase-template": "^1.0.2",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.3",
@@ -18,12 +18,12 @@
     "lodash.isequal": "^4.5.0",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-gesture-handler": "^1.7.0",
+    "react-native-gesture-handler": "^1.8.0",
     "react-native-maps": "^0.27.1",
-    "react-native-reanimated": "^1.12.0",
+    "react-native-reanimated": "^1.13.1",
     "react-native-redash": "^14.2.3",
     "react-native-safe-area-context": "0.7.3",
-    "react-native-screens": "^2.9.0"
+    "react-native-screens": "^2.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -32,6 +32,8 @@
     "@types/react": "^16.9.23",
     "@types/react-native": "^0.61.17",
     "metro-react-native-babel-preset": "^0.59.0",
+    "nanoid": "^3.1.12",
+    "patch-package": "^6.2.2",
     "typescript": "^3.9.7"
   }
 }
