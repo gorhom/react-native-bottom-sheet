@@ -72,13 +72,11 @@ const App = () => {
             }
           />
           <Stack.Screen
-            name="Modal/MultipleExample"
+            name="Modal/StackExample"
             options={{
-              title: 'Modal Multiple Example',
+              title: 'Stack Modals Example',
             }}
-            getComponent={() =>
-              require('./screens/modal/MultipleExample').default
-            }
+            getComponent={() => require('./screens/modal/StackExample').default}
           />
           {/* advanced examples */}
           <Stack.Screen

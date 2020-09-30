@@ -9,7 +9,7 @@ export type AppStackParamsList = {
   // modal
   ['Modal/SimpleExample']: undefined;
   ['Modal/OverlayExample']: undefined;
-  ['Modal/MultipleExample']: undefined;
+  ['Modal/StackExample']: undefined;
   // Advanced
   ['Advanced/NavigatorExample']: undefined;
   ['Advanced/CustomHandleExample']: undefined;

@@ -38,8 +38,8 @@ const data = [
         slug: 'Modal/OverlayExample',
       },
       {
-        name: 'Multiple Modals',
-        slug: 'Modal/MultipleExample',
+        name: 'Stack Modals',
+        slug: 'Modal/StackExample',
       },
     ],
   },

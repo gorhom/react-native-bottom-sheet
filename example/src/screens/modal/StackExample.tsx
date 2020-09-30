@@ -5,7 +5,7 @@ import Button from '../../components/button';
 import ContactListContainer from '../../components/contactListContainer';
 import withModalProvider from '../withModalProvider';
 
-const MultipleExample = () => {
+const StackExample = () => {
   const {
     present: presentA,
     dismiss: dismissA,
@@ -17,7 +17,7 @@ const MultipleExample = () => {
   // callbacks
   const handlePresentAPress = useCallback(() => {
     presentA(<ContactListContainer title="Modal A" type="FlatList" />, {
-      snapPoints: [300, 450],
+      snapPoints: ['25%', '50%'],
       animationDuration: 250,
     });
   }, [presentA]);
@@ -26,7 +26,7 @@ const MultipleExample = () => {
   }, [dismissA]);
   const handlePresentBPress = useCallback(() => {
     presentB(<ContactListContainer title="Modal B" type="ScrollView" />, {
-      snapPoints: [300, 450],
+      snapPoints: ['25%', '50%'],
       animationDuration: 250,
     });
   }, [presentB]);
@@ -35,7 +35,7 @@ const MultipleExample = () => {
   }, [dismissB]);
   const handlePresentCPress = useCallback(() => {
     presentC(<ContactListContainer title="Modal C" type="SectionList" />, {
-      snapPoints: [300, 450],
+      snapPoints: ['25%', '50%'],
       initialSnapIndex: 1,
       animationDuration: 250,
       dismissOnScrollDown: false,
@@ -101,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withModalProvider(MultipleExample);
+export default withModalProvider(StackExample);
