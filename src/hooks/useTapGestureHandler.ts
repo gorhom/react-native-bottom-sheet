@@ -28,8 +28,6 @@ export const useTapGestureHandler = (
         gestureState.value = state;
       },
     },
-    /** @TODO this should be fixed with reanimated alpha 7 */
-    // @ts-ignore
     []
   );
 

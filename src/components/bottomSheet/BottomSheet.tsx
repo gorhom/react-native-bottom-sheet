@@ -208,8 +208,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             .reverse(),
           Extrapolate.CLAMP
         ),
-      /** @TODO this should be fixed with reanimated alpha 7 */
-      // @ts-ignore
       [snapPoints]
     );
 
@@ -337,8 +335,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return {
         transform: [{ translateY: animatedPosition.value }],
       };
-      /** @TODO this should be fixed with reanimated alpha 7 */
-      // @ts-ignore
     }, []);
     //#endregion
 

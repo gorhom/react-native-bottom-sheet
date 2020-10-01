@@ -17,8 +17,6 @@ export const useScrollableAnimatedProps = () => {
     () => ({
       decelerationRate: scrollableDecelerationRate.value,
     }),
-    /** @TODO this should be fixed with reanimated alpha 7 */
-    // @ts-ignore
     []
   );
 

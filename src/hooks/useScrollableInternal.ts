@@ -59,8 +59,6 @@ export const useScrollableInternal = (type: ScrollableType) => {
         }
       },
     },
-    /** @TODO this should be fixed with reanimated alpha 7 */
-    // @ts-ignore
     []
   );
   const handleSettingScrollable = useCallback(() => {

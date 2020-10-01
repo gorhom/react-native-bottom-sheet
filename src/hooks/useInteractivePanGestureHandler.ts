@@ -11,6 +11,10 @@ import { clamp } from 'react-native-redash';
 import { snapPoint } from '../utilities';
 import { GESTURE } from '../constants';
 
+type InteractivePanGestureHandlerContextType = {
+  lastAnimatedPosition: number;
+};
+
 export const useInteractivePanGestureHandler = (
   type: GESTURE,
   animatedPosition: Animated.SharedValue<number>,
@@ -27,7 +31,10 @@ export const useInteractivePanGestureHandler = (
   const gestureTranslationY = useSharedValue(0);
   const gestureVelocityY = useSharedValue(0);
 
-  const gestureHandler = useAnimatedGestureHandler<Record<string, number>>(
+  const gestureHandler = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    InteractivePanGestureHandlerContextType
+  >(
     {
       onStart: ({ state, translationY, velocityY }, context) => {
         // cancel current animation
@@ -73,8 +80,6 @@ export const useInteractivePanGestureHandler = (
         );
       },
     },
-    /** @TODO this should be fixed with reanimated alpha 7 */
-    // @ts-ignore
     [type, snapPoints, animateToPoint]
   );
 

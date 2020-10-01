@@ -1,6 +1,7 @@
 import React from 'react';
 import Showcase from '@gorhom/showcase-template';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeArea } from 'react-native-safe-area-context';
 import { version, description } from '../../../package.json';
 
 const data = [
@@ -51,6 +52,7 @@ const data = [
 const RootScreen = () => {
   // hooks
   const { navigate } = useNavigation();
+  const safeInsets = useSafeArea();
 
   // callbacks
   const handleOnPress = (slug: string) => navigate(slug);
@@ -67,6 +69,7 @@ const RootScreen = () => {
         url: 'https://gorhom.dev',
       }}
       data={data}
+      safeInsets={safeInsets}
       handleOnPress={handleOnPress}
     />
   );

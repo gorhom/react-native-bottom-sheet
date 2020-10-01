@@ -52,36 +52,31 @@ const MapExample = () => {
   }, []);
 
   // styles
-  const locationButtonAnimatedStyle = useAnimatedStyle(
-    () => {
-      console.log(
-        'X',
-        animatedPosition.value - snapPoints[snapPoints.length - 1]
-      );
-      return {
-        transform: [
-          {
-            translateY: clamp(
-              animatedPosition.value - snapPoints[snapPoints.length - 1],
-              -350,
-              -200
-            ),
-          },
-          {
-            scale: interpolate(
-              animatedPosition.value - snapPoints[snapPoints.length - 1],
-              [-350, -400],
-              [1, 0],
-              Extrapolate.CLAMP
-            ),
-          },
-        ],
-      };
-    },
-    /** @TODO this should be fixed with reanimated alpha 7 */
-    // @ts-ignore
-    []
-  );
+  const locationButtonAnimatedStyle = useAnimatedStyle(() => {
+    console.log(
+      'X',
+      animatedPosition.value - snapPoints[snapPoints.length - 1]
+    );
+    return {
+      transform: [
+        {
+          translateY: clamp(
+            animatedPosition.value - snapPoints[snapPoints.length - 1],
+            -350,
+            -200
+          ),
+        },
+        {
+          scale: interpolate(
+            animatedPosition.value - snapPoints[snapPoints.length - 1],
+            [-350, -400],
+            [1, 0],
+            Extrapolate.CLAMP
+          ),
+        },
+      ],
+    };
+  }, []);
 
   // renders
   const renderBackground = useCallback(

@@ -31,8 +31,6 @@ const ShadowOverlayExample = () => {
         Extrapolate.CLAMP
       ),
     }),
-    /** @TODO this should be fixed with reanimated alpha 7 */
-    // @ts-ignore
     []
   );
 
