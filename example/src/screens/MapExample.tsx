@@ -53,10 +53,6 @@ const MapExample = () => {
 
   // styles
   const locationButtonAnimatedStyle = useAnimatedStyle(() => {
-    console.log(
-      'X',
-      animatedPosition.value - snapPoints[snapPoints.length - 1]
-    );
     return {
       transform: [
         {
