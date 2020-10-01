@@ -181,7 +181,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }, [snapPoints, flashScrollableIndicators]);
     const handleOnChange = useStableCallback((index: number) => {
       if (_onChange) {
-        _onChange(index);
+        /**
+         * to avoid having -0 🤷‍♂️
+         */
+        _onChange(index + 1 - 1);
       }
     });
     const handleSettingScrollableRef = useCallback(
@@ -201,14 +204,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () =>
         interpolate(
           animatedPosition.value,
-          snapPoints.slice().reverse(),
-          snapPoints
-            .slice()
-            .map((_, index) => index)
-            .reverse(),
+          [sheetHeight].concat(snapPoints.slice().reverse()),
+          [-1].concat(
+            snapPoints
+              .slice()
+              .map((_, index) => index)
+              .reverse()
+          ),
           Extrapolate.CLAMP
         ),
-      [snapPoints]
+      [snapPoints, sheetHeight]
     );
 
     // callbacks
