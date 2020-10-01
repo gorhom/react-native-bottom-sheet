@@ -9,11 +9,7 @@ import React, {
 } from 'react';
 import isEqual from 'lodash.isequal';
 import { useValue } from 'react-native-redash';
-import Animated, {
-  Extrapolate,
-  interpolate,
-  set,
-} from 'react-native-reanimated';
+import Animated, { Extrapolate, set } from 'react-native-reanimated';
 import BottomSheet from '../bottomSheet';
 import {
   DEFAULT_OVERLAY_OPACITY,
@@ -22,6 +18,12 @@ import {
   DEFAULT_ALLOW_TOUCH_THROUGH_OVERLAY,
 } from './constants';
 import type { BottomSheetModalType, BottomSheetModalProps } from './types';
+
+const {
+  interpolate: interpolateV1,
+  interpolateNode: interpolateV2,
+} = require('react-native-reanimated');
+const interpolate = interpolateV2 || interpolateV1;
 
 type BottomSheetModal = BottomSheetModalType;
 
