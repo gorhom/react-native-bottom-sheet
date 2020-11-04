@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import Animated, {
   eq,
   set,
@@ -91,6 +91,7 @@ export const useTransition = ({
 
   const finishTiming = useMemo(
     () => [
+      // debug('finish timing', config.toValue),
       set(currentGesture, GESTURE.UNDETERMINED),
       set(shouldAnimate, 0),
       set(currentPosition, config.toValue),
@@ -114,7 +115,7 @@ export const useTransition = ({
       cond(
         eq(currentGesture, GESTURE.CONTENT),
         cond(
-          eq(currentPosition, 0),
+          eq(currentPosition, snapPoints[snapPoints.length - 1]),
           add(
             contentPanGestureTranslationY,
             multiply(scrollableContentOffsetY, -1)
@@ -124,6 +125,7 @@ export const useTransition = ({
         handlePanGestureTranslationY
       ),
     [
+      snapPoints,
       contentPanGestureTranslationY,
       currentGesture,
       currentPosition,
@@ -144,6 +146,7 @@ export const useTransition = ({
     () => and(clockRunning(clock), or(isPanning, neq(manualSnapToPoint, -1))),
     [clock, isPanning, manualSnapToPoint]
   );
+
   const position = useMemo(
     () =>
       block([
@@ -153,7 +156,7 @@ export const useTransition = ({
          * set current position the the animated position.
          */
         cond(isAnimationInterrupted, [
-          // // debug('animation interrupted', isAnimationInterrupted),
+          // debug('animation interrupted', isAnimationInterrupted),
           finishTiming,
           set(currentPosition, animationState.position),
         ]),
@@ -168,8 +171,16 @@ export const useTransition = ({
           ),
           // debug('start panning', translateY),
           cond(
-            not(greaterOrEq(add(currentPosition, translateY), 0)),
-            [set(animationState.position, 0), set(animationState.finished, 0)],
+            not(
+              greaterOrEq(
+                add(currentPosition, translateY),
+                snapPoints[snapPoints.length - 1]
+              )
+            ),
+            [
+              set(animationState.position, snapPoints[snapPoints.length - 1]),
+              set(animationState.finished, 0),
+            ],
             cond(
               not(lessOrEq(add(currentPosition, translateY), snapPoints[0])),
               [
@@ -242,10 +253,30 @@ export const useTransition = ({
 
         animationState.position,
       ]),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [snapPoints]
+    [
+      animationState,
+      clock,
+      config,
+      contentPanGestureState,
+      currentGesture,
+      currentPosition,
+      finishTiming,
+      handlePanGestureState,
+      isAnimationInterrupted,
+      isPanning,
+      isPanningContent,
+      manualSnapToPoint,
+      shouldAnimate,
+      snapPoints,
+      translateY,
+      velocityY,
+    ]
   );
 
+  // effects
+  useEffect(() => {
+    currentPosition.setValue(initialPosition);
+  }, [currentPosition, initialPosition]);
   return {
     position,
     manualSnapToPoint,

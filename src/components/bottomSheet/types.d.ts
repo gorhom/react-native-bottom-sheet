@@ -31,6 +31,12 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    */
   enabled?: boolean;
   /**
+   * To messure content height and set it as largest snap point.
+   * @type boolean
+   * @default false
+   */
+  shouldMeasureContentHeight?: boolean;
+  /**
    * Animated value to be used as a callback of the position node internally.
    * @type Animated.Value<number>
    */
