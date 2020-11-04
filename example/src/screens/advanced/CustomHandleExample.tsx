@@ -15,7 +15,7 @@ const CustomHandleExample = () => {
   const headerHeight = useHeaderHeight();
 
   // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
+  const snapPoints = useMemo(() => [100, 200], []);
   const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
     enabled,
   ]);
@@ -49,17 +49,17 @@ const CustomHandleExample = () => {
   return (
     <View style={styles.container}>
       <Button
-        label="Snap To 450"
+        label="Snap To Sheet Height"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(2)}
       />
       <Button
-        label="Snap To 300"
+        label="Snap To 200"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(1)}
       />
       <Button
-        label="Snap To 150"
+        label="Snap To 100"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
       />
@@ -87,9 +87,10 @@ const CustomHandleExample = () => {
         ref={bottomSheetRef}
         enabled={enabled}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
+        initialSnapIndex={0}
         topInset={headerHeight}
         handleComponent={Handle}
+        shouldMeasureContentHeight={true}
       >
         <ContactList type="View" count={3} header={renderHeader} />
       </BottomSheet>

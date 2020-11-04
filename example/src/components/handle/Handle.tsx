@@ -10,26 +10,42 @@ interface HandleProps extends BottomSheetHandleProps {
 
 const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
   //#region animations
-  const borderTopRadius = interpolate(animatedPositionIndex, {
-    inputRange: [1, 2],
-    outputRange: [20, 0],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const indicatorTransformOriginY = interpolate(animatedPositionIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [-1, 0, 1],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const leftIndicatorRotate = interpolate(animatedPositionIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [toRad(-30), 0, toRad(30)],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const rightIndicatorRotate = interpolate(animatedPositionIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [toRad(30), 0, toRad(-30)],
-    extrapolate: Extrapolate.CLAMP,
-  });
+  const borderTopRadius = useMemo(
+    () =>
+      interpolate(animatedPositionIndex, {
+        inputRange: [1, 2],
+        outputRange: [20, 0],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedPositionIndex]
+  );
+  const indicatorTransformOriginY = useMemo(
+    () =>
+      interpolate(animatedPositionIndex, {
+        inputRange: [0, 1, 2],
+        outputRange: [-1, 0, 1],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedPositionIndex]
+  );
+  const leftIndicatorRotate = useMemo(
+    () =>
+      interpolate(animatedPositionIndex, {
+        inputRange: [0, 1, 2],
+        outputRange: [toRad(-30), 0, toRad(30)],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedPositionIndex]
+  );
+  const rightIndicatorRotate = useMemo(
+    () =>
+      interpolate(animatedPositionIndex, {
+        inputRange: [0, 1, 2],
+        outputRange: [toRad(30), 0, toRad(-30)],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedPositionIndex]
+  );
   //#endregion
 
   //#region styles
@@ -42,8 +58,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
         borderTopRightRadius: borderTopRadius,
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [style]
+    [style, borderTopRadius]
   );
   const leftIndicatorStyle = useMemo(
     () => ({
@@ -57,8 +72,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
         }
       ),
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [indicatorTransformOriginY, leftIndicatorRotate]
   );
   const rightIndicatorStyle = useMemo(
     () => ({
@@ -72,8 +86,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
         }
       ),
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [indicatorTransformOriginY, rightIndicatorRotate]
   );
   //#endregion
 

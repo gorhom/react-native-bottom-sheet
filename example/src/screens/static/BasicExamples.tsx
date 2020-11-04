@@ -90,6 +90,7 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
           initialSnapIndex={1}
           topInset={headerHeight}
           onChange={handleSheetChange}
+          shouldMeasureContentHeight={type === 'View'}
         >
           <ContactList key={`${type}.list`} type={type} count={count} />
         </BottomSheet>

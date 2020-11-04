@@ -133,7 +133,7 @@ const ContactList = ({
     );
   } else if (type === 'View') {
     return (
-      <BottomSheetView style={styles.contentContainer}>
+      <BottomSheetView style={contentContainerStyle}>
         {header && header()}
         {data.map(renderScrollViewItem)}
       </BottomSheetView>
