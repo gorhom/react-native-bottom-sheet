@@ -155,21 +155,27 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       flashScrollableIndicators,
     } = useScrollable();
 
-    // content
+    // heights
     const [contentHeight, setContentHeight] = useState(-1);
 
     // normalize snap points
     const { snapPoints, sheetHeight } = useMemo(() => {
       let normalizedSnapPoints = normalizeSnapPoints(_snapPoints, topInset);
-      if (shouldMeasureContentHeight && contentHeight !== -1) {
-        normalizedSnapPoints = normalizedSnapPoints.filter(
-          snapPoint => snapPoint < contentHeight
-        );
-        normalizedSnapPoints.push(contentHeight);
+      if (shouldMeasureContentHeight) {
+        if (contentHeight !== -1) {
+          normalizedSnapPoints = normalizedSnapPoints.filter(
+            snapPoint => snapPoint < contentHeight
+          );
+          normalizedSnapPoints.push(contentHeight);
 
-        // reset currentPositionIndexRef to the nearest point
-        if (currentPositionIndexRef.current >= normalizedSnapPoints.length) {
-          currentPositionIndexRef.current = normalizedSnapPoints.length - 1;
+          // reset currentPositionIndexRef to the nearest point
+          if (currentPositionIndexRef.current >= normalizedSnapPoints.length) {
+            currentPositionIndexRef.current = normalizedSnapPoints.length - 1;
+          }
+        } else {
+          normalizedSnapPoints.push(
+            normalizedSnapPoints[normalizedSnapPoints.length - 1]
+          );
         }
       }
       const maxSnapPoint = Math.max(...normalizedSnapPoints);
@@ -306,6 +312,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         },
       }) => {
         if (shouldMeasureContentHeight) {
+          // console.log('handleContentOnLayout', height);
           setContentHeight(Math.min(height, windowHeight));
         }
       },

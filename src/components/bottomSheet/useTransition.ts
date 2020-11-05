@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import Animated, {
   eq,
   set,
@@ -23,6 +23,7 @@ import { State } from 'react-native-gesture-handler';
 import { useClock, useValue, snapPoint } from 'react-native-redash';
 import type { BottomSheetAnimationConfigs } from './types';
 import { GESTURE } from '../../constants';
+import { useReactiveValue, useReactiveValues } from '../../hooks';
 
 interface TransitionProps extends Required<BottomSheetAnimationConfigs> {
   contentPanGestureState: Animated.Value<State>;
@@ -48,11 +49,12 @@ export const useTransition = ({
   handlePanGestureTranslationY,
   handlePanGestureVelocityY,
   scrollableContentOffsetY,
-  snapPoints,
+  snapPoints: _snapPoints,
   initialPosition,
 }: TransitionProps) => {
   const currentGesture = useValue<GESTURE>(GESTURE.UNDETERMINED);
-  const currentPosition = useValue(initialPosition);
+  const currentPosition = useReactiveValue(initialPosition);
+  const snapPoints = useReactiveValues(_snapPoints);
 
   const isPanningContent = useMemo(
     () => eq(contentPanGestureState, State.ACTIVE),
@@ -86,7 +88,8 @@ export const useTransition = ({
       frameTime: new Animated.Value(0),
       time: new Animated.Value(0),
     }),
-    [initialPosition]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const finishTiming = useMemo(
@@ -273,10 +276,6 @@ export const useTransition = ({
     ]
   );
 
-  // effects
-  useEffect(() => {
-    currentPosition.setValue(initialPosition);
-  }, [currentPosition, initialPosition]);
   return {
     position,
     manualSnapToPoint,
