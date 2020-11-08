@@ -9,7 +9,7 @@ const ContentWrapperComponent = forwardRef<
   BottomSheetContentWrapperProps
 >(
   (
-    { children, initialMaxDeltaY, style, onGestureEvent, onHandlerStateChange },
+    { children, initialMaxDeltaY, style, onGestureEvent, onHandlerStateChange, disableTapGestureHandler },
     ref
   ) => {
     return (
@@ -20,6 +20,7 @@ const ContentWrapperComponent = forwardRef<
         shouldCancelWhenOutside={false}
         onGestureEvent={onGestureEvent}
         onHandlerStateChange={onHandlerStateChange}
+        enabled={!disableTapGestureHandler}
       >
         <Animated.View pointerEvents="box-none" style={style}>
           {children}

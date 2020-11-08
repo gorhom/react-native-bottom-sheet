@@ -85,6 +85,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // components
       handleComponent: HandleComponent = Handle,
       backgroundComponent: BackgroundComponent = null,
+      disableTapGestureHandler = false,
       children,
     },
     ref
@@ -397,6 +398,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           ref={rootTapGestureRef}
           initialMaxDeltaY={snapPoints[Math.max(initialSnapIndex, 0)]}
           style={containerStyle}
+          disableTapGestureHandler={disableTapGestureHandler}
           {...tapGestureHandler}
         >
           <Animated.View style={contentContainerStyle}>

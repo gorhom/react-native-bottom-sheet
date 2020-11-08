@@ -8,6 +8,7 @@ export type BottomSheetContentWrapperProps = {
   style: StyleProp<ViewStyle>;
   onHandlerStateChange: (...args: any[]) => void;
   onGestureEvent: (...args: any[]) => void;
+  disableTapGestureHandler: boolean;
 };
 
 export type BottomSheetContentWrapper = React.ForwardRefExoticComponent<

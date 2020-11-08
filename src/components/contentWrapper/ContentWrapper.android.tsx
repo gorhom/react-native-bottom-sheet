@@ -8,7 +8,7 @@ const ContentWrapperComponent = forwardRef<
   BottomSheetContentWrapperProps
 >(
   (
-    { children, initialMaxDeltaY, onGestureEvent, onHandlerStateChange },
+    { children, initialMaxDeltaY, onGestureEvent, onHandlerStateChange, disableTapGestureHandler },
     ref
   ) => {
     return (
@@ -19,6 +19,7 @@ const ContentWrapperComponent = forwardRef<
         shouldCancelWhenOutside={false}
         onGestureEvent={onGestureEvent}
         onHandlerStateChange={onHandlerStateChange}
+        enabled={!disableTapGestureHandler}
       >
         {children}
       </TapGestureHandler>

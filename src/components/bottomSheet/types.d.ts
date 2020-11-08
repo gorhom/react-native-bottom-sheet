@@ -61,6 +61,11 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * @type React.ReactNode[] | React.ReactNode
    */
   children: React.ReactNode[] | React.ReactNode;
+  /**
+   * Whether to disable tap gesture handler
+   * @type boolean | undefined
+   */
+  disableTapGestureHandler?: boolean;
 }
 
 export interface BottomSheetAnimationConfigs {
