@@ -14,8 +14,11 @@ export type BottomSheetInternalContextType = {
   handlePanGestureVelocityY: Animated.Value<number>;
   scrollableContentOffsetY: Animated.Value<number>;
   decelerationRate: Animated.Node<number>;
+  contentHeight: number | 'auto';
+  contentSafeHeight: number | 'auto';
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
+  setContentHeight: (height: number) => void;
 };
 
 // @ts-ignore

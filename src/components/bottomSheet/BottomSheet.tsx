@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
   memo,
   useState,
+  useEffect,
 } from 'react';
 import { ViewStyle, Dimensions } from 'react-native';
 import isEqual from 'lodash.isequal';
@@ -42,6 +43,7 @@ import { useTransition } from './useTransition';
 import { useStableCallback, useScrollable } from '../../hooks';
 import { normalizeSnapPoints } from '../../utilities';
 import {
+  BottomSheetInternalContextType,
   BottomSheetInternalProvider,
   BottomSheetProvider,
 } from '../../contexts';
@@ -157,16 +159,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     // heights
     const [contentHeight, setContentHeight] = useState(-1);
+    const [handleHeight, setHandleHeight] = useState(-1);
 
     // normalize snap points
     const { snapPoints, sheetHeight } = useMemo(() => {
       let normalizedSnapPoints = normalizeSnapPoints(_snapPoints, topInset);
       if (shouldMeasureContentHeight) {
-        if (contentHeight !== -1) {
+        if (contentHeight !== -1 && handleHeight !== -1) {
+          // remove snap points larger than content height
           normalizedSnapPoints = normalizedSnapPoints.filter(
-            snapPoint => snapPoint < contentHeight
+            snapPoint => snapPoint < contentHeight + handleHeight
           );
-          normalizedSnapPoints.push(contentHeight);
+
+          const sheetSafeHeight = contentHeight + handleHeight;
+          normalizedSnapPoints.push(
+            Math.min(sheetSafeHeight, windowHeight - topInset)
+          );
 
           // reset currentPositionIndexRef to the nearest point
           if (currentPositionIndexRef.current >= normalizedSnapPoints.length) {
@@ -179,25 +187,36 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
       }
       const maxSnapPoint = Math.max(...normalizedSnapPoints);
-      // console.log(
-      //   '_snapPoints',
-      //   _snapPoints,
-      //   'normalizedSnapPoints',
-      //   normalizedSnapPoints
-      // );
+      console.log(
+        '_snapPoints',
+        _snapPoints,
+        'normalizedSnapPoints',
+        normalizedSnapPoints
+      );
       return {
         snapPoints: normalizedSnapPoints.map(
-          normalizedSnapPoint => windowHeight - topInset - normalizedSnapPoint
+          normalizedSnapPoint => windowHeight - normalizedSnapPoint
         ),
         sheetHeight: maxSnapPoint,
       };
-    }, [_snapPoints, topInset, contentHeight, shouldMeasureContentHeight]);
+    }, [
+      _snapPoints,
+      topInset,
+      contentHeight,
+      handleHeight,
+      shouldMeasureContentHeight,
+    ]);
     const initialPosition = useMemo(() => {
       return currentPositionIndexRef.current < 0
-        ? sheetHeight
+        ? windowHeight
         : snapPoints[currentPositionIndexRef.current];
-    }, [sheetHeight, snapPoints]);
-    // console.log('snapPoints', snapPoints);
+    }, [snapPoints]);
+    console.log('snapPoints', snapPoints);
+
+    const contentSafeHeight = useMemo(
+      () => (handleHeight === -1 ? -1 : sheetHeight - handleHeight),
+      [sheetHeight, handleHeight]
+    );
     //#endregion
 
     //#region gestures
@@ -305,15 +324,24 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [setScrollableRef, refreshUIElements]
     );
-    const handleContentOnLayout = useCallback(
+    const handleSettingContentHeight = useCallback(
+      (height: number) => {
+        if (shouldMeasureContentHeight) {
+          console.log('handleContentOnLayout', height);
+          setContentHeight(height);
+        }
+      },
+      [shouldMeasureContentHeight]
+    );
+    const handleHandleOnLayout = useCallback(
       ({
         nativeEvent: {
           layout: { height },
         },
       }) => {
         if (shouldMeasureContentHeight) {
-          // console.log('handleContentOnLayout', height);
-          setContentHeight(Math.min(height, windowHeight));
+          console.log('handleHandleOnLayout', height);
+          setHandleHeight(height);
         }
       },
       [shouldMeasureContentHeight]
@@ -345,10 +373,32 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region context variables
-    const internalContextVariables = useMemo(
+    const internalContextVariables = useMemo<BottomSheetInternalContextType>(
       () => ({
         enabled,
         rootTapGestureRef,
+        contentPanGestureState,
+        contentPanGestureTranslationY,
+        contentPanGestureVelocityY,
+        handlePanGestureState,
+        handlePanGestureTranslationY,
+        handlePanGestureVelocityY,
+        scrollableContentOffsetY,
+        decelerationRate,
+        contentHeight:
+          contentHeight !== -1 && contentSafeHeight !== -1
+            ? contentHeight
+            : 'auto',
+        contentSafeHeight:
+          contentHeight !== -1 && contentSafeHeight !== -1
+            ? contentSafeHeight
+            : 'auto',
+        setScrollableRef: handleSettingScrollableRef,
+        removeScrollableRef,
+        setContentHeight: handleSettingContentHeight,
+      }),
+      [
+        enabled,
         handlePanGestureState,
         handlePanGestureTranslationY,
         handlePanGestureVelocityY,
@@ -357,11 +407,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         contentPanGestureVelocityY,
         scrollableContentOffsetY,
         decelerationRate,
-        setScrollableRef: handleSettingScrollableRef,
+        contentHeight,
+        contentSafeHeight,
+        handleSettingScrollableRef,
+        handleSettingContentHeight,
         removeScrollableRef,
-      }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [enabled]
+      ]
     );
     const externalContextVariables = useMemo(
       () => ({
@@ -382,9 +433,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       close: handleClose,
     }));
 
-    // useEffect(() => {
-    //   manualSnapToPoint.setValue(initialPosition);
-    // }, [manualSnapToPoint, initialPosition]);
+    /**
+     * to keep sheet position synced with snap points array.
+     * this is needed when `shouldMeasureContentHeight` is true
+     */
+    useEffect(() => {
+      if (currentPositionIndexRef.current !== -1) {
+        manualSnapToPoint.setValue(snapPoints[currentPositionIndexRef.current]);
+      }
+    }, [manualSnapToPoint, snapPoints]);
 
     /**
      * @DEV
@@ -436,6 +493,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     //#endregion
 
+    console.log(initialPosition, currentPositionIndexRef.current);
     // render
     return (
       <>
@@ -445,10 +503,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           style={styles.container}
           {...tapGestureHandler}
         >
-          <Animated.View
-            style={sheetContainerStyle}
-            onLayout={handleContentOnLayout}
-          >
+          <Animated.View style={sheetContainerStyle}>
             {BackgroundComponent && (
               <BackgroundComponent pointerEvents="none" />
             )}
@@ -460,7 +515,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 shouldCancelWhenOutside={false}
                 {...handlePanGestureHandler}
               >
-                <Animated.View>
+                <Animated.View onLayout={handleHandleOnLayout}>
                   <HandleComponent
                     animatedPositionIndex={animatedPositionIndex}
                   />

@@ -11,7 +11,10 @@ const BottomSheetViewComponent = ({
   focusHook: useFocusHook = useEffect,
 }: BottomSheetViewProps) => {
   // hooks
-  const { scrollableContentOffsetY } = useBottomSheetInternal();
+  const {
+    scrollableContentOffsetY,
+    setContentHeight,
+  } = useBottomSheetInternal();
 
   // styles
   const containerStyle = useMemo(
@@ -24,6 +27,17 @@ const BottomSheetViewComponent = ({
   );
 
   // callback
+  const handleOnLayout = useCallback(
+    ({
+      nativeEvent: {
+        layout: { height },
+      },
+    }) => {
+      console.log('handleOnLayout', height);
+      setContentHeight(height);
+    },
+    [setContentHeight]
+  );
   const handleSettingScrollable = useCallback(() => {
     scrollableContentOffsetY.setValue(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,7 +47,11 @@ const BottomSheetViewComponent = ({
   useFocusHook(handleSettingScrollable);
 
   //render
-  return <RNView style={containerStyle}>{children}</RNView>;
+  return (
+    <RNView onLayout={handleOnLayout} style={containerStyle}>
+      {children}
+    </RNView>
+  );
 };
 
 const BottomSheetView = memo(BottomSheetViewComponent, isEqual);
