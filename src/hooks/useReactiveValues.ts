@@ -40,7 +40,6 @@ export const useReactiveValues = (values: number[]) => {
           ref.current[i].setValue(lastValue);
         }
       }
-      console.log('values', values, 'current length', ref.current.length);
     }
   }, [values]);
 
