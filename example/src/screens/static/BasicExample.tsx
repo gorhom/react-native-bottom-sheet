@@ -1,40 +1,32 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
-import Animated, {
-  interpolate,
-  concat,
-  Extrapolate,
-} from 'react-native-reanimated';
+import { concat } from 'react-native-reanimated';
 import { ReText, useValue } from 'react-native-redash';
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import Handle from '../../components/handle';
+import BottomSheet from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
+import ContactList from '../../components/contactList';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 const BasicExample = () => {
   // state
   const [enabled, setEnabled] = useState(true);
+  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(450);
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const headerHeight = useHeaderHeight();
+  const { top: topSafeArea } = useSafeArea();
 
   // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
+  const snapPoints = useMemo(() => [150, dynamicSnapPoint], [dynamicSnapPoint]);
   const position = useValue<number>(0);
 
   // styles
-  const shadowOverlayStyle = useMemo(
+  const containerStyle = useMemo(
     () => ({
-      ...styles.shadowOverlay,
-      opacity: interpolate(position, {
-        inputRange: [300, 450],
-        outputRange: [0, 1],
-        extrapolate: Extrapolate.CLAMP,
-      }),
+      ...styles.container,
+      paddingTop: topSafeArea,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [topSafeArea]
   );
 
   // callbacks
@@ -44,31 +36,20 @@ const BasicExample = () => {
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
   }, []);
-
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
+  const handleIncreaseDynamicSnapPoint = useCallback(() => {
+    setDynamicSnapPoint(state => state + 50);
+  }, []);
 
   // renders
-  // const renderHeader = useCallback(() => {
-  //   return (
-  //     <View style={styles.headerContainer}>
-  //       <Text style={styles.title}>Basic Screen</Text>
-  //     </View>
-  //   );
-  // }, []);
-
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <Button
-        label="Snap To 450"
+        label="Increase Dynamic Snap Point"
         style={styles.buttonContainer}
-        onPress={() => handleSnapPress(2)}
-      />
-      <Button
-        label="Snap To 300"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(1)}
+        onPress={handleIncreaseDynamicSnapPoint}
       />
       <Button
         label="Snap To 150"
@@ -87,92 +68,16 @@ const BasicExample = () => {
         onPress={() => setEnabled(state => !state)}
       />
       <ReText text={concat('Position from bottom: ', position)} />
-      <Animated.View pointerEvents="none" style={shadowOverlayStyle} />
       <BottomSheet
         ref={bottomSheetRef}
         enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
-        handleComponent={Handle}
-        topInset={headerHeight}
+        topInset={topSafeArea}
         animatedPosition={position}
         onChange={handleSheetChanges}
       >
-        {/* <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            height: (25 * sheetHeight) / 100,
-            backgroundColor: 'rgba(0,0,0,0.25)',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            height: (50 * sheetHeight) / 100,
-            backgroundColor: 'rgba(0,0,0,0.50)',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: windowWidth / 2 - 25,
-            width: 50,
-            height: 10,
-            backgroundColor: 'red',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: windowWidth / 2 - 25,
-            bottom: 0,
-            width: 50,
-            height: 10,
-            backgroundColor: 'red',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            bottom: sheetHeight / 2 - 25,
-            width: 10,
-            height: 50,
-            backgroundColor: 'red',
-          }}
-        />
-
-        <View
-          style={{
-            position: 'absolute',
-            bottom: sheetHeight / 2 - 25,
-            right: 0,
-            width: 10,
-            height: 50,
-            backgroundColor: 'red',
-          }}
-        /> */}
-
-        {/* <Button
-          label="Open"
-          style={styles.buttonContainer}
-          onPress={() => handleSnapPress(1)}
-        /> */}
-        {/* <ContactList type="ScrollView" header={renderHeader} /> */}
-        <View style={{ height: 100, backgroundColor: 'blue' }} />
-        <BottomSheetFlatList
-          contentContainerStyle={{ flexGrow: 1, backgroundColor: '#fff' }}
-          data={[0, 1, 2, 3, 4, 5, 6, 7, 8]}
-          renderItem={() => (
-            <View
-              style={{ backgroundColor: 'red', height: 100, marginBottom: 20 }}
-            />
-          )}
-        />
-        <View style={{ height: 100, backgroundColor: 'green' }} />
+        <ContactList type="View" />
       </BottomSheet>
     </View>
   );
