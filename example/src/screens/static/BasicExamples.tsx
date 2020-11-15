@@ -11,7 +11,7 @@ interface ExampleScreenProps {
   count?: number;
 }
 
-const createExampleScreen = ({ type, count = 10 }: ExampleScreenProps) =>
+const createExampleScreen = ({ type, count = 15 }: ExampleScreenProps) =>
   memo(() => {
     // state
     const [enabled, setEnabled] = useState(true);
