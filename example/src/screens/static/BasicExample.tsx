@@ -1,39 +1,23 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
-import Animated, {
-  interpolate,
-  concat,
-  Extrapolate,
-} from 'react-native-reanimated';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
+import { concat } from 'react-native-reanimated';
 import { ReText, useValue } from 'react-native-redash';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Handle from '../../components/handle';
 import Button from '../../components/button';
+
+const { height: windowHeight } = Dimensions.get('window');
 
 const BasicExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const headerHeight = useHeaderHeight();
+  const { top: headerHeight } = useSafeArea();
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '50%', '75%'], []);
+  const snapPoints = useMemo(() => ['25%', '75%'], []);
   const positionIndex = useValue<number>(0);
-
-  // styles
-  const shadowOverlayStyle = useMemo(
-    () => ({
-      ...styles.shadowOverlay,
-      opacity: interpolate(positionIndex, {
-        inputRange: [0, 2],
-        outputRange: [0, 1],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
@@ -70,7 +54,6 @@ const BasicExample = () => {
         onPress={() => handleClosePress()}
       />
       <ReText text={concat('Position from bottom: ', positionIndex)} />
-      <Animated.View pointerEvents="none" style={shadowOverlayStyle} />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -78,19 +61,47 @@ const BasicExample = () => {
         handleComponent={Handle}
         shouldMeasureContentHeight={true}
         topInset={headerHeight}
-        animatedPositionIndex={positionIndex}
         onChange={handleSheetChanges}
       >
         <CustomView />
       </BottomSheet>
+      <GridView color="red" top={0} />
+      <GridView color="blue" top={headerHeight} />
     </View>
   );
 };
 
+const GridView = ({ top, color }) => (
+  <>
+    <View
+      pointerEvents="none"
+      style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: (windowHeight - top) * 0.25 - 1 + top,
+        height: 2,
+        backgroundColor: color,
+      }}
+    />
+    <View
+      pointerEvents="none"
+      style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: (windowHeight - top) * 0.75 - 1 + top,
+        height: 2,
+        backgroundColor: color,
+      }}
+    />
+  </>
+);
+
 const CustomView = () => {
   const [toggle, setToggle] = useState(false);
   return (
-    <View style={styles.contentContainer}>
+    <BottomSheetView style={styles.contentContainer}>
       <View
         style={{
           height: 400,
@@ -106,7 +117,7 @@ const CustomView = () => {
       {toggle && (
         <View
           style={{
-            height: 250,
+            height: 300,
             backgroundColor: 'green',
           }}
         />
@@ -131,7 +142,7 @@ const CustomView = () => {
           backgroundColor: 'red',
         }}
       />
-    </View>
+    </BottomSheetView>
   );
 };
 

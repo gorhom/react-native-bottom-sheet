@@ -34,12 +34,15 @@ const StackExample = () => {
     dismissB();
   }, [dismissB]);
   const handlePresentCPress = useCallback(() => {
-    presentC(<ContactListContainer title="Modal C" type="SectionList" />, {
-      snapPoints: ['25%', '50%'],
-      initialSnapIndex: 1,
-      animationDuration: 250,
-      dismissOnScrollDown: false,
-    });
+    presentC(
+      <ContactListContainer title="Modal C" type="SectionList" count={5} />,
+      {
+        snapPoints: ['25%', '50%'],
+        initialSnapIndex: 1,
+        animationDuration: 250,
+        dismissOnScrollDown: false,
+      }
+    );
   }, [presentC]);
   const handleDismissCPress = useCallback(() => {
     dismissC();
