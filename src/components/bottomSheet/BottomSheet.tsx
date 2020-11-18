@@ -10,14 +10,15 @@ import { ViewStyle } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import Animated, {
-  //@ts-ignore
   useAnimatedReaction,
   useSharedValue,
   useAnimatedStyle,
   useDerivedValue,
   withTiming,
+  runOnJS,
   interpolate,
   Extrapolate,
+  runOnUI,
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
@@ -180,6 +181,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
     }, [snapPoints, flashScrollableIndicators]);
     const handleOnChange = useStableCallback((index: number) => {
+      currentPositionIndexRef.current = index;
+
       if (_onChange) {
         /**
          * to avoid having -0 🤷‍♂️
@@ -218,10 +221,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     // callbacks
     const animateToPointCompleted = useCallback(
-      isFinished => {
+      isCancelled => {
+        'worklet';
         animationState.value = ANIMATION_STATE.STOPPED;
 
-        if (!isFinished) {
+        if (!isCancelled) {
           return;
         }
         const tempCurrentPositionIndex = Math.round(
@@ -229,15 +233,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         );
 
         if (tempCurrentPositionIndex !== currentPositionIndexRef.current) {
-          currentPositionIndexRef.current = tempCurrentPositionIndex;
-          handleOnChange(tempCurrentPositionIndex);
-          refreshUIElements();
+          runOnJS(handleOnChange)(tempCurrentPositionIndex);
+          runOnJS(refreshUIElements)();
         }
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [handleOnChange, refreshUIElements]
+      [
+        animatedPositionIndex.value,
+        animationState,
+        handleOnChange,
+        refreshUIElements,
+      ]
     );
-
     const animateToPoint = useCallback(
       (point: number) => {
         'worklet';
@@ -251,8 +257,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animateToPointCompleted
         );
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [animationDuration, animationEasing, animateToPointCompleted]
+      [
+        animationState,
+        animatedPosition,
+        animationDuration,
+        animationEasing,
+        animateToPointCompleted,
+      ]
     );
 
     // hooks
@@ -281,18 +292,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             snapPoints.length - 1
           }`
         );
-        animateToPoint(snapPoints[index]);
+        runOnUI(animateToPoint)(snapPoints[index]);
       },
       [animateToPoint, snapPoints]
     );
     const handleClose = useCallback(() => {
-      animateToPoint(sheetHeight);
+      runOnUI(animateToPoint)(sheetHeight);
     }, [animateToPoint, sheetHeight]);
     const handleExpand = useCallback(() => {
-      animateToPoint(snapPoints[snapPoints.length - 1]);
+      runOnUI(animateToPoint)(snapPoints[snapPoints.length - 1]);
     }, [animateToPoint, snapPoints]);
     const handleCollapse = useCallback(() => {
-      animateToPoint(snapPoints[0]);
+      runOnUI(animateToPoint)(snapPoints[0]);
     }, [animateToPoint, snapPoints]);
     useImperativeHandle(ref, () => ({
       snapTo: handleSnapTo,

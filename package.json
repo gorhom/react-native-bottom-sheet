@@ -60,7 +60,7 @@
     "react": "~16.9.0",
     "react-native": "^0.62.2",
     "react-native-gesture-handler": "^1.8.0",
-    "react-native-reanimated": "^2.0.0-alpha.8",
+    "react-native-reanimated": "^2.0.0-alpha.9",
     "release-it": "^13.6.5",
     "typescript": "^3.9.7"
   },
@@ -68,7 +68,7 @@
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=1.8.0",
-    "react-native-reanimated": ">=2.0.0-alpha.8"
+    "react-native-reanimated": ">=2.0.0-alpha.9"
   },
   "husky": {
     "hooks": {

@@ -5,6 +5,7 @@ import {
   useAnimatedScrollHandler,
   useSharedValue,
   scrollTo,
+  runOnUI,
 } from 'react-native-reanimated';
 import { useScrollableAnimatedProps } from './useScrollableAnimatedProps';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
@@ -62,9 +63,10 @@ export const useScrollableInternal = (type: ScrollableType) => {
     []
   );
   const handleSettingScrollable = useCallback(() => {
-    'worklet';
     // set current content offset
-    _scrollableContentOffsetY.value = scrollableContentOffsetY.value;
+    runOnUI(() => {
+      _scrollableContentOffsetY.value = scrollableContentOffsetY.value;
+    })();
 
     // set current scrollable ref
     const id = findNodeHandle(scrollableRef.current);

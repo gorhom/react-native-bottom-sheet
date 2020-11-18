@@ -4,6 +4,7 @@ import isEqual from 'lodash.isequal';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetViewProps } from './types';
 import { styles } from './styles';
+import { runOnUI } from 'react-native-reanimated';
 
 const BottomSheetViewComponent = ({
   children,
@@ -25,10 +26,10 @@ const BottomSheetViewComponent = ({
 
   // callback
   const handleSettingScrollable = useCallback(() => {
-    'worklet';
-    scrollableContentOffsetY.value = 0;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    runOnUI(() => {
+      scrollableContentOffsetY.value = 0;
+    })();
+  }, [scrollableContentOffsetY]);
 
   // effects
   useFocusHook(handleSettingScrollable);
