@@ -7,8 +7,7 @@ import {
   State,
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
-import { clamp } from 'react-native-redash';
-import { snapPoint } from '../utilities';
+import { clamp, snapPoint } from 'react-native-redash';
 import { GESTURE } from '../constants';
 
 type InteractivePanGestureHandlerContextType = {
