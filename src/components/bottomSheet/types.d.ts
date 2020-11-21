@@ -31,7 +31,7 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    */
   enabled?: boolean;
   /**
-   * To start the sheet closed and snap to initial index when its mounted.
+   * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
    * @default false
    */
