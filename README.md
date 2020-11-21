@@ -149,6 +149,12 @@ To enable or disable user interaction with the sheet.
 
 > `required:` NO | `type:` boolean | `default:` true
 
+#### `animateOnMount`
+
+To start the sheet closed and snap to initial index when it's mounted.
+
+> `required:` NO | `type:` boolean | `default:` false
+
 #### `animationDuration`
 
 Snapping animation duration.

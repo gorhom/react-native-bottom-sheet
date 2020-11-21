@@ -88,6 +88,7 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
           enabled={enabled}
           snapPoints={snapPoints}
           initialSnapIndex={1}
+          animateOnMount={true}
           topInset={headerHeight}
           onChange={handleSheetChange}
         >

@@ -2,7 +2,6 @@ import React, {
   forwardRef,
   memo,
   useCallback,
-  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -61,9 +60,10 @@ const BottomSheetModalComponent = forwardRef<
       }),
     [animatedPositionIndex, overlayOpacity]
   );
-  const initialSnapIndex = useMemo(() => (dismissOnScrollDown ? 0 : -1), [
-    dismissOnScrollDown,
-  ]);
+  const initialSnapIndex = useMemo(
+    () => (dismissOnScrollDown ? _initialSnapIndex + 1 : _initialSnapIndex),
+    [_initialSnapIndex, dismissOnScrollDown]
+  );
   const snapPoints = useMemo(
     () => (dismissOnScrollDown ? [0, ..._snapPoints] : _snapPoints),
     [_snapPoints, dismissOnScrollDown]
@@ -133,12 +133,6 @@ const BottomSheetModalComponent = forwardRef<
     temporaryCloseSheet: handleTemporaryCloseSheet,
     restoreSheetPosition: handleRestoreSheetPosition,
   }));
-  useEffect(() => {
-    bottomSheetRef.current?.snapTo(
-      _initialSnapIndex + (dismissOnScrollDown ? 1 : 0)
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   //#endregion
 
   // render
@@ -162,6 +156,7 @@ const BottomSheetModalComponent = forwardRef<
         {...bottomSheetProps}
         initialSnapIndex={initialSnapIndex}
         snapPoints={snapPoints}
+        animateOnMount={true}
         animatedPositionIndex={animatedPositionIndex}
         onChange={handleChange}
       >
