@@ -9,19 +9,22 @@ const ContentWrapperComponent = forwardRef<
   BottomSheetContentWrapperProps
 >(
   (
-    { children, initialMaxDeltaY, style, onGestureEvent, onHandlerStateChange },
+    { style, children, onLayout, onGestureEvent, onHandlerStateChange },
     ref
   ) => {
     return (
       <TapGestureHandler
         ref={ref}
         maxDurationMs={1000000}
-        maxDeltaY={initialMaxDeltaY}
         shouldCancelWhenOutside={false}
         onGestureEvent={onGestureEvent}
         onHandlerStateChange={onHandlerStateChange}
       >
-        <Animated.View pointerEvents="box-none" style={style}>
+        <Animated.View
+          onLayout={onLayout}
+          pointerEvents="box-none"
+          style={style}
+        >
           {children}
         </Animated.View>
       </TapGestureHandler>
