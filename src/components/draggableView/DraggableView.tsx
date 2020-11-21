@@ -19,7 +19,7 @@ const BottomSheetDraggableViewComponent = ({
   // hooks
   const {
     enabled,
-    rootTapGestureRef,
+    containerTapGestureRef,
     handlePanGestureState,
     handlePanGestureTranslationY,
     handlePanGestureVelocityY,
@@ -32,9 +32,9 @@ const BottomSheetDraggableViewComponent = ({
   const simultaneousHandlers = useMemo(
     () =>
       nativeGestureRef
-        ? [rootTapGestureRef, nativeGestureRef]
-        : rootTapGestureRef,
-    [rootTapGestureRef, nativeGestureRef]
+        ? [containerTapGestureRef, nativeGestureRef]
+        : containerTapGestureRef,
+    [containerTapGestureRef, nativeGestureRef]
   );
 
   // styles

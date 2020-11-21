@@ -5,7 +5,7 @@ import { Scrollable, ScrollableRef } from '../types';
 
 export type BottomSheetInternalContextType = {
   enabled: boolean;
-  rootTapGestureRef: Ref<TapGestureHandler>;
+  containerTapGestureRef: Ref<TapGestureHandler>;
   contentPanGestureState: Animated.Value<State>;
   contentPanGestureTranslationY: Animated.Value<number>;
   contentPanGestureVelocityY: Animated.Value<number>;

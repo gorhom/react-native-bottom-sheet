@@ -1,4 +1,4 @@
-export { default } from './components/bottomSheet';
+export { default } from './components/bottomSheetContainer';
 
 // scrollables
 export { default as BottomSheetFlatList } from './components/flatList';

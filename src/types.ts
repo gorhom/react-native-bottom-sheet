@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { FlatList, ScrollView, SectionList } from 'react-native';
-import type { BottomSheetProps } from './components/bottomSheet';
+import type { BottomSheetContainerProps } from './components/bottomSheetContainer';
 import type { BottomSheetOverlayProps } from './components/overlay';
 
 export type BottomSheetMethods = {
@@ -70,4 +70,4 @@ export type BottomSheetModalConfigs = {
    * @default true
    */
   dismissOnScrollDown?: boolean;
-} & Omit<BottomSheetProps, 'children'>;
+} & Omit<BottomSheetContainerProps, 'children'>;
