@@ -16,3 +16,5 @@ export const NORMAL_DECELERATION_RATE = Platform.select({
   ios: 0.998,
   android: 0.985,
 });
+
+export const DEFAULT_ANIMATE_ON_MOUNT = false;

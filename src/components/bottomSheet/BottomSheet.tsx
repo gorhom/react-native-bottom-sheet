@@ -5,6 +5,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   memo,
+  useLayoutEffect,
 } from 'react';
 import { ViewStyle } from 'react-native';
 import isEqual from 'lodash.isequal';
@@ -47,6 +48,7 @@ import {
 import { GESTURE } from '../../constants';
 import {
   NORMAL_DECELERATION_RATE,
+  DEFAULT_ANIMATE_ON_MOUNT,
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
 } from './constants';
@@ -77,6 +79,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       snapPoints: _snapPoints,
       topInset = 0,
       enabled = true,
+      animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
       // animated nodes callback
       animatedPosition: _animatedPosition,
       animatedPositionIndex: _animatedPositionIndex,
@@ -165,8 +168,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       };
     }, [_snapPoints, topInset]);
     const initialPosition = useMemo(() => {
-      return initialSnapIndex < 0 ? sheetHeight : snapPoints[initialSnapIndex];
-    }, [initialSnapIndex, sheetHeight, snapPoints]);
+      return initialSnapIndex < 0 || animateOnMount
+        ? sheetHeight
+        : snapPoints[initialSnapIndex];
+    }, [initialSnapIndex, animateOnMount, sheetHeight, snapPoints]);
     //#endregion
 
     //#region gestures
@@ -341,6 +346,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }));
 
     /**
+     * This will animate the sheet to the initial snap point
+     * when component is mounted.
+     */
+    useLayoutEffect(() => {
+      if (animateOnMount) {
+        manualSnapToPoint.setValue(snapPoints[initialSnapIndex]);
+      }
+    }, [animateOnMount, initialSnapIndex, manualSnapToPoint, snapPoints]);
+
+    /**
      * @DEV
      * here we track the current position and
      * - call on change ( if provided ).
@@ -391,6 +406,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
+    console.log('X', 'render');
     return (
       <>
         <ContentWrapper
