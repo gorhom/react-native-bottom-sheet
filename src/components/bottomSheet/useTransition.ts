@@ -118,7 +118,7 @@ export const useTransition = ({
       cond(
         eq(currentGesture, GESTURE.CONTENT),
         cond(
-          eq(currentPosition, 0),
+          eq(currentPosition, snapPoints[snapPoints.length - 1]),
           add(
             contentPanGestureTranslationY,
             multiply(scrollableContentOffsetY, -1)
@@ -128,9 +128,10 @@ export const useTransition = ({
         handlePanGestureTranslationY
       ),
     [
-      contentPanGestureTranslationY,
+      snapPoints,
       currentGesture,
       currentPosition,
+      contentPanGestureTranslationY,
       handlePanGestureTranslationY,
       scrollableContentOffsetY,
     ]
@@ -172,8 +173,16 @@ export const useTransition = ({
           ),
           // debug('start panning', translateY),
           cond(
-            not(greaterOrEq(add(currentPosition, translateY), 0)),
-            [set(animationState.position, 0), set(animationState.finished, 0)],
+            not(
+              greaterOrEq(
+                add(currentPosition, translateY),
+                snapPoints[snapPoints.length - 1]
+              )
+            ),
+            [
+              set(animationState.position, snapPoints[snapPoints.length - 1]),
+              set(animationState.finished, 0),
+            ],
             cond(
               not(lessOrEq(add(currentPosition, translateY), snapPoints[0])),
               [
@@ -246,8 +255,24 @@ export const useTransition = ({
 
         animationState.position,
       ]),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [snapPoints]
+    [
+      animationState,
+      clock,
+      config,
+      currentGesture,
+      currentPosition,
+      finishTiming,
+      isAnimationInterrupted,
+      isPanning,
+      isPanningContent,
+      manualSnapToPoint,
+      shouldAnimate,
+      snapPoints,
+      translateY,
+      velocityY,
+      contentPanGestureState,
+      handlePanGestureState,
+    ]
   );
 
   return {
