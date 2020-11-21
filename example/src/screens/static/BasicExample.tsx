@@ -77,7 +77,13 @@ const BasicExample = () => {
         animatedPosition={position}
         onChange={handleSheetChanges}
       >
-        <ContactList type="View" />
+        <ContactList type="ScrollView" count={15} />
+        {/* <View
+          style={{
+            height: 450,
+            backgroundColor: 'red'
+          }}
+        /> */}
       </BottomSheet>
     </View>
   );

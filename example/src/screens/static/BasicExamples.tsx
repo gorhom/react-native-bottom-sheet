@@ -1,6 +1,5 @@
 import React, { useCallback, memo, useRef, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ContactList from '../../components/contactList';
 import Button from '../../components/button';
@@ -11,14 +10,13 @@ interface ExampleScreenProps {
   count?: number;
 }
 
-const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
+const createExampleScreen = ({ type, count = 20 }: ExampleScreenProps) =>
   memo(() => {
     // state
     const [enabled, setEnabled] = useState(true);
 
     // hooks
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const headerHeight = useHeaderHeight();
 
     // variables
     const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
@@ -89,7 +87,6 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
           snapPoints={snapPoints}
           initialSnapIndex={1}
           animateOnMount={true}
-          topInset={headerHeight}
           onChange={handleSheetChange}
         >
           <ContactList key={`${type}.list`} type={type} count={count} />
