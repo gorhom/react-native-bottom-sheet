@@ -155,6 +155,12 @@ To start the sheet closed and snap to initial index when it's mounted.
 
 > `required:` NO | `type:` boolean | `default:` false
 
+#### `handleHeight`
+
+Handle height to help adjust snap points.
+
+> `required:` NO | `type:` number | `default:` undefined
+
 #### `animationDuration`
 
 Snapping animation duration.

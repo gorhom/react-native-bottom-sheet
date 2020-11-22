@@ -21,7 +21,7 @@ import LocationDetailsHandle from '../../components/locationDetailsHandle';
 import Weather from '../../components/weather';
 import BlurredBackground from '../../components/blurredBackground';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { height: SCREEN_HEIGHT } = Dimensions.get('screen');
 
 const MapExample = () => {
   // refs

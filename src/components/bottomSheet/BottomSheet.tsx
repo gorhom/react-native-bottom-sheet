@@ -50,6 +50,7 @@ import {
   DEFAULT_ANIMATE_ON_MOUNT,
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
+  DEFAULT_HANDLE_HEIGHT,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -79,6 +80,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       topInset = 0,
       enabled = true,
       animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
+      handleHeight: _handleHeight,
       // container props
       containerHeight,
       containerTapGestureRef,
@@ -144,7 +146,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region state
-    const [handleHeight, setHandleHeight] = useState(-1);
+    const [handleHeight, setHandleHeight] = useState(
+      _handleHeight || DEFAULT_HANDLE_HEIGHT
+    );
     //#endregion
 
     //#region refs
@@ -282,10 +286,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           layout: { height },
         },
       }) => {
-        console.log('BottomSheet', 'handleHandleOnLayout', height);
-        setHandleHeight(height);
+        if (HandleComponent !== undefined && _handleHeight === undefined) {
+          console.log('BottomSheet', 'handleHandleOnLayout', height);
+          setHandleHeight(height);
+        }
       },
-      []
+      [_handleHeight, HandleComponent]
     );
     //#endregion
 

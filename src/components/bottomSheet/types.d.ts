@@ -39,6 +39,11 @@ export type BottomSheetProps = {
    */
   animateOnMount?: boolean;
   /**
+   * Handle height to help adjust snap points.
+   * @type number
+   */
+  handleHeight?: number;
+  /**
    * Container height value to help calculate snap points values.
    * @type number
    */
