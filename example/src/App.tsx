@@ -115,6 +115,15 @@ const App = () => {
               require('./screens/advanced/MapExample').default
             }
           />
+          <Stack.Screen
+            name="Advanced/DynamicSnapPointExample"
+            options={{
+              title: 'Dynamic Snap Point',
+            }}
+            getComponent={() =>
+              require('./screens/advanced/DynamicSnapPointExample').default
+            }
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </AppearanceProvider>
