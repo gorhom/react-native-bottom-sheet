@@ -33,7 +33,8 @@ import {
   // ReText,
 } from 'react-native-redash';
 import DraggableView from '../draggableView';
-import Handle from '../handle';
+import DefaultHandle from '../defaultHandle';
+import DefaultBackground from '../defaultBackground';
 import { useTransition } from './useTransition';
 import {
   useStableCallback,
@@ -91,8 +92,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // callbacks
       onChange: _onChange,
       // components
-      handleComponent: HandleComponent = Handle,
-      backgroundComponent: BackgroundComponent = null,
+      handleComponent: HandleComponent,
+      backgroundComponent: BackgroundComponent = DefaultBackground,
       children,
     },
     ref
@@ -286,8 +287,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           layout: { height },
         },
       }) => {
-        if (HandleComponent !== undefined && _handleHeight === undefined) {
-          console.log('BottomSheet', 'handleHandleOnLayout', height);
+        if (
+          HandleComponent !== undefined &&
+          HandleComponent !== null &&
+          _handleHeight === undefined
+        ) {
+          // console.log('BottomSheet \t\t', 'handleHandleOnLayout', height);
           setHandleHeight(height);
         }
       },
@@ -429,12 +434,39 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     //#endregion
 
-    // render
-    console.log('BottomSheet', 'render');
+    //#region render
+    const renderBackground = useCallback(
+      () =>
+        BackgroundComponent ? (
+          <BackgroundComponent pointerEvents="none" />
+        ) : null,
+      [BackgroundComponent]
+    );
+    const renderHandle = useCallback(
+      () =>
+        HandleComponent === null ? null : HandleComponent === undefined ? (
+          <DefaultHandle />
+        ) : (
+          <HandleComponent animatedPositionIndex={animatedPositionIndex} />
+        ),
+      [HandleComponent, animatedPositionIndex]
+    );
+    // console.log(
+    //   'BottomSheet \t\t',
+    //   'render',
+    //   'containerHeight: ',
+    //   containerHeight,
+    //   'handleHeight: ',
+    //   handleHeight,
+    //   'sheetHeight: ',
+    //   sheetHeight,
+    //   'snapPoints: ',
+    //   snapPoints
+    // );
     return (
       <>
         <Animated.View style={sheetContainerStyle}>
-          {BackgroundComponent && <BackgroundComponent pointerEvents="none" />}
+          {renderBackground()}
           <BottomSheetProvider value={externalContextVariables}>
             <PanGestureHandler
               enabled={enabled}
@@ -444,9 +476,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               {...handlePanGestureHandler}
             >
               <Animated.View onLayout={handleHandleOnLayout}>
-                <HandleComponent
-                  animatedPositionIndex={animatedPositionIndex}
-                />
+                {renderHandle()}
               </Animated.View>
             </PanGestureHandler>
 
@@ -508,6 +538,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         </Animated.View> */}
       </>
     );
+    //#endregion
   }
 );
 

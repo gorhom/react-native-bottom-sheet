@@ -2,7 +2,7 @@ import type React from 'react';
 import type { ViewProps } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { State, TapGestureHandler } from 'react-native-gesture-handler';
-import type { BottomSheetHandleProps } from '../handle';
+import type { BottomSheetHandleProps } from '../defaultHandle';
 
 export type BottomSheetProps = {
   /**

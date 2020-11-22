@@ -7,9 +7,7 @@ export const styles = StyleSheet.create({
     right: 0,
     top: 0,
   },
-  contentContainer: {
-    flex: 1,
-  },
+  contentContainer: {},
   debug: {
     position: 'absolute',
     left: 20,

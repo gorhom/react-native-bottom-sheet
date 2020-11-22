@@ -58,11 +58,11 @@ const BottomSheetContainerComponent = forwardRef<
   const handleContainerOnLayout = useCallback(
     ({ nativeEvent: { layout } }) => {
       if (_height === undefined) {
-        console.log(
-          'BottomSheetContainer',
-          'handleContainerOnLayout',
-          layout.height
-        );
+        // console.log(
+        //   'BottomSheetContainer \t',
+        //   'handleContainerOnLayout',
+        //   layout.height
+        // );
         setContainerHeight(layout.height);
       }
     },
@@ -71,7 +71,7 @@ const BottomSheetContainerComponent = forwardRef<
   //#endregion
 
   //#region render
-  console.log('BottomSheetContainer', 'render');
+  // console.log('BottomSheetContainer \t', 'render \t');
   return (
     <ContentWrapper
       ref={containerTapGestureRef}

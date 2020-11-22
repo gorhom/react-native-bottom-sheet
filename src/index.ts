@@ -16,7 +16,8 @@ export const {
 } = BottomSheetTouchable;
 
 // default components / types
-export type { BottomSheetHandleProps } from './components/handle';
+export type { BottomSheetHandleProps } from './components/defaultHandle';
+
 // overlay
 export { default as BottomSheetOverlay } from './components/overlay';
 export type { BottomSheetOverlayProps } from './components/overlay';
