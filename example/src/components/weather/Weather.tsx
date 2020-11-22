@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import Animated, { Extrapolate, interpolate } from 'react-native-reanimated';
 import { useAppearance } from '../../hooks';
 import Text from '../text';
+import { SEARCH_HANDLE_HEIGHT } from '../../components/searchHandle';
 
 interface WeatherProps {
   animatedPosition: Animated.Node<number>;
@@ -21,8 +22,14 @@ const Weather = ({ animatedPosition, snapPoints }: WeatherProps) => {
       transform: [
         {
           translateY: interpolate(animatedPosition, {
-            inputRange: [snapPoints[0], snapPoints[1]],
-            outputRange: [-snapPoints[0], -snapPoints[1]],
+            inputRange: [
+              snapPoints[0] + SEARCH_HANDLE_HEIGHT,
+              snapPoints[1] + SEARCH_HANDLE_HEIGHT,
+            ],
+            outputRange: [
+              -(snapPoints[0] + SEARCH_HANDLE_HEIGHT),
+              -(snapPoints[1] + SEARCH_HANDLE_HEIGHT),
+            ],
             extrapolate: Extrapolate.CLAMP,
           }),
         },

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { interpolate, Extrapolate, Easing, max } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
@@ -12,9 +12,7 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import withModalProvider from '../withModalProvider';
 import { createLocationListMockData, Location } from '../../utils';
-import SearchHandle, {
-  SEARCH_HANDLE_HEIGHT,
-} from '../../components/searchHandle';
+import SearchHandle from '../../components/searchHandle';
 import LocationItem from '../../components/locationItem';
 import LocationDetails, {
   LOCATION_DETAILS_HEIGHT,
@@ -39,11 +37,11 @@ const MapExample = () => {
   const data = useMemo(() => createLocationListMockData(15), []);
   const snapPoints = useMemo(
     () => [
-      SEARCH_HANDLE_HEIGHT + bottomSafeArea,
+      bottomSafeArea,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
-      SCREEN_HEIGHT - topSafeArea - (StatusBar.currentHeight ?? 0),
+      SCREEN_HEIGHT,
     ],
-    [topSafeArea, bottomSafeArea]
+    [bottomSafeArea]
   );
   const animatedPosition = useValue<number>(0);
   const animatedModalPosition = useValue<number>(0);
@@ -91,6 +89,7 @@ const MapExample = () => {
         {
           initialSnapIndex: 1,
           snapPoints,
+          topInset: topSafeArea,
           animatedPosition: animatedModalPosition,
           animationDuration: 500,
           animationEasing: Easing.out(Easing.exp),
@@ -103,6 +102,7 @@ const MapExample = () => {
     [
       snapPoints,
       animatedModalPosition,
+      topSafeArea,
       present,
       handleCloseLocationDetails,
       handleLocationDetailSheetChanges,
@@ -161,6 +161,7 @@ const MapExample = () => {
         pointerEvents="none"
         animatedOpacity={animatedOverlayOpacity}
       />
+
       <Weather
         animatedPosition={weatherAnimatedPosition}
         snapPoints={snapPoints}
@@ -172,9 +173,9 @@ const MapExample = () => {
         topInset={topSafeArea}
         animatedPosition={animatedPosition}
         animatedPositionIndex={animatedPositionIndex}
-        handleComponent={SearchHandle}
         animationDuration={500}
         animationEasing={Easing.out(Easing.exp)}
+        handleComponent={SearchHandle}
         backgroundComponent={BlurredBackground}
         onChange={handleSheetChanges}
       >

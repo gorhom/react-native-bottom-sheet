@@ -303,8 +303,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [snapPoints, manualSnapToPoint]
     );
     const handleClose = useCallback(() => {
-      manualSnapToPoint.setValue(containerHeight - topInset);
-    }, [manualSnapToPoint, containerHeight, topInset]);
+      manualSnapToPoint.setValue(containerHeight);
+    }, [manualSnapToPoint, containerHeight]);
     const handleExpand = useCallback(() => {
       manualSnapToPoint.setValue(snapPoints[snapPoints.length - 1]);
     }, [snapPoints, manualSnapToPoint]);
@@ -454,10 +454,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         {_animatedPosition && (
           <Animated.Code
-            exec={set(
-              _animatedPosition,
-              abs(sub(containerHeight, handleHeight, position))
-            )}
+            exec={set(_animatedPosition, abs(sub(containerHeight, position)))}
           />
         )}
 

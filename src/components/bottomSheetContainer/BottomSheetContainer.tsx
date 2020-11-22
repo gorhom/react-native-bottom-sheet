@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { Dimensions } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import { TapGestureHandler } from 'react-native-gesture-handler';
@@ -15,6 +16,8 @@ import ContentWrapper from '../contentWrapper';
 import type { BottomSheetMethods } from '../../types';
 import type { BottomSheetContainerProps } from './types';
 import { styles } from './styles';
+
+const { height: windowHeight } = Dimensions.get('window');
 
 type BottomSheet = BottomSheetMethods;
 
@@ -30,7 +33,7 @@ const BottomSheetContainerComponent = forwardRef<
   //#endregion
 
   //#region state
-  const [containerHeight, setContainerHeight] = useState(-1);
+  const [containerHeight, setContainerHeight] = useState(windowHeight);
   //#endregion
 
   //#region refs
@@ -76,7 +79,7 @@ const BottomSheetContainerComponent = forwardRef<
       onLayout={handleContainerOnLayout}
       {...containerTapGestureHandler}
     >
-      {height !== undefined && height !== -1 ? (
+      {/* {height !== undefined && height !== -1 ? (
         <BottomSheetView
           {...rest}
           ref={ref}
@@ -84,7 +87,14 @@ const BottomSheetContainerComponent = forwardRef<
           containerTapGestureRef={containerTapGestureRef}
           containerTapGestureState={containerTapGestureState}
         />
-      ) : null}
+      ) : null} */}
+      <BottomSheetView
+        {...rest}
+        ref={ref}
+        containerHeight={height}
+        containerTapGestureRef={containerTapGestureRef}
+        containerTapGestureState={containerTapGestureState}
+      />
     </ContentWrapper>
   );
   //#endregion
