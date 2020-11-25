@@ -1,6 +1,7 @@
 module.exports = {
-  someSidebar: {
-    Docusaurus: ['doc1', 'doc2', 'doc3'],
-    Features: ['mdx'],
+  packages: {
+    ['Bottom Sheet']: ['getting-started'],
+    ['Bottom Sheet Modal']: ['modal/getting-started'],
+    ['Bottom Sheet Navigator']: ['navigator/getting-started'],
   },
 };
