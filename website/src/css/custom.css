@@ -1,9 +1,8 @@
-
 :root {
   --ifm-code-font-size: 95%;
 }
 
-:root[data-theme="dark"]{
+:root[data-theme='dark'] {
   --ifm-background-color: #000000;
   --ifm-color-primary: #ffcc00;
   --ifm-color-primary-dark: #e6b800;
@@ -12,10 +11,14 @@
   --ifm-color-primary-light: #ffd11a;
   --ifm-color-primary-lighter: #ffd426;
   --ifm-color-primary-lightest: #ffdb4d;
+  
   --ifm-toggle-icon-color: #ffffff;
+  --ifm-table-border-color: #282c34;
+  --ifm-table-head-background: #242526;
+  --ifm-table-stripe-background: #101113;
 }
 
-:root[data-theme="light"]{
+:root[data-theme='light'] {
   --ifm-background-color: #ffffff;
   --ifm-color-primary: #8800ff;
   --ifm-color-primary-dark: #7a00e6;
@@ -24,7 +27,11 @@
   --ifm-color-primary-light: #941aff;
   --ifm-color-primary-lighter: #9a26ff;
   --ifm-color-primary-lightest: #ac4dff;
+
   --ifm-toggle-icon-color: #000000;
+  --ifm-table-border-color: #dadde1;
+  --ifm-table-head-background: #ececec;
+  --ifm-table-stripe-background: #f5f6f7;
 }
 
 .docusaurus-highlight-code-line {
@@ -45,6 +52,24 @@ body {
   box-shadow: none;
 }
 
-div[role="complementary"] {
+div[role='complementary'] {
   border-right: none;
+}
+
+article table {
+  display: table;
+  width: 100%;
+  font-size: 14px;
+}
+article table thead th {
+  text-align: left;
+  text-transform: uppercase;
+}
+
+article table th, article table td {
+  padding: 6px 10px;
+}
+
+article table tr:nth-child(2n) {
+  background-color: var(--ifm-table-stripe-background);
 }

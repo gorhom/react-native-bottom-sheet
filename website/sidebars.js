@@ -1,7 +1,24 @@
 module.exports = {
-  packages: {
-    ['Bottom Sheet']: ['getting-started'],
-    ['Bottom Sheet Modal']: ['modal/getting-started'],
-    ['Bottom Sheet Navigator']: ['navigator/getting-started'],
-  },
+  packages: [
+    {
+      type: 'category',
+      label: 'Bottom Sheet',
+      items: [
+        'getting-started',
+        'props',
+        'methods',
+        'hooks',
+        {
+          type: 'category',
+          label: 'Guides',
+          items: ['scrollables', 'react-navigation-integration'],
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Bottom Sheet Modal',
+      items: ['modal/getting-started'],
+    },
+  ],
 };
