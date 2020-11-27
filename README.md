@@ -17,8 +17,8 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 1. [Features](#features)
 2. [Installation](#installation)
-   - [Version v2 with Reanimated v1](#version-v2)
-   - [Version v3 with Reanimated v2](#version-v3)
+   - [Version v2 with Reanimated v1](#version-v2-with-reanimated-v1)
+   - [Version v3 with Reanimated v2](#version-v3-with-reanimated-v2)
 3. [Usage](#usage)
    - [Custom Handle](./docs/custom-handle.md)
    - [React Navigation Integration](./docs/react-navigation.md)
@@ -61,7 +61,7 @@ npm install @gorhom/bottom-sheet
 
 ### Version v3 with Reanimated v2
 
-[Link to version 3 branch](https://github.com/gorhom/react-native-bottom-sheet/tree/feature/v3)
+[Link to version 3 branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v3)
 
 this version is written with `Reanimated v2`, although this version is still in alpha phase, yet it provides all version 1 functionalities with the huge performance boost, thanks to `Reanimated v2` ❤️
 
