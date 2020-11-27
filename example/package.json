@@ -12,15 +12,15 @@
     "@gorhom/showcase-template": "^1.0.2",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "0.1.10",
-    "@react-navigation/native": "^5.8.9",
-    "@react-navigation/stack": "^5.12.6",
+    "@react-navigation/native": "^5.8.10",
+    "@react-navigation/stack": "^5.12.8",
     "faker": "^4.1.0",
     "lodash.isequal": "^4.5.0",
     "react": "16.13.1",
     "react-native": "0.63.3",
-    "react-native-gesture-handler": "^1.8.0",
+    "react-native-gesture-handler": "^1.9.0",
     "react-native-maps": "^0.27.1",
-    "react-native-reanimated": "^2.0.0-alpha.9",
+    "react-native-reanimated": "^2.0.0-rc.0",
     "react-native-redash": "^15.11.1",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "^2.15.0"
@@ -31,7 +31,7 @@
     "@types/faker": "^4.1.12",
     "@types/react": "^16.9.56",
     "@types/react-native": "^0.63.35",
-    "metro-react-native-babel-preset": "^0.63.0",
-    "typescript": "^4.0.5"
+    "metro-react-native-babel-preset": "^0.64.0",
+    "typescript": "^4.1.2"
   }
 }
