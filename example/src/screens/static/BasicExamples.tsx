@@ -13,16 +13,34 @@ interface ExampleScreenProps {
 const createExampleScreen = ({ type, count = 20 }: ExampleScreenProps) =>
   memo(() => {
     // state
-    const [enabled, setEnabled] = useState(true);
+    const [
+      enableContentPanningGesture,
+      setEnableContentPanningGesture,
+    ] = useState(true);
+    const [
+      enableHandlePanningGesture,
+      setEnableHandlePanningGesture,
+    ] = useState(true);
 
     // hooks
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     // variables
     const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-    const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
-      enabled,
-    ]);
+    const enableContentPanningGestureButtonText = useMemo(
+      () =>
+        enableContentPanningGesture
+          ? 'Disable Content Panning Gesture'
+          : 'Enable Content Panning Gesture',
+      [enableContentPanningGesture]
+    );
+    const enableHandlePanningGestureButtonText = useMemo(
+      () =>
+        enableHandlePanningGesture
+          ? 'Disable Handle Panning Gesture'
+          : 'Enable Handle Panning Gesture',
+      [enableHandlePanningGesture]
+    );
 
     // callbacks
     const handleSheetChange = useCallback(index => {
@@ -40,8 +58,11 @@ const createExampleScreen = ({ type, count = 20 }: ExampleScreenProps) =>
     const handleClosePress = useCallback(() => {
       bottomSheetRef.current?.close();
     }, []);
-    const handleEnablePress = useCallback(() => {
-      setEnabled(state => !state);
+    const handleEnableContentPanningGesturePress = useCallback(() => {
+      setEnableContentPanningGesture(state => !state);
+    }, []);
+    const handleEnableHandlePanningGesturePress = useCallback(() => {
+      setEnableHandlePanningGesture(state => !state);
     }, []);
 
     return (
@@ -77,16 +98,22 @@ const createExampleScreen = ({ type, count = 20 }: ExampleScreenProps) =>
           onPress={handleClosePress}
         />
         <Button
-          label={enableButtonText}
+          label={enableContentPanningGestureButtonText}
           style={styles.buttonContainer}
-          onPress={handleEnablePress}
+          onPress={handleEnableContentPanningGesturePress}
+        />
+        <Button
+          label={enableHandlePanningGestureButtonText}
+          style={styles.buttonContainer}
+          onPress={handleEnableHandlePanningGesturePress}
         />
         <BottomSheet
           ref={bottomSheetRef}
-          enabled={enabled}
           snapPoints={snapPoints}
           initialSnapIndex={1}
           animateOnMount={true}
+          enableContentPanningGesture={enableContentPanningGesture}
+          enableHandlePanningGesture={enableHandlePanningGesture}
           onChange={handleSheetChange}
         >
           <ContactList key={`${type}.list`} type={type} count={count} />

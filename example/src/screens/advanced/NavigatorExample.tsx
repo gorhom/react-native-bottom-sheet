@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
   createStackNavigator,
@@ -69,17 +69,11 @@ const Navigator = () => {
 };
 
 const NavigatorExample = () => {
-  // state
-  const [enabled, setEnabled] = useState(true);
-
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-  const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
-    enabled,
-  ]);
 
   // callbacks
   const handleSheetChange = useCallback(index => {
@@ -96,9 +90,6 @@ const NavigatorExample = () => {
   }, []);
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
-  }, []);
-  const handleEnablePress = useCallback(() => {
-    setEnabled(state => !state);
   }, []);
 
   // renders
@@ -134,14 +125,8 @@ const NavigatorExample = () => {
         style={styles.buttonContainer}
         onPress={handleClosePress}
       />
-      <Button
-        label={enableButtonText}
-        style={styles.buttonContainer}
-        onPress={handleEnablePress}
-      />
       <BottomSheet
         ref={bottomSheetRef}
-        enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         onChange={handleSheetChange}
