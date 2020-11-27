@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -10,7 +9,6 @@ import ContactList from '../../components/contactList';
 const OverlayExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const headerHeight = useHeaderHeight();
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
@@ -93,7 +91,6 @@ const OverlayExample = () => {
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         initialSnapIndex={1}
-        topInset={headerHeight}
         animatedPositionIndex={animatedPositionIndex}
         onChange={handleSheetChanges}
       >

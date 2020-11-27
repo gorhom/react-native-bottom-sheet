@@ -28,6 +28,9 @@ const BottomSheetModalContainerComponent = forwardRef<
 >((_, ref) => {
   //#region state
   const [sheets, setSheets] = useState<Record<string, BottomSheetItem>>({});
+  //#endregion
+
+  //#region refs
   const currentPresentedSheet = useRef<string>(null);
   const previousPresentedSheet = useRef<string[]>([]);
   const didHandleRestorePreviousSheet = useRef(false);

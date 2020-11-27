@@ -9,7 +9,7 @@ import React, {
 import isEqual from 'lodash.isequal';
 import { useValue } from 'react-native-redash';
 import Animated, { Extrapolate, set } from 'react-native-reanimated';
-import BottomSheet from '../bottomSheet';
+import BottomSheet from '../bottomSheetContainer';
 import {
   DEFAULT_OVERLAY_OPACITY,
   DEFAULT_DISMISS_ON_OVERLAY_PRESS,
@@ -105,6 +105,9 @@ const BottomSheetModalComponent = forwardRef<
       bottomSheetRef.current?.collapse();
     }
   }, [dismissOnScrollDown]);
+  const handleExpand = useCallback(() => {
+    bottomSheetRef.current?.expand();
+  }, []);
   const handleSnapTo = useCallback(
     (index: number) => {
       bottomSheetRef.current?.snapTo(index + (dismissOnScrollDown ? 1 : 0));
@@ -128,7 +131,7 @@ const BottomSheetModalComponent = forwardRef<
   useImperativeHandle(ref, () => ({
     close: handleClose,
     snapTo: handleSnapTo,
-    expand: bottomSheetRef.current!.expand,
+    expand: handleExpand,
     collapse: handleCollapse,
     temporaryCloseSheet: handleTemporaryCloseSheet,
     restoreSheetPosition: handleRestoreSheetPosition,

@@ -18,3 +18,5 @@ export const NORMAL_DECELERATION_RATE = Platform.select({
 });
 
 export const DEFAULT_ANIMATE_ON_MOUNT = false;
+
+export const DEFAULT_HANDLE_HEIGHT = 24;

@@ -1,9 +1,10 @@
 import type React from 'react';
-import type Animated from 'react-native-reanimated';
-import type { BottomSheetHandleProps } from '../handle';
 import type { ViewProps } from 'react-native';
+import type Animated from 'react-native-reanimated';
+import type { State, TapGestureHandler } from 'react-native-gesture-handler';
+import type { BottomSheetHandleProps } from '../defaultHandle';
 
-export interface BottomSheetProps extends BottomSheetAnimationConfigs {
+export type BottomSheetProps = {
   /**
    * Initial snap index, you also could provide {`-1`} to initiate bottom sheet in closed state.
    * @type number
@@ -19,7 +20,8 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    */
   snapPoints: Array<string | number>;
   /**
-   * Top inset value helps to calculate percentage snap points values. usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
+   * Top inset value helps to calculate percentage snap points values,
+   * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
    * @type number
    * @default 0
    */
@@ -36,6 +38,26 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * @default false
    */
   animateOnMount?: boolean;
+  /**
+   * Handle height to help adjust snap points.
+   * @type number
+   */
+  handleHeight?: number;
+  /**
+   * Container height value to help calculate snap points values.
+   * @type number
+   */
+  containerHeight: number;
+  /**
+   * Container tap gesture state.
+   * @type Animated.Value<State>
+   */
+  containerTapGestureState: Animated.Value<State>;
+  /**
+   * Container tap gesture ref.
+   * @type React.RefObject<TapGestureHandler>
+   */
+  containerTapGestureRef: React.RefObject<TapGestureHandler>;
   /**
    * Animated value to be used as a callback of the position node internally.
    * @type Animated.Value<number>
@@ -67,7 +89,7 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * @type React.ReactNode[] | React.ReactNode
    */
   children: React.ReactNode[] | React.ReactNode;
-}
+} & BottomSheetAnimationConfigs;
 
 export interface BottomSheetAnimationConfigs {
   /**

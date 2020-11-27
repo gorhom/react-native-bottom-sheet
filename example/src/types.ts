@@ -15,4 +15,5 @@ export type AppStackParamsList = {
   ['Advanced/CustomHandleExample']: undefined;
   ['Advanced/OverlayExample']: undefined;
   ['Advanced/MapExample']: undefined;
+  ['Advanced/DynamicSnapPointExample']: undefined;
 };

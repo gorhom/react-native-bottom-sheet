@@ -25,7 +25,7 @@ const SimpleExample = () => {
   }, []);
   const handlePresentPress = useCallback(() => {
     present(<ContactListContainer title="Modal FlatList" type="FlatList" />, {
-      snapPoints: [300, '50%'],
+      snapPoints: ['25%', '50%'],
       animationDuration: 250,
       onChange: handleChange,
     });

@@ -62,6 +62,10 @@ const data = [
         name: 'Map',
         slug: 'Advanced/MapExample',
       },
+      {
+        name: 'Dynamic Snap Point',
+        slug: 'Advanced/DynamicSnapPointExample',
+      },
     ],
   },
 ].reverse();

@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-  useHeaderHeight,
   createStackNavigator,
   HeaderBackButton,
   StackNavigationOptions,
@@ -75,7 +74,6 @@ const NavigatorExample = () => {
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const headerHeight = useHeaderHeight();
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
@@ -146,7 +144,6 @@ const NavigatorExample = () => {
         enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
-        topInset={headerHeight}
         onChange={handleSheetChange}
       >
         <Navigator />
