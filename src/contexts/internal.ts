@@ -4,7 +4,7 @@ import type Animated from 'react-native-reanimated';
 import { Scrollable, ScrollableRef } from '../types';
 
 export type BottomSheetInternalContextType = {
-  enabled: boolean;
+  enableContentPanningGesture: boolean;
   containerTapGestureRef: Ref<TapGestureHandler>;
   contentPanGestureState: Animated.Value<State>;
   contentPanGestureTranslationY: Animated.Value<number>;

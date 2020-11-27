@@ -52,6 +52,8 @@ import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
   DEFAULT_HANDLE_HEIGHT,
+  DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
+  DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -78,10 +80,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // configurations
       initialSnapIndex = 0,
       snapPoints: _snapPoints,
-      topInset = 0,
-      enabled = true,
-      animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
       handleHeight: _handleHeight,
+      topInset = 0,
+      enableContentPanningGesture = DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
+      enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
+      animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
       // container props
       containerHeight,
       containerTapGestureRef,
@@ -327,7 +330,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region context variables
     const internalContextVariables = useMemo(
       () => ({
-        enabled,
+        enableContentPanningGesture,
         containerTapGestureRef,
         handlePanGestureState,
         handlePanGestureTranslationY,
@@ -340,8 +343,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,
       }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [enabled]
+      [
+        enableContentPanningGesture,
+        containerTapGestureRef,
+        contentPanGestureState,
+        contentPanGestureTranslationY,
+        contentPanGestureVelocityY,
+        handlePanGestureState,
+        handlePanGestureTranslationY,
+        handlePanGestureVelocityY,
+        decelerationRate,
+        scrollableContentOffsetY,
+        handleSettingScrollableRef,
+        removeScrollableRef,
+      ]
     );
     const externalContextVariables = useMemo(
       () => ({
@@ -451,25 +466,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         ),
       [HandleComponent, animatedPositionIndex]
     );
-    // console.log(
-    //   'BottomSheet \t\t',
-    //   'render',
-    //   'containerHeight: ',
-    //   containerHeight,
-    //   'handleHeight: ',
-    //   handleHeight,
-    //   'sheetHeight: ',
-    //   sheetHeight,
-    //   'snapPoints: ',
-    //   snapPoints
-    // );
     return (
       <>
         <Animated.View style={sheetContainerStyle}>
           {renderBackground()}
           <BottomSheetProvider value={externalContextVariables}>
             <PanGestureHandler
-              enabled={enabled}
+              enabled={enableHandlePanningGesture}
               ref={handlePanGestureRef}
               simultaneousHandlers={containerTapGestureRef}
               shouldCancelWhenOutside={false}
