@@ -63,13 +63,11 @@ npm install @gorhom/bottom-sheet
 
 > ⚠️ You need to install [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) & [react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler) and follow their installation instructions.
 
-
 ### Version v2 ( Alpha )
 
 [Link to version 2 branch](https://github.com/gorhom/react-native-bottom-sheet/tree/feature/rewrite-in-reanimated-v2)
 
 this version is written with `Reanimated v2`, although this version is still in alpha phase, yet it provides all version 1 functionalities with the huge performance boost, thanks to `Reanimated v2` ❤️
-
 
 ```sh
 yarn add @gorhom/bottom-sheet@2.0.0-alpha.0
@@ -143,9 +141,15 @@ Top inset value helps to calculate percentage snap points values. usually comes 
 
 > `required:` NO | `type:` number | `default:` 0
 
-#### `enabled`
+#### `enableContentPanningGesture`
 
-To enable or disable user interaction with the sheet.
+Enable content panning gesture interaction.
+
+> `required:` NO | `type:` boolean | `default:` true
+
+#### `enableHandlePanningGesture`
+
+Enable handle panning gesture interaction.
 
 > `required:` NO | `type:` boolean | `default:` true
 

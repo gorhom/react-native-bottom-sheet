@@ -44,7 +44,7 @@ const BottomSheetScrollViewComponent = forwardRef(
       handleSettingScrollable,
     } = useScrollableInternal('ScrollView');
     const {
-      enabled,
+      enableContentPanningGesture,
       containerTapGestureRef,
       decelerationRate,
     } = useBottomSheetInternal();
@@ -62,7 +62,7 @@ const BottomSheetScrollViewComponent = forwardRef(
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
-          enabled={enabled}
+          enabled={enableContentPanningGesture}
           waitFor={containerTapGestureRef}
         >
           <AnimatedScrollView

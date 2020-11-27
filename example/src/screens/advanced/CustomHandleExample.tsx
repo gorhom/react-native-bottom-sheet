@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Handle from '../../components/handle';
@@ -6,17 +6,11 @@ import Button from '../../components/button';
 import ContactList from '../../components/contactList';
 
 const CustomHandleExample = () => {
-  // state
-  const [enabled, setEnabled] = useState(true);
-
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
   const snapPoints = useMemo(() => [150, 300, 450], []);
-  const enableButtonText = useMemo(() => (enabled ? 'Disable' : 'Enable'), [
-    enabled,
-  ]);
 
   // callbacks
   const handleSnapPress = useCallback(index => {
@@ -30,9 +24,6 @@ const CustomHandleExample = () => {
   }, []);
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
-  }, []);
-  const handleEnablePress = useCallback(() => {
-    setEnabled(state => !state);
   }, []);
 
   // renders
@@ -76,14 +67,8 @@ const CustomHandleExample = () => {
         style={styles.buttonContainer}
         onPress={handleClosePress}
       />
-      <Button
-        label={enableButtonText}
-        style={styles.buttonContainer}
-        onPress={handleEnablePress}
-      />
       <BottomSheet
         ref={bottomSheetRef}
-        enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         handleComponent={Handle}

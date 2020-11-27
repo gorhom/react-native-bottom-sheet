@@ -18,7 +18,7 @@ const BottomSheetDraggableViewComponent = ({
 
   // hooks
   const {
-    enabled,
+    enableContentPanningGesture,
     containerTapGestureRef,
     handlePanGestureState,
     handlePanGestureTranslationY,
@@ -73,7 +73,7 @@ const BottomSheetDraggableViewComponent = ({
   return (
     <PanGestureHandler
       ref={panGestureRef}
-      enabled={enabled}
+      enabled={enableContentPanningGesture}
       simultaneousHandlers={simultaneousHandlers}
       shouldCancelWhenOutside={false}
       onGestureEvent={handleGestureEvent}

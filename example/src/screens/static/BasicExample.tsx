@@ -9,7 +9,6 @@ import { useSafeArea } from 'react-native-safe-area-context';
 
 const BasicExample = () => {
   // state
-  const [enabled, setEnabled] = useState(true);
   const [dynamicSnapPoint, setDynamicSnapPoint] = useState(450);
 
   // hooks
@@ -61,16 +60,9 @@ const BasicExample = () => {
         style={styles.buttonContainer}
         onPress={() => handleClosePress()}
       />
-
-      <Button
-        label={`${enabled ? 'Disable' : 'Enable'}`}
-        style={styles.buttonContainer}
-        onPress={() => setEnabled(state => !state)}
-      />
       <ReText text={concat('Position from bottom: ', position)} />
       <BottomSheet
         ref={bottomSheetRef}
-        enabled={enabled}
         snapPoints={snapPoints}
         initialSnapIndex={1}
         topInset={topSafeArea}

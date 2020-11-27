@@ -27,11 +27,17 @@ export type BottomSheetProps = {
    */
   topInset?: number;
   /**
-   * To enable or disable user interaction with the sheet.
+   * Enable content panning gesture interaction.
    * @type boolean
    * @default true
    */
-  enabled?: boolean;
+  enableContentPanningGesture?: boolean;
+  /**
+   * Enable handle panning gesture interaction.
+   * @type boolean
+   * @default true
+   */
+  enableHandlePanningGesture?: boolean;
   /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
