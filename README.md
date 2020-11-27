@@ -17,8 +17,8 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 1. [Features](#features)
 2. [Installation](#installation)
-   - [Version 1](#version-v1)
-   - [Version 2](#version-v2)
+   - [Version v2 with Reanimated v1](#version-v2)
+   - [Version v3 with Reanimated v2](#version-v3)
 3. [Usage](#usage)
    - 🌟 [Bottom Sheet Modal](./docs/modal.md)
    - [Custom Handle](./docs/custom-handle.md)
@@ -49,11 +49,9 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 ## Installation
 
-### Version v1
+### Version v2 with Reanimated v1
 
-[Link to version 1 branch](https://github.com/gorhom/react-native-bottom-sheet/tree/feature/rewrite-in-reanimated-v2)
-
-This version is written with `Reanimated v1`
+[Link to version 2 branch](https://github.com/gorhom/react-native-bottom-sheet/)
 
 ```sh
 yarn add @gorhom/bottom-sheet
@@ -63,16 +61,16 @@ npm install @gorhom/bottom-sheet
 
 > ⚠️ You need to install [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) & [react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler) and follow their installation instructions.
 
-### Version v2 ( Alpha )
+### Version v3 ( Alpha ) with Reanimated v2
 
-[Link to version 2 branch](https://github.com/gorhom/react-native-bottom-sheet/tree/feature/rewrite-in-reanimated-v2)
+[Link to version 3 branch](https://github.com/gorhom/react-native-bottom-sheet/tree/feature/v3)
 
 this version is written with `Reanimated v2`, although this version is still in alpha phase, yet it provides all version 1 functionalities with the huge performance boost, thanks to `Reanimated v2` ❤️
 
 ```sh
-yarn add @gorhom/bottom-sheet@2.0.0-alpha.0
+yarn add @gorhom/bottom-sheet@3.0.0-alpha.0
 # or
-npm install @gorhom/bottom-sheet@2.0.0-alpha.0
+npm install @gorhom/bottom-sheet@3.0.0-alpha.0
 ```
 
 > ⚠️ You need to install [react-native-reanimated v2](https://docs.swmansion.com/react-native-reanimated/docs/next/installation) & [react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler) and follow their installation instructions.
