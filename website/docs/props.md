@@ -2,8 +2,10 @@
 id: props
 title: Props
 slug: /props
-hide_table_of_contents: true
+# hide_table_of_contents: true
 ---
+
+## Configuration
 
 ### `index`
 
@@ -21,7 +23,7 @@ Points for the bottom sheet to snap to, **points should be sorted from bottom to
 | --------------------- | -------- |
 | Array<number\|string> | YES      |
 
-` ⚠️ String values should be a percentage`.
+>⚠️ String values should be a percentage.
 
 #### examples
 
@@ -79,6 +81,8 @@ This will initially mount the sheet closed and when it's mounted and calculated 
 | ------- | ------- | -------- |
 | boolean | false   | NO       |
 
+## Animation Configuration
+
 ### `animationDuration`
 
 Snapping animation duration.
@@ -95,6 +99,8 @@ Snapping animation easing function.
 | ---------------- | ------- | -------- |
 | `EasingFunction` | @TODO   | NO       |
 
+## Animated Nodes
+
 ### `animatedIndex`
 
 Animated value to be used as a callback for the index node internally.
@@ -110,6 +116,8 @@ Animated value to be used as a callback for the position node internally.
 | type                   | default | required |
 | ---------------------- | ------- | -------- |
 | AnimatedValue<number\> | null    | NO       |
+
+## Callbacks
 
 ### `onChange`
 
@@ -134,6 +142,8 @@ type onAnimate = (fromIndex: number, toIndex: number) => void;
 | type     | default | required |
 | -------- | ------- | -------- |
 | function | null    | NO       |
+
+## Components
 
 ### `handleComponent`
 

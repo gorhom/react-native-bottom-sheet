@@ -1,5 +1,6 @@
 :root {
   --ifm-code-font-size: 95%;
+  /* --ifm-toc-padding-left: 0px; */
 }
 
 :root[data-theme='dark'] {
@@ -11,7 +12,7 @@
   --ifm-color-primary-light: #ffd11a;
   --ifm-color-primary-lighter: #ffd426;
   --ifm-color-primary-lightest: #ffdb4d;
-  
+
   --ifm-toggle-icon-color: #ffffff;
   --ifm-table-border-color: #282c34;
   --ifm-table-head-background: #242526;
@@ -56,6 +57,12 @@ div[role='complementary'] {
   border-right: none;
 }
 
+@media (min-width: 997px) {
+  div[role='complementary'] > div {
+    height: calc(100vh - var(--ifm-navbar-height));
+  }
+}
+
 article table {
   display: table;
   width: 100%;
@@ -66,10 +73,28 @@ article table thead th {
   text-transform: uppercase;
 }
 
-article table th, article table td {
+article table th,
+article table td {
   padding: 6px 10px;
 }
 
 article table tr:nth-child(2n) {
   background-color: var(--ifm-table-stripe-background);
+}
+
+.row .col.col--3 {
+  padding: 0 var(--ifm-spacing-horizontal) 0, 0;
+}
+
+.table-of-contents ul {
+  padding-left: 0px;
+}
+
+.table-of-contents ul li {
+  margin-left: 0px;
+}
+
+.table-of-contents > li > a {
+  text-transform: uppercase;
+  font-weight: 700;
 }

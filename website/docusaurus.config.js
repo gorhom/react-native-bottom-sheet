@@ -1,22 +1,24 @@
 module.exports = {
   title: 'React Native Bottom Sheet',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  tagline:
+    'A performant interactive bottom sheet with fully configurable options 🚀',
+  url: 'https://gorhom.github.com',
+  baseUrl: '/react-native-bottom-sheet/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'gorhom',
   projectName: 'react-native-bottom-sheet',
   themeConfig: {
+    image: 'img/icon.png',
     navbar: {
       title: 'Bottom Sheet',
       hideOnScroll: true,
       items: [
         {
-          to: 'docs/getting-started',
-          activeBasePath: 'docs',
-          label: 'Docs',
+          to: 'modal/',
+          activeBasePath: 'modal',
+          label: 'Bottom Sheet Modal',
           position: 'left',
         },
         {
