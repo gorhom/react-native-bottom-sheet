@@ -11,7 +11,11 @@ module.exports = {
         {
           type: 'category',
           label: 'Guides',
-          items: ['scrollables', 'react-navigation-integration'],
+          items: [
+            'scrollables',
+            'react-navigation-integration',
+            'custom-handle',
+          ],
         },
       ],
     },
