@@ -2,13 +2,13 @@ module.exports = {
   title: 'React Native Bottom Sheet',
   tagline:
     'A performant interactive bottom sheet with fully configurable options 🚀',
-  url: 'https://gorhom.github.com',
+  url: 'https://gorhom.github.io',
   baseUrl: '/react-native-bottom-sheet/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
   organizationName: 'gorhom',
   projectName: 'react-native-bottom-sheet',
+  favicon: 'img/favicon.ico',
   themeConfig: {
     image: 'img/icon.png',
     navbar: {
