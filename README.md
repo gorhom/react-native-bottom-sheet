@@ -17,10 +17,11 @@ A performant interactive bottom sheet with fully configurable options 🚀
 - Compatible with `Reanimated` v1 & v2.
 - Compatible with `Expo`.
 - Written in `TypeScript`.
+- [Read more](https://gorhom.github.io/react-native-bottom-sheet).
 
-## Installation & Documentation
+## Getting Started
 
-Check out // TODO
+Check out [the documentation website](https://gorhom.github.io/react-native-bottom-sheet).
 
 ## Author
 
@@ -28,7 +29,7 @@ Check out // TODO
 
 ## License
 
-MIT
+[MIT](./LICENSE)
 
 <div align="center">
 
