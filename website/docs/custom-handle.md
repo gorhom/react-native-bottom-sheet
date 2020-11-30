@@ -5,11 +5,21 @@ slug: /custom-handle
 hide_table_of_contents: true
 ---
 
-The library allows you to override the handle and create your own wonderful interactive animation.
+To override the default handle, you will need to pass the prop `handleComponent` to the `BottomSheet` component.
 
-When you provide your own handle component, it will receive an animated value - `animatedIndex` - that indicates the index of the current position of the sheet.
+When you provide your own handle component, it will receive an animated prop `animatedIndex` & `animatedPosition` that indicates the index of the current position of the sheet.
 
-Here is an example of a custom handle component:
+You can extend your custom handle props interface with the provided `BottomSheetHandleProps` interface to expose `animatedIndex` & `animatedPosition` into your props.
+
+### Example
+
+Here is an example of a custom handle component, but first you will need to install `Redash`:
+
+```bash
+yarn add react-native-redash
+```
+
+> [Redash](https://github.com/wcandillon/react-native-redash): The React Native Reanimated and Gesture Handler Toolbelt.
 
 ```tsx
 import React, { useMemo } from 'react';
@@ -18,28 +28,38 @@ import { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import { transformOrigin, toRad } from 'react-native-redash';
 
-interface HandleProps extends BottomSheetHandleProps {
-  style?: StyleProp<ViewStyle>;
-}
+interface HandleProps extends BottomSheetHandleProps {}
 
-const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
+const Handle: React.FC<HandleProps> = ({ animatedIndex }) => {
   //#region animations
-  const borderTopRadius = interpolate(animatedPositionIndex, {
-    inputRange: [1, 2],
-    outputRange: [20, 0],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const indicatorTransformOriginY = interpolate(animatedPositionIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [-1, 0, 1],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const leftIndicatorRotate = interpolate(animatedPositionIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [toRad(-30), 0, toRad(30)],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  const rightIndicatorRotate = interpolate(animatedPositionIndex, {
+  const borderTopRadius = useMemo(
+    () =>
+      interpolate(animatedIndex, {
+        inputRange: [1, 2],
+        outputRange: [20, 0],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedIndex]
+  );
+  const indicatorTransformOriginY = useMemo(
+    () =>
+      interpolate(animatedIndex, {
+        inputRange: [0, 1, 2],
+        outputRange: [-1, 0, 1],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedIndex]
+  );
+  const leftIndicatorRotate = useMemo(
+    () =>
+      interpolate(animatedIndex, {
+        inputRange: [0, 1, 2],
+        outputRange: [toRad(-30), 0, toRad(30)],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedIndex]
+  );
+  const rightIndicatorRotate = interpolate(animatedIndex, {
     inputRange: [0, 1, 2],
     outputRange: [toRad(30), 0, toRad(-30)],
     extrapolate: Extrapolate.CLAMP,
@@ -50,14 +70,12 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
   const containerStyle = useMemo(
     () => [
       styles.header,
-      style,
       {
         borderTopLeftRadius: borderTopRadius,
         borderTopRightRadius: borderTopRadius,
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [style]
+    [borderTopRadius]
   );
   const leftIndicatorStyle = useMemo(
     () => ({
@@ -71,8 +89,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
         }
       ),
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [indicatorTransformOriginY, leftIndicatorRotate]
   );
   const rightIndicatorStyle = useMemo(
     () => ({
@@ -86,14 +103,13 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
         }
       ),
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [indicatorTransformOriginY, rightIndicatorRotate]
   );
   //#endregion
 
   // render
   return (
-    <Animated.View style={containerStyle} renderToHardwareTextureAndroid={true}>
+    <Animated.View style={containerStyle}>
       <Animated.View style={leftIndicatorStyle} />
       <Animated.View style={rightIndicatorStyle} />
     </Animated.View>
@@ -135,5 +151,4 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 2,
   },
 });
-
 ```

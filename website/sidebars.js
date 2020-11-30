@@ -15,6 +15,7 @@ module.exports = {
             'scrollables',
             'react-navigation-integration',
             'custom-handle',
+            'custom-background',
           ],
         },
       ],
