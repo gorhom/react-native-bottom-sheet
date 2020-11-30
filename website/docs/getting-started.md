@@ -32,7 +32,7 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 ## Features
 
-- 🌟 Modal presentation view, [Bottom Sheet Modal](./modal/getting-started).
+- 🌟 Modal presentation view, [Bottom Sheet Modal](./modal).
 - Smooth gesture interactions & snapping animations.
 - Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions, [read more](./scrollables).
 - Support `React Navigation` Integration, [read more](./react-navigation-integration).
