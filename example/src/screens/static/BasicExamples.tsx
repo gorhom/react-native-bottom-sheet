@@ -109,8 +109,8 @@ const createExampleScreen = ({ type, count = 20 }: ExampleScreenProps) =>
         />
         <BottomSheet
           ref={bottomSheetRef}
+          index={1}
           snapPoints={snapPoints}
-          initialSnapIndex={1}
           animateOnMount={true}
           enableContentPanningGesture={enableContentPanningGesture}
           enableHandlePanningGesture={enableHandlePanningGesture}

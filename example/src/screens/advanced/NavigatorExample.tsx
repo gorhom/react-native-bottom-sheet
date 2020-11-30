@@ -127,8 +127,8 @@ const NavigatorExample = () => {
       />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
         onChange={handleSheetChange}
       >
         <Navigator />

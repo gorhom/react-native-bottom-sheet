@@ -79,8 +79,8 @@ const DynamicSnapPointExample = () => {
       />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
         animateOnMount={true}
         animationEasing={Easing.out(Easing.quad)}
         animationDuration={250}

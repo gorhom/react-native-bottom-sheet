@@ -12,13 +12,13 @@ const OverlayExample = () => {
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-  const animatedPositionIndex = useValue<number>(0);
+  const animatedIndex = useValue<number>(0);
 
   // styles
   const shadowOverlayStyle = useMemo(
     () => ({
       ...styles.shadowOverlay,
-      opacity: interpolate(animatedPositionIndex, {
+      opacity: interpolate(animatedIndex, {
         inputRange: [0, 2],
         outputRange: [0, 1],
         extrapolate: Extrapolate.CLAMP,
@@ -89,9 +89,9 @@ const OverlayExample = () => {
       <Animated.View pointerEvents="none" style={shadowOverlayStyle} />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
-        animatedPositionIndex={animatedPositionIndex}
+        animatedIndex={animatedIndex}
         onChange={handleSheetChanges}
       >
         <ContactList type="View" count={3} header={renderHeader} />

@@ -45,7 +45,7 @@ const MapExample = () => {
   );
   const animatedPosition = useValue<number>(0);
   const animatedModalPosition = useValue<number>(0);
-  const animatedPositionIndex = useValue<number>(0);
+  const animatedIndex = useValue<number>(0);
   const animatedOverlayOpacity = useMemo(
     () =>
       interpolate(animatedPosition, {
@@ -87,7 +87,7 @@ const MapExample = () => {
       present(
         <LocationDetails onClose={handleCloseLocationDetails} {...item} />,
         {
-          initialSnapIndex: 1,
+          index: 1,
           snapPoints,
           topInset: topSafeArea,
           animatedPosition: animatedModalPosition,
@@ -115,7 +115,7 @@ const MapExample = () => {
     () => [
       styles.contentContainerStyle,
       {
-        opacity: interpolate(animatedPositionIndex, {
+        opacity: interpolate(animatedIndex, {
           inputRange: [0, 1],
           outputRange: [0, 1],
           extrapolate: Extrapolate.CLAMP,
@@ -168,16 +168,16 @@ const MapExample = () => {
       />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
         topInset={topSafeArea}
         animatedPosition={animatedPosition}
-        animatedPositionIndex={animatedPositionIndex}
+        animatedIndex={animatedIndex}
         animationDuration={500}
         animationEasing={Easing.out(Easing.exp)}
+        onChange={handleSheetChanges}
         handleComponent={SearchHandle}
         backgroundComponent={BlurredBackground}
-        onChange={handleSheetChanges}
       >
         <BottomSheetScrollView
           keyboardDismissMode="on-drag"

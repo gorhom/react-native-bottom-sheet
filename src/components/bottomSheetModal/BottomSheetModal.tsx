@@ -31,9 +31,9 @@ const BottomSheetModalComponent = forwardRef<
   BottomSheetModalProps
 >(({ content, configs, unmount }, ref) => {
   const {
-    initialSnapIndex: _initialSnapIndex = 0,
+    index: _initialSnapIndex = 0,
     snapPoints: _snapPoints,
-    animatedPositionIndex: _animatedPositionIndex,
+    animatedIndex: _animatedIndex,
     allowTouchThroughOverlay = DEFAULT_ALLOW_TOUCH_THROUGH_OVERLAY,
     overlayComponent: OverlayComponent,
     overlayOpacity = DEFAULT_OVERLAY_OPACITY,
@@ -50,15 +50,15 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region variables
-  const animatedPositionIndex = useValue(0);
+  const animatedIndex = useValue(0);
   const animatedOverlayOpacity = useMemo(
     () =>
-      interpolate(animatedPositionIndex, {
+      interpolate(animatedIndex, {
         inputRange: [0, 1],
         outputRange: [0, overlayOpacity],
         extrapolate: Extrapolate.CLAMP,
       }),
-    [animatedPositionIndex, overlayOpacity]
+    [animatedIndex, overlayOpacity]
   );
   const initialSnapIndex = useMemo(
     () => (dismissOnScrollDown ? _initialSnapIndex + 1 : _initialSnapIndex),
@@ -149,18 +149,16 @@ const BottomSheetModalComponent = forwardRef<
         />
       )}
 
-      {_animatedPositionIndex && (
-        <Animated.Code
-          exec={set(_animatedPositionIndex, animatedPositionIndex)}
-        />
+      {_animatedIndex && (
+        <Animated.Code exec={set(_animatedIndex, animatedIndex)} />
       )}
       <BottomSheet
         ref={bottomSheetRef}
         {...bottomSheetProps}
-        initialSnapIndex={initialSnapIndex}
+        index={initialSnapIndex}
         snapPoints={snapPoints}
         animateOnMount={true}
-        animatedPositionIndex={animatedPositionIndex}
+        animatedIndex={animatedIndex}
         onChange={handleChange}
       >
         {content}
