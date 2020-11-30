@@ -17,6 +17,7 @@ export const {
 
 // default components / types
 export type { BottomSheetHandleProps } from './components/defaultHandle';
+export type { BottomSheetBackgroundProps } from './components/defaultBackground';
 
 // overlay
 export { default as BottomSheetOverlay } from './components/overlay';

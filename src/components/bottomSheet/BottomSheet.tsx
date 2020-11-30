@@ -74,11 +74,11 @@ Animated.addWhitelistedUIProps({
 const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
   (
     {
-      // animations
+      // animations configurations
       animationDuration = DEFAULT_ANIMATION_DURATION,
       animationEasing = DEFAULT_ANIMATION_EASING,
       // configurations
-      initialSnapIndex = 0,
+      index: initialSnapIndex = 0,
       snapPoints: _snapPoints,
       handleHeight: _handleHeight,
       topInset = 0,
@@ -90,8 +90,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       containerTapGestureRef,
       containerTapGestureState,
       // animated nodes callback
-      animatedPosition: _animatedPosition,
-      animatedPositionIndex: _animatedPositionIndex,
+      animatedPosition: _animatedPositionCallbackNode,
+      animatedIndex: _animatedIndexCallbackNode,
       // callbacks
       onChange: _onChange,
       // components
@@ -219,7 +219,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       initialPosition,
     });
 
-    const animatedPositionIndex = useMemo(
+    // animated values
+    const animatedIndex = useMemo(
       () =>
         interpolate(position, {
           inputRange: snapPoints.slice().reverse(),
@@ -231,6 +232,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }),
       [position, snapPoints]
     );
+
+    const animatedPosition = useMemo(
+      () => abs(sub(containerHeight, position)),
+      [containerHeight, position]
+    );
+
     /**
      * Scrollable animated props.
      */
@@ -453,18 +460,25 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const renderBackground = useCallback(
       () =>
         BackgroundComponent ? (
-          <BackgroundComponent pointerEvents="none" />
+          <BackgroundComponent
+            pointerEvents="none"
+            animatedIndex={animatedIndex}
+            animatedPosition={animatedPosition}
+          />
         ) : null,
-      [BackgroundComponent]
+      [BackgroundComponent, animatedIndex, animatedPosition]
     );
     const renderHandle = useCallback(
       () =>
         HandleComponent === null ? null : HandleComponent === undefined ? (
           <DefaultHandle />
         ) : (
-          <HandleComponent animatedPositionIndex={animatedPositionIndex} />
+          <HandleComponent
+            animatedIndex={animatedIndex}
+            animatedPosition={animatedPosition}
+          />
         ),
-      [HandleComponent, animatedPositionIndex]
+      [HandleComponent, animatedIndex, animatedPosition]
     );
     return (
       <>
@@ -491,15 +505,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           </BottomSheetProvider>
         </Animated.View>
 
-        {_animatedPosition && (
+        {_animatedPositionCallbackNode && (
           <Animated.Code
-            exec={set(_animatedPosition, abs(sub(containerHeight, position)))}
+            exec={set(_animatedPositionCallbackNode, animatedPosition)}
           />
         )}
 
-        {_animatedPositionIndex && (
+        {_animatedIndexCallbackNode && (
           <Animated.Code
-            exec={set(_animatedPositionIndex, animatedPositionIndex)}
+            exec={set(_animatedIndexCallbackNode, animatedIndex)}
           />
         )}
         {/* <Animated.View pointerEvents="none" style={styles.debug}>

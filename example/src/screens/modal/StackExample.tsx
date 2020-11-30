@@ -35,8 +35,8 @@ const StackExample = () => {
   }, [dismissB]);
   const handlePresentCPress = useCallback(() => {
     presentC(<ContactListContainer title="Modal C" type="SectionList" />, {
+      index: 1,
       snapPoints: ['25%', '50%'],
-      initialSnapIndex: 1,
       animationDuration: 250,
       dismissOnScrollDown: false,
     });
