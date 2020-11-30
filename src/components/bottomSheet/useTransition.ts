@@ -17,27 +17,14 @@ import Animated, {
   or,
   cond,
   block,
+  call,
   // debug,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import { useClock, useValue, snapPoint } from 'react-native-redash';
-import type { BottomSheetAnimationConfigs } from './types';
 import { GESTURE } from '../../constants';
 import { useReactiveValue, useReactiveValues } from '../../hooks';
-
-interface TransitionProps extends Required<BottomSheetAnimationConfigs> {
-  contentPanGestureState: Animated.Value<State>;
-  contentPanGestureTranslationY: Animated.Value<number>;
-  contentPanGestureVelocityY: Animated.Value<number>;
-
-  handlePanGestureState: Animated.Value<State>;
-  handlePanGestureTranslationY: Animated.Value<number>;
-  handlePanGestureVelocityY: Animated.Value<number>;
-
-  scrollableContentOffsetY: Animated.Value<number>;
-  snapPoints: number[];
-  initialPosition: number;
-}
+import type { BottomSheetTransitionConfig } from './types';
 
 export const useTransition = ({
   animationDuration,
@@ -51,7 +38,8 @@ export const useTransition = ({
   scrollableContentOffsetY,
   snapPoints: _snapPoints,
   initialPosition,
-}: TransitionProps) => {
+  onAnimate,
+}: BottomSheetTransitionConfig) => {
   const currentGesture = useValue<GESTURE>(GESTURE.UNDETERMINED);
   const currentPosition = useReactiveValue(initialPosition);
   const snapPoints = useReactiveValues(_snapPoints);
@@ -244,6 +232,23 @@ export const useTransition = ({
         cond(shouldAnimate, [
           // debug('start animating', shouldAnimate),
           cond(and(not(clockRunning(clock)), not(animationState.finished)), [
+            /**
+             * `onAnimate` node
+             */
+            call(
+              [currentPosition, config.toValue, ...snapPoints],
+              ([_currentPosition, _toValue, ..._animatedSnapPoints]) => {
+                const currentPositionIndex = _animatedSnapPoints.indexOf(
+                  _currentPosition
+                );
+                const nextPositionIndex = _animatedSnapPoints.indexOf(_toValue);
+
+                if (onAnimate) {
+                  onAnimate(currentPositionIndex, nextPositionIndex);
+                }
+              }
+            ),
+
             set(animationState.finished, 0),
             set(animationState.frameTime, 0),
             set(animationState.time, 0),
@@ -272,6 +277,7 @@ export const useTransition = ({
       velocityY,
       contentPanGestureState,
       handlePanGestureState,
+      onAnimate,
     ]
   );
 

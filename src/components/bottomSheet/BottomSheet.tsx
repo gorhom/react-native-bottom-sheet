@@ -94,6 +94,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animatedIndex: _animatedIndexCallbackNode,
       // callbacks
       onChange: _onChange,
+      onAnimate: _onAnimate,
       // components
       handleComponent: HandleComponent,
       backgroundComponent: BackgroundComponent = DefaultBackground,
@@ -217,6 +218,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       scrollableContentOffsetY,
       snapPoints,
       initialPosition,
+      onAnimate: _onAnimate,
     });
 
     // animated values
