@@ -63,8 +63,8 @@ const BasicExample = () => {
       <ReText text={concat('Position from bottom: ', position)} />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
         topInset={topSafeArea}
         animatedPosition={position}
         onChange={handleSheetChanges}

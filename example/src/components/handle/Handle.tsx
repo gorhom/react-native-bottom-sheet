@@ -8,36 +8,36 @@ interface HandleProps extends BottomSheetHandleProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
+const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
   //#region animations
   const borderTopRadius = useMemo(
     () =>
-      interpolate(animatedPositionIndex, {
+      interpolate(animatedIndex, {
         inputRange: [1, 2],
         outputRange: [20, 0],
         extrapolate: Extrapolate.CLAMP,
       }),
-    [animatedPositionIndex]
+    [animatedIndex]
   );
   const indicatorTransformOriginY = useMemo(
     () =>
-      interpolate(animatedPositionIndex, {
+      interpolate(animatedIndex, {
         inputRange: [0, 1, 2],
         outputRange: [-1, 0, 1],
         extrapolate: Extrapolate.CLAMP,
       }),
-    [animatedPositionIndex]
+    [animatedIndex]
   );
   const leftIndicatorRotate = useMemo(
     () =>
-      interpolate(animatedPositionIndex, {
+      interpolate(animatedIndex, {
         inputRange: [0, 1, 2],
         outputRange: [toRad(-30), 0, toRad(30)],
         extrapolate: Extrapolate.CLAMP,
       }),
-    [animatedPositionIndex]
+    [animatedIndex]
   );
-  const rightIndicatorRotate = interpolate(animatedPositionIndex, {
+  const rightIndicatorRotate = interpolate(animatedIndex, {
     inputRange: [0, 1, 2],
     outputRange: [toRad(30), 0, toRad(-30)],
     extrapolate: Extrapolate.CLAMP,

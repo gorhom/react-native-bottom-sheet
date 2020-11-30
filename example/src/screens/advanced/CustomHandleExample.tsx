@@ -69,8 +69,8 @@ const CustomHandleExample = () => {
       />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
         handleComponent={Handle}
       >
         <ContactList type="View" count={3} header={renderHeader} />
