@@ -135,6 +135,8 @@ export interface BottomSheetAnimationConfigs {
 export interface BottomSheetTransitionConfig
   extends Required<BottomSheetAnimationConfigs>,
     Pick<BottomSheetProps, 'onAnimate'> {
+  isLayoutCalculated: boolean;
+
   contentPanGestureState: Animated.Value<State>;
   contentPanGestureTranslationY: Animated.Value<number>;
   contentPanGestureVelocityY: Animated.Value<number>;

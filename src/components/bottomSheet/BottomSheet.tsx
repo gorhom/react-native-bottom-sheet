@@ -9,7 +9,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { ViewStyle } from 'react-native';
+import { Dimensions, ViewStyle } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import Animated, {
@@ -65,6 +65,8 @@ const {
 } = require('react-native-reanimated');
 const interpolate = interpolateV2 || interpolateV1;
 
+const { height: windowHeight } = Dimensions.get('window');
+
 type BottomSheet = BottomSheetMethods;
 
 Animated.addWhitelistedUIProps({
@@ -86,7 +88,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
       // container props
-      containerHeight,
+      containerHeight: _containerHeight,
       containerTapGestureRef,
       containerTapGestureState,
       // animated nodes callback
@@ -162,6 +164,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region variables
+    const isLayoutCalculated = useMemo(() => _containerHeight !== -1, [
+      _containerHeight,
+    ]);
+    const containerHeight = useMemo(
+      () => (_containerHeight !== -1 ? _containerHeight : windowHeight),
+      [_containerHeight]
+    );
     const {
       scrollableContentOffsetY,
       setScrollableRef,
@@ -201,12 +210,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region animation
+    const handleOnAnimate = useStableCallback(
+      (fromIndex: number, toIndex: number) => {
+        if (_onAnimate) {
+          _onAnimate(fromIndex, toIndex);
+        }
+      }
+    );
     const {
       position,
       manualSnapToPoint,
       currentPosition,
       currentGesture,
     } = useTransition({
+      isLayoutCalculated,
       animationDuration,
       animationEasing,
       contentPanGestureState,
@@ -218,7 +235,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       scrollableContentOffsetY,
       snapPoints,
       initialPosition,
-      onAnimate: _onAnimate,
+      onAnimate: handleOnAnimate,
     });
 
     // animated values
@@ -304,7 +321,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           HandleComponent !== null &&
           _handleHeight === undefined
         ) {
-          // console.log('BottomSheet \t\t', 'handleHandleOnLayout', height);
           setHandleHeight(height);
         }
       },

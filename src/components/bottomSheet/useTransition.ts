@@ -27,6 +27,7 @@ import { useReactiveValue, useReactiveValues } from '../../hooks';
 import type { BottomSheetTransitionConfig } from './types';
 
 export const useTransition = ({
+  isLayoutCalculated,
   animationDuration,
   animationEasing,
   contentPanGestureState,
@@ -40,6 +41,7 @@ export const useTransition = ({
   initialPosition,
   onAnimate,
 }: BottomSheetTransitionConfig) => {
+  const isReady = useReactiveValue(isLayoutCalculated ? 1 : 0);
   const currentGesture = useValue<GESTURE>(GESTURE.UNDETERMINED);
   const currentPosition = useReactiveValue(initialPosition);
   const snapPoints = useReactiveValues(_snapPoints);
@@ -140,127 +142,156 @@ export const useTransition = ({
   const position = useMemo(
     () =>
       block([
-        // debug('current gesture', currentGesture),
-        /**
-         * In case animation get interrupted, we execute the finishTiming node and
-         * set current position the the animated position.
-         */
-        cond(isAnimationInterrupted, [
-          // // debug('animation interrupted', isAnimationInterrupted),
-          finishTiming,
-          set(currentPosition, animationState.position),
-        ]),
+        cond(
+          eq(isReady, 1),
+          [
+            // debug('current gesture', currentGesture),
+            /**
+             * In case animation get interrupted, we execute the finishTiming node and
+             * set current position the the animated position.
+             */
+            cond(isAnimationInterrupted, [
+              // // debug('animation interrupted', isAnimationInterrupted),
+              finishTiming,
+              set(currentPosition, animationState.position),
+            ]),
 
-        /**
-         * Panning node
-         */
-        cond(isPanning, [
-          set(
-            currentGesture,
-            cond(isPanningContent, GESTURE.CONTENT, GESTURE.HANDLE)
-          ),
-          // debug('start panning', translateY),
-          cond(
-            not(
-              greaterOrEq(
-                add(currentPosition, translateY),
-                snapPoints[snapPoints.length - 1]
-              )
-            ),
-            [
-              set(animationState.position, snapPoints[snapPoints.length - 1]),
-              set(animationState.finished, 0),
-            ],
-            cond(
-              not(lessOrEq(add(currentPosition, translateY), snapPoints[0])),
-              [
-                set(animationState.position, snapPoints[0]),
-                set(animationState.finished, 0),
-              ],
-              [
-                set(animationState.position, add(currentPosition, translateY)),
-                set(animationState.finished, 0),
-              ]
-            )
-          ),
-        ]),
-
-        /**
-         * Gesture ended node.
-         */
-        onChange(
-          add(contentPanGestureState, handlePanGestureState),
-          cond(
-            or(
-              and(
-                eq(currentGesture, GESTURE.CONTENT),
-                eq(contentPanGestureState, State.END)
-              ),
-              and(
-                eq(currentGesture, GESTURE.HANDLE),
-                eq(handlePanGestureState, State.END)
-              )
-            ),
-            [
-              // debug('gesture end', currentGesture),
+            /**
+             * Panning node
+             */
+            cond(isPanning, [
               set(
-                config.toValue,
-                snapPoint(
-                  add(currentPosition, translateY),
-                  velocityY,
-                  snapPoints
+                currentGesture,
+                cond(isPanningContent, GESTURE.CONTENT, GESTURE.HANDLE)
+              ),
+              // debug('start panning', translateY),
+              cond(
+                not(
+                  greaterOrEq(
+                    add(currentPosition, translateY),
+                    snapPoints[snapPoints.length - 1]
+                  )
+                ),
+                [
+                  set(
+                    animationState.position,
+                    snapPoints[snapPoints.length - 1]
+                  ),
+                  set(animationState.finished, 0),
+                ],
+                cond(
+                  not(
+                    lessOrEq(add(currentPosition, translateY), snapPoints[0])
+                  ),
+                  [
+                    set(animationState.position, snapPoints[0]),
+                    set(animationState.finished, 0),
+                  ],
+                  [
+                    set(
+                      animationState.position,
+                      add(currentPosition, translateY)
+                    ),
+                    set(animationState.finished, 0),
+                  ]
                 )
               ),
-              set(shouldAnimate, 1),
-            ]
-          )
-        ),
-        /**
-         * Manual snapping node.
-         */
-        cond(neq(manualSnapToPoint, -1), [
-          // debug('Manually snap to', manualSnapToPoint),
-          set(config.toValue, manualSnapToPoint),
-          set(animationState.finished, 0),
-          set(shouldAnimate, 1),
-          set(manualSnapToPoint, -1),
-        ]),
+            ]),
 
-        /**
-         * Animation Node.
-         */
-        cond(shouldAnimate, [
-          // debug('start animating', shouldAnimate),
-          cond(and(not(clockRunning(clock)), not(animationState.finished)), [
             /**
-             * `onAnimate` node
+             * Gesture ended node.
              */
-            call(
-              [currentPosition, config.toValue, ...snapPoints],
-              ([_currentPosition, _toValue, ..._animatedSnapPoints]) => {
-                const currentPositionIndex = _animatedSnapPoints.indexOf(
-                  _currentPosition
-                );
-                const nextPositionIndex = _animatedSnapPoints.indexOf(_toValue);
-
-                if (onAnimate) {
-                  onAnimate(currentPositionIndex, nextPositionIndex);
-                }
-              }
+            onChange(
+              add(contentPanGestureState, handlePanGestureState),
+              cond(
+                or(
+                  and(
+                    eq(currentGesture, GESTURE.CONTENT),
+                    eq(contentPanGestureState, State.END)
+                  ),
+                  and(
+                    eq(currentGesture, GESTURE.HANDLE),
+                    eq(handlePanGestureState, State.END)
+                  )
+                ),
+                [
+                  // debug('gesture end', currentGesture),
+                  set(
+                    config.toValue,
+                    snapPoint(
+                      add(currentPosition, translateY),
+                      velocityY,
+                      snapPoints
+                    )
+                  ),
+                  set(shouldAnimate, 1),
+                ]
+              )
+            ),
+            /**
+             * Manual snapping node.
+             */
+            cond(
+              and(
+                neq(manualSnapToPoint, -1),
+                neq(manualSnapToPoint, currentPosition),
+                neq(manualSnapToPoint, config.toValue)
+              ),
+              [
+                // debug('Manually snap to', manualSnapToPoint),
+                set(config.toValue, manualSnapToPoint),
+                set(animationState.finished, 0),
+                set(shouldAnimate, 1),
+                set(manualSnapToPoint, -1),
+              ],
+              set(manualSnapToPoint, -1)
             ),
 
-            set(animationState.finished, 0),
-            set(animationState.frameTime, 0),
-            set(animationState.time, 0),
-            startClock(clock),
-          ]),
-          timing(clock, animationState, config),
-          cond(animationState.finished, finishTiming),
-        ]),
+            /**
+             * Animation Node.
+             */
+            cond(shouldAnimate, [
+              // // debug('animating', shouldAnimate),
+              cond(
+                and(not(clockRunning(clock)), not(animationState.finished)),
+                [
+                  // debug('start animating', shouldAnimate),
+                  /**
+                   * `onAnimate` node
+                   */
+                  call(
+                    [currentPosition, config.toValue, ...snapPoints],
+                    ([_currentPosition, _toValue, ..._animatedSnapPoints]) => {
+                      const currentPositionIndex = _animatedSnapPoints.indexOf(
+                        _currentPosition
+                      );
+                      const nextPositionIndex = _animatedSnapPoints.indexOf(
+                        _toValue
+                      );
 
-        animationState.position,
+                      if (onAnimate) {
+                        onAnimate(currentPositionIndex, nextPositionIndex);
+                      }
+                    }
+                  ),
+
+                  set(animationState.finished, 0),
+                  set(animationState.frameTime, 0),
+                  set(animationState.time, 0),
+                  startClock(clock),
+                ]
+              ),
+              timing(clock, animationState, config),
+              cond(animationState.finished, finishTiming),
+            ]),
+
+            animationState.position,
+          ],
+          0
+        ),
       ]),
     [
+      isReady,
       animationState,
       clock,
       config,
