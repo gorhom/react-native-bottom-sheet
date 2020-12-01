@@ -92,12 +92,12 @@ export type BottomSheetProps = {
    * @see {BottomSheetHandleProps}
    * @type React.FC\<BottomSheetHandleProps\>
    */
-  handleComponent?: React.FC<BottomSheetHandleProps>;
+  handleComponent?: React.FC<BottomSheetHandleProps> | null;
   /**
    * Component to be placed as a sheet background.
    * @type React.FC\<BottomSheetBackgroundProps\>
    */
-  backgroundComponent?: React.FC<BottomSheetBackgroundProps>;
+  backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
   /**
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode

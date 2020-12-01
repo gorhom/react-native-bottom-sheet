@@ -5,9 +5,6 @@ const { width: windowWidth } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   container: {
     padding: 10,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    backgroundColor: 'white',
   },
 
   indicator: {
