@@ -19,6 +19,7 @@ module.exports = {
           ],
         },
         'troubleshooting',
+        'faq',
       ],
     },
     {
