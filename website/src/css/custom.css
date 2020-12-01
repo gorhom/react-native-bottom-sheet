@@ -93,8 +93,3 @@ article table tr:nth-child(2n) {
 .table-of-contents ul li {
   margin-left: 0px;
 }
-
-.table-of-contents > li > a {
-  text-transform: uppercase;
-  font-weight: 700;
-}

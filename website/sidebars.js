@@ -18,6 +18,7 @@ module.exports = {
             'custom-background',
           ],
         },
+        'troubleshooting',
       ],
     },
     {
