@@ -260,14 +260,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedIndex = useMemo(
       () =>
         interpolate(position, {
-          inputRange: snapPoints.slice().reverse(),
-          outputRange: snapPoints
-            .slice()
-            .map((_, index) => index)
-            .reverse(),
+          /**
+           * this been added to resolve issues when provide
+           * one snap point.
+           */
+          inputRange: [...snapPoints.slice().reverse(), containerHeight],
+          outputRange: [
+            ...snapPoints
+              .slice()
+              .map((_, index) => index)
+              .reverse(),
+            -1,
+          ],
           extrapolate: Extrapolate.CLAMP,
         }),
-      [position, snapPoints]
+      [position, containerHeight, snapPoints]
     );
 
     const animatedPosition = useMemo(
