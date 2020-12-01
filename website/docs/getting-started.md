@@ -22,7 +22,8 @@ hide_table_of_contents: true
 
 # React Native Bottom Sheet
 
-[![npm](https://img.shields.io/npm/v/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/npm/l/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/badge/types-included-blue?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet)
+[![npm](https://img.shields.io/npm/v/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/npm/l/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/badge/types-included-blue?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/)
+
 
 A performant interactive bottom sheet with fully configurable options 🚀
 
@@ -49,7 +50,7 @@ This library provides two versions that are align with `Reanimated v1 & v2`
 This version is written with `Reanimated v1` & compatible with `Reanimated v2`:
 
 ```bash
-yarn add @gorhom/bottom-sheet
+yarn add @gorhom/bottom-sheet@2.0.0-alpha.3
 ```
 
 #### Dependencies
