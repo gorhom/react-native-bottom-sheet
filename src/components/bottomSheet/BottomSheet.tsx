@@ -80,7 +80,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animationDuration = DEFAULT_ANIMATION_DURATION,
       animationEasing = DEFAULT_ANIMATION_EASING,
       // configurations
-      index: initialSnapIndex = 0,
+      index: _index = 0,
       snapPoints: _snapPoints,
       handleHeight: _handleHeight,
       topInset = 0,
@@ -116,15 +116,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       `'snapPoints' was provided with no points! please provide at least one snap point.`
     );
 
-    // validate `initialSnapIndex`
+    // validate `index`
     invariant(
-      typeof initialSnapIndex === 'number',
-      `'initialSnapIndex' was provided but with wrong type ! expected type is a number.`
+      typeof _index === 'number',
+      `'index' was provided but with wrong type ! expected type is a number.`
     );
 
     invariant(
-      initialSnapIndex >= -1 && initialSnapIndex <= _snapPoints.length - 1,
-      `'initialSnapIndex' was provided but out of the provided snap points range! expected value to be between -1, ${
+      _index >= -1 && _index <= _snapPoints.length - 1,
+      `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
         _snapPoints.length - 1
       }`
     );
@@ -159,7 +159,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region refs
-    const currentPositionIndexRef = useRef<number>(initialSnapIndex);
+    const currentIndexRef = useRef<number>(_index);
     const handlePanGestureRef = useRef<PanGestureHandler>(null);
 
     // ref values
@@ -205,9 +205,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
 
     const initialPosition = useMemo(() => {
-      return currentPositionIndexRef.current < 0 || animateOnMount
+      return currentIndexRef.current < 0 || animateOnMount
         ? containerHeight - topInset
-        : snapPoints[currentPositionIndexRef.current];
+        : snapPoints[currentIndexRef.current];
     }, [snapPoints, animateOnMount, containerHeight, topInset]);
     //#endregion
 
@@ -252,6 +252,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       scrollableContentOffsetY,
       snapPoints,
       initialPosition,
+      currentIndexRef,
       onAnimate: handleOnAnimate,
     });
 
@@ -309,7 +310,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region private methods
     const refreshUIElements = useCallback(() => {
-      const currentPositionIndex = Math.max(currentPositionIndexRef.current, 0);
+      const currentPositionIndex = Math.max(currentIndexRef.current, 0);
       if (currentPositionIndex === snapPoints.length - 1) {
         flashScrollableIndicators();
         // @ts-ignore
@@ -438,12 +439,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isLayoutCalculated &&
         didMountOnAnimate.current === false
       ) {
-        manualSnapToPoint.setValue(snapPoints[initialSnapIndex]);
+        manualSnapToPoint.setValue(snapPoints[_index]);
         didMountOnAnimate.current = true;
       }
     }, [
       animateOnMount,
-      initialSnapIndex,
+      _index,
       isLayoutCalculated,
       manualSnapToPoint,
       snapPoints,
@@ -453,8 +454,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * keep animated position synced with snap points.
      */
     useEffect(() => {
-      if (isLayoutCalculated && currentPositionIndexRef.current !== -1) {
-        manualSnapToPoint.setValue(snapPoints[currentPositionIndexRef.current]);
+      if (isLayoutCalculated && currentIndexRef.current !== -1) {
+        manualSnapToPoint.setValue(snapPoints[currentIndexRef.current]);
       }
     }, [isLayoutCalculated, snapPoints, manualSnapToPoint]);
 
@@ -481,7 +482,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             ) {
               return;
             }
-            currentPositionIndexRef.current = currentPositionIndex;
+            currentIndexRef.current = currentPositionIndex;
             refreshUIElements();
             handleOnChange(currentPositionIndex);
           }),

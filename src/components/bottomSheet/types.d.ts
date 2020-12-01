@@ -148,4 +148,6 @@ export interface BottomSheetTransitionConfig
   scrollableContentOffsetY: Animated.Value<number>;
   snapPoints: number[];
   initialPosition: number;
+
+  currentIndexRef: React.RefObject<number>;
 }

@@ -38,6 +38,7 @@ export const useTransition = ({
   handlePanGestureVelocityY,
   scrollableContentOffsetY,
   snapPoints: _snapPoints,
+  currentIndexRef,
   initialPosition,
   onAnimate,
 }: BottomSheetTransitionConfig) => {
@@ -145,9 +146,7 @@ export const useTransition = ({
         cond(
           eq(isReady, 1),
           [
-            // debug('ROOT', manualSnapToPoint),
-
-            // // debug('current gesture', currentGesture),
+            // debug('current gesture', currentGesture),
             /**
              * In case animation get interrupted, we execute the finishTiming node and
              * set current position the the animated position.
@@ -226,16 +225,21 @@ export const useTransition = ({
                       snapPoints
                     )
                   ),
-                  set(shouldAnimate, 1),
+                  /**
+                   * here we make sure that captured gesture was not the content scrolling.
+                   */
+                  cond(
+                    neq(config.toValue, animationState.position),
+                    set(shouldAnimate, 1),
+                    finishTiming
+                  ),
                 ]
               )
             ),
+
             /**
              * Manual snapping node.
              */
-            // // debug('manualSnapToPoint', manualSnapToPoint),
-            // // debug('currentPosition', currentPosition),
-            // // debug('config', config.toValue),
             cond(
               and(
                 neq(manualSnapToPoint, -1),
@@ -243,12 +247,11 @@ export const useTransition = ({
                 neq(manualSnapToPoint, config.toValue)
               ),
               [
-                // debug('Manually snap to', manualSnapToPoint),
+                // debug('manualSnapToPoint', manualSnapToPoint),
                 set(config.toValue, manualSnapToPoint),
                 set(animationState.finished, 0),
                 set(shouldAnimate, 1),
                 set(manualSnapToPoint, -1),
-                // debug('NOW', manualSnapToPoint),
               ],
               set(manualSnapToPoint, -1)
             ),
@@ -266,17 +269,13 @@ export const useTransition = ({
                    * `onAnimate` node
                    */
                   call(
-                    [currentPosition, config.toValue, ...snapPoints],
-                    ([_currentPosition, _toValue, ..._animatedSnapPoints]) => {
-                      const currentPositionIndex = _animatedSnapPoints.indexOf(
-                        _currentPosition
-                      );
-                      const nextPositionIndex = _animatedSnapPoints.indexOf(
-                        _toValue
-                      );
+                    [config.toValue, ...snapPoints],
+                    ([_toValue, ..._animatedSnapPoints]) => {
+                      const currentIndex = currentIndexRef.current || -1;
+                      const nextIndex = _animatedSnapPoints.indexOf(_toValue);
 
                       if (onAnimate) {
-                        onAnimate(currentPositionIndex, nextPositionIndex);
+                        onAnimate(currentIndex, nextIndex);
                       }
                     }
                   ),
@@ -314,6 +313,7 @@ export const useTransition = ({
       velocityY,
       contentPanGestureState,
       handlePanGestureState,
+      currentIndexRef,
       onAnimate,
     ]
   );
