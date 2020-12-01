@@ -271,7 +271,7 @@ export const useTransition = ({
                   call(
                     [config.toValue, ...snapPoints],
                     ([_toValue, ..._animatedSnapPoints]) => {
-                      const currentIndex = currentIndexRef.current || -1;
+                      const currentIndex = currentIndexRef.current!;
                       const nextIndex = _animatedSnapPoints.indexOf(_toValue);
 
                       if (onAnimate) {
