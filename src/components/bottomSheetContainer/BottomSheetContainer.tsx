@@ -6,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Dimensions } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import { TapGestureHandler } from 'react-native-gesture-handler';
@@ -16,8 +15,6 @@ import ContentWrapper from '../contentWrapper';
 import type { BottomSheetMethods } from '../../types';
 import type { BottomSheetContainerProps } from './types';
 import { styles } from './styles';
-
-const { height: windowHeight } = Dimensions.get('window');
 
 type BottomSheet = BottomSheetMethods;
 
@@ -33,7 +30,7 @@ const BottomSheetContainerComponent = forwardRef<
   //#endregion
 
   //#region state
-  const [containerHeight, setContainerHeight] = useState(windowHeight);
+  const [containerHeight, setContainerHeight] = useState(-1);
   //#endregion
 
   //#region refs
@@ -58,11 +55,6 @@ const BottomSheetContainerComponent = forwardRef<
   const handleContainerOnLayout = useCallback(
     ({ nativeEvent: { layout } }) => {
       if (_height === undefined) {
-        // console.log(
-        //   'BottomSheetContainer \t',
-        //   'handleContainerOnLayout',
-        //   layout.height
-        // );
         setContainerHeight(layout.height);
       }
     },
@@ -71,23 +63,13 @@ const BottomSheetContainerComponent = forwardRef<
   //#endregion
 
   //#region render
-  // console.log('BottomSheetContainer \t', 'render \t');
   return (
     <ContentWrapper
       ref={containerTapGestureRef}
       style={styles.container}
-      onLayout={handleContainerOnLayout}
+      onLayout={_height === undefined ? handleContainerOnLayout : undefined}
       {...containerTapGestureHandler}
     >
-      {/* {height !== undefined && height !== -1 ? (
-        <BottomSheetView
-          {...rest}
-          ref={ref}
-          containerHeight={height}
-          containerTapGestureRef={containerTapGestureRef}
-          containerTapGestureState={containerTapGestureState}
-        />
-      ) : null} */}
       <BottomSheetView
         {...rest}
         ref={ref}

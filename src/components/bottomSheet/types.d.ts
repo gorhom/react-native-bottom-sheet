@@ -80,6 +80,11 @@ export type BottomSheetProps = {
    * @type (index: number) => void;
    */
   onChange?: (index: number) => void;
+  /**
+   * Callback when the sheet about to animate to a new position.
+   * @type (fromIndex: number, toIndex: number) => void;
+   */
+  onAnimate?: (fromIndex: number, toIndex: number) => void;
 
   // components
   /**
@@ -125,4 +130,24 @@ export interface BottomSheetAnimationConfigs {
    * @default 500
    */
   animationDuration?: number;
+}
+
+export interface BottomSheetTransitionConfig
+  extends Required<BottomSheetAnimationConfigs>,
+    Pick<BottomSheetProps, 'onAnimate'> {
+  isLayoutCalculated: boolean;
+
+  contentPanGestureState: Animated.Value<State>;
+  contentPanGestureTranslationY: Animated.Value<number>;
+  contentPanGestureVelocityY: Animated.Value<number>;
+
+  handlePanGestureState: Animated.Value<State>;
+  handlePanGestureTranslationY: Animated.Value<number>;
+  handlePanGestureVelocityY: Animated.Value<number>;
+
+  scrollableContentOffsetY: Animated.Value<number>;
+  snapPoints: number[];
+  initialPosition: number;
+
+  currentIndexRef: React.RefObject<number>;
 }

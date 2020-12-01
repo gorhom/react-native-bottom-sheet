@@ -9,7 +9,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { ViewStyle } from 'react-native';
+import { Dimensions, ViewStyle } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import Animated, {
@@ -65,6 +65,8 @@ const {
 } = require('react-native-reanimated');
 const interpolate = interpolateV2 || interpolateV1;
 
+const { height: windowHeight } = Dimensions.get('window');
+
 type BottomSheet = BottomSheetMethods;
 
 Animated.addWhitelistedUIProps({
@@ -78,7 +80,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animationDuration = DEFAULT_ANIMATION_DURATION,
       animationEasing = DEFAULT_ANIMATION_EASING,
       // configurations
-      index: initialSnapIndex = 0,
+      index: _index = 0,
       snapPoints: _snapPoints,
       handleHeight: _handleHeight,
       topInset = 0,
@@ -86,7 +88,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
       // container props
-      containerHeight,
+      containerHeight: _containerHeight,
       containerTapGestureRef,
       containerTapGestureState,
       // animated nodes callback
@@ -94,6 +96,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animatedIndex: _animatedIndexCallbackNode,
       // callbacks
       onChange: _onChange,
+      onAnimate: _onAnimate,
       // components
       handleComponent: HandleComponent,
       backgroundComponent: BackgroundComponent = DefaultBackground,
@@ -113,15 +116,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       `'snapPoints' was provided with no points! please provide at least one snap point.`
     );
 
-    // validate `initialSnapIndex`
+    // validate `index`
     invariant(
-      typeof initialSnapIndex === 'number',
-      `'initialSnapIndex' was provided but with wrong type ! expected type is a number.`
+      typeof _index === 'number',
+      `'index' was provided but with wrong type ! expected type is a number.`
     );
 
     invariant(
-      initialSnapIndex >= -1 && initialSnapIndex <= _snapPoints.length - 1,
-      `'initialSnapIndex' was provided but out of the provided snap points range! expected value to be between -1, ${
+      _index >= -1 && _index <= _snapPoints.length - 1,
+      `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
         _snapPoints.length - 1
       }`
     );
@@ -156,11 +159,35 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region refs
-    const currentPositionIndexRef = useRef<number>(initialSnapIndex);
+    const currentIndexRef = useRef<number>(_index);
     const handlePanGestureRef = useRef<PanGestureHandler>(null);
+
+    // ref values
+    const didMountOnAnimate = useRef(false);
+    const didSetHandleHeight = useRef(false);
     //#endregion
 
     //#region variables
+    const isHandleHeightCalculated = useMemo(() => {
+      // user did provide handle height prop
+      return _handleHeight !== undefined
+        ? true
+        : // user did not provide a handle component, we will be using the default handle height
+        HandleComponent === undefined || HandleComponent === null
+        ? true
+        : // user did provide a handle component, and handle layout been calculated
+        handleHeight && didSetHandleHeight.current
+        ? true
+        : false;
+    }, [_handleHeight, handleHeight, HandleComponent]);
+    const isLayoutCalculated = useMemo(
+      () => _containerHeight !== -1 && isHandleHeightCalculated,
+      [_containerHeight, isHandleHeightCalculated]
+    );
+    const containerHeight = useMemo(
+      () => (_containerHeight !== -1 ? _containerHeight : windowHeight),
+      [_containerHeight]
+    );
     const {
       scrollableContentOffsetY,
       setScrollableRef,
@@ -178,9 +205,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
 
     const initialPosition = useMemo(() => {
-      return currentPositionIndexRef.current < 0 || animateOnMount
+      return currentIndexRef.current < 0 || animateOnMount
         ? containerHeight - topInset
-        : snapPoints[currentPositionIndexRef.current];
+        : snapPoints[currentIndexRef.current];
     }, [snapPoints, animateOnMount, containerHeight, topInset]);
     //#endregion
 
@@ -200,12 +227,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region animation
+    const handleOnAnimate = useStableCallback(
+      (fromIndex: number, toIndex: number) => {
+        if (_onAnimate) {
+          _onAnimate(fromIndex, toIndex);
+        }
+      }
+    );
     const {
       position,
       manualSnapToPoint,
       currentPosition,
       currentGesture,
     } = useTransition({
+      isLayoutCalculated,
       animationDuration,
       animationEasing,
       contentPanGestureState,
@@ -217,6 +252,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       scrollableContentOffsetY,
       snapPoints,
       initialPosition,
+      currentIndexRef,
+      onAnimate: handleOnAnimate,
     });
 
     // animated values
@@ -253,19 +290,27 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region styles
-    const sheetContainerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
+    const containerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
       () => ({
-        ...styles.sheetContainer,
-        height: sheetHeight,
-        transform: [{ translateY: position }],
+        ...styles.container,
+        transform: [
+          { translateY: isLayoutCalculated ? position : containerHeight },
+        ],
       }),
-      [sheetHeight, position]
+      [containerHeight, position, isLayoutCalculated]
+    );
+    const contentContainerStyle = useMemo(
+      () => ({
+        ...styles.contentContainer,
+        height: sheetHeight,
+      }),
+      [sheetHeight]
     );
     //#endregion
 
     //#region private methods
     const refreshUIElements = useCallback(() => {
-      const currentPositionIndex = Math.max(currentPositionIndexRef.current, 0);
+      const currentPositionIndex = Math.max(currentIndexRef.current, 0);
       if (currentPositionIndex === snapPoints.length - 1) {
         flashScrollableIndicators();
         // @ts-ignore
@@ -302,7 +347,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           HandleComponent !== null &&
           _handleHeight === undefined
         ) {
-          // console.log('BottomSheet \t\t', 'handleHandleOnLayout', height);
+          didSetHandleHeight.current = true;
           setHandleHeight(height);
         }
       },
@@ -389,19 +434,30 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * when component is mounted.
      */
     useLayoutEffect(() => {
-      if (animateOnMount) {
-        manualSnapToPoint.setValue(snapPoints[initialSnapIndex]);
+      if (
+        animateOnMount &&
+        isLayoutCalculated &&
+        didMountOnAnimate.current === false
+      ) {
+        manualSnapToPoint.setValue(snapPoints[_index]);
+        didMountOnAnimate.current = true;
       }
-    }, [animateOnMount, initialSnapIndex, manualSnapToPoint, snapPoints]);
+    }, [
+      animateOnMount,
+      _index,
+      isLayoutCalculated,
+      manualSnapToPoint,
+      snapPoints,
+    ]);
 
     /*
      * keep animated position synced with snap points.
      */
     useEffect(() => {
-      if (currentPositionIndexRef.current !== -1) {
-        manualSnapToPoint.setValue(snapPoints[currentPositionIndexRef.current]);
+      if (isLayoutCalculated && currentIndexRef.current !== -1) {
+        manualSnapToPoint.setValue(snapPoints[currentIndexRef.current]);
       }
-    }, [snapPoints, manualSnapToPoint]);
+    }, [isLayoutCalculated, snapPoints, manualSnapToPoint]);
 
     /**
      * @DEV
@@ -426,7 +482,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             ) {
               return;
             }
-            currentPositionIndexRef.current = currentPositionIndex;
+            currentIndexRef.current = currentPositionIndex;
             refreshUIElements();
             handleOnChange(currentPositionIndex);
           }),
@@ -482,7 +538,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     return (
       <>
-        <Animated.View style={sheetContainerStyle}>
+        <Animated.View style={containerStyle}>
           {renderBackground()}
           <BottomSheetProvider value={externalContextVariables}>
             <PanGestureHandler
@@ -498,7 +554,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             </PanGestureHandler>
 
             <BottomSheetInternalProvider value={internalContextVariables}>
-              <DraggableView style={styles.contentContainer}>
+              <DraggableView style={contentContainerStyle}>
                 {children}
               </DraggableView>
             </BottomSheetInternalProvider>
