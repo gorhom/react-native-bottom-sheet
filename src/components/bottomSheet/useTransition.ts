@@ -145,13 +145,15 @@ export const useTransition = ({
         cond(
           eq(isReady, 1),
           [
-            // debug('current gesture', currentGesture),
+            // debug('ROOT', manualSnapToPoint),
+
+            // // debug('current gesture', currentGesture),
             /**
              * In case animation get interrupted, we execute the finishTiming node and
              * set current position the the animated position.
              */
             cond(isAnimationInterrupted, [
-              // // debug('animation interrupted', isAnimationInterrupted),
+              // debug('animation interrupted', isAnimationInterrupted),
               finishTiming,
               set(currentPosition, animationState.position),
             ]),
@@ -231,6 +233,9 @@ export const useTransition = ({
             /**
              * Manual snapping node.
              */
+            // // debug('manualSnapToPoint', manualSnapToPoint),
+            // // debug('currentPosition', currentPosition),
+            // // debug('config', config.toValue),
             cond(
               and(
                 neq(manualSnapToPoint, -1),
@@ -243,6 +248,7 @@ export const useTransition = ({
                 set(animationState.finished, 0),
                 set(shouldAnimate, 1),
                 set(manualSnapToPoint, -1),
+                // debug('NOW', manualSnapToPoint),
               ],
               set(manualSnapToPoint, -1)
             ),
@@ -251,7 +257,7 @@ export const useTransition = ({
              * Animation Node.
              */
             cond(shouldAnimate, [
-              // // debug('animating', shouldAnimate),
+              // debug('animating', shouldAnimate),
               cond(
                 and(not(clockRunning(clock)), not(animationState.finished)),
                 [

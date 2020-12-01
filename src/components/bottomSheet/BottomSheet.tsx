@@ -161,12 +161,29 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region refs
     const currentPositionIndexRef = useRef<number>(initialSnapIndex);
     const handlePanGestureRef = useRef<PanGestureHandler>(null);
+
+    // ref values
+    const didMountOnAnimate = useRef(false);
+    const didSetHandleHeight = useRef(false);
     //#endregion
 
     //#region variables
-    const isLayoutCalculated = useMemo(() => _containerHeight !== -1, [
-      _containerHeight,
-    ]);
+    const isHandleHeightCalculated = useMemo(() => {
+      // user did provide handle height prop
+      return _handleHeight !== undefined
+        ? true
+        : // user did not provide a handle component, we will be using the default handle height
+        HandleComponent === undefined || HandleComponent === null
+        ? true
+        : // user did provide a handle component, and handle layout been calculated
+        handleHeight && didSetHandleHeight.current
+        ? true
+        : false;
+    }, [_handleHeight, handleHeight, HandleComponent]);
+    const isLayoutCalculated = useMemo(
+      () => _containerHeight !== -1 && isHandleHeightCalculated,
+      [_containerHeight, isHandleHeightCalculated]
+    );
     const containerHeight = useMemo(
       () => (_containerHeight !== -1 ? _containerHeight : windowHeight),
       [_containerHeight]
@@ -272,13 +289,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region styles
-    const sheetContainerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
+    const containerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
       () => ({
-        ...styles.sheetContainer,
-        height: sheetHeight,
-        transform: [{ translateY: position }],
+        ...styles.container,
+        transform: [
+          { translateY: isLayoutCalculated ? position : containerHeight },
+        ],
       }),
-      [sheetHeight, position]
+      [containerHeight, position, isLayoutCalculated]
+    );
+    const contentContainerStyle = useMemo(
+      () => ({
+        ...styles.contentContainer,
+        height: sheetHeight,
+      }),
+      [sheetHeight]
     );
     //#endregion
 
@@ -321,6 +346,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           HandleComponent !== null &&
           _handleHeight === undefined
         ) {
+          didSetHandleHeight.current = true;
           setHandleHeight(height);
         }
       },
@@ -407,19 +433,30 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * when component is mounted.
      */
     useLayoutEffect(() => {
-      if (animateOnMount) {
+      if (
+        animateOnMount &&
+        isLayoutCalculated &&
+        didMountOnAnimate.current === false
+      ) {
         manualSnapToPoint.setValue(snapPoints[initialSnapIndex]);
+        didMountOnAnimate.current = true;
       }
-    }, [animateOnMount, initialSnapIndex, manualSnapToPoint, snapPoints]);
+    }, [
+      animateOnMount,
+      initialSnapIndex,
+      isLayoutCalculated,
+      manualSnapToPoint,
+      snapPoints,
+    ]);
 
     /*
      * keep animated position synced with snap points.
      */
     useEffect(() => {
-      if (currentPositionIndexRef.current !== -1) {
+      if (isLayoutCalculated && currentPositionIndexRef.current !== -1) {
         manualSnapToPoint.setValue(snapPoints[currentPositionIndexRef.current]);
       }
-    }, [snapPoints, manualSnapToPoint]);
+    }, [isLayoutCalculated, snapPoints, manualSnapToPoint]);
 
     /**
      * @DEV
@@ -500,7 +537,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     return (
       <>
-        <Animated.View style={sheetContainerStyle}>
+        <Animated.View style={containerStyle}>
           {renderBackground()}
           <BottomSheetProvider value={externalContextVariables}>
             <PanGestureHandler
@@ -516,7 +553,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             </PanGestureHandler>
 
             <BottomSheetInternalProvider value={internalContextVariables}>
-              <DraggableView style={styles.contentContainer}>
+              <DraggableView style={contentContainerStyle}>
                 {children}
               </DraggableView>
             </BottomSheetInternalProvider>
