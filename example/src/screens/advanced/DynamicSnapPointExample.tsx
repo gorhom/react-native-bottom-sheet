@@ -36,7 +36,6 @@ const DynamicSnapPointExample = () => {
         layout: { height },
       },
     }) => {
-      // console.log('SCREEN \t\t', 'handleOnLayout', height);
       setContentHeight(height);
     },
     []
@@ -64,7 +63,6 @@ const DynamicSnapPointExample = () => {
     []
   );
 
-  // console.log('SCREEN \t\t', 'render \t');
   return (
     <View style={styles.container}>
       <Button
@@ -102,7 +100,7 @@ const DynamicSnapPointExample = () => {
             onPress={handleIncreaseContentPress}
           />
           <Button
-            label="Mayby"
+            label="Maybe"
             style={styles.buttonContainer}
             onPress={handleDecreaseContentPress}
           />
