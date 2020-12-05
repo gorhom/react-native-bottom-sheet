@@ -5,7 +5,7 @@ import { ReText, useValue } from 'react-native-redash';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BasicExample = () => {
   // state
@@ -13,7 +13,7 @@ const BasicExample = () => {
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { top: topSafeArea } = useSafeArea();
+  const { top: topSafeArea } = useSafeAreaInsets();
 
   // variables
   const snapPoints = useMemo(() => [150, dynamicSnapPoint], [dynamicSnapPoint]);

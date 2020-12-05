@@ -15,8 +15,6 @@ export type BottomSheetModalContextType = {
 };
 
 // @ts-ignore
-export const BottomSheetModalContext = createContext<
-  BottomSheetModalContextType
->();
+export const BottomSheetModalContext = createContext<BottomSheetModalContextType>();
 
 export const BottomSheetModalProvider = BottomSheetModalContext.Provider;
