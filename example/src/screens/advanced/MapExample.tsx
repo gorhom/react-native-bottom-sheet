@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { interpolate, Extrapolate, Easing, max } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheet, {
   BottomSheetScrollView,
   BottomSheetOverlay,
@@ -31,7 +31,7 @@ const MapExample = () => {
 
   // hooks
   const { present, dismiss } = useBottomSheetModal();
-  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeArea();
+  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
 
   //#region variables
   const data = useMemo(() => createLocationListMockData(15), []);
