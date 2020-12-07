@@ -9,7 +9,7 @@ const Easing = EasingV2 || EasingV1;
 
 // defaults
 const DEFAULT_ANIMATION_EASING: Animated.EasingFunction = Easing.out(
-  Easing.back(0.75)
+  Easing.exp
 );
 const DEFAULT_ANIMATION_DURATION = 500;
 const DEFAULT_ANIMATE_ON_MOUNT = false;

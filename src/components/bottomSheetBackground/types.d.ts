@@ -2,7 +2,7 @@ import type Animated from 'react-native-reanimated';
 import type { ViewProps } from 'react-native';
 
 export interface BottomSheetBackgroundProps
-  extends Pick<ViewProps, 'pointerEvents'> {
+  extends Pick<ViewProps, 'pointerEvents' | 'style'> {
   /**
    * Current sheet position index.
    * @type Animated.Value<number>

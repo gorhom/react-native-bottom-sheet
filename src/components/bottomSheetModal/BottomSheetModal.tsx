@@ -9,7 +9,7 @@ import React, {
 import isEqual from 'lodash.isequal';
 import { useValue } from 'react-native-redash';
 import Animated, { Extrapolate, set } from 'react-native-reanimated';
-import BottomSheet from '../bottomSheetContainer';
+import BottomSheet from '../bottomSheet';
 import {
   DEFAULT_OVERLAY_OPACITY,
   DEFAULT_DISMISS_ON_OVERLAY_PRESS,

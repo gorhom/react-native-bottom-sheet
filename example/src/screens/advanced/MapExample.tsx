@@ -12,7 +12,9 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import withModalProvider from '../withModalProvider';
 import { createLocationListMockData, Location } from '../../utils';
-import SearchHandle from '../../components/searchHandle';
+import SearchHandle, {
+  SEARCH_HANDLE_HEIGHT,
+} from '../../components/searchHandle';
 import LocationItem from '../../components/locationItem';
 import LocationDetails, {
   LOCATION_DETAILS_HEIGHT,
@@ -37,7 +39,7 @@ const MapExample = () => {
   const data = useMemo(() => createLocationListMockData(15), []);
   const snapPoints = useMemo(
     () => [
-      bottomSafeArea,
+      SEARCH_HANDLE_HEIGHT,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
       SCREEN_HEIGHT,
     ],
@@ -111,9 +113,9 @@ const MapExample = () => {
   //#endregion
 
   //#region styles
-  const contentContainerStyle = useMemo(
+  const scrollViewStyle = useMemo(
     () => [
-      styles.contentContainerStyle,
+      styles.scrollView,
       {
         opacity: interpolate(animatedIndex, {
           inputRange: [0, 1],
@@ -122,9 +124,16 @@ const MapExample = () => {
         }),
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [animatedIndex]
   );
+  const scrollViewContentContainer = useMemo(
+    () => [
+      styles.scrollViewContentContainer,
+      { paddingBottom: bottomSafeArea },
+    ],
+    [bottomSafeArea]
+  );
+
   //#endregion
 
   // renders
@@ -182,7 +191,8 @@ const MapExample = () => {
         <BottomSheetScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="never"
-          style={contentContainerStyle}
+          style={scrollViewStyle}
+          contentContainerStyle={scrollViewContentContainer}
         >
           {data.map(renderItem)}
         </BottomSheetScrollView>
@@ -199,8 +209,10 @@ const styles = StyleSheet.create({
   mapContainer: {
     ...StyleSheet.absoluteFillObject,
   },
-  contentContainerStyle: {
+  scrollView: {
     flex: 1,
+  },
+  scrollViewContentContainer: {
     paddingHorizontal: 16,
   },
 });

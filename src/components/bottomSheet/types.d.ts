@@ -1,8 +1,8 @@
 import type React from 'react';
 import type Animated from 'react-native-reanimated';
-import type { State, TapGestureHandler } from 'react-native-gesture-handler';
-import type { BottomSheetHandleProps } from '../defaultHandle';
-import type { BottomSheetBackgroundProps } from '../defaultBackground';
+import type { State } from 'react-native-gesture-handler';
+import type { BottomSheetHandleProps } from '../bottomSheetHandle';
+import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
 
 export type BottomSheetProps = {
   // configuration
@@ -35,7 +35,7 @@ export type BottomSheetProps = {
    * however this will cause an extra re-rendering.
    * @type number
    */
-  containerHeight: number;
+  containerHeight?: number;
   /**
    * Top inset value helps to calculate percentage snap points values,
    * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
@@ -103,25 +103,13 @@ export type BottomSheetProps = {
    * @type React.ReactNode[] | React.ReactNode
    */
   children: (() => React.ReactNode) | React.ReactNode[] | React.ReactNode;
-
-  // internals
-  /**
-   * Container tap gesture state.
-   * @type Animated.Value<State>
-   */
-  containerTapGestureState: Animated.Value<State>;
-  /**
-   * Container tap gesture ref.
-   * @type React.RefObject<TapGestureHandler>
-   */
-  containerTapGestureRef: React.RefObject<TapGestureHandler>;
 } & BottomSheetAnimationConfigs;
 
 export interface BottomSheetAnimationConfigs {
   /**
    * Snapping animation easing function.
    * @type Animated.EasingFunction
-   * @default Easing.out(Easing.back(0.75))
+   * @default Easing.out(Easing.exp)
    */
   animationEasing?: Animated.EasingFunction;
   /**

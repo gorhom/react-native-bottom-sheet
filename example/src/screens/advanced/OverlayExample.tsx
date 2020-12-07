@@ -24,8 +24,7 @@ const OverlayExample = () => {
         extrapolate: Extrapolate.CLAMP,
       }),
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [animatedIndex]
   );
 
   // callbacks

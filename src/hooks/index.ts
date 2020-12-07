@@ -5,3 +5,4 @@ export { useStableCallback } from './useStableCallback';
 export { useReactiveValue } from './useReactiveValue';
 export { useReactiveValues } from './useReactiveValues';
 export { useNormalizedSnapPoints } from './useNormalizedSnapPoints';
+export { usePropsValidator } from './usePropsValidator';
