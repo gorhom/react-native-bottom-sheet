@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   emojiContainer: {
+    overflow: 'hidden',
     justifyContent: 'center',
   },
 });

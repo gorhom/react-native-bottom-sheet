@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import isEqual from 'lodash.isequal';
 import { styles } from './styles';
 
-const BottomSheetDefaultHandleComponent = () => {
+const BottomSheetHandleComponent = () => {
   return (
     <View style={styles.container}>
       <View style={styles.indicator} />
@@ -11,9 +11,6 @@ const BottomSheetDefaultHandleComponent = () => {
   );
 };
 
-const BottomSheetDefaultHandle = memo(
-  BottomSheetDefaultHandleComponent,
-  isEqual
-);
+const BottomSheetHandle = memo(BottomSheetHandleComponent, isEqual);
 
-export default BottomSheetDefaultHandle;
+export default BottomSheetHandle;

@@ -4,16 +4,16 @@ import { normalizeSnapPoints } from '../utilities';
 export const useNormalizedSnapPoints = (
   snapPoints: Array<number | string>,
   topInset: number,
-  containerHeight: number,
-  handleHeight: number
-) => {
-  const _snapPoints = useMemo(() => {
+  containerHeight: number = 0,
+  handleHeight: number = 0
+) =>
+  useMemo(() => {
     let normalizedSnapPoints = normalizeSnapPoints(
       snapPoints,
       containerHeight,
       topInset
     );
-    normalizedSnapPoints = normalizedSnapPoints.map(normalizedSnapPoint => {
+    return normalizedSnapPoints.map(normalizedSnapPoint => {
       /**
        * if user sets point to zero and `excludeHandleHeight` true,
        * we subset handleHeight from the `normalizedSnapPoint` to make
@@ -23,20 +23,8 @@ export const useNormalizedSnapPoints = (
         normalizedSnapPoint = normalizedSnapPoint - handleHeight;
       }
 
-      return Math.max(
-        containerHeight - normalizedSnapPoint - handleHeight, // - topInset,
-        topInset
+      return Math.ceil(
+        Math.max(containerHeight - normalizedSnapPoint - handleHeight, topInset)
       );
     });
-    return normalizedSnapPoints;
   }, [snapPoints, topInset, containerHeight, handleHeight]);
-
-  const sheetHeight = useMemo(
-    () => containerHeight - _snapPoints[_snapPoints.length - 1],
-    [_snapPoints, containerHeight]
-  );
-  return {
-    snapPoints: _snapPoints,
-    sheetHeight,
-  };
-};

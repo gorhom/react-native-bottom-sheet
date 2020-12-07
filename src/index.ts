@@ -1,10 +1,10 @@
-export { default } from './components/bottomSheetContainer';
+export { default } from './components/bottomSheet';
 
 // scrollables
 export { default as BottomSheetFlatList } from './components/flatList';
 export { default as BottomSheetSectionList } from './components/sectionList';
 export { default as BottomSheetScrollView } from './components/scrollView';
-export { default as BottomSheetDraggableView } from './components/draggableView';
+export { default as BottomSheetDraggableView } from './components/bottomSheetDraggableView';
 export { default as BottomSheetView } from './components/view';
 
 // helpers
@@ -16,8 +16,8 @@ export const {
 } = BottomSheetTouchable;
 
 // default components / types
-export type { BottomSheetHandleProps } from './components/defaultHandle';
-export type { BottomSheetBackgroundProps } from './components/defaultBackground';
+export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
+export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
 
 // overlay
 export { default as BottomSheetOverlay } from './components/overlay';

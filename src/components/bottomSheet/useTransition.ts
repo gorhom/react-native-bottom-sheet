@@ -18,7 +18,7 @@ import Animated, {
   cond,
   block,
   call,
-  // debug,
+  debug,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import { useClock, useValue, snapPoint } from 'react-native-redash';
@@ -85,7 +85,7 @@ export const useTransition = ({
 
   const finishTiming = useMemo(
     () => [
-      // debug('finish timing', config.toValue),
+      debug('finish timing', config.toValue),
       set(currentGesture, GESTURE.UNDETERMINED),
       set(shouldAnimate, 0),
       set(currentPosition, config.toValue),
@@ -134,7 +134,7 @@ export const useTransition = ({
         contentPanGestureVelocityY,
         handlePanGestureVelocityY
       ),
-    [contentPanGestureVelocityY, currentGesture, handlePanGestureVelocityY]
+    [contentPanGestureVelocityY, handlePanGestureVelocityY, currentGesture]
   );
   const isAnimationInterrupted = useMemo(
     () => and(clockRunning(clock), or(isPanning, neq(manualSnapToPoint, -1))),
@@ -146,13 +146,13 @@ export const useTransition = ({
         cond(
           eq(isReady, 1),
           [
-            // debug('current gesture', currentGesture),
+            debug('current gesture', currentGesture),
             /**
              * In case animation get interrupted, we execute the finishTiming node and
              * set current position the the animated position.
              */
             cond(isAnimationInterrupted, [
-              // debug('animation interrupted', isAnimationInterrupted),
+              debug('animation interrupted', isAnimationInterrupted),
               finishTiming,
               set(currentPosition, animationState.position),
             ]),
@@ -165,7 +165,7 @@ export const useTransition = ({
                 currentGesture,
                 cond(isPanningContent, GESTURE.CONTENT, GESTURE.HANDLE)
               ),
-              // debug('start panning', translateY),
+              debug('start panning', translateY),
               cond(
                 not(
                   greaterOrEq(
@@ -216,7 +216,7 @@ export const useTransition = ({
                   )
                 ),
                 [
-                  // debug('gesture end', currentGesture),
+                  debug('gesture end', currentGesture),
                   set(
                     config.toValue,
                     snapPoint(
@@ -243,11 +243,14 @@ export const useTransition = ({
             cond(
               and(
                 neq(manualSnapToPoint, -1),
-                neq(manualSnapToPoint, currentPosition),
+                or(
+                  neq(manualSnapToPoint, currentPosition),
+                  neq(manualSnapToPoint, animationState.position)
+                ),
                 neq(manualSnapToPoint, config.toValue)
               ),
               [
-                // debug('manualSnapToPoint', manualSnapToPoint),
+                debug('manualSnapToPoint', manualSnapToPoint),
                 set(config.toValue, manualSnapToPoint),
                 set(animationState.finished, 0),
                 set(shouldAnimate, 1),
@@ -260,11 +263,11 @@ export const useTransition = ({
              * Animation Node.
              */
             cond(shouldAnimate, [
-              // debug('animating', shouldAnimate),
+              debug('animating', shouldAnimate),
               cond(
                 and(not(clockRunning(clock)), not(animationState.finished)),
                 [
-                  // debug('start animating', shouldAnimate),
+                  debug('start animating', shouldAnimate),
                   /**
                    * `onAnimate` node
                    */
@@ -320,6 +323,7 @@ export const useTransition = ({
 
   return {
     position,
+    translateY,
     manualSnapToPoint,
     currentPosition,
     currentGesture,
