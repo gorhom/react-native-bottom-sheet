@@ -53,12 +53,12 @@ const BottomSheetHandleContainerComponent = ({
     );
   }, [animatedIndex, animatedPosition, _providedHandleComponent]);
 
-  console.log(
-    'BottomSheetHandleContainer',
-    'render',
-    shouldRenderHandle,
-    shouldMeasureHeight
-  );
+  // console.log(
+  //   'BottomSheetHandleContainer',
+  //   'render',
+  //   shouldRenderHandle,
+  //   shouldMeasureHeight
+  // );
   return shouldRenderHandle ? (
     <PanGestureHandler
       simultaneousHandlers={simultaneousHandlers}

@@ -284,13 +284,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region layout callbacks
     const handleOnContainerMeasureHeight = useCallback((height: number) => {
-      console.log('BottomSheet', 'handleOnContainerMeasureHeight', height);
+      // console.log('BottomSheet', 'handleOnContainerMeasureHeight', height);
       didSetContainerHeight.current = true;
       setContainerHeight(height);
     }, []);
 
     const handleOnHandleMeasureHeight = useCallback((height: number) => {
-      console.log('BottomSheet', 'handleOnHandleMeasureHeight', height);
+      // console.log('BottomSheet', 'handleOnHandleMeasureHeight', height);
       didSetHandleHeight.current = true;
       setHandleHeight(height);
     }, []);
@@ -507,7 +507,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region render
-    console.log('BottomSheet', 'render', shouldMeasureContainerHeight);
+    // console.log('BottomSheet', 'render', shouldMeasureContainerHeight);
     return (
       <BottomSheetContainer
         shouldMeasureHeight={shouldMeasureContainerHeight}
