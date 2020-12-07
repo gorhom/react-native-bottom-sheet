@@ -20,7 +20,6 @@ import Animated, {
   cond,
   neq,
   and,
-  // concat,
   Extrapolate,
   set,
   sub,
@@ -31,14 +30,13 @@ import { State, TapGestureHandler } from 'react-native-gesture-handler';
 import {
   usePanGestureHandler,
   useTapGestureHandler,
-  // ReText,
 } from 'react-native-redash';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetContentWrapper from '../bottomSheetContentWrapper';
 import BottomSheetContainer from '../bottomSheetContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
-import BottomSheetDebugView from '../bottomSheetDebugView';
+// import BottomSheetDebugView from '../bottomSheetDebugView';
 import { useTransition } from './useTransition';
 import {
   useStableCallback,
@@ -555,12 +553,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           <Animated.Code exec={set(_providedAnimatedIndex, animatedIndex)} />
         )}
 
-        <BottomSheetDebugView
+        {/* <BottomSheetDebugView
           values={{
             position,
             manualSnapToPoint,
           }}
-        />
+        /> */}
       </BottomSheetContainer>
     );
     //#endregion
