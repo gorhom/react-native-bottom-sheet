@@ -8,11 +8,14 @@ import React, {
   createRef,
   RefObject,
   memo,
+  useMemo,
 } from 'react';
+import { Dimensions } from 'react-native';
 import isEqual from 'lodash.isequal';
 import BottomSheetModal from '../bottomSheetModal';
 import type { BottomSheetModalConfigs } from '../../types';
 import type { BottomSheetModalContextType } from '../../contexts/modal';
+import BottomSheetContainer from '../bottomSheetContainer';
 
 type BottomSheetModalContainer = BottomSheetModalContextType;
 
@@ -22,12 +25,15 @@ type BottomSheetItem = {
   configs: BottomSheetModalConfigs;
 };
 
+const { height: windowHeight } = Dimensions.get('window');
+
 const BottomSheetModalContainerComponent = forwardRef<
   BottomSheetModalContainer,
   {}
 >((_, ref) => {
   //#region state
   const [sheets, setSheets] = useState<Record<string, BottomSheetItem>>({});
+  const [containerHeight, setContainerHeight] = useState(windowHeight);
   //#endregion
 
   //#region refs
@@ -130,12 +136,12 @@ const BottomSheetModalContainerComponent = forwardRef<
           [uniqueId]: {
             ref: createRef(),
             content,
-            configs,
+            configs: { ...configs, containerHeight },
           },
         }));
       }
     },
-    [sheets]
+    [sheets, containerHeight]
   );
   const handleDismiss = useCallback(
     (uniqueId: string) => {
@@ -165,6 +171,13 @@ const BottomSheetModalContainerComponent = forwardRef<
   }, [sheets]);
   //#endregion
 
+  //#region callback
+  const handleOnContainerMeasureHeight = useCallback((height: number) => {
+    setContainerHeight(height);
+  }, []);
+  //#endregion
+
+  //#region expose public methods
   useImperativeHandle(ref, () => ({
     present: handlePresent,
     dismiss: handleDismiss,
@@ -173,9 +186,10 @@ const BottomSheetModalContainerComponent = forwardRef<
     expand: handleExpand,
     collapse: handleCollapse,
   }));
+  //#endregion
 
   //#region renders
-  const renderSheets = useCallback(() => {
+  const renderSheets = useMemo(() => {
     return Object.keys(sheets).map(key => (
       <BottomSheetModal
         key={key}
@@ -186,7 +200,13 @@ const BottomSheetModalContainerComponent = forwardRef<
       />
     ));
   }, [sheets, unmountSheet]);
-  return <>{renderSheets()}</>;
+  return (
+    <BottomSheetContainer
+      shouldMeasureHeight={true}
+      onMeasureHeight={handleOnContainerMeasureHeight}
+      children={renderSheets}
+    />
+  );
   //#endregion
 });
 

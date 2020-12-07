@@ -18,7 +18,6 @@ const StackExample = () => {
   const handlePresentAPress = useCallback(() => {
     presentA(<ContactListContainer title="Modal A" type="FlatList" />, {
       snapPoints: ['25%', '50%'],
-      animationDuration: 250,
     });
   }, [presentA]);
   const handleDismissAPress = useCallback(() => {
@@ -27,7 +26,6 @@ const StackExample = () => {
   const handlePresentBPress = useCallback(() => {
     presentB(<ContactListContainer title="Modal B" type="ScrollView" />, {
       snapPoints: ['25%', '50%'],
-      animationDuration: 250,
     });
   }, [presentB]);
   const handleDismissBPress = useCallback(() => {
@@ -37,7 +35,6 @@ const StackExample = () => {
     presentC(<ContactListContainer title="Modal C" type="SectionList" />, {
       index: 1,
       snapPoints: ['25%', '50%'],
-      animationDuration: 250,
       dismissOnScrollDown: false,
     });
   }, [presentC]);

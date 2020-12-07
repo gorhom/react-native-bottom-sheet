@@ -137,8 +137,18 @@ export const useTransition = ({
     [contentPanGestureVelocityY, handlePanGestureVelocityY, currentGesture]
   );
   const isAnimationInterrupted = useMemo(
-    () => and(clockRunning(clock), or(isPanning, neq(manualSnapToPoint, -1))),
-    [clock, isPanning, manualSnapToPoint]
+    () =>
+      and(
+        clockRunning(clock),
+        or(
+          isPanning,
+          and(
+            neq(manualSnapToPoint, -1),
+            neq(manualSnapToPoint, config.toValue)
+          )
+        )
+      ),
+    [clock, isPanning, config.toValue, manualSnapToPoint]
   );
   const position = useMemo(
     () =>
