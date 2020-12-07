@@ -509,7 +509,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region render
-    console.log('BottomSheet', 'render', sheetHeight, snapPoints);
+    console.log('BottomSheet', 'render', shouldMeasureContainerHeight);
     return (
       <BottomSheetContainer
         shouldMeasureHeight={shouldMeasureContainerHeight}
