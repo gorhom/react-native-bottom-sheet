@@ -13,17 +13,9 @@ const ContentWrapperComponent = forwardRef<
   ) => {
     return (
       <TapGestureHandler
-        ref={(tapHandler) => {
-          tapHandler?.setNativeProps({
-            maxDeltaY: initialMaxDeltaY,
-          });
-          if (typeof ref === 'function') {
-            ref(tapHandler);
-          } else if (ref) {
-            ref.current = tapHandler;
-          }
-        }}
+        ref={ref}
         maxDurationMs={1000000}
+        maxDeltaY={initialMaxDeltaY}
         shouldCancelWhenOutside={false}
         onGestureEvent={onGestureEvent}
         onHandlerStateChange={onHandlerStateChange}

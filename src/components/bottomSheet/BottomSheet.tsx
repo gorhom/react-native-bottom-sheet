@@ -395,7 +395,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       <>
         <ContentWrapper
           ref={rootTapGestureRef}
-          initialMaxDeltaY={snapPoints[Math.max(initialSnapIndex, 0)]}
+          initialMaxDeltaY={
+            snapPoints[Math.max(currentPositionIndexRef.current, 0)]
+          }
           style={containerStyle}
           {...tapGestureHandler}
         >

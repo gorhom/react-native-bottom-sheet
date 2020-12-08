@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useEffect } from 'react';
+import React, { forwardRef, memo } from 'react';
 import isEqual from 'lodash.isequal';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
@@ -14,17 +14,9 @@ const ContentWrapperComponent = forwardRef<
   ) => {
     return (
       <TapGestureHandler
-        ref={(tapHandler) => {
-          tapHandler?.setNativeProps({
-            maxDeltaY: initialMaxDeltaY,
-          });
-          if (typeof ref === 'function') {
-            ref(tapHandler);
-          } else if (ref) {
-            ref.current = tapHandler;
-          }
-        }}
+        ref={ref}
         maxDurationMs={1000000}
+        maxDeltaY={initialMaxDeltaY}
         shouldCancelWhenOutside={false}
         onGestureEvent={onGestureEvent}
         onHandlerStateChange={onHandlerStateChange}
