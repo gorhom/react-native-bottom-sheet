@@ -123,7 +123,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     // safe layout values
 
     const safeHandleHeight = useMemo(
-      () => handleHeight || DEFAULT_HANDLE_HEIGHT,
+      () => handleHeight ?? DEFAULT_HANDLE_HEIGHT,
       [handleHeight]
     );
     const safeContainerHeight = useMemo(() => containerHeight || windowHeight, [
