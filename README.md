@@ -59,7 +59,7 @@ yarn add @gorhom/bottom-sheet
 npm install @gorhom/bottom-sheet
 ```
 
-> ⚠️ You need to install [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) & [react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler) and follow their installation instructions.
+> ⚠️ You need to install [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/docs/1.x.x/getting_started#installation) & [react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler) and follow their installation instructions.
 
 ### Version v3 with Reanimated v2
 
