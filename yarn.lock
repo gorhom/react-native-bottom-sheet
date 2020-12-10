@@ -1181,6 +1181,14 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@gorhom/portal@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-0.1.1.tgz#efdf137cc6689dababe7a244b13f0f77e888d1f9"
+  integrity sha512-sXoZF2UjcSgGKaB73srdIV+c5R6pWdiETvmg3ujyE3hTli9aVXfx2NaSdLMK8g85JN6rCSYpV44iuCa/Vf0r9Q==
+  dependencies:
+    lodash.isequal "^4.5.0"
+    nanoid "^3.1.20"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
