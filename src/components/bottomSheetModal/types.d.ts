@@ -1,13 +1,34 @@
-import type { ReactNode } from 'react';
-import type { BottomSheetMethods, BottomSheetModalConfigs } from '../../types';
+export interface BottomSheetModalPrivateMethods {
+  dismiss: (force?: boolean) => void;
+  minimize: () => void;
+  restore: () => void;
+}
 
-export type BottomSheetModalType = {
-  temporaryCloseSheet: () => void;
-  restoreSheetPosition: () => void;
-} & BottomSheetMethods;
+export interface BottomSheetModalProps
+  extends Omit<BottomSheetProps, 'animateOnMount' | 'containerHeight'> {
+  /**
+   * Modal name to help identify the modal for later on.
+   * @type string
+   * @default nanoid generated unique key.
+   */
+  name?: string;
+  /**
+   * Mount the bottom sheet at the `BottomSheetModalProvider`.
+   * @type boolean
+   * @default false
+   */
+  mount?: boolean;
+  /**
+   * Dismiss modal when panning down.
+   * @type boolean
+   * @default true
+   */
+  dismissOnPanDown?: boolean;
 
-export interface BottomSheetModalProps {
-  configs: BottomSheetModalConfigs;
-  content: ReactNode[] | ReactNode;
-  unmount: () => void;
+  // callbacks
+  /**
+   * Callback when the modal dismissed.
+   * @type () => void;
+   */
+  onDismiss?: () => void;
 }

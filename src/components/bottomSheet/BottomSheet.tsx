@@ -9,7 +9,7 @@ import React, {
   useLayoutEffect,
   useEffect,
 } from 'react';
-import { Dimensions, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import Animated, {
@@ -48,7 +48,7 @@ import {
   BottomSheetInternalProvider,
   BottomSheetProvider,
 } from '../../contexts';
-import { GESTURE } from '../../constants';
+import { GESTURE, WINDOW_HEIGHT } from '../../constants';
 import {
   NORMAL_DECELERATION_RATE,
   DEFAULT_ANIMATE_ON_MOUNT,
@@ -67,8 +67,6 @@ const {
   interpolateNode: interpolateV2,
 } = require('react-native-reanimated');
 const interpolate = interpolateV2 || interpolateV1;
-
-const { height: windowHeight } = Dimensions.get('window');
 
 type BottomSheet = BottomSheetMethods;
 
@@ -126,9 +124,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => handleHeight || DEFAULT_HANDLE_HEIGHT,
       [handleHeight]
     );
-    const safeContainerHeight = useMemo(() => containerHeight || windowHeight, [
-      containerHeight,
-    ]);
+    const safeContainerHeight = useMemo(
+      () => containerHeight || WINDOW_HEIGHT,
+      [containerHeight]
+    );
 
     // conditions
     const shouldMeasureContainerHeight = useMemo(

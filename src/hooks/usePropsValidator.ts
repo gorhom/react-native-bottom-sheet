@@ -11,6 +11,7 @@ export const usePropsValidator = ({
   animationEasing,
 }: BottomSheetProps) => {
   useMemo(() => {
+    // snap points
     invariant(
       snapPoints,
       `'snapPoints' was not provided! please provide at least one snap point.`
@@ -21,14 +22,16 @@ export const usePropsValidator = ({
       `'snapPoints' was provided with no points! please provide at least one snap point.`
     );
 
-    // validate `index`
+    // index
     invariant(
-      typeof index === 'number',
+      typeof index === 'number' || typeof index === 'undefined',
       `'index' was provided but with wrong type ! expected type is a number.`
     );
 
     invariant(
-      index >= -1 && index <= snapPoints.length - 1,
+      typeof index === 'number'
+        ? index >= -1 && index <= snapPoints.length - 1
+        : true,
       `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
         snapPoints.length - 1
       }`
@@ -40,7 +43,7 @@ export const usePropsValidator = ({
       `'topInset' was provided but with wrong type ! expected type is a number.`
     );
 
-    // validate animations
+    // animations
     invariant(
       typeof animationDuration === 'number' ||
         typeof animationDuration === 'undefined',

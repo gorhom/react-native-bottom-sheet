@@ -5,166 +5,191 @@ import React, {
   useImperativeHandle,
   useMemo,
   useRef,
+  useState,
 } from 'react';
+import { Portal } from '@gorhom/portal';
+import { nanoid } from 'nanoid/non-secure';
 import isEqual from 'lodash.isequal';
-import { useValue } from 'react-native-redash';
-import Animated, { Extrapolate, set } from 'react-native-reanimated';
 import BottomSheet from '../bottomSheet';
-import {
-  DEFAULT_OVERLAY_OPACITY,
-  DEFAULT_DISMISS_ON_OVERLAY_PRESS,
-  DEFAULT_DISMISS_ON_SCROLL_DOWN,
-  DEFAULT_ALLOW_TOUCH_THROUGH_OVERLAY,
-} from './constants';
-import type { BottomSheetModalType, BottomSheetModalProps } from './types';
+import { useBottomSheetModalInternal } from '../../hooks';
+import { DEFAULT_DISMISS_ON_PAN_DOWN, DEFAULT_MOUNT } from './constants';
+import type { BottomSheetModalMethods } from '../../types';
+import type { BottomSheetModalProps } from './types';
 
-const {
-  interpolate: interpolateV1,
-  interpolateNode: interpolateV2,
-} = require('react-native-reanimated');
-const interpolate = interpolateV2 || interpolateV1;
-
-type BottomSheetModal = BottomSheetModalType;
+type BottomSheetModal = BottomSheetModalMethods;
 
 const BottomSheetModalComponent = forwardRef<
   BottomSheetModal,
   BottomSheetModalProps
->(({ content, configs, unmount }, ref) => {
+>((props, ref) => {
   const {
-    index: _initialSnapIndex = 0,
-    snapPoints: _snapPoints,
-    animatedIndex: _animatedIndex,
-    allowTouchThroughOverlay = DEFAULT_ALLOW_TOUCH_THROUGH_OVERLAY,
-    overlayComponent: OverlayComponent,
-    overlayOpacity = DEFAULT_OVERLAY_OPACITY,
-    dismissOnOverlayPress = DEFAULT_DISMISS_ON_OVERLAY_PRESS,
-    dismissOnScrollDown = DEFAULT_DISMISS_ON_SCROLL_DOWN,
-    onChange,
+    name,
+    // bottom sheet props
+    index: _providedIndex = 0,
+    snapPoints: _providedSnapPoints,
+    onChange: _providedOnChange,
+
+    // modal props
+    mount: _providedMount = DEFAULT_MOUNT,
+    dismissOnPanDown = DEFAULT_DISMISS_ON_PAN_DOWN,
+    onDismiss: _providedOnDismiss,
+
+    // components
+    children,
     ...bottomSheetProps
-  } = configs;
+  } = props;
+
+  //#region state
+  const [mount, setMount] = useState(_providedMount);
+  //#endregion
+
+  const {
+    containerHeight,
+    mountSheet,
+    unmountSheet,
+    willUnmountSheet,
+  } = useBottomSheetModalInternal();
 
   //#region refs
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const isTemporaryClosing = useRef(false);
-  const lastSheetPosition = useRef(0);
+  const isMinimized = useRef(false);
+  const isForcedDismissed = useRef(false);
+  const currentIndexRef = useRef(-1);
   //#endregion
 
   //#region variables
-  const animatedIndex = useValue(0);
-  const animatedOverlayOpacity = useMemo(
-    () =>
-      interpolate(animatedIndex, {
-        inputRange: [0, 1],
-        outputRange: [0, overlayOpacity],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    [animatedIndex, overlayOpacity]
-  );
-  const initialSnapIndex = useMemo(
-    () => (dismissOnScrollDown ? _initialSnapIndex + 1 : _initialSnapIndex),
-    [_initialSnapIndex, dismissOnScrollDown]
+  const key = useMemo(() => name || `bottom-sheet-modal-${nanoid()}`, [name]);
+  const index = useMemo(
+    () => (dismissOnPanDown ? _providedIndex + 1 : _providedIndex),
+    [_providedIndex, dismissOnPanDown]
   );
   const snapPoints = useMemo(
-    () => (dismissOnScrollDown ? [0, ..._snapPoints] : _snapPoints),
-    [_snapPoints, dismissOnScrollDown]
-  );
-  const overlayPointerEvents = useMemo(
-    () => (allowTouchThroughOverlay ? 'none' : 'auto'),
-    [allowTouchThroughOverlay]
+    () =>
+      dismissOnPanDown ? [0, ..._providedSnapPoints] : _providedSnapPoints,
+    [_providedSnapPoints, dismissOnPanDown]
   );
   //#endregion
 
   //#region callbacks
-  const handleChange = useCallback(
+  const doDismiss = useCallback(() => {
+    if (_providedOnDismiss) {
+      _providedOnDismiss();
+    }
+    setMount(false);
+    unmountSheet(key);
+
+    // reset
+    isMinimized.current = false;
+    isForcedDismissed.current = false;
+  }, [key, _providedOnDismiss, unmountSheet]);
+  const handleOnChange = useCallback(
     index => {
-      if (onChange) {
-        onChange(index);
+      if (isMinimized.current && !isForcedDismissed.current) {
+        return;
       }
 
-      if (!isTemporaryClosing.current) {
-        lastSheetPosition.current = index;
+      const adjustedIndex = dismissOnPanDown ? index - 1 : index;
+      currentIndexRef.current = index;
 
-        if (index < (dismissOnScrollDown ? 1 : 0)) {
-          unmount();
+      if (adjustedIndex >= 0) {
+        if (_providedOnChange) {
+          _providedOnChange(adjustedIndex);
         }
+      } else {
+        doDismiss();
       }
     },
-    [unmount, onChange, dismissOnScrollDown]
+    [dismissOnPanDown, _providedOnChange, doDismiss]
+  );
+  //#endregion
+
+  //#region private methods
+  const handleMinimize = useCallback(() => {
+    if (!isMinimized.current) {
+      isMinimized.current = true;
+      bottomSheetRef.current?.close();
+    }
+  }, []);
+  const handleRestore = useCallback(() => {
+    if (isMinimized.current) {
+      isMinimized.current = false;
+      bottomSheetRef.current?.snapTo(currentIndexRef.current);
+    }
+  }, []);
+  //#endregion
+
+  //#region public methods
+  const handlePresent = useCallback(() => {
+    setMount(true);
+    mountSheet(key, ref);
+  }, [key, mountSheet, ref]);
+  const handleDismiss = useCallback(
+    (force: boolean = false) => {
+      if (force) {
+        if (isMinimized.current) {
+          doDismiss();
+          return;
+        }
+        isForcedDismissed.current = true;
+        isMinimized.current = false;
+      } else {
+        willUnmountSheet(key);
+      }
+      bottomSheetRef.current?.close();
+    },
+    [key, doDismiss, willUnmountSheet]
   );
   const handleClose = useCallback(() => {
-    if (isTemporaryClosing.current) {
-      unmount();
-      return;
-    }
     bottomSheetRef.current?.close();
-  }, [unmount]);
+  }, []);
   const handleCollapse = useCallback(() => {
-    if (dismissOnScrollDown) {
+    if (dismissOnPanDown) {
       bottomSheetRef.current?.snapTo(1);
     } else {
       bottomSheetRef.current?.collapse();
     }
-  }, [dismissOnScrollDown]);
+  }, [dismissOnPanDown]);
   const handleExpand = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);
   const handleSnapTo = useCallback(
     (index: number) => {
-      bottomSheetRef.current?.snapTo(index + (dismissOnScrollDown ? 1 : 0));
+      bottomSheetRef.current?.snapTo(index + (dismissOnPanDown ? 1 : 0));
     },
-    [dismissOnScrollDown]
+    [dismissOnPanDown]
   );
-  const handleTemporaryCloseSheet = useCallback(() => {
-    isTemporaryClosing.current = true;
-    bottomSheetRef.current?.close();
-  }, []);
-  const handleRestoreSheetPosition = useCallback(() => {
-    isTemporaryClosing.current = false;
-    bottomSheetRef.current?.snapTo(lastSheetPosition.current);
-  }, []);
-  const handleOverlayPress = useCallback(() => {
-    bottomSheetRef.current?.close();
-  }, []);
   //#endregion
 
-  //#region effects
+  //#region expose public methods
   useImperativeHandle(ref, () => ({
+    present: handlePresent,
+    dismiss: handleDismiss,
     close: handleClose,
     snapTo: handleSnapTo,
     expand: handleExpand,
     collapse: handleCollapse,
-    temporaryCloseSheet: handleTemporaryCloseSheet,
-    restoreSheetPosition: handleRestoreSheetPosition,
+    // private
+    minimize: handleMinimize,
+    restore: handleRestore,
   }));
   //#endregion
 
   // render
-  return (
-    <>
-      {OverlayComponent && (
-        <OverlayComponent
-          animatedOpacity={animatedOverlayOpacity}
-          pointerEvents={overlayPointerEvents}
-          {...(dismissOnOverlayPress ? { onPress: handleOverlayPress } : {})}
-        />
-      )}
-
-      {_animatedIndex && (
-        <Animated.Code exec={set(_animatedIndex, animatedIndex)} />
-      )}
+  return mount ? (
+    <Portal key={key}>
       <BottomSheet
-        ref={bottomSheetRef}
         {...bottomSheetProps}
-        index={initialSnapIndex}
+        ref={bottomSheetRef}
+        key={key}
+        index={index}
         snapPoints={snapPoints}
         animateOnMount={true}
-        animatedIndex={animatedIndex}
-        onChange={handleChange}
-      >
-        {content}
-      </BottomSheet>
-    </>
-  );
+        containerHeight={containerHeight}
+        onChange={handleOnChange}
+        children={children}
+      />
+    </Portal>
+  ) : null;
 });
 
 const BottomSheetModal = memo(BottomSheetModalComponent, isEqual);
