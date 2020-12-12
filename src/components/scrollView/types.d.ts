@@ -27,9 +27,7 @@ export type BottomSheetScrollViewProps = Omit<
 
 type Constructor<T> = new (...args: any[]) => T;
 
-declare class BottomSheetScrollViewComponent extends Component<
-  BottomSheetScrollViewProps
-> {}
+declare class BottomSheetScrollViewComponent extends Component<BottomSheetScrollViewProps> {}
 declare const BottomSheetScrollViewBase: Constructor<ScrollResponderMixin> &
   typeof BottomSheetScrollViewComponent;
 

@@ -19,8 +19,6 @@ export type BottomSheetInternalContextType = {
 };
 
 // @ts-ignore
-export const BottomSheetInternalContext = createContext<
-  BottomSheetInternalContextType
->();
+export const BottomSheetInternalContext = createContext<BottomSheetInternalContextType>();
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;

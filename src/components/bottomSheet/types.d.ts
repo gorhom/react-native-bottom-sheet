@@ -1,8 +1,8 @@
 import type React from 'react';
 import type Animated from 'react-native-reanimated';
-import type { State, TapGestureHandler } from 'react-native-gesture-handler';
-import type { BottomSheetHandleProps } from '../defaultHandle';
-import type { BottomSheetBackgroundProps } from '../defaultBackground';
+import type { State } from 'react-native-gesture-handler';
+import type { BottomSheetHandleProps } from '../bottomSheetHandle';
+import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
 
 export type BottomSheetProps = {
   // configuration
@@ -35,7 +35,7 @@ export type BottomSheetProps = {
    * however this will cause an extra re-rendering.
    * @type number
    */
-  containerHeight: number;
+  containerHeight?: number;
   /**
    * Top inset value helps to calculate percentage snap points values,
    * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
@@ -80,6 +80,11 @@ export type BottomSheetProps = {
    * @type (index: number) => void;
    */
   onChange?: (index: number) => void;
+  /**
+   * Callback when the sheet about to animate to a new position.
+   * @type (fromIndex: number, toIndex: number) => void;
+   */
+  onAnimate?: (fromIndex: number, toIndex: number) => void;
 
   // components
   /**
@@ -87,36 +92,30 @@ export type BottomSheetProps = {
    * @see {BottomSheetHandleProps}
    * @type React.FC\<BottomSheetHandleProps\>
    */
-  handleComponent?: React.FC<BottomSheetHandleProps>;
+  handleComponent?: React.FC<BottomSheetHandleProps> | null;
+  /**
+   * Component to be placed as a sheet backdrop.
+   * @type React.FC
+   * @default null
+   */
+  backdropComponent?: React.FC<any> | null;
   /**
    * Component to be placed as a sheet background.
    * @type React.FC\<BottomSheetBackgroundProps\>
    */
-  backgroundComponent?: React.FC<BottomSheetBackgroundProps>;
+  backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
   /**
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode
    */
   children: (() => React.ReactNode) | React.ReactNode[] | React.ReactNode;
-
-  // internals
-  /**
-   * Container tap gesture state.
-   * @type Animated.Value<State>
-   */
-  containerTapGestureState: Animated.Value<State>;
-  /**
-   * Container tap gesture ref.
-   * @type React.RefObject<TapGestureHandler>
-   */
-  containerTapGestureRef: React.RefObject<TapGestureHandler>;
 } & BottomSheetAnimationConfigs;
 
 export interface BottomSheetAnimationConfigs {
   /**
    * Snapping animation easing function.
    * @type Animated.EasingFunction
-   * @default Easing.out(Easing.back(0.75))
+   * @default Easing.out(Easing.exp)
    */
   animationEasing?: Animated.EasingFunction;
   /**
@@ -125,4 +124,24 @@ export interface BottomSheetAnimationConfigs {
    * @default 500
    */
   animationDuration?: number;
+}
+
+export interface BottomSheetTransitionConfig
+  extends Required<BottomSheetAnimationConfigs>,
+    Pick<BottomSheetProps, 'onAnimate'> {
+  isLayoutCalculated: boolean;
+
+  contentPanGestureState: Animated.Value<State>;
+  contentPanGestureTranslationY: Animated.Value<number>;
+  contentPanGestureVelocityY: Animated.Value<number>;
+
+  handlePanGestureState: Animated.Value<State>;
+  handlePanGestureTranslationY: Animated.Value<number>;
+  handlePanGestureVelocityY: Animated.Value<number>;
+
+  scrollableContentOffsetY: Animated.Value<number>;
+  snapPoints: number[];
+  initialPosition: number;
+
+  currentIndexRef: React.RefObject<number>;
 }

@@ -63,12 +63,12 @@ const App = () => {
             }
           />
           <Stack.Screen
-            name="Modal/OverlayExample"
+            name="Modal/BackdropExample"
             options={{
-              title: 'Modal Overlay Example',
+              title: 'Modal Backdrop Example',
             }}
             getComponent={() =>
-              require('./screens/modal/OverlayExample').default
+              require('./screens/modal/BackdropExample').default
             }
           />
           <Stack.Screen
@@ -98,12 +98,12 @@ const App = () => {
             }
           />
           <Stack.Screen
-            name="Advanced/OverlayExample"
+            name="Advanced/BackdropExample"
             options={{
-              title: 'Overlay Example',
+              title: 'Backdrop Example',
             }}
             getComponent={() =>
-              require('./screens/advanced/OverlayExample').default
+              require('./screens/advanced/BackdropExample').default
             }
           />
           <Stack.Screen

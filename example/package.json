@@ -9,31 +9,31 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@gorhom/portal": "^0.1.2",
     "@gorhom/showcase-template": "^1.0.2",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "0.1.10",
-    "@react-navigation/native": "^5.7.3",
-    "@react-navigation/stack": "^5.9.0",
+    "@react-navigation/native": "^5.8.10",
+    "@react-navigation/stack": "^5.12.8",
     "faker": "^4.1.0",
     "lodash.isequal": "^4.5.0",
-    "react": "16.11.0",
-    "react-native": "0.62.2",
-    "react-native-gesture-handler": "^1.8.0",
+    "react": "16.13.1",
+    "react-native": "0.63.4",
+    "react-native-gesture-handler": "^1.9.0",
     "react-native-maps": "^0.27.1",
-    "react-native-reanimated": "^1.13.1",
-    "react-native-redash": "^14.2.3",
-    "react-native-safe-area-context": "0.7.3",
-    "react-native-screens": "^2.11.0"
+    "react-native-reanimated": "^1.13.2",
+    "react-native-redash": "^14.2.4",
+    "react-native-safe-area-context": "^3.1.9",
+    "react-native-screens": "^2.15.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/runtime": "^7.9.6",
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
     "@types/faker": "^4.1.12",
-    "@types/react": "^16.9.23",
-    "@types/react-native": "^0.61.17",
-    "metro-react-native-babel-preset": "^0.59.0",
-    "nanoid": "^3.1.12",
-    "patch-package": "^6.2.2",
-    "typescript": "^3.9.7"
+    "@types/react": "^17.0.0",
+    "@types/react-native": "^0.63.37",
+    "metro-react-native-babel-preset": "^0.64.0",
+    "nanoid": "^3.1.20",
+    "typescript": "^4.1.2"
   }
 }

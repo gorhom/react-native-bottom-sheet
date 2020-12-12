@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Easing } from 'react-native-reanimated';
 import Button from '../../components/button';
 
@@ -12,7 +12,7 @@ const DynamicSnapPointExample = () => {
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { bottom: safeBottomArea } = useSafeArea();
+  const { bottom: safeBottomArea } = useSafeAreaInsets();
 
   // variables
   const snapPoints = useMemo(() => [0, contentHeight], [contentHeight]);
@@ -36,7 +36,6 @@ const DynamicSnapPointExample = () => {
         layout: { height },
       },
     }) => {
-      // console.log('SCREEN \t\t', 'handleOnLayout', height);
       setContentHeight(height);
     },
     []
@@ -64,7 +63,6 @@ const DynamicSnapPointExample = () => {
     []
   );
 
-  // console.log('SCREEN \t\t', 'render \t');
   return (
     <View style={styles.container}>
       <Button
@@ -102,7 +100,7 @@ const DynamicSnapPointExample = () => {
             onPress={handleIncreaseContentPress}
           />
           <Button
-            label="Mayby"
+            label="Maybe"
             style={styles.buttonContainer}
             onPress={handleDecreaseContentPress}
           />
@@ -140,6 +138,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   emojiContainer: {
+    overflow: 'hidden',
     justifyContent: 'center',
   },
 });

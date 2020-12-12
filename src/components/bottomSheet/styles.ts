@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  sheetContainer: {
+  container: {
     position: 'absolute',
     left: 0,
     right: 0,

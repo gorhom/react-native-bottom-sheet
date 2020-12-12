@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import Showcase from '@gorhom/showcase-template';
 import { useNavigation } from '@react-navigation/native';
 import { version, description } from '../../../package.json';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const data = [
   {
@@ -34,8 +34,8 @@ const data = [
         slug: 'Modal/SimpleExample',
       },
       {
-        name: 'Overlay',
-        slug: 'Modal/OverlayExample',
+        name: 'Backdrop',
+        slug: 'Modal/BackdropExample',
       },
       {
         name: 'Stack Modals',
@@ -55,8 +55,8 @@ const data = [
         slug: 'Advanced/CustomHandleExample',
       },
       {
-        name: 'Shadow Overlay',
-        slug: 'Advanced/OverlayExample',
+        name: 'Backdrop',
+        slug: 'Advanced/BackdropExample',
       },
       {
         name: 'Map',
@@ -73,7 +73,7 @@ const data = [
 const RootScreen = () => {
   // hooks
   const { navigate } = useNavigation();
-  const safeInsets = useSafeArea();
+  const safeInsets = useSafeAreaInsets();
 
   // variables
   const author = useMemo(

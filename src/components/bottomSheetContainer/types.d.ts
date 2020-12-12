@@ -1,13 +1,7 @@
-import type { BottomSheetProps } from '../bottomSheet/types';
+import type { ReactNode } from 'react';
 
-export type BottomSheetContainerProps = {
-  /**
-   * Parent height value to help calculate snap points values,
-   * if not provided, the library will measure the layout height.
-   * @type number
-   */
-  height?: number;
-} & Omit<
-  BottomSheetProps,
-  'containerHeight' | 'containerTapGestureState' | 'containerTapGestureRef'
->;
+export interface BottomSheetContainerProps {
+  shouldMeasureHeight: boolean;
+  onMeasureHeight: (height: number) => void;
+  children: ReactNode;
+}
