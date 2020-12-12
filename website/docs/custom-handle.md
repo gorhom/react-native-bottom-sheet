@@ -7,9 +7,9 @@ hide_table_of_contents: true
 
 To override the default handle, you will need to pass the prop `handleComponent` to the `BottomSheet` component.
 
-When you provide your own handle component, it will receive an animated prop `animatedIndex` & `animatedPosition` that indicates the index of the current position of the sheet.
+When you provide your own handle component, it will receive these animated props `animatedIndex` & `animatedPosition` that indicates the position and the index of the sheet.
 
-You can extend your custom handle props interface with the provided `BottomSheetHandleProps` interface to expose `animatedIndex` & `animatedPosition` into your props.
+You can extend your custom handle props interface with the provided `BottomSheetHandleProps` interface to expose `animatedIndex` & `animatedPosition` into your own interface.
 
 ### Example
 

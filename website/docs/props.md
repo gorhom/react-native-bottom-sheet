@@ -23,7 +23,7 @@ Points for the bottom sheet to snap to, **points should be sorted from bottom to
 | --------------------- | -------- |
 | Array<number\|string> | YES      |
 
->⚠️ String values should be a percentage.
+> ⚠️ String values should be a percentage.
 
 #### examples
 
@@ -149,17 +149,25 @@ type onAnimate = (fromIndex: number, toIndex: number) => void;
 
 Component to be placed as a sheet handle.
 
-| type                               | default                    | required |
-| ---------------------------------- | -------------------------- | -------- |
-| `React.FC<BottomSheetHandleProps>` | `BottomSheetDefaultHandle` | NO       |
+| type                               | default             | required |
+| ---------------------------------- | ------------------- | -------- |
+| `React.FC<BottomSheetHandleProps>` | `BottomSheetHandle` | NO       |
+
+### `backdropComponent`
+
+Component to be placed as a sheet backdrop, by default is set to `null`, however the library also provide a default implementation `BottomSheetBackdrop` of a backdrop but you will need to provide it manually.
+
+| type                                   | default | required |
+| -------------------------------------- | ------- | -------- |
+| `React.FC<BottomSheetBackgroundProps>` | null    | NO       |
 
 ### `backgroundComponent`
 
 Component to be placed as a sheet background.
 
-| type                                   | default                        | required |
-| -------------------------------------- | ------------------------------ | -------- |
-| `React.FC<BottomSheetBackgroundProps>` | `BottomSheetDefaultBackground` | NO       |
+| type                                   | default                 | required |
+| -------------------------------------- | ----------------------- | -------- |
+| `React.FC<BottomSheetBackgroundProps>` | `BottomSheetBackground` | NO       |
 
 ### `children`
 
