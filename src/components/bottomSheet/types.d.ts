@@ -94,6 +94,12 @@ export type BottomSheetProps = {
    */
   handleComponent?: React.FC<BottomSheetHandleProps> | null;
   /**
+   * Component to be placed as a sheet backdrop.
+   * @type React.FC
+   * @default null
+   */
+  backdropComponent?: React.FC<any> | null;
+  /**
    * Component to be placed as a sheet background.
    * @type React.FC\<BottomSheetBackgroundProps\>
    */
