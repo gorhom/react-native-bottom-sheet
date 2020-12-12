@@ -13,8 +13,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
-  BottomSheetOverlay,
+  BottomSheetBackdrop,
   TouchableOpacity,
+  BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import withModalProvider from '../withModalProvider';
 import { createLocationListMockData, Location } from '../../utils';
@@ -59,15 +60,6 @@ const MapExample = () => {
   const animatedPosition = useValue<number>(0);
   const animatedModalPosition = useValue<number>(0);
   const animatedIndex = useValue<number>(0);
-  const animatedOverlayOpacity = useMemo(
-    () =>
-      interpolate(animatedPosition, {
-        inputRange: [poiListSnapPoints[1], poiListSnapPoints[2]],
-        outputRange: [0, 0.25],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    [animatedPosition, poiListSnapPoints]
-  );
   const weatherAnimatedPosition = useMemo(
     () => max(animatedModalPosition, animatedPosition),
     [animatedModalPosition, animatedPosition]
@@ -128,6 +120,18 @@ const MapExample = () => {
     ),
     [handlePresentLocationDetails]
   );
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        enableTouchThrough={true}
+        closeOnPress={false}
+        appearsOnIndex={2}
+        disappearsOnIndex={1}
+      />
+    ),
+    []
+  );
   return (
     <View style={styles.container}>
       <MapView
@@ -146,11 +150,6 @@ const MapExample = () => {
         style={styles.mapContainer}
         onTouchStart={handleTouchStart}
       />
-      <BottomSheetOverlay
-        pointerEvents="none"
-        animatedOpacity={animatedOverlayOpacity}
-      />
-
       <Weather
         animatedPosition={weatherAnimatedPosition}
         snapPoints={poiListSnapPoints}
@@ -165,6 +164,7 @@ const MapExample = () => {
         animatedIndex={animatedIndex}
         dismissOnPanDown={false}
         handleComponent={SearchHandle}
+        backdropComponent={renderBackdrop}
         backgroundComponent={BlurredBackground}
       >
         <BottomSheetScrollView
@@ -185,6 +185,7 @@ const MapExample = () => {
         topInset={topSafeArea}
         animatedPosition={animatedModalPosition}
         handleComponent={LocationDetailsHandle}
+        backdropComponent={renderBackdrop}
         backgroundComponent={BlurredBackground}
       >
         <LocationDetails

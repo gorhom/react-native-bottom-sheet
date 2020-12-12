@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: 'white',
   },
-  shadowOverlay: {
+  shadowBackdrop: {
     position: 'absolute',
     top: 0,
     left: 0,

@@ -34,8 +34,8 @@ const data = [
         slug: 'Modal/SimpleExample',
       },
       {
-        name: 'Overlay',
-        slug: 'Modal/OverlayExample',
+        name: 'Backdrop',
+        slug: 'Modal/BackdropExample',
       },
       {
         name: 'Stack Modals',
@@ -55,8 +55,8 @@ const data = [
         slug: 'Advanced/CustomHandleExample',
       },
       {
-        name: 'Shadow Overlay',
-        slug: 'Advanced/OverlayExample',
+        name: 'Backdrop',
+        slug: 'Advanced/BackdropExample',
       },
       {
         name: 'Map',

@@ -36,6 +36,7 @@ import BottomSheetContentWrapper from '../bottomSheetContentWrapper';
 import BottomSheetContainer from '../bottomSheetContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
+import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import { useTransition } from './useTransition';
 import {
@@ -102,6 +103,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       onAnimate: _providedOnAnimate,
       // components
       handleComponent,
+      backdropComponent,
       backgroundComponent,
       children,
     } = props;
@@ -508,23 +510,33 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region render
     // console.log('BottomSheet', 'render', shouldMeasureContainerHeight);
     return (
-      <BottomSheetContainer
-        shouldMeasureHeight={shouldMeasureContainerHeight}
-        onMeasureHeight={handleOnContainerMeasureHeight}
-      >
-        <BottomSheetContentWrapper
-          ref={containerTapGestureRef}
-          {...containerTapGestureHandler}
+      <BottomSheetProvider value={externalContextVariables}>
+        <BottomSheetBackdropContainer
+          key="BottomSheetBackdropContainer"
+          animatedIndex={animatedIndex}
+          animatedPosition={animatedPosition}
+          backdropComponent={backdropComponent}
+        />
+        <BottomSheetContainer
+          key="BottomSheetContainer"
+          shouldMeasureHeight={shouldMeasureContainerHeight}
+          onMeasureHeight={handleOnContainerMeasureHeight}
         >
-          <Animated.View style={containerStyle}>
-            <BottomSheetInternalProvider value={internalContextVariables}>
-              <BottomSheetProvider value={externalContextVariables}>
+          <BottomSheetContentWrapper
+            key="BottomSheetContentWrapper"
+            ref={containerTapGestureRef}
+            {...containerTapGestureHandler}
+          >
+            <Animated.View style={containerStyle}>
+              <BottomSheetInternalProvider value={internalContextVariables}>
                 <BottomSheetBackgroundContainer
+                  key="BottomSheetBackgroundContainer"
                   animatedIndex={animatedIndex}
                   animatedPosition={animatedPosition}
                   backgroundComponent={backgroundComponent}
                 />
                 <BottomSheetHandleContainer
+                  key="BottomSheetHandleContainer"
                   animatedIndex={animatedIndex}
                   animatedPosition={animatedPosition}
                   simultaneousHandlers={containerTapGestureRef}
@@ -534,31 +546,34 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   onMeasureHeight={handleOnHandleMeasureHeight}
                   {...handlePanGestureHandler}
                 />
-                <BottomSheetDraggableView style={contentContainerStyle}>
+                <BottomSheetDraggableView
+                  key="BottomSheetRootDraggableView"
+                  style={contentContainerStyle}
+                >
                   {children}
                 </BottomSheetDraggableView>
-              </BottomSheetProvider>
-            </BottomSheetInternalProvider>
-          </Animated.View>
-        </BottomSheetContentWrapper>
+              </BottomSheetInternalProvider>
+            </Animated.View>
+          </BottomSheetContentWrapper>
 
-        {_providedAnimatedPosition && (
-          <Animated.Code
-            exec={set(_providedAnimatedPosition, animatedPosition)}
-          />
-        )}
+          {_providedAnimatedPosition && (
+            <Animated.Code
+              exec={set(_providedAnimatedPosition, animatedPosition)}
+            />
+          )}
 
-        {_providedAnimatedIndex && (
-          <Animated.Code exec={set(_providedAnimatedIndex, animatedIndex)} />
-        )}
+          {_providedAnimatedIndex && (
+            <Animated.Code exec={set(_providedAnimatedIndex, animatedIndex)} />
+          )}
 
-        {/* <BottomSheetDebugView
+          {/* <BottomSheetDebugView
           values={{
             position,
             manualSnapToPoint,
           }}
         /> */}
-      </BottomSheetContainer>
+        </BottomSheetContainer>
+      </BottomSheetProvider>
     );
     //#endregion
   }
