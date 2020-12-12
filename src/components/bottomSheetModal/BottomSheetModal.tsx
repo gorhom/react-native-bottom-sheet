@@ -189,7 +189,7 @@ const BottomSheetModalComponent = forwardRef<
 
   // render
   return mount ? (
-    <Portal key={key}>
+    <Portal key={key} name={key}>
       <BottomSheet
         {...bottomSheetProps}
         ref={bottomSheetRef}

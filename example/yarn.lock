@@ -818,10 +818,10 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
-"@gorhom/portal@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-0.1.1.tgz#efdf137cc6689dababe7a244b13f0f77e888d1f9"
-  integrity sha512-sXoZF2UjcSgGKaB73srdIV+c5R6pWdiETvmg3ujyE3hTli9aVXfx2NaSdLMK8g85JN6rCSYpV44iuCa/Vf0r9Q==
+"@gorhom/portal@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-0.1.2.tgz#183d7aab36eca10fb6a982a8f30eaa20932bebe6"
+  integrity sha512-oHRcbXyZ4U3Iyfby93nBSj539NzaFdGJvQlhdryT5piEegeEC2gE+b414v1vjxs+2GwYB/Mwbx/F8Ja83XeeHA==
   dependencies:
     lodash.isequal "^4.5.0"
     nanoid "^3.1.20"
