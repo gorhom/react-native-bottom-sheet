@@ -1,2 +1,5 @@
 export { default } from './BottomSheetModal';
-export type { BottomSheetModalPrivateMethods } from './types';
+export type {
+  BottomSheetModalProps,
+  BottomSheetModalPrivateMethods,
+} from './types';

@@ -12,7 +12,7 @@ import { nanoid } from 'nanoid/non-secure';
 import isEqual from 'lodash.isequal';
 import BottomSheet from '../bottomSheet';
 import { useBottomSheetModalInternal } from '../../hooks';
-import { DEFAULT_DISMISS_ON_PAN_DOWN, DEFAULT_MOUNT } from './constants';
+import { DEFAULT_DISMISS_ON_PAN_DOWN } from './constants';
 import type { BottomSheetModalMethods } from '../../types';
 import type { BottomSheetModalProps } from './types';
 
@@ -23,16 +23,15 @@ const BottomSheetModalComponent = forwardRef<
   BottomSheetModalProps
 >((props, ref) => {
   const {
+    // modal props
     name,
+    dismissOnPanDown = DEFAULT_DISMISS_ON_PAN_DOWN,
+    onDismiss: _providedOnDismiss,
+
     // bottom sheet props
     index: _providedIndex = 0,
     snapPoints: _providedSnapPoints,
     onChange: _providedOnChange,
-
-    // modal props
-    mount: _providedMount = DEFAULT_MOUNT,
-    dismissOnPanDown = DEFAULT_DISMISS_ON_PAN_DOWN,
-    onDismiss: _providedOnDismiss,
 
     // components
     children,
@@ -40,7 +39,7 @@ const BottomSheetModalComponent = forwardRef<
   } = props;
 
   //#region state
-  const [mount, setMount] = useState(_providedMount);
+  const [mount, setMount] = useState(false);
   //#endregion
 
   const {
@@ -120,8 +119,10 @@ const BottomSheetModalComponent = forwardRef<
 
   //#region public methods
   const handlePresent = useCallback(() => {
-    setMount(true);
-    mountSheet(key, ref);
+    requestAnimationFrame(() => {
+      setMount(true);
+      mountSheet(key, ref);
+    });
   }, [key, mountSheet, ref]);
   const handleDismiss = useCallback(
     (force: boolean = false) => {
@@ -140,9 +141,15 @@ const BottomSheetModalComponent = forwardRef<
     [key, doDismiss, willUnmountSheet]
   );
   const handleClose = useCallback(() => {
+    if (isMinimized.current) {
+      return;
+    }
     bottomSheetRef.current?.close();
   }, []);
   const handleCollapse = useCallback(() => {
+    if (isMinimized.current) {
+      return;
+    }
     if (dismissOnPanDown) {
       bottomSheetRef.current?.snapTo(1);
     } else {
@@ -150,10 +157,16 @@ const BottomSheetModalComponent = forwardRef<
     }
   }, [dismissOnPanDown]);
   const handleExpand = useCallback(() => {
+    if (isMinimized.current) {
+      return;
+    }
     bottomSheetRef.current?.expand();
   }, []);
   const handleSnapTo = useCallback(
     (index: number) => {
+      if (isMinimized.current) {
+        return;
+      }
       bottomSheetRef.current?.snapTo(index + (dismissOnPanDown ? 1 : 0));
     },
     [dismissOnPanDown]

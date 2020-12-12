@@ -1,3 +1,5 @@
+import { BottomSheetProps } from '../bottomSheet';
+
 export interface BottomSheetModalPrivateMethods {
   dismiss: (force?: boolean) => void;
   minimize: () => void;
@@ -5,19 +7,13 @@ export interface BottomSheetModalPrivateMethods {
 }
 
 export interface BottomSheetModalProps
-  extends Omit<BottomSheetProps, 'animateOnMount' | 'containerHeight'> {
+  extends Exclude<BottomSheetProps, 'animateOnMount' | 'containerHeight'> {
   /**
    * Modal name to help identify the modal for later on.
    * @type string
    * @default nanoid generated unique key.
    */
   name?: string;
-  /**
-   * Mount the bottom sheet at the `BottomSheetModalProvider`.
-   * @type boolean
-   * @default false
-   */
-  mount?: boolean;
   /**
    * Dismiss modal when panning down.
    * @type boolean

@@ -33,11 +33,6 @@ const BottomSheetModalProviderWrapper = (
 
   //#region private methods
   const handleMountSheet = useCallback((key: string, ref) => {
-    console.log(
-      'mount',
-      key,
-      sheetsQueueRef.current.map(item => item.key)
-    );
     /**
      * Here we try to minimize the current sheet if exists,
      * also we make sure that it is not incoming mounted sheet.
@@ -84,11 +79,6 @@ const BottomSheetModalProviderWrapper = (
     }
   }, []);
   const handleUnmountSheet = useCallback((key: string) => {
-    console.log(
-      'unmount',
-      key,
-      sheetsQueueRef.current.map(item => item.key)
-    );
     /**
      * Here we remove the unmounted sheet and update
      * the sheets queue.
