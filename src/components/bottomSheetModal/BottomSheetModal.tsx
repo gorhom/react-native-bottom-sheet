@@ -82,13 +82,13 @@ const BottomSheetModalComponent = forwardRef<
     isForcedDismissed.current = false;
   }, [key, _providedOnDismiss, unmountSheet]);
   const handleOnChange = useCallback(
-    index => {
+    (_index: number) => {
       if (isMinimized.current && !isForcedDismissed.current) {
         return;
       }
 
-      const adjustedIndex = dismissOnPanDown ? index - 1 : index;
-      currentIndexRef.current = index;
+      const adjustedIndex = dismissOnPanDown ? _index - 1 : _index;
+      currentIndexRef.current = _index;
 
       if (adjustedIndex >= 0) {
         if (_providedOnChange) {
@@ -163,11 +163,11 @@ const BottomSheetModalComponent = forwardRef<
     bottomSheetRef.current?.expand();
   }, []);
   const handleSnapTo = useCallback(
-    (index: number) => {
+    (_index: number) => {
       if (isMinimized.current) {
         return;
       }
-      bottomSheetRef.current?.snapTo(index + (dismissOnPanDown ? 1 : 0));
+      bottomSheetRef.current?.snapTo(_index + (dismissOnPanDown ? 1 : 0));
     },
     [dismissOnPanDown]
   );
