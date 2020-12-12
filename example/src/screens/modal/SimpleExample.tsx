@@ -1,35 +1,32 @@
-import React, { useCallback } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { useBottomSheetModal } from '@gorhom/bottom-sheet';
+import React, { useCallback, useRef } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactListContainer from '../../components/contactListContainer';
 import withModalProvider from '../withModalProvider';
 
 const SimpleExample = () => {
-  const { present, dismiss, expand, collapse } = useBottomSheetModal();
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   // callbacks
-  const handleDismissPress = useCallback(() => {
-    dismiss();
-  }, [dismiss]);
-  const handleExpandPress = useCallback(() => {
-    expand();
-  }, [expand]);
-  const handleCollapsePress = useCallback(() => {
-    collapse();
-  }, [collapse]);
   const handleChange = useCallback((index: number) => {
-    if (index === 0) {
-      Alert.alert('Modal Been Dismissed');
-    }
+    console.log('index', index);
+  }, []);
+  const handleDismiss = useCallback(() => {
+    console.log('on dismiss');
+  }, []);
+  const handleDismissPress = useCallback(() => {
+    bottomSheetRef.current!.dismiss();
+  }, []);
+  const handleExpandPress = useCallback(() => {
+    bottomSheetRef.current!.expand();
+  }, []);
+  const handleCollapsePress = useCallback(() => {
+    bottomSheetRef.current!.collapse();
   }, []);
   const handlePresentPress = useCallback(() => {
-    present(<ContactListContainer title="Modal FlatList" type="FlatList" />, {
-      snapPoints: ['25%', '50%'],
-      animationDuration: 250,
-      onChange: handleChange,
-    });
-  }, [present, handleChange]);
+    bottomSheetRef.current!.present();
+  }, []);
 
   // renders
   return (
@@ -54,6 +51,15 @@ const SimpleExample = () => {
         style={styles.buttonContainer}
         onPress={handleCollapsePress}
       />
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        snapPoints={['25%', '50%']}
+        animationDuration={250}
+        onDismiss={handleDismiss}
+        onChange={handleChange}
+      >
+        <ContactListContainer title="Modal FlatList" type="FlatList" />
+      </BottomSheetModal>
     </View>
   );
 };

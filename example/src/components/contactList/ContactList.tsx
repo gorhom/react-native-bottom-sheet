@@ -21,6 +21,8 @@ export interface ContactListProps {
   style?: ViewStyle;
 }
 
+const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
+
 const ContactList = ({
   type,
   count = 25,
@@ -33,6 +35,7 @@ const ContactList = ({
   // variables
   const sections = useMemo(() => createContactSectionsMockData(count), [count]);
   const data = useMemo(() => createContactListMockData(count), [count]);
+  const stickyHeaderIndices = useMemo(() => [0], []);
 
   // styles
   const contentContainerStyle = useMemo(
@@ -88,13 +91,13 @@ const ContactList = ({
     return (
       <BottomSheetFlatList
         data={data}
-        keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
+        keyExtractor={keyExtractor}
         initialNumToRender={5}
         windowSize={10}
         maxToRenderPerBatch={5}
         renderItem={renderFlatListItem}
         {...(header && {
-          stickyHeaderIndices: [0],
+          stickyHeaderIndices: stickyHeaderIndices,
           ListHeaderComponent: header,
         })}
         contentContainerStyle={contentContainerStyle}
@@ -120,7 +123,7 @@ const ContactList = ({
         windowSize={10}
         maxToRenderPerBatch={5}
         sections={sections}
-        keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
+        keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionItem}
         {...(header && {

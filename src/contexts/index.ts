@@ -3,4 +3,12 @@ export {
   BottomSheetInternalContext,
   BottomSheetInternalProvider,
 } from './internal';
-export { BottomSheetModalContext, BottomSheetModalProvider } from './modal';
+export {
+  BottomSheetModalContext,
+  BottomSheetModalProvider,
+} from './modal/external';
+export {
+  BottomSheetModalInternalContext,
+  BottomSheetModalInternalProvider,
+  BottomSheetModalInternalContextType,
+} from './modal/internal';

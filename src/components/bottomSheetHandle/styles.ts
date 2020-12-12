@@ -1,6 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native';
-
-const { width: windowWidth } = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
+import { WINDOW_WIDTH } from '../../constants';
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,7 +8,7 @@ export const styles = StyleSheet.create({
 
   indicator: {
     alignSelf: 'center',
-    width: (7.5 * windowWidth) / 100,
+    width: (7.5 * WINDOW_WIDTH) / 100,
     height: 4,
     borderRadius: 4,
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
