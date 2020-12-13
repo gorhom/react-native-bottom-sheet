@@ -5,6 +5,7 @@ module.exports = {
       label: 'Bottom Sheet',
       items: [
         'getting-started',
+        'usage',
         'props',
         'methods',
         'hooks',
@@ -28,6 +29,7 @@ module.exports = {
       label: 'Bottom Sheet Modal',
       items: [
         'modal/getting-started',
+        'modal/usage',
         'modal/props',
         'modal/methods',
         'modal/hooks',
