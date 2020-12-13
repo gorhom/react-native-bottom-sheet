@@ -7,6 +7,7 @@ const Video = ({ title, url, img }) => {
       loop={true}
       autoPlay={true}
       controls={false}
+      playsInline={true}
       title={title}
       width="100%"
     >
