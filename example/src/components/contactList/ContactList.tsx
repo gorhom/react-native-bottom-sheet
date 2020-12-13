@@ -17,8 +17,9 @@ import ContactItem from '../contactItem';
 export interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
-  header?: (() => JSX.Element) | null;
   style?: ViewStyle;
+  header?: (() => JSX.Element) | null;
+  onItemPress?: () => void;
 }
 
 const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
@@ -28,6 +29,7 @@ const ContactList = ({
   count = 25,
   header = null,
   style,
+  onItemPress,
 }: ContactListProps) => {
   // hooks
   const { bottom: bottomSafeArea } = useSafeAreaInsets();
@@ -54,9 +56,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderSectionItem = useCallback(
     ({ item, index }) => (
@@ -64,9 +67,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderScrollViewItem = useCallback(
     (item, index) => (
@@ -74,9 +78,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderSectionHeader = useCallback(
     ({ section }) => (
