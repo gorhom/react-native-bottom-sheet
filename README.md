@@ -11,7 +11,7 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 ## Features
 
-- 🌟 Modal presentation view, [Bottom Sheet Modal](./docs/modal.md).
+- 🌟 Modal presentation view, [Bottom Sheet Modal](https://gorhom.github.io/react-native-bottom-sheet/modal).
 - Smooth interactions & snapping animations.
 - Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions.
 - Support `React Navigation` Integration.
