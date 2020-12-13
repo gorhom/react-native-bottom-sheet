@@ -26,7 +26,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Bottom Sheet Modal',
-      items: ['modal/getting-started'],
+      items: [
+        'modal/getting-started',
+        'modal/props',
+        'modal/methods',
+        'modal/hooks',
+      ],
     },
   ],
 };
