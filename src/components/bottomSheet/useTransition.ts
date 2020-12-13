@@ -65,7 +65,7 @@ export const useTransition = ({
   const clock = useClock();
   const config = useMemo(
     () => ({
-      toValue: new Animated.Value(0),
+      toValue: new Animated.Value(-1),
       duration: animationDuration,
       easing: animationEasing,
     }),
