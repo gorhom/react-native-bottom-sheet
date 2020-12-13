@@ -141,13 +141,11 @@ const StackExample = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
     padding: 24,
     backgroundColor: '#dfdfdf',
   },
   buttonContainer: {
-    alignSelf: 'center',
-    marginBottom: 224,
+    marginBottom: 6,
   },
 });
 
