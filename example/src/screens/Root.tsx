@@ -41,6 +41,10 @@ const data = [
         name: 'Stack Modals',
         slug: 'Modal/StackExample',
       },
+      {
+        name: 'Dynamic Snap Point',
+        slug: 'Modal/DynamicSnapPointExample',
+      },
     ],
   },
   {

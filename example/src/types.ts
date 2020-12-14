@@ -10,6 +10,7 @@ export type AppStackParamsList = {
   ['Modal/SimpleExample']: undefined;
   ['Modal/BackdropExample']: undefined;
   ['Modal/StackExample']: undefined;
+  ['Modal/DynamicSnapPointExample']: undefined;
   // Advanced
   ['Advanced/NavigatorExample']: undefined;
   ['Advanced/CustomHandleExample']: undefined;
