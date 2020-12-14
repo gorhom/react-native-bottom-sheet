@@ -14,6 +14,13 @@ export const useNormalizedSnapPoints = (
       topInset
     );
     return normalizedSnapPoints.map(normalizedSnapPoint => {
+      /**
+       * we subset handleHeight from the `normalizedSnapPoint` to make
+       * sure that sheets and its handle will be out of the screen.
+       */
+      if (normalizedSnapPoint === 0 && handleHeight !== 0) {
+        normalizedSnapPoint = normalizedSnapPoint - handleHeight;
+      }
       return Math.ceil(
         Math.max(containerHeight - normalizedSnapPoint - handleHeight, topInset)
       );

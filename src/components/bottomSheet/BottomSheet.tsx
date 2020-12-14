@@ -127,8 +127,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [handleHeight]
     );
     const safeContainerHeight = useMemo(
-      () => containerHeight || WINDOW_HEIGHT,
-      [containerHeight]
+      () => _providedContainerHeight || containerHeight || WINDOW_HEIGHT,
+      [_providedContainerHeight, containerHeight]
     );
 
     // conditions
@@ -508,7 +508,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region render
-    // console.log('BottomSheet', 'render', shouldMeasureContainerHeight);
+    console.log('BottomSheet', 'render', snapPoints, safeHandleHeight);
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer
