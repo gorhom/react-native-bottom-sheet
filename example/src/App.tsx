@@ -78,6 +78,15 @@ const App = () => {
             }}
             getComponent={() => require('./screens/modal/StackExample').default}
           />
+          <Stack.Screen
+            name="Modal/DynamicSnapPointExample"
+            options={{
+              title: 'Dynamic Snap Point',
+            }}
+            getComponent={() =>
+              require('./screens/modal/DynamicSnapPointExample').default
+            }
+          />
           {/* advanced examples */}
           <Stack.Screen
             name="Advanced/NavigatorExample"
