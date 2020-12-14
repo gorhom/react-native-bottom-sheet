@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Video = ({ title, url, img }) => {
+const Video = ({ title, url }) => {
   return (
     <video
       muted={true}
@@ -12,7 +12,6 @@ const Video = ({ title, url, img }) => {
       width="100%"
     >
       <source src={url} type="video/mp4" />
-      <img src={img} />
     </video>
   );
 };

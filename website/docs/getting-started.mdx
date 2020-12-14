@@ -14,7 +14,7 @@ keywords:
   - modal
   - presentation modal
   - reanimated
-image: img/bottom-sheet-preview.gif
+image: /img/bottom-sheet-preview.gif
 hide_title: true
 slug: /
 hide_table_of_contents: true
@@ -26,12 +26,13 @@ hide_table_of_contents: true
 
 A performant interactive bottom sheet with fully configurable options 🚀
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import { Video } from '../components/video';
 
 <Video
   title="React Native Bottom Sheet"
-  url="./video/bottom-sheet-preview.mp4"
-  img="./img/bottom-sheet-preview.gif"
+  url={useBaseUrl('video/bottom-sheet-preview.mp4')}
+  img={useBaseUrl('img/bottom-sheet-preview.gif')}
 />
 
 > Initially, this project was a cloned of `react-native-scroll-bottom-sheet` by [@rgommezz](https://github.com/rgommezz) ❤️. However, it is been fully re-written to add extra functionalities and simplify the approach.
