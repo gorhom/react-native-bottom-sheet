@@ -44,6 +44,7 @@ import {
   useScrollable,
   useNormalizedSnapPoints,
   usePropsValidator,
+  useReactiveValue,
 } from '../../hooks';
 import {
   BottomSheetInternalProvider,
@@ -154,6 +155,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [containerHeight, handleHeight]
     );
+    const animatedIsLayoutReady = useReactiveValue(isLayoutCalculated ? 1 : 0);
+
     //#endregion
 
     //#region variables
@@ -233,10 +236,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       handlePanGestureTranslationY,
       handlePanGestureVelocityY,
       scrollableContentOffsetY,
+      animatedIsLayoutReady,
       snapPoints,
       initialPosition,
       currentIndexRef,
-      isLayoutCalculated,
       onAnimate: handleOnAnimate,
     });
 
@@ -406,12 +409,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const containerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
       () => ({
         ...styles.container,
-        opacity: isLayoutCalculated ? 1 : 0,
+        opacity: animatedIsLayoutReady,
         transform: [
-          { translateY: isLayoutCalculated ? position : safeContainerHeight },
+          {
+            translateY: cond(
+              animatedIsLayoutReady,
+              position,
+              safeContainerHeight
+            ),
+          },
         ],
       }),
-      [safeContainerHeight, position, isLayoutCalculated]
+      [safeContainerHeight, position, animatedIsLayoutReady]
     );
     const contentContainerStyle = useMemo(
       () => ({
