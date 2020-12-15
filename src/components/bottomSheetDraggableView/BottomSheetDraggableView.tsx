@@ -65,8 +65,15 @@ const BottomSheetDraggableViewComponent = ({
               },
             },
           ]),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [gestureType]
+    [
+      gestureType,
+      contentPanGestureState,
+      contentPanGestureTranslationY,
+      contentPanGestureVelocityY,
+      handlePanGestureState,
+      handlePanGestureTranslationY,
+      handlePanGestureVelocityY,
+    ]
   );
 
   // effects
