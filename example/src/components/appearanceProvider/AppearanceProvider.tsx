@@ -34,8 +34,7 @@ const AppearanceProvider = ({ children }: AppearanceProviderProps) => {
     return () => {
       Appearance.removeChangeListener(handleAppearanceChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleAppearanceChange]);
   return (
     <AppearanceContext.Provider value={contextValue}>
       {children}

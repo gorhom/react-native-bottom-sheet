@@ -27,7 +27,7 @@ import { useReactiveValue, useReactiveValues } from '../../hooks';
 import type { BottomSheetTransitionConfig } from './types';
 
 export const useTransition = ({
-  isLayoutCalculated,
+  animatedIsLayoutReady,
   animationDuration,
   animationEasing,
   contentPanGestureState,
@@ -42,7 +42,6 @@ export const useTransition = ({
   initialPosition,
   onAnimate,
 }: BottomSheetTransitionConfig) => {
-  const isReady = useReactiveValue(isLayoutCalculated ? 1 : 0);
   const currentGesture = useValue<GESTURE>(GESTURE.UNDETERMINED);
   const currentPosition = useReactiveValue(initialPosition);
   const snapPoints = useReactiveValues(_snapPoints);
@@ -154,7 +153,7 @@ export const useTransition = ({
     () =>
       block([
         cond(
-          eq(isReady, 1),
+          animatedIsLayoutReady,
           [
             // debug('current gesture', currentGesture),
             /**
@@ -309,7 +308,7 @@ export const useTransition = ({
         ),
       ]),
     [
-      isReady,
+      animatedIsLayoutReady,
       animationState,
       clock,
       config,
