@@ -20,6 +20,7 @@ import {
   DEFAULT_ENABLE_TOUCH_THROUGH,
   DEFAULT_CLOSE_ON_PRESS,
 } from './constants';
+import { WINDOW_HEIGHT } from '../../constants';
 import type { BottomSheetDefaultBackdropProps } from './types';
 import { styles } from './styles';
 
@@ -28,6 +29,10 @@ const {
   interpolateNode: interpolateV2,
 } = require('react-native-reanimated');
 const interpolate = interpolateV2 || interpolateV1;
+
+const AnimatedTouchableWithoutFeedback = Animated.createAnimatedComponent(
+  TouchableWithoutFeedback
+);
 
 const BottomSheetBackdropComponent = ({
   animatedIndex,
@@ -70,6 +75,15 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   //#region styles
+  const buttonStyle = useMemo(
+    () => [
+      style,
+      {
+        top: cond(eq(animatedIndex, disappearsOnIndex), WINDOW_HEIGHT, 0),
+      },
+    ],
+    [disappearsOnIndex, style, animatedIndex]
+  );
   const containerStyle = useMemo(
     () => [
       style,
@@ -88,13 +102,20 @@ const BottomSheetBackdropComponent = ({
 
   return closeOnPress ? (
     <>
-      <TouchableWithoutFeedback onPress={handleOnPress} style={style}>
+      <AnimatedTouchableWithoutFeedback
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Bottom Sheet backdrop"
+        accessibilityHint="Tap to close the Bottom Sheet"
+        onPress={handleOnPress}
+        style={buttonStyle}
+      >
         <Animated.View ref={containerRef} style={containerStyle} />
-      </TouchableWithoutFeedback>
+      </AnimatedTouchableWithoutFeedback>
       <Animated.Code>
         {() =>
           cond(
-            and(eq(animatedPosition, 0), isTouchable),
+            and(eq(animatedPosition, disappearsOnIndex), isTouchable),
             [
               set(isTouchable, 0),
               call([], () => {
@@ -104,15 +125,18 @@ const BottomSheetBackdropComponent = ({
                 });
               }),
             ],
-            cond(and(neq(animatedPosition, 0), not(isTouchable)), [
-              set(isTouchable, 1),
-              call([], () => {
-                // @ts-ignore
-                containerRef.current.setNativeProps({
-                  pointerEvents: 'auto',
-                });
-              }),
-            ])
+            cond(
+              and(neq(animatedPosition, disappearsOnIndex), not(isTouchable)),
+              [
+                set(isTouchable, 1),
+                call([], () => {
+                  // @ts-ignore
+                  containerRef.current.setNativeProps({
+                    pointerEvents: 'auto',
+                  });
+                }),
+              ]
+            )
           )
         }
       </Animated.Code>
