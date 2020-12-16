@@ -95,11 +95,6 @@ const BottomSheetBackdropComponent = ({
     [style, animatedOpacity]
   );
   //#endregion
-
-  //#region effects
-
-  //#endregion
-
   return closeOnPress ? (
     <>
       <AnimatedTouchableWithoutFeedback
