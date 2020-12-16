@@ -1,22 +1,28 @@
 import React, { memo } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity } from '@gorhom/bottom-sheet';
 
 interface ContactItemProps {
   title: string;
   subTitle?: string;
+  onPress?: () => void;
 }
 
-const ContactItemComponent = ({ title, subTitle }: ContactItemProps) => {
+const ContactItemComponent = ({
+  title,
+  subTitle,
+  onPress,
+}: ContactItemProps) => {
   // render
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.thumbnail} />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{title}</Text>
         {subTitle && <Text style={styles.subtitle}>{subTitle}</Text>}
       </View>
       <View style={styles.icon} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

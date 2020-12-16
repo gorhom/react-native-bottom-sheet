@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { BottomSheetModal, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
@@ -6,10 +6,16 @@ import ContactListContainer from '../../components/contactListContainer';
 import withModalProvider from '../withModalProvider';
 
 const StackExample = () => {
+  // hooks
   const { dismiss, dismissAll } = useBottomSheetModal();
+
+  // refs
   const bottomSheetModalARef = useRef<BottomSheetModal>(null);
   const bottomSheetModalBRef = useRef<BottomSheetModal>(null);
   const bottomSheetModalCRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
   const handlePresentAPress = useCallback(() => {
@@ -52,7 +58,13 @@ const StackExample = () => {
   // renders
 
   const renderBottomSheetContent = useCallback(
-    title => <ContactListContainer title={title} type="FlatList" />,
+    (title, onPress) => (
+      <ContactListContainer
+        title={title}
+        type="FlatList"
+        onItemPress={onPress}
+      />
+    ),
     []
   );
   return (
@@ -103,24 +115,24 @@ const StackExample = () => {
       <BottomSheetModal
         name="A"
         ref={bottomSheetModalARef}
-        snapPoints={['25%', '50%']}
-        children={renderBottomSheetContent('Modal A')}
+        snapPoints={snapPoints}
+        children={renderBottomSheetContent('Modal A', handlePresentBPress)}
       />
 
       <BottomSheetModal
         name="B"
         ref={bottomSheetModalBRef}
-        snapPoints={['25%', '50%']}
-        children={renderBottomSheetContent('Modal B')}
+        snapPoints={snapPoints}
+        children={renderBottomSheetContent('Modal B', handlePresentCPress)}
       />
 
       <BottomSheetModal
         name="C"
         ref={bottomSheetModalCRef}
         index={1}
-        snapPoints={['25%', '50%']}
+        snapPoints={snapPoints}
         dismissOnPanDown={false}
-        children={renderBottomSheetContent('Modal C')}
+        children={renderBottomSheetContent('Modal C', handleDismissCPress)}
       />
     </View>
   );
@@ -130,6 +142,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    backgroundColor: '#dfdfdf',
   },
   buttonContainer: {
     marginBottom: 6,
