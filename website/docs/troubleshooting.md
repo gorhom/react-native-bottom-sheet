@@ -16,7 +16,7 @@ To resolve this issue, please use touchables that this library provide.
 import {
   TouchableOpacity,
   TouchableHighlight,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from '@gorhom/bottom-sheet';
 ```
 
@@ -27,5 +27,8 @@ Due to wrapping the content and handle with `TapGestureHandler` & `PanGestureHan
 To resolve this issue, please use `ScrollView` & `FlatList` from `react-native-gesture-handler` provide instead `react-native`.
 
 ```tsx
-import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import {
+  ScrollView,
+  FlatList
+} from 'react-native-gesture-handler';
 ```
