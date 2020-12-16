@@ -9,7 +9,7 @@ import React, {
   useLayoutEffect,
   useEffect,
 } from 'react';
-import { ViewStyle } from 'react-native';
+import { ViewStyle, AccessibilityInfo } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import Animated, {
@@ -486,6 +486,28 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             ) {
               return;
             }
+
+            /**
+             * Here we announce the bottom sheet position
+             * for accessibility service.
+             */
+            AccessibilityInfo.isScreenReaderEnabled().then(isEnabled => {
+              if (!isEnabled) {
+                return;
+              }
+              const positionInScreen = Math.max(
+                Math.floor(
+                  ((WINDOW_HEIGHT - snapPoints[currentPositionIndex] || 1) /
+                    WINDOW_HEIGHT) *
+                    100
+                ),
+                0
+              ).toFixed(0);
+              AccessibilityInfo.announceForAccessibility(
+                `Bottom sheet snapped to ${positionInScreen}% of the screen`
+              );
+            });
+
             currentIndexRef.current = currentPositionIndex;
             refreshUIElements();
             handleOnChange(currentPositionIndex);
@@ -536,7 +558,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             ref={containerTapGestureRef}
             {...containerTapGestureHandler}
           >
-            <Animated.View style={containerStyle}>
+            <Animated.View
+              accessible={true}
+              accessibilityRole="adjustable"
+              accessibilityLabel="Bottom Sheet"
+              style={containerStyle}
+            >
               <BottomSheetInternalProvider value={internalContextVariables}>
                 <BottomSheetBackgroundContainer
                   key="BottomSheetBackgroundContainer"
