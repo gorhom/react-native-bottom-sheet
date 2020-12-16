@@ -17,6 +17,7 @@ A performant interactive bottom sheet with fully configurable options 🚀
 - Support `React Navigation` Integration.
 - Compatible with `Reanimated` v1 & v2.
 - Compatible with `Expo`.
+- Accessibility support.
 - Written in `TypeScript`.
 - [Read more](https://gorhom.github.io/react-native-bottom-sheet).
 
