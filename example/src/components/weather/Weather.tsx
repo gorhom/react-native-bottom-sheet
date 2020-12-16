@@ -42,8 +42,7 @@ const Weather = ({ animatedPosition, snapPoints }: WeatherProps) => {
         },
       ],
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [snapPoints, appearance]
+    [appearance, animatedPosition, snapPoints]
   );
   return (
     <Animated.View style={containerStyle}>

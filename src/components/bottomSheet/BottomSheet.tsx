@@ -9,7 +9,7 @@ import React, {
   useLayoutEffect,
   useEffect,
 } from 'react';
-import { ViewStyle } from 'react-native';
+import { ViewStyle, AccessibilityInfo } from 'react-native';
 import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import Animated, {
@@ -44,6 +44,7 @@ import {
   useScrollable,
   useNormalizedSnapPoints,
   usePropsValidator,
+  useReactiveValue,
 } from '../../hooks';
 import {
   BottomSheetInternalProvider,
@@ -154,6 +155,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [containerHeight, handleHeight]
     );
+    const animatedIsLayoutReady = useReactiveValue(isLayoutCalculated ? 1 : 0);
+
     //#endregion
 
     //#region variables
@@ -233,10 +236,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       handlePanGestureTranslationY,
       handlePanGestureVelocityY,
       scrollableContentOffsetY,
+      animatedIsLayoutReady,
       snapPoints,
       initialPosition,
       currentIndexRef,
-      isLayoutCalculated,
       onAnimate: handleOnAnimate,
     });
 
@@ -406,12 +409,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const containerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
       () => ({
         ...styles.container,
-        opacity: isLayoutCalculated ? 1 : 0,
+        opacity: animatedIsLayoutReady,
         transform: [
-          { translateY: isLayoutCalculated ? position : safeContainerHeight },
+          {
+            translateY: cond(
+              animatedIsLayoutReady,
+              position,
+              safeContainerHeight
+            ),
+          },
         ],
       }),
-      [safeContainerHeight, position, isLayoutCalculated]
+      [safeContainerHeight, position, animatedIsLayoutReady]
     );
     const contentContainerStyle = useMemo(
       () => ({
@@ -477,6 +486,28 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             ) {
               return;
             }
+
+            /**
+             * Here we announce the bottom sheet position
+             * for accessibility service.
+             */
+            AccessibilityInfo.isScreenReaderEnabled().then(isEnabled => {
+              if (!isEnabled) {
+                return;
+              }
+              const positionInScreen = Math.max(
+                Math.floor(
+                  ((WINDOW_HEIGHT - snapPoints[currentPositionIndex] || 1) /
+                    WINDOW_HEIGHT) *
+                    100
+                ),
+                0
+              ).toFixed(0);
+              AccessibilityInfo.announceForAccessibility(
+                `Bottom sheet snapped to ${positionInScreen}% of the screen`
+              );
+            });
+
             currentIndexRef.current = currentPositionIndex;
             refreshUIElements();
             handleOnChange(currentPositionIndex);
@@ -527,7 +558,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             ref={containerTapGestureRef}
             {...containerTapGestureHandler}
           >
-            <Animated.View style={containerStyle}>
+            <Animated.View
+              accessible={true}
+              accessibilityRole="adjustable"
+              accessibilityLabel="Bottom Sheet"
+              style={containerStyle}
+            >
               <BottomSheetInternalProvider value={internalContextVariables}>
                 <BottomSheetBackgroundContainer
                   key="BottomSheetBackgroundContainer"

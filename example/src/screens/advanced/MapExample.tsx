@@ -185,7 +185,6 @@ const MapExample = () => {
         topInset={topSafeArea}
         animatedPosition={animatedModalPosition}
         handleComponent={LocationDetailsHandle}
-        backdropComponent={renderBackdrop}
         backgroundComponent={BlurredBackground}
       >
         <LocationDetails
