@@ -5,6 +5,8 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
+        printWidth: 80,
+        arrowParens: 'avoid',
         singleQuote: true,
         tabWidth: 2,
         trailingComma: 'es5',

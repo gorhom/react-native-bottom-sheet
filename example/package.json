@@ -17,21 +17,21 @@
     "faker": "^4.1.0",
     "lodash.isequal": "^4.5.0",
     "react": "16.13.1",
-    "react-native": "0.63.3",
+    "react-native": "0.63.4",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-maps": "^0.27.1",
     "react-native-reanimated": "^2.0.0-rc.0",
-    "react-native-redash": "^15.11.1",
+    "react-native-redash": "^16.0.4",
     "react-native-safe-area-context": "0.7.3",
-    "react-native-screens": "^2.15.0"
+    "react-native-screens": "^2.16.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
+    "@babel/core": "^7.12.10",
     "@babel/runtime": "^7.12.5",
     "@types/faker": "^4.1.12",
-    "@types/react": "^16.9.56",
-    "@types/react-native": "^0.63.35",
+    "@types/react": "^17.0.0",
+    "@types/react-native": "^0.63.42",
     "metro-react-native-babel-preset": "^0.64.0",
-    "typescript": "^4.1.2"
+    "typescript": "^4.1.3"
   }
 }
