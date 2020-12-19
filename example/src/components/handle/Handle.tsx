@@ -14,12 +14,12 @@ interface HandleProps extends BottomSheetHandleProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
+const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
   //#region animations
 
   const indicatorTransformOriginY = useDerivedValue(() =>
     interpolate(
-      animatedPositionIndex.value,
+      animatedIndex.value,
       [0, 1, 2],
       [-1, 0, 1],
       Extrapolate.CLAMP
@@ -31,7 +31,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
   const containerStyle = useMemo(() => [styles.header, style], [style]);
   const containerAnimatedStyle = useAnimatedStyle(() => {
     const borderTopRadius = interpolate(
-      animatedPositionIndex.value,
+      animatedIndex.value,
       [1, 2],
       [20, 0],
       Extrapolate.CLAMP
@@ -50,7 +50,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
   );
   const leftIndicatorAnimatedStyle = useAnimatedStyle(() => {
     const leftIndicatorRotate = interpolate(
-      animatedPositionIndex.value,
+      animatedIndex.value,
       [0, 1, 2],
       [toRad(-30), 0, toRad(30)],
       Extrapolate.CLAMP
@@ -76,7 +76,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedPositionIndex }) => {
   );
   const rightIndicatorAnimatedStyle = useAnimatedStyle(() => {
     const rightIndicatorRotate = interpolate(
-      animatedPositionIndex.value,
+      animatedIndex.value,
       [0, 1, 2],
       [toRad(30), 0, toRad(-30)],
       Extrapolate.CLAMP
