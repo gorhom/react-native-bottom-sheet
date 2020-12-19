@@ -15,6 +15,7 @@ type InteractivePanGestureHandlerContextType = {
 };
 
 export const useInteractivePanGestureHandler = (
+  // @ts-ignore
   type: GESTURE,
   animatedPosition: Animated.SharedValue<number>,
   snapPoints: number[],
@@ -26,61 +27,61 @@ export const useInteractivePanGestureHandler = (
   Animated.SharedValue<number>,
   Animated.SharedValue<number>
 ] => {
-  const gestureState = useSharedValue<State>(State.UNDETERMINED);
-  const gestureTranslationY = useSharedValue(0);
-  const gestureVelocityY = useSharedValue(0);
+  const gestureState = useSharedValue<State>(State.UNDETERMINED, false);
+  const gestureTranslationY = useSharedValue(0, false);
+  const gestureVelocityY = useSharedValue(0, false);
 
   const gestureHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
     InteractivePanGestureHandlerContextType
-  >(
-    {
-      onStart: ({ state, translationY, velocityY }, context) => {
-        // cancel current animation
-        cancelAnimation(animatedPosition);
+  >({
+    onStart: ({ state, translationY, velocityY }, context) => {
+      // cancel current animation
+      cancelAnimation(animatedPosition);
 
-        // store current animated position
-        context.lastAnimatedPosition = animatedPosition.value;
+      // store current animated position
+      context.lastAnimatedPosition = animatedPosition.value;
 
-        // set variables
-        gestureState.value = state;
-        gestureTranslationY.value = translationY;
-        gestureVelocityY.value = velocityY;
-      },
-      onActive: ({ state, translationY, velocityY }, context) => {
-        gestureState.value = state;
-        gestureTranslationY.value = translationY;
-        gestureVelocityY.value = velocityY;
-
-        animatedPosition.value = clamp(
-          context.lastAnimatedPosition +
-            translationY +
-            (offset && context.lastAnimatedPosition === 0 ? offset.value : 0) *
-              -1,
-          snapPoints[snapPoints.length - 1],
-          snapPoints[0]
-        );
-      },
-      onEnd: ({ state }, context) => {
-        gestureState.value = state;
-        if (
-          (offset ? offset.value : 0) > 0 &&
-          context.lastAnimatedPosition === 0 &&
-          animatedPosition.value === 0
-        ) {
-          return;
-        }
-        animateToPoint(
-          snapPoint(
-            gestureTranslationY.value + context.lastAnimatedPosition,
-            gestureVelocityY.value,
-            snapPoints
-          )
-        );
-      },
+      // set variables
+      gestureState.value = state;
+      gestureTranslationY.value = translationY;
+      gestureVelocityY.value = velocityY;
     },
-    [type, snapPoints, animateToPoint]
-  );
+    onActive: ({ state, translationY, velocityY }, context) => {
+      gestureState.value = state;
+      gestureTranslationY.value = translationY;
+      gestureVelocityY.value = velocityY;
+
+      animatedPosition.value = clamp(
+        context.lastAnimatedPosition +
+          translationY +
+          (offset &&
+          context.lastAnimatedPosition === snapPoints[snapPoints.length - 1]
+            ? offset.value
+            : 0) *
+            -1,
+        snapPoints[snapPoints.length - 1],
+        snapPoints[0]
+      );
+    },
+    onEnd: ({ state }, context) => {
+      gestureState.value = state;
+      if (
+        (offset ? offset.value : 0) > 0 &&
+        context.lastAnimatedPosition === snapPoints[snapPoints.length - 1] &&
+        animatedPosition.value === snapPoints[snapPoints.length - 1]
+      ) {
+        return;
+      }
+      animateToPoint(
+        snapPoint(
+          gestureTranslationY.value + context.lastAnimatedPosition,
+          gestureVelocityY.value,
+          snapPoints
+        )
+      );
+    },
+  });
 
   return [gestureHandler, gestureState, gestureTranslationY, gestureVelocityY];
 };

@@ -20,48 +20,46 @@ export const useScrollableInternal = (type: ScrollableType) => {
   // hooks
   const scrollableAnimatedProps = useScrollableAnimatedProps();
   const {
-    animatedPosition,
+    snapPointsCount,
+    animatedIndex,
     scrollableContentOffsetY: _scrollableContentOffsetY,
     setScrollableRef,
     removeScrollableRef,
   } = useBottomSheetInternal();
 
   // callbacks
-  const handleScrollEvent = useAnimatedScrollHandler(
-    {
-      onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
-        if (animatedPosition.value !== 0) {
-          return;
-        }
-        scrollablePosition.value = y;
-        scrollableContentOffsetY.value = y;
-        _scrollableContentOffsetY.value = y;
-      },
-      onScroll: ({ contentOffset: { y } }: NativeScrollEvent) => {
-        if (animatedPosition.value !== 0) {
-          // @ts-ignore
-          scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-          return;
-        }
-        scrollablePosition.value = y;
-      },
-      onEndDrag: () => {
-        if (animatedPosition.value !== 0) {
-          // @ts-ignore
-          scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-          return;
-        }
-      },
-      onMomentumEnd: () => {
-        if (animatedPosition.value !== 0) {
-          // @ts-ignore
-          scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-          return;
-        }
-      },
+  const handleScrollEvent = useAnimatedScrollHandler({
+    onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
+      if (animatedIndex.value !== snapPointsCount - 1) {
+        return;
+      }
+      scrollablePosition.value = y;
+      scrollableContentOffsetY.value = y;
+      _scrollableContentOffsetY.value = y;
     },
-    []
-  );
+    onScroll: ({ contentOffset: { y } }: NativeScrollEvent) => {
+      if (animatedIndex.value !== snapPointsCount - 1) {
+        // @ts-ignore
+        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+        return;
+      }
+      scrollablePosition.value = y;
+    },
+    onEndDrag: () => {
+      if (animatedIndex.value !== snapPointsCount - 1) {
+        // @ts-ignore
+        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+        return;
+      }
+    },
+    onMomentumEnd: () => {
+      if (animatedIndex.value !== snapPointsCount - 1) {
+        // @ts-ignore
+        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+        return;
+      }
+    },
+  });
   const handleSettingScrollable = useCallback(() => {
     // set current content offset
     runOnUI(() => {
@@ -84,8 +82,14 @@ export const useScrollableInternal = (type: ScrollableType) => {
     return () => {
       removeScrollableRef(scrollableRef);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    _scrollableContentOffsetY,
+    removeScrollableRef,
+    scrollableContentOffsetY.value,
+    scrollableRef,
+    setScrollableRef,
+    type,
+  ]);
 
   return {
     scrollableRef,
