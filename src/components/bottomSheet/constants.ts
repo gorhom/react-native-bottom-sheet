@@ -1,0 +1,3 @@
+const DEFAULT_ANIMATE_ON_MOUNT = false;
+
+export { DEFAULT_ANIMATE_ON_MOUNT };

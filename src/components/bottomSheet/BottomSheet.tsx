@@ -5,6 +5,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   memo,
+  useLayoutEffect,
 } from 'react';
 import { ViewStyle } from 'react-native';
 import isEqual from 'lodash.isequal';
@@ -41,6 +42,7 @@ import {
   GESTURE,
   ANIMATION_STATE,
 } from '../../constants';
+import { DEFAULT_ANIMATE_ON_MOUNT } from './constants';
 import ContentWrapper from '../contentWrapper';
 import DraggableView from '../draggableView';
 import Handle from '../handle';
@@ -64,6 +66,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       initialSnapIndex = 0,
       snapPoints: _snapPoints,
       topInset = 0,
+      animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
       // animated callback shared values
       animatedPosition: _animatedPosition,
       animatedPositionIndex: _animatedPositionIndex,
@@ -149,8 +152,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       };
     }, [_snapPoints, topInset]);
     const initialPosition = useMemo(() => {
-      return initialSnapIndex < 0 ? sheetHeight : snapPoints[initialSnapIndex];
-    }, [initialSnapIndex, sheetHeight, snapPoints]);
+      return initialSnapIndex < 0 || animateOnMount
+        ? sheetHeight
+        : snapPoints[initialSnapIndex];
+    }, [initialSnapIndex, animateOnMount, sheetHeight, snapPoints]);
 
     // content wrapper
     const contentWrapperGestureRef = useRef<TapGestureHandler>(null);
@@ -355,6 +360,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region effects
+    /**
+     * This will animate the sheet to the initial snap point
+     * when component is mounted.
+     */
+    useLayoutEffect(() => {
+      if (animateOnMount) {
+        runOnUI(animateToPoint)(snapPoints[initialSnapIndex]);
+      }
+    }, [animateOnMount, initialSnapIndex, snapPoints, animateToPoint]);
+
     useAnimatedReaction(
       () => (_animatedPosition ? animatedPosition.value : null),
       (value: number | null) => {
