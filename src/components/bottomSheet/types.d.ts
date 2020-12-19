@@ -45,6 +45,12 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
 
   // animated nodes
   /**
+   * To start the sheet closed and snap to initial index when it's mounted.
+   * @type boolean
+   * @default false
+   */
+  animateOnMount?: boolean;
+  /**
    * Animated value to be used as a callback of the position node internally.
    * @type Animated.Value<number>
    */

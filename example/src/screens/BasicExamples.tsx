@@ -74,6 +74,7 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
           snapPoints={snapPoints}
           initialSnapIndex={1}
           topInset={headerHeight}
+          animateOnMount={true}
           onChange={handleSheetChange}
         >
           <ContactList key={`${type}.list`} type={type} count={count} />

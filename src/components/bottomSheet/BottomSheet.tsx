@@ -6,6 +6,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   memo,
+  useLayoutEffect,
 } from 'react';
 import { ViewStyle } from 'react-native';
 import isEqual from 'lodash.isequal';
@@ -43,6 +44,7 @@ import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
   DEFAULT_HANDLE_HEIGHT,
+  DEFAULT_ANIMATE_ON_MOUNT,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -71,6 +73,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
       topInset = 0,
+      animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
       // animated callback shared values
       animatedPosition: _providedAnimatedPosition,
       animatedIndex: _providedAnimatedIndex,
@@ -153,8 +156,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       };
     }, [_providedSnapPoints, topInset]);
     const initialPosition = useMemo(() => {
-      return _providedIndex < 0 ? sheetHeight : snapPoints[_providedIndex];
-    }, [_providedIndex, sheetHeight, snapPoints]);
+      return _providedIndex < 0 || animateOnMount
+        ? sheetHeight
+        : snapPoints[_providedIndex];
+    }, [_providedIndex, animateOnMount, sheetHeight, snapPoints]);
 
     // content wrapper
     const contentWrapperGestureRef = useRef<TapGestureHandler>(null);
@@ -366,6 +371,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region effects
+    /**
+     * This will animate the sheet to the initial snap point
+     * when component is mounted.
+     */
+    useLayoutEffect(() => {
+      if (animateOnMount) {
+        runOnUI(animateToPoint)(snapPoints[_providedIndex]);
+      }
+    }, [animateOnMount, _providedIndex, snapPoints, animateToPoint]);
+
     useAnimatedReaction(
       () => (_providedAnimatedPosition ? animatedPosition.value : null),
       (value: number | null) => {
