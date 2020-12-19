@@ -1,18 +1,19 @@
+import { Dimensions } from 'react-native';
 import Animated, { Easing } from 'react-native-reanimated';
 
-export const DEFAULT_ANIMATION_EASING: Animated.EasingFunction = Easing.out(
-  Easing.exp
-);
-export const DEFAULT_ANIMATION_DURATION = 500;
+const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 
-export enum GESTURE {
+
+enum GESTURE {
   UNDETERMINED = 0,
   CONTENT,
   HANDLE,
 }
 
-export enum ANIMATION_STATE {
+enum ANIMATION_STATE {
   UNDETERMINED = 0,
   RUNNING,
   STOPPED,
 }
+
+export { WINDOW_HEIGHT, WINDOW_WIDTH, GESTURE, ANIMATION_STATE };

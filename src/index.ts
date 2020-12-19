@@ -12,6 +12,6 @@ export const {
   TouchableWithoutFeedback,
 } = BottomSheetTouchable;
 
-export type { BottomSheetHandleProps } from './components/handle';
+export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
 
 export { useBottomSheet } from './hooks/useBottomSheet';

@@ -4,3 +4,4 @@ export { useScrollableInternal } from './useScrollableInternal';
 export { useStableCallback } from './useStableCallback';
 export { useInteractivePanGestureHandler } from './useInteractivePanGestureHandler';
 export { useTapGestureHandler } from './useTapGestureHandler';
+export { usePropsValidator } from './usePropsValidator';
