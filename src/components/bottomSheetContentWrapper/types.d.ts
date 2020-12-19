@@ -4,8 +4,6 @@ import type Animated from 'react-native-reanimated';
 
 export type BottomSheetContentWrapperProps = {
   gestureState: Animated.SharedValue<State>;
-  maxDeltaY: number;
-  height: number;
   children: React.ReactNode;
 };
 
