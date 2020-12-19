@@ -1,7 +1,7 @@
 import type { EffectCallback, DependencyList } from 'react';
 import type { ViewProps as RNViewProps } from 'react-native';
 
-export type BottomSheetViewProps = RNViewProps & {
+export interface BottomSheetViewProps extends RNViewProps {
   children: React.ReactNode[] | React.ReactNode;
   focusHook?: (effect: EffectCallback, deps?: DependencyList) => void;
-};
+}
