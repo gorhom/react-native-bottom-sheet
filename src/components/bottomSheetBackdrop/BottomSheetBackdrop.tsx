@@ -61,7 +61,7 @@ const BottomSheetBackdropComponent = ({
   //#region styles
   const buttonAnimatedStyle = useAnimatedStyle(
     () => ({
-      top: animatedIndex.value === disappearsOnIndex ? WINDOW_HEIGHT : 0,
+      top: animatedIndex.value <= disappearsOnIndex ? WINDOW_HEIGHT : 0,
     }),
     [disappearsOnIndex]
   );
@@ -73,12 +73,12 @@ const BottomSheetBackdropComponent = ({
     () => ({
       opacity: interpolate(
         animatedIndex.value,
-        [disappearsOnIndex, appearsOnIndex],
-        [0, opacity],
+        [-1, disappearsOnIndex, appearsOnIndex],
+        [0, 0, opacity],
         Extrapolate.CLAMP
       ),
     }),
-    []
+    [opacity, disappearsOnIndex, appearsOnIndex]
   );
   const containerStyle = useMemo(
     () => [style, styles.container, containerAnimatedStyle],
@@ -88,7 +88,7 @@ const BottomSheetBackdropComponent = ({
 
   //#region effects
   useAnimatedReaction(
-    () => animatedIndex.value === disappearsOnIndex,
+    () => animatedIndex.value <= disappearsOnIndex,
     shouldDisableTouchability => {
       if (shouldDisableTouchability) {
         isContainerTouchable.value = false;
