@@ -40,13 +40,14 @@ import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetContentWrapper from '../bottomSheetContentWrapper';
 import BottomSheetDebugView from '../bottomSheetDebugView';
-import DraggableView from '../draggableView';
+import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import { GESTURE, ANIMATION_STATE, WINDOW_HEIGHT } from '../../constants';
 import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
   DEFAULT_HANDLE_HEIGHT,
   DEFAULT_ANIMATE_ON_MOUNT,
+  DECELERATION_RATE,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -155,7 +156,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       safeContainerHeight,
       safeHandleHeight
     );
-
     const sheetHeight = useMemo(
       () =>
         safeContainerHeight -
@@ -376,14 +376,25 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region styles
-    const contentContainerAnimatedStyle = useAnimatedStyle(() => {
+    const containerAnimatedStyle = useAnimatedStyle(() => {
       return {
-        transform: [{ translateY: animatedPosition.value }],
+        opacity: isLayoutCalculated ? 1 : 0,
+        transform: [
+          {
+            translateY: isLayoutCalculated
+              ? animatedPosition.value
+              : safeContainerHeight,
+          },
+        ],
       };
-    }, []);
-    const contentContainerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
+    }, [safeContainerHeight, isLayoutCalculated]);
+    const containerStyle = useMemo(
+      () => [styles.container, containerAnimatedStyle],
+      [containerAnimatedStyle]
+    );
+    const contentContainerStyle = useMemo<ViewStyle>(
       () => ({
-        ...styles.container,
+        ...styles.contentContainer,
         height: sheetHeight,
       }),
       [sheetHeight]
@@ -401,7 +412,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isLayoutCalculated &&
         didMountOnAnimate.current === false
       ) {
-        runOnUI(animateToPoint)(snapPoints[_providedIndex]);
+        requestAnimationFrame(() =>
+          runOnUI(animateToPoint)(snapPoints[_providedIndex])
+        );
         didMountOnAnimate.current = true;
       }
     }, [
@@ -417,9 +430,28 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      */
     useEffect(() => {
       if (isLayoutCalculated && currentIndexRef.current !== -1) {
-        runOnUI(animateToPoint)(snapPoints[currentIndexRef.current]);
+        requestAnimationFrame(() =>
+          runOnUI(animateToPoint)(snapPoints[currentIndexRef.current])
+        );
       }
     }, [isLayoutCalculated, snapPoints, animateToPoint]);
+
+    /**
+     * set scrollable deceleration rate based on sheet
+     * position.
+     */
+    useAnimatedReaction(
+      () => animatedIndex.value === snapPoints.length - 1,
+      (shouldNormalizeDecelerationRate: boolean) => {
+        const newDecelerationRate = shouldNormalizeDecelerationRate
+          ? DECELERATION_RATE
+          : 0;
+        if (scrollableDecelerationRate.value !== newDecelerationRate) {
+          scrollableDecelerationRate.value = newDecelerationRate;
+        }
+      },
+      [snapPoints.length]
+    );
 
     useAnimatedReaction(
       () => (_providedAnimatedPosition ? animatedPosition.value : null),
@@ -440,7 +472,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    console.log('BottomSheet', 'render', snapPoints, safeHandleHeight);
+    console.log('BottomSheet', 'render', snapPoints, isLayoutCalculated);
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetContainer
@@ -456,7 +488,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               accessible={true}
               accessibilityRole="adjustable"
               accessibilityLabel="Bottom Sheet"
-              style={[contentContainerStyle, contentContainerAnimatedStyle]}
+              style={containerStyle}
             >
               <BottomSheetInternalProvider value={internalContextVariables}>
                 <BottomSheetBackgroundContainer
@@ -477,14 +509,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   onMeasureHeight={handleOnHandleMeasureHeight}
                 />
                 {isLayoutCalculated && (
-                  <DraggableView
+                  <BottomSheetDraggableView
                     key="BottomSheetRootDraggableView"
-                    style={styles.contentContainer}
+                    style={contentContainerStyle}
                   >
                     {typeof children === 'function'
                       ? (children as Function)()
                       : children}
-                  </DraggableView>
+                  </BottomSheetDraggableView>
                 )}
               </BottomSheetInternalProvider>
             </Animated.View>
