@@ -81,6 +81,11 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * @type (index: number) => void;
    */
   onChange?: (index: number) => void;
+  /**
+   * Callback when the sheet about to animate to a new position.
+   * @type (fromIndex: number, toIndex: number) => void;
+   */
+  onAnimate?: (fromIndex: number, toIndex: number) => void;
 
   // components
   /**
