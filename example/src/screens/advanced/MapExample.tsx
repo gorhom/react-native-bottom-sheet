@@ -16,9 +16,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import SearchHandle from '../components/searchHandle';
-import LocationItem from '../components/locationItem';
-import { createLocationListMockData } from '../utilities';
+import SearchHandle from '../../components/searchHandle';
+import LocationItem from '../../components/locationItem';
+import { createLocationListMockData } from '../../utilities';
 import { clamp } from 'react-native-redash';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -107,7 +107,7 @@ const MapExample = () => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
+        index={1}
         topInset={topSafeArea}
         animatedPosition={animatedPosition}
         handleComponent={SearchHandle}

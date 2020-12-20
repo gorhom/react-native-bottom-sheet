@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Showcase from '@gorhom/showcase-template';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeArea } from 'react-native-safe-area-context';
@@ -10,19 +10,40 @@ const data = [
     data: [
       {
         name: 'View',
-        slug: 'ViewExample',
+        slug: 'Basic/ViewExample',
       },
       {
         name: 'ScrollView',
-        slug: 'ScrollViewExample',
+        slug: 'Basic/ScrollViewExample',
       },
       {
         name: 'FlatList',
-        slug: 'FlatListExample',
+        slug: 'Basic/FlatListExample',
       },
       {
         name: 'SectionList',
-        slug: 'SectionListExample',
+        slug: 'Basic/SectionListExample',
+      },
+    ],
+  },
+  {
+    title: 'Modal',
+    data: [
+      {
+        name: 'Simple',
+        slug: 'Modal/SimpleExample',
+      },
+      {
+        name: 'Backdrop',
+        slug: 'Modal/BackdropExample',
+      },
+      {
+        name: 'Stack Modals',
+        slug: 'Modal/StackExample',
+      },
+      {
+        name: 'Dynamic Snap Point',
+        slug: 'Modal/DynamicSnapPointExample',
       },
     ],
   },
@@ -31,23 +52,23 @@ const data = [
     data: [
       {
         name: 'React Navigation',
-        slug: 'NavigatorExample',
+        slug: 'Advanced/NavigatorExample',
       },
       {
         name: 'Custom Handle',
-        slug: 'CustomHandleExample',
+        slug: 'Advanced/CustomHandleExample',
       },
       {
         name: 'Backdrop',
-        slug: 'BackdropExample',
+        slug: 'Advanced/BackdropExample',
       },
       {
         name: 'Map',
-        slug: 'MapExample',
+        slug: 'Advanced/MapExample',
       },
       {
         name: 'Dynamic Snap Point',
-        slug: 'DynamicSnapPointExample',
+        slug: 'Advanced/DynamicSnapPointExample',
       },
     ],
   },
@@ -57,6 +78,15 @@ const RootScreen = () => {
   // hooks
   const { navigate } = useNavigation();
   const safeInsets = useSafeArea();
+
+  // variables
+  const author = useMemo(
+    () => ({
+      username: 'Mo Gorhom',
+      url: 'https://gorhom.dev',
+    }),
+    []
+  );
 
   // callbacks
   const handleOnPress = (slug: string) => navigate(slug);
@@ -68,10 +98,7 @@ const RootScreen = () => {
       version={version}
       name="Bottom Sheet"
       description={description}
-      author={{
-        username: 'Mo Gorhom',
-        url: 'https://gorhom.dev',
-      }}
+      author={author}
       data={data}
       safeInsets={safeInsets}
       handleOnPress={handleOnPress}
