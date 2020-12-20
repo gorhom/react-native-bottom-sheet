@@ -6,8 +6,8 @@ import {
   useSharedValue,
   scrollTo,
   runOnUI,
+  useAnimatedProps,
 } from 'react-native-reanimated';
-import { useScrollableAnimatedProps } from './useScrollableAnimatedProps';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 import type { Scrollable, ScrollableType } from '../types';
 
@@ -18,14 +18,19 @@ export const useScrollableInternal = (type: ScrollableType) => {
   const scrollableContentOffsetY = useSharedValue<number>(0);
 
   // hooks
-  const scrollableAnimatedProps = useScrollableAnimatedProps();
   const {
     snapPointsCount,
     animatedIndex,
+    scrollableDecelerationRate,
     scrollableContentOffsetY: _scrollableContentOffsetY,
     setScrollableRef,
     removeScrollableRef,
   } = useBottomSheetInternal();
+
+  // variables
+  const scrollableAnimatedProps = useAnimatedProps(() => ({
+    decelerationRate: scrollableDecelerationRate.value,
+  }));
 
   // callbacks
   const handleScrollEvent = useAnimatedScrollHandler({
