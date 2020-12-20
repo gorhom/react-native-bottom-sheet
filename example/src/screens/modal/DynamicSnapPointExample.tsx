@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useSafeArea } from 'react-native-safe-area-context';
-import { Easing } from 'react-native-reanimated';
-import Button from '../components/button';
+import Button from '../../components/button';
+import withModalProvider from '../withModalProvider';
 
 const DynamicSnapPointExample = () => {
   // state
@@ -11,11 +11,11 @@ const DynamicSnapPointExample = () => {
   const [contentHeight, setContentHeight] = useState(0);
 
   // hooks
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
   const { bottom: safeBottomArea } = useSafeArea();
 
   // variables
-  const snapPoints = useMemo(() => [0, contentHeight], [contentHeight]);
+  const snapPoints = useMemo(() => [contentHeight], [contentHeight]);
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {
@@ -24,11 +24,12 @@ const DynamicSnapPointExample = () => {
   const handleDecreaseContentPress = useCallback(() => {
     setCount(state => Math.max(state - 1, 0));
   }, []);
-  const handleExpandPress = useCallback(() => {
-    bottomSheetRef.current?.expand();
+
+  const handlePresentPress = useCallback(() => {
+    bottomSheetRef.current?.present();
   }, []);
-  const handleClosePress = useCallback(() => {
-    bottomSheetRef.current?.close();
+  const handleDismissPress = useCallback(() => {
+    bottomSheetRef.current?.dismiss();
   }, []);
   const handleOnLayout = useCallback(
     ({
@@ -66,22 +67,19 @@ const DynamicSnapPointExample = () => {
   return (
     <View style={styles.container}>
       <Button
-        label="Expand"
+        label="Present"
         style={styles.buttonContainer}
-        onPress={handleExpandPress}
+        onPress={handlePresentPress}
       />
       <Button
-        label="Close"
+        label="Dismiss"
         style={styles.buttonContainer}
-        onPress={handleClosePress}
+        onPress={handleDismissPress}
       />
-      <BottomSheet
+      <BottomSheetModal
         ref={bottomSheetRef}
-        index={1}
+        index={0}
         snapPoints={snapPoints}
-        animateOnMount={true}
-        animationEasing={Easing.out(Easing.quad)}
-        animationDuration={250}
         backgroundComponent={renderBackground}
       >
         <BottomSheetView
@@ -89,7 +87,7 @@ const DynamicSnapPointExample = () => {
           onLayout={handleOnLayout}
         >
           <Text style={styles.message}>
-            Could this sheet resize to its content height ?
+            Could this sheet modal resize to its content height ?
           </Text>
           <View style={emojiContainerStyle}>
             <Text style={styles.emoji}>😍</Text>
@@ -105,7 +103,7 @@ const DynamicSnapPointExample = () => {
             onPress={handleDecreaseContentPress}
           />
         </BottomSheetView>
-      </BottomSheet>
+      </BottomSheetModal>
     </View>
   );
 };
@@ -143,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DynamicSnapPointExample;
+export default withModalProvider(DynamicSnapPointExample);

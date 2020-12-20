@@ -23,5 +23,10 @@ export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop'
 // backdrop
 export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 
+// modal
+export { default as BottomSheetModal } from './components/bottomSheetModal';
+export { default as BottomSheetModalProvider } from './components/bottomSheetModalProvider';
+
 // hooks
 export { useBottomSheet } from './hooks/useBottomSheet';
+export { useBottomSheetModal } from './hooks/useBottomSheetModal';

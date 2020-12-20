@@ -1,15 +1,18 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
-import Button from '../components/button';
-import ContactList from '../components/contactList';
+import BottomSheet from '@gorhom/bottom-sheet';
+import Handle from '../../components/handle';
+import Button from '../../components/button';
+import ContactList from '../../components/contactList';
 
-const BackdropExample = () => {
+const CustomHandleExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const snapPoints = useMemo(() => [150, 300, 450], []);
+
+  // styles
 
   // callbacks
   const handleSnapPress = useCallback(index => {
@@ -29,7 +32,7 @@ const BackdropExample = () => {
   const renderHeader = useCallback(() => {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Backdrop Example</Text>
+        <Text style={styles.title}>Custom Handle Example</Text>
       </View>
     );
   }, []);
@@ -37,17 +40,17 @@ const BackdropExample = () => {
   return (
     <View style={styles.container}>
       <Button
-        label="Snap To 90%"
+        label="Snap To 450"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(2)}
       />
       <Button
-        label="Snap To 50%"
+        label="Snap To 300"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(1)}
       />
       <Button
-        label="Snap To 25%"
+        label="Snap To 150"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
       />
@@ -70,7 +73,7 @@ const BackdropExample = () => {
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
-        backdropComponent={BottomSheetBackdrop}
+        handleComponent={Handle}
       >
         <ContactList type="View" count={3} header={renderHeader} />
       </BottomSheet>
@@ -88,13 +91,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: 'white',
   },
-  shadowBackdrop: {
+  shadowOverlay: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
   },
   title: {
     fontSize: 46,
@@ -110,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BackdropExample;
+export default CustomHandleExample;

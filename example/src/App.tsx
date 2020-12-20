@@ -13,55 +13,118 @@ function App() {
           getComponent={() => require('./screens/Root').default}
           options={{ headerShown: false }}
         />
-        {/* basic examples */}
+        {/* static examples */}
         <Stack.Screen
-          name="FlatListExample"
+          name="Basic/FlatListExample"
+          options={{
+            title: 'FlatList Example',
+          }}
           getComponent={() =>
-            require('./screens/BasicExamples').FlatListExampleScreen
+            require('./screens/basic/BasicExamples').FlatListExampleScreen
           }
         />
         <Stack.Screen
-          name="SectionListExample"
+          name="Basic/SectionListExample"
+          options={{
+            title: 'SectionList Example',
+          }}
           getComponent={() =>
-            require('./screens/BasicExamples').SectionListExampleScreen
+            require('./screens/basic/BasicExamples').SectionListExampleScreen
           }
         />
         <Stack.Screen
-          name="ScrollViewExample"
+          name="Basic/ScrollViewExample"
+          options={{
+            title: 'ScrollView Example',
+          }}
           getComponent={() =>
-            require('./screens/BasicExamples').ScrollViewExampleScreen
+            require('./screens/basic/BasicExamples').ScrollViewExampleScreen
           }
         />
         <Stack.Screen
-          name="ViewExample"
+          name="Basic/ViewExample"
+          options={{
+            title: 'View Example',
+          }}
           getComponent={() =>
-            require('./screens/BasicExamples').ViewExampleScreen
+            require('./screens/basic/BasicExamples').ViewExampleScreen
+          }
+        />
+        {/* modal examples */}
+        <Stack.Screen
+          name="Modal/SimpleExample"
+          options={{
+            title: 'Modal Simple Example',
+          }}
+          getComponent={() => require('./screens/modal/SimpleExample').default}
+        />
+        <Stack.Screen
+          name="Modal/BackdropExample"
+          options={{
+            title: 'Modal Backdrop Example',
+          }}
+          getComponent={() =>
+            require('./screens/modal/BackdropExample').default
+          }
+        />
+        <Stack.Screen
+          name="Modal/StackExample"
+          options={{
+            title: 'Stack Modals Example',
+          }}
+          getComponent={() => require('./screens/modal/StackExample').default}
+        />
+        <Stack.Screen
+          name="Modal/DynamicSnapPointExample"
+          options={{
+            title: 'Dynamic Snap Point',
+          }}
+          getComponent={() =>
+            require('./screens/modal/DynamicSnapPointExample').default
           }
         />
         {/* advanced examples */}
         <Stack.Screen
-          name="NavigatorExample"
-          getComponent={() => require('./screens/NavigatorExample').default}
+          name="Advanced/NavigatorExample"
+          options={{
+            title: 'Navigator Example',
+          }}
+          getComponent={() =>
+            require('./screens/advanced/NavigatorExample').default
+          }
         />
         <Stack.Screen
-          name="CustomHandleExample"
-          getComponent={() => require('./screens/CustomHandleExample').default}
+          name="Advanced/CustomHandleExample"
+          options={{
+            title: 'Custom Handle Example',
+          }}
+          getComponent={() =>
+            require('./screens/advanced/CustomHandleExample').default
+          }
         />
         <Stack.Screen
-          name="BackdropExample"
-          getComponent={() => require('./screens/BackdropExample').default}
+          name="Advanced/BackdropExample"
+          options={{
+            title: 'Backdrop Example',
+          }}
+          getComponent={() =>
+            require('./screens/advanced/BackdropExample').default
+          }
         />
         <Stack.Screen
-          name="MapExample"
+          name="Advanced/MapExample"
           options={{
             headerShown: false,
           }}
-          getComponent={() => require('./screens/MapExample').default}
+          getComponent={() => require('./screens/advanced/MapExample').default}
         />
         <Stack.Screen
-          name="DynamicSnapPointExample"
+          name="Advanced/DynamicSnapPointExample"
+          options={{
+            title: 'Dynamic Snap Point',
+          }}
           getComponent={() =>
-            require('./screens/DynamicSnapPointExample').default
+            require('./screens/advanced/DynamicSnapPointExample').default
           }
         />
       </Stack.Navigator>

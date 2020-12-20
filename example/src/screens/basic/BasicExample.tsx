@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Button from '../components/button';
-import ContactList from '../components/contactList';
+import Button from '../../components/button';
+import ContactList from '../../components/contactList';
 
 const BasicExample = () => {
   // hooks
