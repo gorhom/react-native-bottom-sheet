@@ -14,20 +14,22 @@ import {
 } from '../../utilities';
 import ContactItem from '../contactItem';
 
-interface ContactListProps {
+export interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
   style?: ViewStyle;
   header?: (() => JSX.Element) | null;
-  onLayout?: () => void;
+  onItemPress?: () => void;
 }
+
+const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
 
 const ContactList = ({
   type,
-  count = 50,
+  count = 25,
   header = null,
   style,
-  onLayout,
+  onItemPress,
 }: ContactListProps) => {
   // hooks
   const { bottom: bottomSafeArea } = useSafeArea();
@@ -35,6 +37,7 @@ const ContactList = ({
   // variables
   const sections = useMemo(() => createContactSectionsMockData(count), [count]);
   const data = useMemo(() => createContactListMockData(count), [count]);
+  const stickyHeaderIndices = useMemo(() => [0], []);
 
   // styles
   const contentContainerStyle = useMemo(
@@ -53,9 +56,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderSectionItem = useCallback(
     ({ item, index }) => (
@@ -63,9 +67,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderScrollViewItem = useCallback(
     (item, index) => (
@@ -73,9 +78,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderSectionHeader = useCallback(
     ({ section }) => (
@@ -90,13 +96,13 @@ const ContactList = ({
     return (
       <BottomSheetFlatList
         data={data}
-        keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
-        initialNumToRender={10}
-        windowSize={20}
+        keyExtractor={keyExtractor}
+        initialNumToRender={5}
+        windowSize={10}
         maxToRenderPerBatch={5}
         renderItem={renderFlatListItem}
         {...(header && {
-          stickyHeaderIndices: [0],
+          stickyHeaderIndices: stickyHeaderIndices,
           ListHeaderComponent: header,
         })}
         contentContainerStyle={contentContainerStyle}
@@ -118,11 +124,11 @@ const ContactList = ({
       <BottomSheetSectionList
         contentContainerStyle={contentContainerStyle}
         stickySectionHeadersEnabled
-        initialNumToRender={10}
-        windowSize={20}
+        initialNumToRender={5}
+        windowSize={10}
         maxToRenderPerBatch={5}
         sections={sections}
-        keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
+        keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionItem}
         {...(header && {
@@ -138,7 +144,6 @@ const ContactList = ({
       <BottomSheetView style={styles.contentContainer}>
         {header && header()}
         {data.map(renderScrollViewItem)}
-        <View onLayout={onLayout} />
       </BottomSheetView>
     );
   }

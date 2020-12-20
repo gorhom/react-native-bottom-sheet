@@ -9,4 +9,5 @@ export type AppStackParamsList = {
   CustomHandleExample: undefined;
   ShadowOverlayExample: undefined;
   MapExample: undefined;
+  DynamicSnapPointExample: undefined;
 };

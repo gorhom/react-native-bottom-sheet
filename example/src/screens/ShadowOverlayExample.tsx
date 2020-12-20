@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -14,7 +13,6 @@ import ContactList from '../components/contactList';
 const ShadowOverlayExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const headerHeight = useHeaderHeight();
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
@@ -98,10 +96,9 @@ const ShadowOverlayExample = () => {
       />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
-        topInset={headerHeight}
-        animatedPositionIndex={animatedPositionIndex}
+        animatedIndex={animatedPositionIndex}
         onChange={handleSheetChanges}
       >
         <ContactList type="View" count={3} header={renderHeader} />

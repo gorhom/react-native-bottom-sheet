@@ -58,6 +58,12 @@ function App() {
           }}
           getComponent={() => require('./screens/MapExample').default}
         />
+        <Stack.Screen
+          name="DynamicSnapPointExample"
+          getComponent={() =>
+            require('./screens/DynamicSnapPointExample').default
+          }
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
