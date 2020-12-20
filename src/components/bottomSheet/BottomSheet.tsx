@@ -89,6 +89,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animatedIndex: _providedAnimatedIndex,
       // callbacks
       onChange: _providedOnChange,
+      onAnimate: _providedOnAnimate,
       // components
       handleComponent,
       backdropComponent,
@@ -214,6 +215,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [_providedOnChange]
     );
+    const handleOnAnimate = useCallback(
+      (toPoint: number) => {
+        if (!_providedOnAnimate) {
+          return;
+        }
+        const toIndex = snapPoints.findIndex(item => item === toPoint);
+        if (toIndex !== currentIndexRef.current) {
+          _providedOnAnimate(currentIndexRef.current, toIndex);
+        }
+      },
+      [_providedOnAnimate, snapPoints]
+    );
     const handleSettingScrollableRef = useCallback(
       (scrollableRef: ScrollableRef) => {
         setScrollableRef(scrollableRef);
@@ -266,6 +279,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animateToPoint = useCallback(
       (point: number) => {
         'worklet';
+
+        runOnJS(handleOnAnimate)(point);
+
         animationState.value = ANIMATION_STATE.RUNNING;
         animatedPosition.value = withTiming(
           point,
@@ -282,6 +298,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animationDuration,
         animationEasing,
         animateToPointCompleted,
+        handleOnAnimate,
       ]
     );
 
