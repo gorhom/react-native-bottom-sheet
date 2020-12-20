@@ -36,6 +36,7 @@ import {
   BottomSheetProvider,
 } from '../../contexts';
 import BottomSheetContainer from '../bottomSheetContainer';
+import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetContentWrapper from '../bottomSheetContentWrapper';
@@ -89,6 +90,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       onChange: _providedOnChange,
       // components
       handleComponent,
+      backdropComponent,
       backgroundComponent,
       children,
     } = props;
@@ -481,6 +483,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     console.log('BottomSheet', 'render', snapPoints, isLayoutCalculated);
     return (
       <BottomSheetProvider value={externalContextVariables}>
+        <BottomSheetBackdropContainer
+          key="BottomSheetBackdropContainer"
+          animatedIndex={animatedIndex}
+          animatedPosition={animatedPosition}
+          backdropComponent={backdropComponent}
+        />
         <BottomSheetContainer
           key="BottomSheetContainer"
           shouldMeasureHeight={shouldMeasureContainerHeight}

@@ -1,10 +1,13 @@
 export { default } from './components/bottomSheet';
+
+// scrollables
 export { default as BottomSheetFlatList } from './components/flatList';
 export { default as BottomSheetSectionList } from './components/sectionList';
 export { default as BottomSheetScrollView } from './components/scrollView';
 export { default as BottomSheetDraggableView } from './components/bottomSheetDraggableView';
 export { default as BottomSheetView } from './components/view';
 
+// helpers
 import BottomSheetTouchable from './components/touchables';
 export const {
   TouchableHighlight,
@@ -12,6 +15,13 @@ export const {
   TouchableWithoutFeedback,
 } = BottomSheetTouchable;
 
+// default components / types
 export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
+export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
+export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop';
 
+// backdrop
+export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
+
+// hooks
 export { useBottomSheet } from './hooks/useBottomSheet';
