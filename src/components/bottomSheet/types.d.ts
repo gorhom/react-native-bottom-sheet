@@ -37,19 +37,32 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
   containerHeight?: number;
   /**
    * Top inset value helps to calculate percentage snap points values,
-   * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
+   * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or
+   * from `react-native-safe-area-context` hook `useSafeArea`.
    * @type number
    * @default 0
    */
   topInset?: number;
-
-  // animated nodes
+  /**
+   * Enable content panning gesture interaction.
+   * @type boolean
+   * @default true
+   */
+  enableContentPanningGesture?: boolean;
+  /**
+   * Enable handle panning gesture interaction.
+   * @type boolean
+   * @default true
+   */
+  enableHandlePanningGesture?: boolean;
   /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
    * @default false
    */
   animateOnMount?: boolean;
+
+  // animated nodes
   /**
    * Animated value to be used as a callback of the position node internally.
    * @type Animated.Value<number>

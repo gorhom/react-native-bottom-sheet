@@ -48,6 +48,8 @@ import {
   DEFAULT_HANDLE_HEIGHT,
   DEFAULT_ANIMATE_ON_MOUNT,
   DECELERATION_RATE,
+  DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
+  DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -74,6 +76,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       index: _providedIndex = 0,
       snapPoints: _providedSnapPoints,
       animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
+      enableContentPanningGesture = DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
+      enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       // layout
       handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
@@ -341,6 +345,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region contexts variables
     const internalContextVariables = useMemo(
       () => ({
+        enableContentPanningGesture,
         snapPointsCount: snapPoints.length,
         animatedIndex,
         animatedPosition,
@@ -362,6 +367,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         removeScrollableRef,
         scrollableContentOffsetY,
         scrollableDecelerationRate,
+        enableContentPanningGesture,
       ]
     );
     const externalContextVariables = useMemo(
@@ -504,6 +510,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   simultaneousHandlers={contentWrapperGestureRef}
                   shouldMeasureHeight={shouldMeasureHandleHeight}
                   snapPoints={snapPoints}
+                  enableHandlePanningGesture={enableHandlePanningGesture}
                   animateToPoint={animateToPoint}
                   handleComponent={handleComponent}
                   onMeasureHeight={handleOnHandleMeasureHeight}

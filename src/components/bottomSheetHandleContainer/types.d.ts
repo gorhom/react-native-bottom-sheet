@@ -4,7 +4,7 @@ import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 
 export interface BottomSheetHandleContainerProps
   extends Pick<PanGestureHandlerProperties, 'simultaneousHandlers'>,
-    Pick<BottomSheetProps, 'handleComponent'>,
+    Pick<BottomSheetProps, 'handleComponent' | 'enableHandlePanningGesture'>,
     BottomSheetHandleProps {
   shouldMeasureHeight: boolean;
   snapPoints: Array<number>;

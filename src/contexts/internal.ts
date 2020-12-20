@@ -5,6 +5,7 @@ import { ANIMATION_STATE } from '../constants';
 import type { Scrollable, ScrollableRef } from '../types';
 
 export type BottomSheetInternalContextType = {
+  enableContentPanningGesture: boolean;
   snapPointsCount: number;
   animatedPosition: Animated.SharedValue<number>;
   animatedIndex: Animated.SharedValue<number>;
