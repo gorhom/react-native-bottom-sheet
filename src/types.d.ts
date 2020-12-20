@@ -1,5 +1,6 @@
 import type { FlatList, ScrollView, SectionList } from 'react-native';
 
+//#region Methods
 export type BottomSheetMethods = {
   /**
    * Snap to one of the provided points from `snapPoints`.
@@ -22,7 +23,9 @@ export type BottomSheetMethods = {
    */
   close: () => void;
 };
+//#endregion
 
+//#region scrollables
 export type Scrollable = FlatList | ScrollView | SectionList;
 
 export type ScrollableType = 'FlatList' | 'ScrollView' | 'SectionList' | 'View';
@@ -33,3 +36,4 @@ export type ScrollableRef = {
   type: ScrollableType;
   didResize: boolean;
 };
+//#endregion

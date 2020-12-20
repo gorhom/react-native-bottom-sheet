@@ -5,7 +5,7 @@ import { styles } from './styles';
 
 const BottomSheetHandleComponent = () => {
   return (
-    <View style={styles.container} shouldRasterizeIOS={true}>
+    <View style={styles.container}>
       <View style={styles.indicator} />
     </View>
   );

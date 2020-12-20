@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Handle from '../components/handle';
 import Button from '../components/button';
@@ -9,7 +8,6 @@ import ContactList from '../components/contactList';
 const CustomHandleExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const headerHeight = useHeaderHeight();
 
   // variables
   const snapPoints = useMemo(() => [150, 300, 450], []);
@@ -73,9 +71,8 @@ const CustomHandleExample = () => {
       />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        initialSnapIndex={1}
-        topInset={headerHeight}
         handleComponent={Handle}
       >
         <ContactList type="View" count={3} header={renderHeader} />

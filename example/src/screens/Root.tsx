@@ -45,6 +45,10 @@ const data = [
         name: 'Map',
         slug: 'MapExample',
       },
+      {
+        name: 'Dynamic Snap Point',
+        slug: 'DynamicSnapPointExample',
+      },
     ],
   },
 ];

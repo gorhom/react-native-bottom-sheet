@@ -5,7 +5,9 @@ import { ANIMATION_STATE } from '../constants';
 import type { Scrollable, ScrollableRef } from '../types';
 
 export type BottomSheetInternalContextType = {
+  snapPointsCount: number;
   animatedPosition: Animated.SharedValue<number>;
+  animatedIndex: Animated.SharedValue<number>;
   animationState: Animated.SharedValue<ANIMATION_STATE>;
   contentWrapperGestureRef: Ref<TapGestureHandler>;
   contentPanGestureHandler: any;
@@ -16,8 +18,6 @@ export type BottomSheetInternalContextType = {
 };
 
 // @ts-ignore
-export const BottomSheetInternalContext = createContext<
-  BottomSheetInternalContextType
->();
+export const BottomSheetInternalContext = createContext<BottomSheetInternalContextType>();
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;

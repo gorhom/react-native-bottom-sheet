@@ -7,9 +7,10 @@ import { styles } from './styles';
 import { runOnUI } from 'react-native-reanimated';
 
 const BottomSheetViewComponent = ({
-  children,
   style,
   focusHook: useFocusHook = useEffect,
+  children,
+  ...reset
 }: BottomSheetViewProps) => {
   // hooks
   const { scrollableContentOffsetY } = useBottomSheetInternal();
@@ -35,7 +36,11 @@ const BottomSheetViewComponent = ({
   useFocusHook(handleSettingScrollable);
 
   //render
-  return <RNView style={containerStyle}>{children}</RNView>;
+  return (
+    <RNView style={containerStyle} {...reset}>
+      {children}
+    </RNView>
+  );
 };
 
 const BottomSheetView = memo(BottomSheetViewComponent, isEqual);

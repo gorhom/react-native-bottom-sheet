@@ -14,7 +14,7 @@ import {
 import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
-import DraggableView from '../draggableView';
+import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
 import type {
   BottomSheetSectionListProps,
@@ -55,7 +55,7 @@ const BottomSheetSectionListComponent = forwardRef(
 
     // render
     return (
-      <DraggableView
+      <BottomSheetDraggableView
         nativeGestureRef={nativeGestureRef}
         style={styles.container}
       >
@@ -71,12 +71,11 @@ const BottomSheetSectionListComponent = forwardRef(
             bounces={false}
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
-            {...(scrollableAnimatedProps
-              ? { animatedProps: scrollableAnimatedProps }
-              : {})}
+            // @ts-ignore
+            animatedProps={scrollableAnimatedProps}
           />
         </NativeViewGestureHandler>
-      </DraggableView>
+      </BottomSheetDraggableView>
     );
   }
 );

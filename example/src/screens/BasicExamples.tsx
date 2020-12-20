@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ContactList from '../components/contactList';
 import Button from '../components/button';
-import { useHeaderHeight } from '@react-navigation/stack';
 
 interface ExampleScreenProps {
   title: string;
@@ -11,11 +10,10 @@ interface ExampleScreenProps {
   count?: number;
 }
 
-const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
+const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
   memo(() => {
     // hooks
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const headerHeight = useHeaderHeight();
 
     // variables
     const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
@@ -71,9 +69,8 @@ const createExampleScreen = ({ type, count = 50 }: ExampleScreenProps) =>
         />
         <BottomSheet
           ref={bottomSheetRef}
+          index={1}
           snapPoints={snapPoints}
-          initialSnapIndex={1}
-          topInset={headerHeight}
           animateOnMount={true}
           onChange={handleSheetChange}
         >
