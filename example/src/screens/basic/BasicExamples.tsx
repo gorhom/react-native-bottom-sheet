@@ -49,6 +49,12 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
     const handleSheetChange = useCallback(index => {
       console.log('handleSheetChange', index);
     }, []);
+    const handleSheetAnimate = useCallback(
+      (fromIndex: number, toIndex: number) => {
+        console.log('handleSheetAnimate', `from ${fromIndex} to ${toIndex}`);
+      },
+      []
+    );
     const handleSnapPress = useCallback(index => {
       bottomSheetRef.current?.snapTo(index);
     }, []);
@@ -119,6 +125,7 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
           enableContentPanningGesture={enableContentPanningGesture}
           enableHandlePanningGesture={enableHandlePanningGesture}
           onChange={handleSheetChange}
+          onAnimate={handleSheetAnimate}
         >
           <ContactList key={`${type}.list`} type={type} count={count} />
         </BottomSheet>
