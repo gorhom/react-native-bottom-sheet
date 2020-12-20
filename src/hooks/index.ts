@@ -6,3 +6,7 @@ export { useInteractivePanGestureHandler } from './useInteractivePanGestureHandl
 export { useTapGestureHandler } from './useTapGestureHandler';
 export { usePropsValidator } from './usePropsValidator';
 export { useNormalizedSnapPoints } from './useNormalizedSnapPoints';
+
+// modal
+export { useBottomSheetModal } from './useBottomSheetModal';
+export { useBottomSheetModalInternal } from './useBottomSheetModalInternal';

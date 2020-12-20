@@ -23,6 +23,7 @@ import Animated, {
   Extrapolate,
   runOnUI,
   useWorkletCallback,
+  useAnimatedProps,
 } from 'react-native-reanimated';
 import { State, TapGestureHandler } from 'react-native-gesture-handler';
 import {
@@ -40,7 +41,7 @@ import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetContentWrapper from '../bottomSheetContentWrapper';
-import BottomSheetDebugView from '../bottomSheetDebugView';
+// import BottomSheetDebugView from '../bottomSheetDebugView';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import { GESTURE, ANIMATION_STATE, WINDOW_HEIGHT } from '../../constants';
 import {
@@ -143,7 +144,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region variables
-    const currentIndexRef = useRef<number>(_providedIndex);
+    const currentIndexRef = useRef<number>(
+      animateOnMount ? -1 : _providedIndex
+    );
     const didMountOnAnimate = useRef(false);
 
     // scrollable variables
@@ -176,7 +179,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         : snapPoints[currentIndexRef.current];
     }, [snapPoints, animateOnMount, safeContainerHeight, topInset]);
 
-    // content wrapper
+    //content wrapper
+    const contentWrapperMaxDeltaY = useSharedValue<number>(0);
     const contentWrapperGestureState = useSharedValue<State>(
       State.UNDETERMINED
     );
@@ -185,25 +189,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region private methods
     const refreshUIElements = useCallback(() => {
       const currentPositionIndex = Math.max(currentIndexRef.current, 0);
-      if (contentWrapperGestureRef.current) {
-        // @ts-ignore
-        contentWrapperGestureRef.current.setNativeProps({
-          maxDeltaY: Math.abs(
-            snapPoints[snapPoints.length - 1] - snapPoints[currentPositionIndex]
-          ),
-        });
-      }
+
+      contentWrapperMaxDeltaY.value = Math.abs(
+        snapPoints[snapPoints.length - 1] - snapPoints[currentPositionIndex]
+      );
 
       if (currentPositionIndex === snapPoints.length - 1) {
         flashScrollableIndicators();
       }
-    }, [snapPoints, flashScrollableIndicators]);
+    }, [contentWrapperMaxDeltaY, snapPoints, flashScrollableIndicators]);
     const handleOnChange = useCallback(
       (index: number) => {
         if (index === currentIndexRef.current) {
           return;
         }
-
         currentIndexRef.current = index;
 
         if (_providedOnChange) {
@@ -236,13 +235,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         .reverse();
 
       /**
-       * this been added to resolve issues when provide
-       * one snap point.
+       * we add the close state index `-1`
        */
-      if (snapPoints.length === 1) {
-        adjustedSnapPoints.push(safeContainerHeight);
-        adjustedSnapPointsIndexes.push(-1);
-      }
+      adjustedSnapPoints.push(safeContainerHeight);
+      adjustedSnapPointsIndexes.push(-1);
 
       return interpolate(
         animatedPosition.value,
@@ -250,21 +246,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         adjustedSnapPointsIndexes,
         Extrapolate.CLAMP
       );
-    }, [snapPoints, sheetHeight]);
+    }, [snapPoints, safeContainerHeight]);
 
     // callbacks
     const animateToPointCompleted = useWorkletCallback(
-      isCancelled => {
+      didFinish => {
         animationState.value = ANIMATION_STATE.STOPPED;
 
-        if (!isCancelled) {
+        if (!didFinish) {
           return;
         }
+
         const tempCurrentPositionIndex = Math.round(animatedIndex.value);
-        if (tempCurrentPositionIndex !== currentIndexRef.current) {
-          runOnJS(handleOnChange)(tempCurrentPositionIndex);
-          runOnJS(refreshUIElements)();
-        }
+        runOnJS(handleOnChange)(tempCurrentPositionIndex);
+        runOnJS(refreshUIElements)();
       },
       [animatedIndex.value, animationState, handleOnChange, refreshUIElements]
     );
@@ -298,6 +293,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animateToPoint,
       scrollableContentOffsetY
     );
+
+    // content wrapper
+    const contentWrapperAnimatedProps = useAnimatedProps(() => ({
+      maxDeltaY: contentWrapperMaxDeltaY.value,
+    }));
     //#endregion
 
     //#region layout callbacks
@@ -418,7 +418,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       if (
         animateOnMount &&
         isLayoutCalculated &&
-        didMountOnAnimate.current === false
+        didMountOnAnimate.current === false &&
+        snapPoints[_providedIndex] !== safeContainerHeight
       ) {
         requestAnimationFrame(() =>
           runOnUI(animateToPoint)(snapPoints[_providedIndex])
@@ -430,6 +431,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animateOnMount,
       isLayoutCalculated,
       snapPoints,
+      safeContainerHeight,
       animateToPoint,
     ]);
 
@@ -480,7 +482,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    console.log('BottomSheet', 'render', snapPoints, isLayoutCalculated);
+    // console.log('BottomSheet', 'render', snapPoints);
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer
@@ -497,6 +499,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           <BottomSheetContentWrapper
             ref={contentWrapperGestureRef}
             gestureState={contentWrapperGestureState}
+            animatedProps={contentWrapperAnimatedProps}
           >
             <Animated.View
               accessible={true}
@@ -536,13 +539,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               </BottomSheetInternalProvider>
             </Animated.View>
           </BottomSheetContentWrapper>
-          <BottomSheetDebugView
+          {/* <BottomSheetDebugView
             values={{
               animatedIndex,
               animatedPosition,
               tapState: contentWrapperGestureState,
             }}
-          />
+          /> */}
         </BottomSheetContainer>
       </BottomSheetProvider>
     );

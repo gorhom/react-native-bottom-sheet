@@ -1,7 +1,7 @@
 import type { FlatList, ScrollView, SectionList } from 'react-native';
 
 //#region Methods
-export type BottomSheetMethods = {
+export interface BottomSheetMethods {
   /**
    * Snap to one of the provided points from `snapPoints`.
    * @type (index: number) => void
@@ -22,7 +22,20 @@ export type BottomSheetMethods = {
    * @type () => void
    */
   close: () => void;
-};
+}
+
+export interface BottomSheetModalMethods extends BottomSheetMethods {
+  /**
+   * Mount and present the modal.
+   * @type () => void
+   */
+  present: () => void;
+  /**
+   * Close and unmount the modal.
+   * @type () => void;
+   */
+  dismiss: () => void;
+}
 //#endregion
 
 //#region scrollables
