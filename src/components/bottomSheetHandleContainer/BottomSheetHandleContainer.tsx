@@ -11,6 +11,7 @@ const BottomSheetHandleContainerComponent = ({
   animatedIndex,
   animatedPosition,
   simultaneousHandlers,
+  enableHandlePanningGesture,
   shouldMeasureHeight,
   snapPoints,
   animateToPoint,
@@ -71,6 +72,7 @@ const BottomSheetHandleContainerComponent = ({
   // );
   return shouldRenderHandle ? (
     <PanGestureHandler
+      enabled={enableHandlePanningGesture}
       simultaneousHandlers={simultaneousHandlers}
       shouldCancelWhenOutside={false}
       onGestureEvent={handlePanGestureHandler}

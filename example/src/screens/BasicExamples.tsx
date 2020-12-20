@@ -1,4 +1,4 @@
-import React, { useCallback, memo, useRef, useMemo } from 'react';
+import React, { useCallback, memo, useRef, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ContactList from '../components/contactList';
@@ -12,13 +12,40 @@ interface ExampleScreenProps {
 
 const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
   memo(() => {
-    // hooks
+    //#region state
+    const [
+      enableContentPanningGesture,
+      setEnableContentPanningGesture,
+    ] = useState(true);
+    const [
+      enableHandlePanningGesture,
+      setEnableHandlePanningGesture,
+    ] = useState(true);
+    //#endregion
+
+    //#region refs
     const bottomSheetRef = useRef<BottomSheet>(null);
+    //#endregion
 
-    // variables
+    //#region variables
     const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+    const enableContentPanningGestureButtonText = useMemo(
+      () =>
+        enableContentPanningGesture
+          ? 'Disable Content Panning Gesture'
+          : 'Enable Content Panning Gesture',
+      [enableContentPanningGesture]
+    );
+    const enableHandlePanningGestureButtonText = useMemo(
+      () =>
+        enableHandlePanningGesture
+          ? 'Disable Handle Panning Gesture'
+          : 'Enable Handle Panning Gesture',
+      [enableHandlePanningGesture]
+    );
+    //#endregion
 
-    // callbacks
+    //#region callbacks
     const handleSheetChange = useCallback(index => {
       console.log('handleSheetChange', index);
     }, []);
@@ -34,6 +61,13 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
     const handleClosePress = useCallback(() => {
       bottomSheetRef.current?.close();
     }, []);
+    const handleEnableContentPanningGesturePress = useCallback(() => {
+      setEnableContentPanningGesture(state => !state);
+    }, []);
+    const handleEnableHandlePanningGesturePress = useCallback(() => {
+      setEnableHandlePanningGesture(state => !state);
+    }, []);
+    //#endregion
 
     return (
       <View style={styles.container}>
@@ -67,11 +101,23 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
           style={styles.buttonContainer}
           onPress={() => handleClosePress()}
         />
+        <Button
+          label={enableContentPanningGestureButtonText}
+          style={styles.buttonContainer}
+          onPress={handleEnableContentPanningGesturePress}
+        />
+        <Button
+          label={enableHandlePanningGestureButtonText}
+          style={styles.buttonContainer}
+          onPress={handleEnableHandlePanningGesturePress}
+        />
         <BottomSheet
           ref={bottomSheetRef}
           index={1}
           snapPoints={snapPoints}
           animateOnMount={true}
+          enableContentPanningGesture={enableContentPanningGesture}
+          enableHandlePanningGesture={enableHandlePanningGesture}
           onChange={handleSheetChange}
         >
           <ContactList key={`${type}.list`} type={type} count={count} />
