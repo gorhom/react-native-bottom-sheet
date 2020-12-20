@@ -1,7 +1,8 @@
 import type React from 'react';
 import type Animated from 'react-native-reanimated';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
-import type { ViewProps } from 'react-native';
+import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
+import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
 
 export interface BottomSheetProps extends BottomSheetAnimationConfigs {
   // configuration
@@ -89,10 +90,18 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    */
   handleComponent?: React.FC<BottomSheetHandleProps> | null;
   /**
-   * Component to be placed as a background.
-   * @type React.FC\<ViewProps\>
+   * Component to be placed as a sheet backdrop.
+   * @see {BottomSheetBackdropProps}
+   * @type React.FC\<BottomSheetBackdropProps\>
+   * @default null
    */
-  backgroundComponent?: React.FC<ViewProps> | null;
+  backdropComponent?: React.FC<BottomSheetBackdropProps> | null;
+  /**
+   * Component to be placed as a background.
+   * @see {BottomSheetBackgroundProps}
+   * @type React.FC\<BottomSheetBackgroundProps\>
+   */
+  backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
   /**
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode

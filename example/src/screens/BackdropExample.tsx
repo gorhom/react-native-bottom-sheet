@@ -1,41 +1,17 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  interpolate,
-  Extrapolate,
-} from 'react-native-reanimated';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import Button from '../components/button';
 import ContactList from '../components/contactList';
 
-const ShadowOverlayExample = () => {
+const BackdropExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-  const animatedPositionIndex = useSharedValue<number>(0);
-
-  // styles
-
-  const shadowOverlayAnimatedStyle = useAnimatedStyle(
-    () => ({
-      opacity: interpolate(
-        animatedPositionIndex.value,
-        [0, 2],
-        [0, 1],
-        Extrapolate.CLAMP
-      ),
-    }),
-    []
-  );
 
   // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
   }, []);
@@ -53,7 +29,7 @@ const ShadowOverlayExample = () => {
   const renderHeader = useCallback(() => {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Shadow Overlay Example</Text>
+        <Text style={styles.title}>Backdrop Example</Text>
       </View>
     );
   }, []);
@@ -90,16 +66,11 @@ const ShadowOverlayExample = () => {
         style={styles.buttonContainer}
         onPress={() => handleClosePress()}
       />
-      <Animated.View
-        pointerEvents="none"
-        style={[styles.shadowOverlay, shadowOverlayAnimatedStyle]}
-      />
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
-        animatedIndex={animatedPositionIndex}
-        onChange={handleSheetChanges}
+        backdropComponent={BottomSheetBackdrop}
       >
         <ContactList type="View" count={3} header={renderHeader} />
       </BottomSheet>
@@ -117,7 +88,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: 'white',
   },
-  shadowOverlay: {
+  shadowBackdrop: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -139,4 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShadowOverlayExample;
+export default BackdropExample;

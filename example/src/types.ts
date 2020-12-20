@@ -7,7 +7,7 @@ export type AppStackParamsList = {
   ScrollViewExample: undefined;
   ViewExample: undefined;
   CustomHandleExample: undefined;
-  ShadowOverlayExample: undefined;
+  BackdropExample: undefined;
   MapExample: undefined;
   DynamicSnapPointExample: undefined;
 };

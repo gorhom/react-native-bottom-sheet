@@ -48,8 +48,8 @@ function App() {
           getComponent={() => require('./screens/CustomHandleExample').default}
         />
         <Stack.Screen
-          name="ShadowOverlayExample"
-          getComponent={() => require('./screens/ShadowOverlayExample').default}
+          name="BackdropExample"
+          getComponent={() => require('./screens/BackdropExample').default}
         />
         <Stack.Screen
           name="MapExample"

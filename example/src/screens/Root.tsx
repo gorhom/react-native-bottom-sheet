@@ -38,8 +38,8 @@ const data = [
         slug: 'CustomHandleExample',
       },
       {
-        name: 'Shadow Overlay',
-        slug: 'ShadowOverlayExample',
+        name: 'Backdrop',
+        slug: 'BackdropExample',
       },
       {
         name: 'Map',
