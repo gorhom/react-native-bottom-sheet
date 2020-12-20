@@ -419,7 +419,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animateOnMount &&
         isLayoutCalculated &&
         didMountOnAnimate.current === false &&
-        snapPoints[_providedIndex] !== safeContainerHeight
+        snapPoints[_providedIndex] !== Math.round(safeContainerHeight)
       ) {
         requestAnimationFrame(() =>
           runOnUI(animateToPoint)(snapPoints[_providedIndex])
