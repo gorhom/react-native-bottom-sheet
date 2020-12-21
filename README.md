@@ -1,7 +1,6 @@
 # React Native Bottom Sheet
 
-[![npm](https://img.shields.io/npm/v/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/npm/l/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/badge/types-included-blue?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/)
-
+[![Reanimated v1 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/master?label=Reanimated%20v1&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![Reanimated v2 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/v3?label=Reanimated%20v2&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/npm/l/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/badge/types-included-blue?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/)
 
 A performant interactive bottom sheet with fully configurable options 🚀
 
@@ -24,6 +23,15 @@ A performant interactive bottom sheet with fully configurable options 🚀
 ## Getting Started
 
 Check out [the documentation website](https://gorhom.github.io/react-native-bottom-sheet).
+
+## Versioning
+
+This library been written in 2 versions of `Reanimated`, and kept both implementation in 2 separate branches.
+
+- `Reanimated v1` version is located at [`master` branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) and versioned with `v2` tag.
+- `Reanimated v2` version is located at [`v3` branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v3) and versioned with `v3` tag.
+
+All new features will be added to `Reanimated v2` version, however I will keep maintaining `Reanimated v1` version until further notice.
 
 ## Author
 
