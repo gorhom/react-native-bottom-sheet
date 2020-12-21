@@ -3,11 +3,11 @@
     "push": true,
     "tagName": "v${version}",
     "commitMessage": "chore: release v${version}",
-    "changelog": "auto-changelog --stdout --template ./templates/changelog-template.hbs"
+    "changelog": "auto-changelog --stdout --unreleased --template ./templates/changelog-template.hbs"
   },
   "github": {
     "release": true,
-    "releaseNotes": "auto-changelog --stdout --template ./templates/release-template.hbs"
+    "releaseNotes": "auto-changelog --stdout --unreleased --template ./templates/release-template.hbs"
   },
   "npm": {
     "publish": false
@@ -18,6 +18,6 @@
     }
   },
   "hooks": {
-    "after:bump": "auto-changelog --template ./templates/changelog-template.hbs"
+    "after:bump": "auto-changelog -p --template ./templates/changelog-template.hbs"
   }
 }
