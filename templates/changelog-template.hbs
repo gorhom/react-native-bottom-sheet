@@ -1,0 +1,30 @@
+# Changelog
+
+{{#each releases}}
+  {{#if href}}
+    ## [{{title}}]({{href}}){{#if tag}} - {{isoDate}}{{/if}}
+  {{else}}
+    ## {{title}}{{#if tag}} - {{isoDate}}{{/if}}
+  {{/if}}
+
+  {{#if summary}}
+    {{summary}}
+  {{/if}}
+
+  {{#custom merges commits heading="#### Features" subject="feat: "}}
+    - {{message}} ({{#if id}}[`#{{id}}`]{{else}}[{{shorthash}}]{{/if}}({{href}})).
+  {{/custom}}
+
+  {{#custom merges commits heading="#### Improvements" subject="(chore|refactor|style): "}}
+    - {{message}} ({{#if id}}[`#{{id}}`]{{else}}[{{shorthash}}]{{/if}}({{href}})).
+  {{/custom}}
+
+  {{#custom merges commits heading="#### Fixes" subject="fix: "}}
+    - {{message}} ({{#if id}}[`#{{id}}`]{{else}}[{{shorthash}}]{{/if}}({{href}})).
+  {{/custom}}
+
+  {{#custom merges commits heading="#### Documentations" subject="docs: "}}
+    - {{message}} ({{#if id}}[`#{{id}}`]{{else}}[{{shorthash}}]{{/if}}({{href}})).
+  {{/custom}}
+
+{{/each}}
