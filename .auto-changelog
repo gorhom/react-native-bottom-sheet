@@ -1,0 +1,7 @@
+{
+  "template": "./release-template.hbs",
+  "handlebarsSetup": "./scripts/auto-changelog.js",
+  "ignoreCommitPattern": "^chore: release v",
+  "unreleased": true,
+  "startingVersion": "v3.0.0-alpha.0"
+}
