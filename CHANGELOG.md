@@ -1,60 +1,6 @@
 # Changelog
 
-## [v2.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.0...v2.0.1)
-
-#### Features
-
-- feat: add accessibility support ([`#117`](https://github.com/gorhom/react-native-bottom-sheet/pull/117)).
-- feat: added default backdrop ([`#109`](https://github.com/gorhom/react-native-bottom-sheet/pull/109)).
-- feat: added onAnimate callback ([`#91`](https://github.com/gorhom/react-native-bottom-sheet/pull/91)).
-- feat: allow control panning gestures ([`#88`](https://github.com/gorhom/react-native-bottom-sheet/pull/88)).
-- feat: allow dynamic snap points ([`#81`](https://github.com/gorhom/react-native-bottom-sheet/pull/81)).
-- feat: added animateOnMount prop ([`#78`](https://github.com/gorhom/react-native-bottom-sheet/pull/78)).
-- feat: introduce bottom sheet modal 🔥 ([`#37`](https://github.com/gorhom/react-native-bottom-sheet/pull/37)).
-- feat: added enabled prop ([`#35`](https://github.com/gorhom/react-native-bottom-sheet/pull/35)).
-
-#### Improvements
-
-- chore: updated auto-changelog & release-it configs ([`#129`](https://github.com/gorhom/react-native-bottom-sheet/pull/129)).
-- chore: updated @gorhom/portal ([`#114`](https://github.com/gorhom/react-native-bottom-sheet/pull/114)).
-- chore: refactored modal to become a declarative component  ([`#108`](https://github.com/gorhom/react-native-bottom-sheet/pull/108)).
-- chore: updated handling container height for modals ([`#102`](https://github.com/gorhom/react-native-bottom-sheet/pull/102)).
-- chore: did major refactor and code cleanup ([`#101`](https://github.com/gorhom/react-native-bottom-sheet/pull/101)).
-- chore: updated dependencies ([`#100`](https://github.com/gorhom/react-native-bottom-sheet/pull/100)).
-- chore: updated props naming ([`#89`](https://github.com/gorhom/react-native-bottom-sheet/pull/89)).
-- chore: added useReactiveValue/s ([`#65`](https://github.com/gorhom/react-native-bottom-sheet/pull/65)).
-- chore: improve unstable manualSnapToPoint variable ([`#30`](https://github.com/gorhom/react-native-bottom-sheet/pull/30)).
-- chore: re-enable flipper ([1af2a55](https://github.com/gorhom/react-native-bottom-sheet/commit/1af2a559171d20a8564ff41be90b5e9e0801ffdc)).
-- chore: updated auto-changelog template ([d78f220](https://github.com/gorhom/react-native-bottom-sheet/commit/d78f2202dec04bada348a7733ce51341493f50b8)).
-- chore: remove debugging logs ([9a6a342](https://github.com/gorhom/react-native-bottom-sheet/commit/9a6a3420e71d132db6c186f5e926a881b08d9740)).
-- chore: fix typings ([2ca4b91](https://github.com/gorhom/react-native-bottom-sheet/commit/2ca4b91b06abc4aa8aad4ef239baeeff13944fc1)).
-- chore: updated default background & handle styling ([783642b](https://github.com/gorhom/react-native-bottom-sheet/commit/783642ba56dd33eed75d9d312f0f45265f4b70df)).
-- chore: remove debugger view ([f1dda70](https://github.com/gorhom/react-native-bottom-sheet/commit/f1dda7022b922bca9ff378cc48cac0fa5a497215)).
-- chore: clean up code ([8e62141](https://github.com/gorhom/react-native-bottom-sheet/commit/8e62141fdb96a2b3e2532d16911f6e6e6cc3ccc3)).
-- chore: updated auto-changelog config ([0cd0db0](https://github.com/gorhom/react-native-bottom-sheet/commit/0cd0db094e224e945e7e7b6551f8eb806cff63da)).
-- chore: adjust v1 to v2 release ([9ab44a3](https://github.com/gorhom/react-native-bottom-sheet/commit/9ab44a3210034c9bf01f3c5fa3b691b0118f1258)).
-
-#### Fixes
-
-- fix: initial mounting flicker ([`#115`](https://github.com/gorhom/react-native-bottom-sheet/pull/115)).
-- fix: dynamic snap points on modals ([`#113`](https://github.com/gorhom/react-native-bottom-sheet/pull/113)).
-- fix: fixed animatedIndex interpolate node to handle one snap point ([`#92`](https://github.com/gorhom/react-native-bottom-sheet/pull/92)).
-- fix: updated decelerationRate per platform ([`#36`](https://github.com/gorhom/react-native-bottom-sheet/pull/36)).
-- fix: updated drop gesture if-conditions ([`#28`](https://github.com/gorhom/react-native-bottom-sheet/pull/28)).
-- fix: initial snap points when it is 100% (#105) ([b6b972a](https://github.com/gorhom/react-native-bottom-sheet/commit/b6b972a3c49d1cedc2ba4087f0a96c4083fe6ac1)).
-- fix: add reanimated 2 compatibility to bottom sheet modal ([2d47007](https://github.com/gorhom/react-native-bottom-sheet/commit/2d47007df64ecd0c83035136b5b882eff6d53619)).
-
-#### Documentations
-
-- docs: added documentation website ([`#90`](https://github.com/gorhom/react-native-bottom-sheet/pull/90)).
-- docs: added reference to version 2 branch ([fea90a9](https://github.com/gorhom/react-native-bottom-sheet/commit/fea90a977626e6afc9447c6b68d2f9926c1f239d)).
-- docs: updated website & readme ([7feefc2](https://github.com/gorhom/react-native-bottom-sheet/commit/7feefc24a213b15bd285a3e77fb40d58c93e2323)).
-- docs: updated readme file ([185f7a6](https://github.com/gorhom/react-native-bottom-sheet/commit/185f7a67a90d04e2ee838941706ee20307541a8d)).
-- docs: updated readme file ([0bc1a47](https://github.com/gorhom/react-native-bottom-sheet/commit/0bc1a479514f2d399414d18f5202c82333bba3ca)).
-- docs: updated website ([18618b9](https://github.com/gorhom/react-native-bottom-sheet/commit/18618b9a0265c29e55744623cd3abbaa1f381acb)).
-- docs: fixed navigator example link (by @grifotv) ([fd82d9f](https://github.com/gorhom/react-native-bottom-sheet/commit/fd82d9f380f2912610b2de67d7321b5e5d520d5f)).
-
-## [v3.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.0...v3.0.0) - 2020-12-21
+## [v3.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.1...v3.0.0) - 2020-12-21
 
 #### Features
 
@@ -100,6 +46,18 @@
 - docs: updated documents ([9b1e927](https://github.com/gorhom/react-native-bottom-sheet/commit/9b1e927bc32979cf305ebb903656869507b9d0dd)).
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
+
+## [v2.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.0...v2.0.1) - 2020-12-21
+
+#### Improvements
+
+- chore: updated auto-changelog & release-it configs ([`#129`](https://github.com/gorhom/react-native-bottom-sheet/pull/129)).
+- chore: fix typings ([2ca4b91](https://github.com/gorhom/react-native-bottom-sheet/commit/2ca4b91b06abc4aa8aad4ef239baeeff13944fc1)).
+
+#### Documentations
+
+- docs: updated website & readme ([7feefc2](https://github.com/gorhom/react-native-bottom-sheet/commit/7feefc24a213b15bd285a3e77fb40d58c93e2323)).
+- docs: updated website ([18618b9](https://github.com/gorhom/react-native-bottom-sheet/commit/18618b9a0265c29e55744623cd3abbaa1f381acb)).
 
 ## [v2.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v1.4.1...v2.0.0) - 2020-12-16
 

@@ -18,6 +18,6 @@
     }
   },
   "hooks": {
-    "after:bump": "auto-changelog -p --template ./templates/changelog-template.hbs"
+    "after:bump": "auto-changelog --template ./templates/changelog-template.hbs"
   }
 }
