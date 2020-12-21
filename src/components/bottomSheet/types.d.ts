@@ -3,6 +3,7 @@ import type Animated from 'react-native-reanimated';
 import type { State } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
+import { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 
 export type BottomSheetProps = {
   // configuration
@@ -95,12 +96,14 @@ export type BottomSheetProps = {
   handleComponent?: React.FC<BottomSheetHandleProps> | null;
   /**
    * Component to be placed as a sheet backdrop.
-   * @type React.FC
+   * @see {BottomSheetBackdropProps}
+   * @type React.FC\<BottomSheetBackdropProps\>
    * @default null
    */
-  backdropComponent?: React.FC<any> | null;
+  backdropComponent?: React.FC<BottomSheetBackdropProps> | null;
   /**
    * Component to be placed as a sheet background.
+   * @see {BottomSheetBackgroundProps}
    * @type React.FC\<BottomSheetBackgroundProps\>
    */
   backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
