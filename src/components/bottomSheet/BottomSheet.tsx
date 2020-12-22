@@ -238,7 +238,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region gesture interaction / animation
     // variables
-    const animationState = useSharedValue(ANIMATION_STATE.UNDETERMINED);
+    const animationState = useSharedValue(ANIMATION_STATE.UNDETERMINED, false);
     const animatedPosition = useSharedValue(initialPosition, true);
     const animatedIndex = useDerivedValue(() => {
       const adjustedSnapPoints = snapPoints.slice().reverse();
@@ -274,14 +274,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         runOnJS(handleOnChange)(tempCurrentPositionIndex);
         runOnJS(refreshUIElements)();
       },
-      [animatedIndex.value, animationState, handleOnChange, refreshUIElements]
+      [animatedIndex, animationState, handleOnChange, refreshUIElements]
     );
-    const animateToPoint = useCallback(
+    const animateToPoint = useWorkletCallback(
       (point: number) => {
-        'worklet';
-
-        runOnJS(handleOnAnimate)(point);
-
         animationState.value = ANIMATION_STATE.RUNNING;
         animatedPosition.value = withTiming(
           point,
@@ -291,6 +287,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
           animateToPointCompleted
         );
+
+        runOnJS(handleOnAnimate)(point);
       },
       [
         animationState,
@@ -499,7 +497,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    // console.log('BottomSheet', 'render', snapPoints);
+    // console.log(
+    //   'BottomSheet',
+    //   'render',
+    //   snapPoints,
+    //   safeContainerHeight,
+    //   safeHandleHeight
+    // );
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer
@@ -559,8 +563,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           {/* <BottomSheetDebugView
             values={{
               animatedIndex,
-              animatedPosition,
               tapState: contentWrapperGestureState,
+              animatedPosition,
             }}
           /> */}
         </BottomSheetContainer>

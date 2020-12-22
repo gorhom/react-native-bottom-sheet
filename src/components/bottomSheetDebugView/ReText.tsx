@@ -24,6 +24,7 @@ const ReText = (props: TextProps) => {
       editable={false}
       value={`${text}: ${value.value.toFixed(2)}`}
       style={style}
+      // @ts-ignore
       animatedProps={animatedProps}
     />
   );

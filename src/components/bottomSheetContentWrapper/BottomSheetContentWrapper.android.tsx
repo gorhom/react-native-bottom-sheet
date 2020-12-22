@@ -5,7 +5,9 @@ import { TapGestureHandler } from 'react-native-gesture-handler';
 import { useTapGestureHandler } from '../../hooks/useTapGestureHandler';
 import type { BottomSheetContentWrapperProps } from './types';
 
+// @ts-ignore
 const AnimatedTapGestureHandler: typeof TapGestureHandler = Animated.createAnimatedComponent(
+  // @ts-ignore
   TapGestureHandler
 );
 
