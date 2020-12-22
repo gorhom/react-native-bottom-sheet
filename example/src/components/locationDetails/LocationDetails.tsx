@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Location } from '../../utils';
+import { Location } from '../../types';
 import Button from '../button';
 import Text from '../text';
 

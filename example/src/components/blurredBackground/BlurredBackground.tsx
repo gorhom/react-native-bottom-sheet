@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
+import { useAppearance } from '../../hooks';
 
-const BlurredBackground = () =>
-  Platform.OS === 'ios' ? (
+const BlurredBackground = () => {
+  const { appearance } = useAppearance();
+  const containerStyle = useMemo(
+    () => [
+      styles.container,
+      {
+        backgroundColor: appearance === 'light' ? 'white' : 'black',
+        opacity: 0.95,
+      },
+    ],
+    [appearance]
+  );
+  return Platform.OS === 'ios' ? (
     <View style={styles.container}>
       <BlurView blurType="chromeMaterial" style={styles.blurView} />
     </View>
   ) : (
-    <View style={[styles.container, styles.androidContainer]} />
+    <View style={containerStyle} />
   );
+};
 
 const styles = StyleSheet.create({
   blurView: {
@@ -20,9 +33,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     overflow: 'hidden',
-  },
-  androidContainer: {
-    backgroundColor: 'rgba(255,255,255, 0.95)',
   },
 });
 
