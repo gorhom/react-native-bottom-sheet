@@ -1,6 +1,23 @@
 # Changelog
 
-## [v3.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.0-alpha.0...v3.0.0)
+## [v3.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.0...v3.0.1)
+
+#### Improvements
+
+- chore: updated map exmaple ([d26ab34](https://github.com/gorhom/react-native-bottom-sheet/commit/d26ab34235a626b367112e142597ecb456de2777)).
+- chore: fixed map example on android ([4bbfff7](https://github.com/gorhom/react-native-bottom-sheet/commit/4bbfff7f42882aad9b7552b8007690a0305a8e9e)).
+- chore: updated auto-changelog configs ([200b8f3](https://github.com/gorhom/react-native-bottom-sheet/commit/200b8f3a507b2169a9344806ef851a33d596a5ad)).
+- chore: updated reanimated dependency ([769f9e6](https://github.com/gorhom/react-native-bottom-sheet/commit/769f9e6df61598dbac8bf538c62397f046cc5c74)).
+
+#### Fixes
+
+- fix: stablise `animateToPoint` worklet callback ([4e15615](https://github.com/gorhom/react-native-bottom-sheet/commit/4e1561584b27c524c39a3b8f0bd3139a2afcf58e)).
+
+#### Documentations
+
+- docs: updated readme file ([c8f8a7e](https://github.com/gorhom/react-native-bottom-sheet/commit/c8f8a7e0455fcf54b979d92e283911ea5ddcff3e)).
+
+## [v3.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.0-alpha.0...v3.0.0) - 2020-12-21
 
 #### Features
 
@@ -24,8 +41,10 @@
 
 - docs: deleted old documentaion files ([1ff89c9](https://github.com/gorhom/react-native-bottom-sheet/commit/1ff89c967048860cbc841615033504f28f4c54e2)).
 - docs: updated root readme file ([d15bb61](https://github.com/gorhom/react-native-bottom-sheet/commit/d15bb6134f3c8c048b4af2fe63ea56606e5b3762)).
+- docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
+- docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.0...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.1...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
@@ -34,7 +53,24 @@
 - chore: added close state into animated position ([`#39`](https://github.com/gorhom/react-native-bottom-sheet/pull/39)).
 - refactor: rewrite code base to use reanimated v2 ([6f36e9c](https://github.com/gorhom/react-native-bottom-sheet/commit/6f36e9ceb117d2582ab6158399a1e83277adbdd4)).
 - chore: updated react-native to 63.2 ([0f09886](https://github.com/gorhom/react-native-bottom-sheet/commit/0f0988657fab75cb05cb69485e2357b433c47488)).
+- chore: updated reanimated to 2 alpha 6 ([a4b385c](https://github.com/gorhom/react-native-bottom-sheet/commit/a4b385c38269a1c7b5eda37fa2a73d197aedca48)).
+- chore: integrate Reanimated v2 in example project ([ab83595](https://github.com/gorhom/react-native-bottom-sheet/commit/ab835953aa0198d04aa35e2ca5880451a6b6d9f7)).
+- chore: updated examples ([fa6fbda](https://github.com/gorhom/react-native-bottom-sheet/commit/fa6fbda374b2499145122ab65f29e8cd1a6d4805)).
+- chore: updated dependencies ([4af6851](https://github.com/gorhom/react-native-bottom-sheet/commit/4af6851c3dd703629818e93446598a8278055021)).
+- chore: comment out flipper ([33392a3](https://github.com/gorhom/react-native-bottom-sheet/commit/33392a35c2fca9e2e32b2f0c12bbc9cdc783191d)).
+- chore: updated reanimated to v2.rc0 ([f44c6eb](https://github.com/gorhom/react-native-bottom-sheet/commit/f44c6ebd8d5271fdeb15f3640c773cf08019e95c)).
+- chore: updated pref component ([300a8b0](https://github.com/gorhom/react-native-bottom-sheet/commit/300a8b0c331c0a21ca39a9aabcc6306b496984e2)).
+- chore: updated redash ([c71c2d2](https://github.com/gorhom/react-native-bottom-sheet/commit/c71c2d225ea33930423089a8baac359cae70856d)).
+- chore: added renimated babel plugin ([5a594ad](https://github.com/gorhom/react-native-bottom-sheet/commit/5a594ad54624b0bdb48f4d7c5f235d99a29b091f)).
+- refactor: update childern type & fix animation state import ([7dc12a6](https://github.com/gorhom/react-native-bottom-sheet/commit/7dc12a6bc796ad46887e61c87f73c71f389bc569)).
+- chore: remove unused debugs logs on example ([4de6c8d](https://github.com/gorhom/react-native-bottom-sheet/commit/4de6c8d892461bf7fbe35853a30ffb1170eccd96)).
+- chore: re-enabled flipper for android ([16fbb5c](https://github.com/gorhom/react-native-bottom-sheet/commit/16fbb5c8514a55492879515f87f53af930c54fa7)).
 
 #### Fixes
 
 - fix: return flipper back to make example working ([`#70`](https://github.com/gorhom/react-native-bottom-sheet/pull/70)).
+- fix: fixed native projects to allow release builds ([516db83](https://github.com/gorhom/react-native-bottom-sheet/commit/516db837ab7ee3626905785d1210f8c23e42d4ce)).
+
+#### Documentations
+
+- docs: updated documents ([9b1e927](https://github.com/gorhom/react-native-bottom-sheet/commit/9b1e927bc32979cf305ebb903656869507b9d0dd)).
