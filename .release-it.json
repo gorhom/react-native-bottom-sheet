@@ -3,7 +3,7 @@
     "push": true,
     "tagName": "v${version}",
     "commitMessage": "chore: release v${version}",
-    "changelog": "auto-changelog --stdout --template ./templates/changelog-template.hbs"
+    "changelog": "auto-changelog --stdout --unreleased --template ./templates/changelog-template.hbs"
   },
   "github": {
     "release": true,
@@ -18,6 +18,6 @@
     }
   },
   "hooks": {
-    "after:bump": "auto-changelog --template ./templates/changelog-template.hbs"
+    "after:bump": "auto-changelog --unreleased --template ./templates/changelog-template.hbs"
   }
 }
