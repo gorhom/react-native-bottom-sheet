@@ -1,5 +1,12 @@
 import React, { useMemo, useCallback } from 'react';
-import { StyleSheet, Text, Platform, View, ViewStyle } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Platform,
+  View,
+  ViewStyle,
+  StyleProp,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import {
@@ -17,7 +24,7 @@ import ContactItem from '../contactItem';
 export interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   header?: (() => JSX.Element) | null;
   onItemPress?: () => void;
 }
@@ -43,6 +50,7 @@ const ContactList = ({
   const contentContainerStyle = useMemo(
     () => ({
       ...styles.contentContainer,
+      // @ts-ignore
       ...style,
       paddingBottom: bottomSafeArea,
     }),
