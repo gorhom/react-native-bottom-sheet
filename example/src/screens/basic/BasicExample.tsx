@@ -1,51 +1,103 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
 
+const { height: windowHeight } = Dimensions.get('window');
+
 const BasicExample = () => {
-  // hooks
+  //#region state
+  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(450);
+  //#endregion
+
+  //#region hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeArea();
+  //#endregion
 
-  // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
+  //#region variables
+  const snapPoints = useMemo(() => [150, dynamicSnapPoint], [dynamicSnapPoint]);
+  const animatedPosition = useSharedValue<number>(0);
+  //#endregion
 
-  // styles
-  // callbacks
+  //#region styles
+  const containerStyle = useMemo(
+    () => ({
+      ...styles.container,
+      paddingTop: topSafeArea,
+    }),
+    [topSafeArea]
+  );
+
+  const firstSnapPointLineStyle = useMemo(
+    () => [
+      styles.line,
+      {
+        height: snapPoints[0],
+      },
+    ],
+    [snapPoints]
+  );
+
+  const secondSnapPointLineStyle = useMemo(
+    () => [
+      styles.line,
+      {
+        height: snapPoints[1],
+      },
+    ],
+    [snapPoints]
+  );
+
+  const safeBottomLineStyle = useMemo(
+    () => [
+      styles.line,
+      {
+        height: bottomSafeArea,
+      },
+    ],
+    [bottomSafeArea]
+  );
+
+  const sheetLineAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: animatedPosition.value }],
+  }));
+  const sheetLineStyle = useMemo(
+    () => [styles.sheetLine, sheetLineAnimatedStyle],
+    [sheetLineAnimatedStyle]
+  );
+  //#endregion
+
+  //#region callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
   }, []);
-
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
+  const handleIncreaseDynamicSnapPoint = useCallback(() => {
+    setDynamicSnapPoint(state => state + 50);
+  }, []);
+  //#endregion
 
   // renders
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>Basic Screen</Text>
-      </View>
-    );
-  }, []);
-
-  const renderSheetContent = useCallback(
-    () => <ContactList type="FlatList" count={50} header={renderHeader} />,
-    [renderHeader]
-  );
-
+  console.log('BasicExample', 'render');
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <Button
-        label="Snap To 450"
+        label="Increase Dynamic Snap Point"
         style={styles.buttonContainer}
-        onPress={() => handleSnapPress(2)}
-      />
-      <Button
-        label="Snap To 300"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(1)}
+        onPress={handleIncreaseDynamicSnapPoint}
       />
       <Button
         label="Snap To 150"
@@ -57,78 +109,41 @@ const BasicExample = () => {
         style={styles.buttonContainer}
         onPress={() => handleClosePress()}
       />
-      {/* <ReText text={concat('Position from bottom: ', position)} /> */}
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        index={0}
-        // handleComponent={Handle}
-        children={renderSheetContent}
-      />
-      {/* <View
+        animateOnMount={true}
+        animatedPosition={animatedPosition}
+        containerHeight={windowHeight}
+        topInset={StatusBar.currentHeight || topSafeArea}
+        onChange={handleSheetChanges}
+      >
+        <ContactList type="ScrollView" count={15} />
+        {/* <View
           style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            height: (25 * sheetHeight) / 100,
-            backgroundColor: 'rgba(0,0,0,0.25)',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            height: (50 * sheetHeight) / 100,
-            backgroundColor: 'rgba(0,0,0,0.50)',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: windowWidth / 2 - 25,
-            width: 50,
-            height: 10,
+            height: dynamicSnapPoint,
             backgroundColor: 'red',
           }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            left: windowWidth / 2 - 25,
-            bottom: 0,
-            width: 50,
-            height: 10,
-            backgroundColor: 'red',
-          }}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            bottom: sheetHeight / 2 - 25,
-            width: 10,
-            height: 50,
-            backgroundColor: 'red',
-          }}
-        />
-
-        <View
-          style={{
-            position: 'absolute',
-            bottom: sheetHeight / 2 - 25,
-            right: 0,
-            width: 10,
-            height: 50,
-            backgroundColor: 'red',
-          }}
-        /> */}
-
-      {/* <Button
-          label="Open"
-          style={styles.buttonContainer}
-          onPress={() => handleSnapPress(1)}
-        /> 
-      </BottomSheet>*/}
+        >
+          <View
+            pointerEvents="none"
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: bottomSafeArea,
+              borderWidth: 1,
+              backgroundColor: 'white',
+            }}
+          />
+        </View> */}
+      </BottomSheet>
+      <Animated.View pointerEvents="none" style={sheetLineStyle} />
+      <View pointerEvents="none" style={secondSnapPointLineStyle} />
+      <View pointerEvents="none" style={firstSnapPointLineStyle} />
+      <View pointerEvents="none" style={safeBottomLineStyle} />
     </View>
   );
 };
@@ -138,30 +153,23 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
-  contentContainerStyle: {
-    paddingTop: 12,
-    paddingHorizontal: 24,
-    backgroundColor: 'white',
+  buttonContainer: {
+    marginBottom: 6,
   },
-  shadowOverlay: {
+  line: {
     position: 'absolute',
-    top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    borderWidth: 1,
   },
-  title: {
-    fontSize: 46,
-    lineHeight: 46,
-    fontWeight: '800',
-  },
-  headerContainer: {
-    paddingVertical: 24,
-    backgroundColor: 'white',
-  },
-  buttonContainer: {
-    marginBottom: 6,
+  sheetLine: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 1,
+    backgroundColor: 'red',
   },
 });
 

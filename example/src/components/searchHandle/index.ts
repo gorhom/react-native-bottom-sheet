@@ -1,1 +1,1 @@
-export { default } from './SearchHandle';
+export { default, SEARCH_HANDLE_HEIGHT } from './SearchHandle';
