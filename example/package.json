@@ -22,7 +22,7 @@
     "react-native": "0.63.4",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-maps": "^0.27.1",
-    "react-native-reanimated": "^2.0.0-rc.0",
+    "react-native-reanimated": "^2.0.0-rc.1",
     "react-native-redash": "^16.0.4",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "^2.16.1"
