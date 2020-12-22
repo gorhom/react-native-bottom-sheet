@@ -7,7 +7,7 @@
   },
   "github": {
     "release": true,
-    "releaseNotes": "auto-changelog --stdout --template ./templates/release-template.hbs"
+    "releaseNotes": "auto-changelog --stdout --unreleased --template ./templates/release-template.hbs"
   },
   "npm": {
     "publish": false
