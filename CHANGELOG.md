@@ -1,9 +1,5 @@
 # Changelog
 
-This changelog only for version 2 (Reanimated v1), for [version 3 (Reanimated v2) changelog click here](https://github.com/gorhom/react-native-bottom-sheet/blob/v3/CHANGELOG.md).
-
-<!-- auto-changelog-above -->
-
 ## [v3.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.1...v3.0.0) - 2020-12-21
 
 #### Features
