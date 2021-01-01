@@ -41,8 +41,8 @@ import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetContentWrapper from '../bottomSheetContentWrapper';
-// import BottomSheetDebugView from '../bottomSheetDebugView';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
+// import BottomSheetDebugView from '../bottomSheetDebugView';
 import { GESTURE, ANIMATION_STATE, WINDOW_HEIGHT } from '../../constants';
 import {
   DEFAULT_ANIMATION_EASING,
@@ -262,20 +262,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }, [snapPoints, safeContainerHeight]);
 
     // callbacks
-    const animateToPointCompleted = useWorkletCallback(
-      didFinish => {
-        animationState.value = ANIMATION_STATE.STOPPED;
-
-        if (!didFinish) {
-          return;
-        }
-
-        const tempCurrentPositionIndex = Math.round(animatedIndex.value);
-        runOnJS(handleOnChange)(tempCurrentPositionIndex);
-        runOnJS(refreshUIElements)();
-      },
-      [animatedIndex, animationState, handleOnChange, refreshUIElements]
-    );
+    const animateToPointCompleted = useWorkletCallback(() => {
+      animationState.value = ANIMATION_STATE.STOPPED;
+    }, [animatedIndex, animationState, handleOnChange, refreshUIElements]);
     const animateToPoint = useWorkletCallback(
       (point: number) => {
         animationState.value = ANIMATION_STATE.RUNNING;
@@ -301,12 +290,25 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
 
     // hooks
-    const [contentPanGestureHandler] = useInteractivePanGestureHandler(
+    const [
+      contentPanGestureHandler,
+      contentPanGestureState,
+    ] = useInteractivePanGestureHandler(
       GESTURE.CONTENT,
       animatedPosition,
       snapPoints,
       animateToPoint,
       scrollableContentOffsetY
+    );
+
+    const [
+      handlePanGestureHandler,
+      handlePanGestureState,
+    ] = useInteractivePanGestureHandler(
+      GESTURE.HANDLE,
+      animatedPosition,
+      snapPoints,
+      animateToPoint
     );
 
     // content wrapper
@@ -478,6 +480,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [snapPoints.length]
     );
 
+    /**
+     * sets provided animated position
+     */
     useAnimatedReaction(
       () => (_providedAnimatedPosition ? animatedPosition.value : null),
       (value: number | null) => {
@@ -486,6 +491,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
       }
     );
+
+    /**
+     * sets provided animated index
+     */
     useAnimatedReaction(
       () => (_providedAnimatedIndex ? animatedIndex.value : null),
       (value: number | null) => {
@@ -494,16 +503,41 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
       }
     );
+
+    /**
+     * reaction to trigger `handleOnChange`
+     */
+    useAnimatedReaction(
+      () => ({
+        _animatedPosition: animatedPosition.value,
+        _animationState: animationState.value,
+        _contentGestureState: contentPanGestureState.value,
+        _handleGestureState: handlePanGestureState.value,
+      }),
+      ({ _animationState, _contentGestureState, _handleGestureState }) => {
+        if (
+          _animationState === ANIMATION_STATE.STOPPED &&
+          (_contentGestureState === State.END ||
+            _contentGestureState === State.UNDETERMINED) &&
+          (_handleGestureState === State.END ||
+            _handleGestureState === State.UNDETERMINED)
+        ) {
+          runOnJS(handleOnChange)(animatedIndex.value);
+          runOnJS(refreshUIElements)();
+        }
+      },
+      [handleOnChange]
+    );
     //#endregion
 
     // render
-    // console.log(
-    //   'BottomSheet',
-    //   'render',
-    //   snapPoints,
-    //   safeContainerHeight,
-    //   safeHandleHeight
-    // );
+    console.log(
+      'BottomSheet',
+      'render',
+      snapPoints,
+      safeContainerHeight,
+      safeHandleHeight
+    );
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer
@@ -541,9 +575,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   animatedPosition={animatedPosition}
                   simultaneousHandlers={contentWrapperGestureRef}
                   shouldMeasureHeight={shouldMeasureHandleHeight}
-                  snapPoints={snapPoints}
                   enableHandlePanningGesture={enableHandlePanningGesture}
-                  animateToPoint={animateToPoint}
+                  handlePanGestureHandler={handlePanGestureHandler}
                   handleComponent={handleComponent}
                   onMeasureHeight={handleOnHandleMeasureHeight}
                 />
@@ -565,6 +598,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               animatedIndex,
               tapState: contentWrapperGestureState,
               animatedPosition,
+              contentWrapperMaxDeltaY,
             }}
           /> */}
         </BottomSheetContainer>

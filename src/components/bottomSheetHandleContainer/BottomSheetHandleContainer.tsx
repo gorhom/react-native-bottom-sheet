@@ -3,8 +3,6 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import isEqual from 'lodash.isequal';
 import BottomSheetHandle from '../bottomSheetHandle';
-import { useInteractivePanGestureHandler } from '../../hooks';
-import { GESTURE } from '../../constants';
 import type { BottomSheetHandleContainerProps } from './types';
 
 const BottomSheetHandleContainerComponent = ({
@@ -13,8 +11,7 @@ const BottomSheetHandleContainerComponent = ({
   simultaneousHandlers,
   enableHandlePanningGesture,
   shouldMeasureHeight,
-  snapPoints,
-  animateToPoint,
+  handlePanGestureHandler,
   onMeasureHeight,
   handleComponent: _providedHandleComponent,
 }: BottomSheetHandleContainerProps) => {
@@ -22,15 +19,6 @@ const BottomSheetHandleContainerComponent = ({
   const shouldRenderHandle = useMemo(() => _providedHandleComponent !== null, [
     _providedHandleComponent,
   ]);
-  //#endregion
-
-  //#region
-  const [handlePanGestureHandler] = useInteractivePanGestureHandler(
-    GESTURE.HANDLE,
-    animatedPosition,
-    snapPoints,
-    animateToPoint
-  );
   //#endregion
 
   //#region callbacks
