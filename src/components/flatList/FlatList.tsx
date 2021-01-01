@@ -73,7 +73,7 @@ const BottomSheetFlatListComponent = forwardRef(
             // @ts-ignore
             ref={scrollableRef}
             overScrollMode="always"
-            scrollEventThrottle={1}
+            scrollEventThrottle={16}
             onScrollBeginDrag={handleScrollEvent}
             // @ts-ignore
             animatedProps={scrollableAnimatedProps}
