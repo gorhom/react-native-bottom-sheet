@@ -98,6 +98,7 @@ const ContactList = ({
         data={data}
         keyExtractor={keyExtractor}
         initialNumToRender={5}
+        bounces={true}
         windowSize={10}
         maxToRenderPerBatch={5}
         renderItem={renderFlatListItem}
@@ -113,6 +114,7 @@ const ContactList = ({
     return (
       <BottomSheetScrollView
         contentContainerStyle={contentContainerStyle}
+        bounces={true}
         focusHook={useFocusEffect}
       >
         {header && header()}
@@ -127,6 +129,7 @@ const ContactList = ({
         initialNumToRender={5}
         windowSize={10}
         maxToRenderPerBatch={5}
+        bounces={true}
         sections={sections}
         keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}

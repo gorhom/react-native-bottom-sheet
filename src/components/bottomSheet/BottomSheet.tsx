@@ -531,13 +531,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    console.log(
-      'BottomSheet',
-      'render',
-      snapPoints,
-      safeContainerHeight,
-      safeHandleHeight
-    );
+    // console.log(
+    //   'BottomSheet',
+    //   'render',
+    //   snapPoints,
+    //   safeContainerHeight,
+    //   safeHandleHeight
+    // );
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer

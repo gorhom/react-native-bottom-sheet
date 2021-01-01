@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from '@gorhom/bottom-sheet';
 
@@ -13,16 +13,20 @@ const ContactItemComponent = ({
   subTitle,
   onPress,
 }: ContactItemProps) => {
+  const ContentWrapper = useMemo<any>(
+    () => (onPress ? TouchableOpacity : View),
+    [onPress]
+  );
   // render
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <ContentWrapper onPress={onPress} style={styles.container}>
       <View style={styles.thumbnail} />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{title}</Text>
         {subTitle && <Text style={styles.subtitle}>{subTitle}</Text>}
       </View>
       <View style={styles.icon} />
-    </TouchableOpacity>
+    </ContentWrapper>
   );
 };
 
