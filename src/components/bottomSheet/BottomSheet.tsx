@@ -578,6 +578,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   enableHandlePanningGesture={enableHandlePanningGesture}
                   handlePanGestureHandler={handlePanGestureHandler}
                   handleComponent={handleComponent}
+                  snapPoints={snapPoints}
                   onMeasureHeight={handleOnHandleMeasureHeight}
                 />
                 {isLayoutCalculated && (

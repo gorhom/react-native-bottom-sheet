@@ -8,5 +8,6 @@ export interface BottomSheetHandleContainerProps
     BottomSheetHandleProps {
   handlePanGestureHandler: any;
   shouldMeasureHeight: boolean;
+  snapPoints: Array<number>;
   onMeasureHeight: (height: number) => void;
 }
