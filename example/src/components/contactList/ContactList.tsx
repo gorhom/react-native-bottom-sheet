@@ -106,6 +106,7 @@ const ContactList = ({
           stickyHeaderIndices: stickyHeaderIndices,
           ListHeaderComponent: header,
         })}
+        style={styles.container}
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
       />
@@ -113,6 +114,7 @@ const ContactList = ({
   } else if (type === 'ScrollView') {
     return (
       <BottomSheetScrollView
+        style={styles.container}
         contentContainerStyle={contentContainerStyle}
         bounces={true}
         focusHook={useFocusEffect}
@@ -124,6 +126,7 @@ const ContactList = ({
   } else if (type === 'SectionList') {
     return (
       <BottomSheetSectionList
+        style={styles.container}
         contentContainerStyle={contentContainerStyle}
         stickySectionHeadersEnabled
         initialNumToRender={5}
@@ -164,9 +167,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textTransform: 'uppercase',
   },
+  container: {
+    overflow: 'visible',
+  },
   contentContainer: {
     paddingHorizontal: 24,
-    backgroundColor: 'white',
+    overflow: 'visible',
   },
 });
 

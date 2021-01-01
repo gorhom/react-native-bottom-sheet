@@ -1,6 +1,6 @@
 import React, { useCallback, memo, useRef, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import ContactList from '../../components/contactList';
 import Button from '../../components/button';
 
@@ -43,6 +43,13 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
           : 'Enable Handle Panning Gesture',
       [enableHandlePanningGesture]
     );
+    const animationConfigs = useBottomSheetSpringConfigs({
+      damping: 80,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.1,
+      restSpeedThreshold: 0.1,
+      stiffness: 500,
+    });
     //#endregion
 
     //#region callbacks
@@ -121,6 +128,7 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
           ref={bottomSheetRef}
           index={1}
           snapPoints={snapPoints}
+          animationConfigs={animationConfigs}
           animateOnMount={true}
           enableContentPanningGesture={enableContentPanningGesture}
           enableHandlePanningGesture={enableHandlePanningGesture}
