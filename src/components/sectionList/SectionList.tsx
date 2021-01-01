@@ -66,13 +66,13 @@ const BottomSheetSectionListComponent = forwardRef(
           ref={nativeGestureRef}
           enabled={enableContentPanningGesture}
           waitFor={contentWrapperGestureRef}
+          shouldCancelWhenOutside={false}
         >
           <AnimatedSectionList
             {...rest}
             // @ts-ignore
             ref={scrollableRef}
-            overScrollMode="never"
-            bounces={false}
+            overScrollMode="always"
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
             // @ts-ignore

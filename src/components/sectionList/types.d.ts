@@ -4,7 +4,6 @@ import type { SectionListProps as RNSectionListProps } from 'react-native';
 type BottomSheetSectionListProps<T> = Omit<
   RNSectionListProps<T>,
   | 'overScrollMode'
-  | 'bounces'
   | 'decelerationRate'
   | 'onScrollBeginDrag'
   | 'scrollEventThrottle'

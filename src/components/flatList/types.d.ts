@@ -4,7 +4,6 @@ import type { FlatListProps as RNFlatListProps } from 'react-native';
 type BottomSheetFlatListProps<T> = Omit<
   RNFlatListProps<T>,
   | 'overScrollMode'
-  | 'bounces'
   | 'decelerationRate'
   | 'onScrollBeginDrag'
   | 'scrollEventThrottle'

@@ -65,12 +65,12 @@ const BottomSheetScrollViewComponent = forwardRef(
           ref={nativeGestureRef}
           enabled={enableContentPanningGesture}
           waitFor={contentWrapperGestureRef}
+          shouldCancelWhenOutside={false}
         >
           <AnimatedScrollView
             {...rest}
             ref={scrollableRef}
-            overScrollMode="never"
-            bounces={false}
+            overScrollMode="always"
             scrollEventThrottle={1}
             onScrollBeginDrag={handleScrollEvent}
             // @ts-ignore
