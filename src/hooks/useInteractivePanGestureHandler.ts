@@ -19,7 +19,9 @@ export const useInteractivePanGestureHandler = (
   type: GESTURE,
   animatedPosition: Animated.SharedValue<number>,
   snapPoints: number[],
-  animateToPoint: (point: number) => void,
+  animateToPoint: (point: number, velocity: number) => void,
+  enableOverDrag: boolean,
+  overDragResistanceFactor: number,
   scrollableContentOffsetY?: Animated.SharedValue<number>
 ): [
   (event: PanGestureHandlerGestureEvent) => void,
@@ -53,17 +55,42 @@ export const useInteractivePanGestureHandler = (
         gestureTranslationY.value = translationY;
         gestureVelocityY.value = velocityY;
 
-        animatedPosition.value = clamp(
-          context.currentPosition +
-            translationY +
-            (scrollableContentOffsetY &&
-            context.currentPosition === snapPoints[snapPoints.length - 1]
-              ? scrollableContentOffsetY.value
-              : 0) *
-              -1,
+        const position = context.currentPosition + translationY;
+        const clampedScrollableContentOffset =
+          context.currentPosition === snapPoints[snapPoints.length - 1] &&
+          scrollableContentOffsetY
+            ? scrollableContentOffsetY.value * -1
+            : 0;
+        const clampedPosition = clamp(
+          position + clampedScrollableContentOffset,
           snapPoints[snapPoints.length - 1],
           snapPoints[0]
         );
+
+        if (enableOverDrag) {
+          if (
+            type === GESTURE.HANDLE &&
+            clampedPosition <= snapPoints[snapPoints.length - 1]
+          ) {
+            const resistedPosition =
+              snapPoints[snapPoints.length - 1] -
+              Math.sqrt(1 + (snapPoints[snapPoints.length - 1] - position)) *
+                overDragResistanceFactor;
+            animatedPosition.value = resistedPosition;
+            return;
+          }
+
+          if (clampedPosition >= snapPoints[0]) {
+            const resistedPosition =
+              snapPoints[0] +
+              Math.sqrt(1 + (position - snapPoints[0])) *
+                overDragResistanceFactor;
+            animatedPosition.value = resistedPosition;
+            return;
+          }
+        }
+
+        animatedPosition.value = clampedPosition;
       },
       onEnd: ({ state }, context) => {
         gestureState.value = state;
@@ -82,6 +109,17 @@ export const useInteractivePanGestureHandler = (
           return;
         }
 
+        /**
+         * if user ended the panning of the sheet content while
+         * the scrollable offset is not 0, it should not animate.
+         */
+        if (
+          type === GESTURE.CONTENT &&
+          (scrollableContentOffsetY?.value ?? 0) > 0
+        ) {
+          return;
+        }
+
         if (
           (scrollableContentOffsetY ? scrollableContentOffsetY.value : 0) > 0 &&
           context.currentPosition === snapPoints[snapPoints.length - 1] &&
@@ -90,10 +128,10 @@ export const useInteractivePanGestureHandler = (
           return;
         }
 
-        animateToPoint(destinationPoint);
+        animateToPoint(destinationPoint, gestureVelocityY.value / 2);
       },
     },
-    [snapPoints]
+    [snapPoints, enableOverDrag, overDragResistanceFactor]
   );
 
   return [gestureHandler, gestureState, gestureTranslationY, gestureVelocityY];
