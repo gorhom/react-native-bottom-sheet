@@ -45,6 +45,12 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    */
   topInset?: number;
   /**
+   * Defines how violently sheet has to stopped while over dragging.
+   * @type number
+   * @default 2.5
+   */
+  overDragResistanceFactor?: number;
+  /**
    * Enable content panning gesture interaction.
    * @type boolean
    * @default true
@@ -56,6 +62,12 @@ export interface BottomSheetProps extends BottomSheetAnimationConfigs {
    * @default true
    */
   enableHandlePanningGesture?: boolean;
+  /**
+   * Enable over drag for the sheet.
+   * @type boolean
+   * @default true
+   */
+  enableOverDrag?: boolean;
   /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
@@ -119,12 +131,27 @@ export interface BottomSheetAnimationConfigs {
    * Snapping animation easing function.
    * @type Animated.EasingFunction
    * @default Easing.out(Easing.exp)
+   * @deprecated this prop will be dropped in the next major release.
+   * @see animationConfigs
    */
   animationEasing?: Animated.EasingFunction;
   /**
    * Snapping animation duration.
    * @type number
    * @default 500
+   * @deprecated this prop will be dropped in the next major release.
+   * @see animationConfigs
    */
   animationDuration?: number;
+  /**
+   * Animation configs, this could be created by:
+   * - `useBottomSheetSpringConfigs`
+   * - `useBottomSheetTimingConfigs`
+   * @type (point: number, velocity: number = 0, callback: () => void) => AnimationConfigs
+   */
+  animationConfigs?: (
+    point: number,
+    velocity: number = 0,
+    callback: () => void
+  ) => number;
 }
