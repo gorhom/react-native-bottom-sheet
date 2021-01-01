@@ -11,7 +11,7 @@ import { clamp, snapPoint } from 'react-native-redash';
 import { GESTURE } from '../constants';
 
 type InteractivePanGestureHandlerContextType = {
-  lastAnimatedPosition: number;
+  currentPosition: number;
 };
 
 export const useInteractivePanGestureHandler = (
@@ -20,7 +20,7 @@ export const useInteractivePanGestureHandler = (
   animatedPosition: Animated.SharedValue<number>,
   snapPoints: number[],
   animateToPoint: (point: number) => void,
-  offset?: Animated.SharedValue<number>
+  scrollableContentOffsetY?: Animated.SharedValue<number>
 ): [
   (event: PanGestureHandlerGestureEvent) => void,
   Animated.SharedValue<State>,
@@ -34,54 +34,67 @@ export const useInteractivePanGestureHandler = (
   const gestureHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
     InteractivePanGestureHandlerContextType
-  >({
-    onStart: ({ state, translationY, velocityY }, context) => {
-      // cancel current animation
-      cancelAnimation(animatedPosition);
+  >(
+    {
+      onStart: ({ state, translationY, velocityY }, context) => {
+        // cancel current animation
+        cancelAnimation(animatedPosition);
 
-      // store current animated position
-      context.lastAnimatedPosition = animatedPosition.value;
+        // store current animated position
+        context.currentPosition = animatedPosition.value;
 
-      // set variables
-      gestureState.value = state;
-      gestureTranslationY.value = translationY;
-      gestureVelocityY.value = velocityY;
-    },
-    onActive: ({ state, translationY, velocityY }, context) => {
-      gestureState.value = state;
-      gestureTranslationY.value = translationY;
-      gestureVelocityY.value = velocityY;
+        // set variables
+        gestureState.value = state;
+        gestureTranslationY.value = translationY;
+        gestureVelocityY.value = velocityY;
+      },
+      onActive: ({ state, translationY, velocityY }, context) => {
+        gestureState.value = state;
+        gestureTranslationY.value = translationY;
+        gestureVelocityY.value = velocityY;
 
-      animatedPosition.value = clamp(
-        context.lastAnimatedPosition +
-          translationY +
-          (offset &&
-          context.lastAnimatedPosition === snapPoints[snapPoints.length - 1]
-            ? offset.value
-            : 0) *
-            -1,
-        snapPoints[snapPoints.length - 1],
-        snapPoints[0]
-      );
-    },
-    onEnd: ({ state }, context) => {
-      gestureState.value = state;
-      if (
-        (offset ? offset.value : 0) > 0 &&
-        context.lastAnimatedPosition === snapPoints[snapPoints.length - 1] &&
-        animatedPosition.value === snapPoints[snapPoints.length - 1]
-      ) {
-        return;
-      }
-      animateToPoint(
-        snapPoint(
-          gestureTranslationY.value + context.lastAnimatedPosition,
+        animatedPosition.value = clamp(
+          context.currentPosition +
+            translationY +
+            (scrollableContentOffsetY &&
+            context.currentPosition === snapPoints[snapPoints.length - 1]
+              ? scrollableContentOffsetY.value
+              : 0) *
+              -1,
+          snapPoints[snapPoints.length - 1],
+          snapPoints[0]
+        );
+      },
+      onEnd: ({ state }, context) => {
+        gestureState.value = state;
+
+        const destinationPoint = snapPoint(
+          gestureTranslationY.value + context.currentPosition,
           gestureVelocityY.value,
           snapPoints
-        )
-      );
+        );
+
+        /**
+         * if destination point is the same as the current position,
+         * then no need to perform animation.
+         */
+        if (destinationPoint === animatedPosition.value) {
+          return;
+        }
+
+        if (
+          (scrollableContentOffsetY ? scrollableContentOffsetY.value : 0) > 0 &&
+          context.currentPosition === snapPoints[snapPoints.length - 1] &&
+          animatedPosition.value === snapPoints[snapPoints.length - 1]
+        ) {
+          return;
+        }
+
+        animateToPoint(destinationPoint);
+      },
     },
-  });
+    [snapPoints]
+  );
 
   return [gestureHandler, gestureState, gestureTranslationY, gestureVelocityY];
 };

@@ -6,8 +6,8 @@ export interface BottomSheetHandleContainerProps
   extends Pick<PanGestureHandlerProperties, 'simultaneousHandlers'>,
     Pick<BottomSheetProps, 'handleComponent' | 'enableHandlePanningGesture'>,
     BottomSheetHandleProps {
+  handlePanGestureHandler: any;
   shouldMeasureHeight: boolean;
   snapPoints: Array<number>;
-  animateToPoint: (point: number) => void;
   onMeasureHeight: (height: number) => void;
 }
