@@ -22,7 +22,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
     snapPointsCount,
     animatedIndex,
     scrollableDecelerationRate,
-    scrollableContentOffsetY: _scrollableContentOffsetY,
+    scrollableContentOffsetY: _rootScrollableContentOffsetY,
     setScrollableRef,
     removeScrollableRef,
   } = useBottomSheetInternal();
@@ -40,15 +40,19 @@ export const useScrollableInternal = (type: ScrollableType) => {
       }
       scrollablePosition.value = y;
       scrollableContentOffsetY.value = y;
-      _scrollableContentOffsetY.value = y;
+      _rootScrollableContentOffsetY.value = y;
     },
     onScroll: ({ contentOffset: { y } }: NativeScrollEvent) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+        scrollablePosition.value = 0;
+        scrollableContentOffsetY.value = 0;
         return;
       }
       scrollablePosition.value = y;
+      scrollableContentOffsetY.value = y;
+      _rootScrollableContentOffsetY.value = y;
     },
     onEndDrag: () => {
       if (animatedIndex.value !== snapPointsCount - 1) {
@@ -68,7 +72,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
   const handleSettingScrollable = useCallback(() => {
     // set current content offset
     runOnUI(() => {
-      _scrollableContentOffsetY.value = scrollableContentOffsetY.value;
+      _rootScrollableContentOffsetY.value = scrollableContentOffsetY.value;
     })();
 
     // set current scrollable ref
@@ -88,9 +92,9 @@ export const useScrollableInternal = (type: ScrollableType) => {
       removeScrollableRef(scrollableRef);
     };
   }, [
-    _scrollableContentOffsetY,
+    _rootScrollableContentOffsetY,
     removeScrollableRef,
-    scrollableContentOffsetY.value,
+    scrollableContentOffsetY,
     scrollableRef,
     setScrollableRef,
     type,
