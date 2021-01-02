@@ -25,6 +25,7 @@ const BottomSheetModalComponent = forwardRef<
   const {
     // modal props
     name,
+    stackBehavior = 'replace',
     dismissOnPanDown = DEFAULT_DISMISS_ON_PAN_DOWN,
     onDismiss: _providedOnDismiss,
 
@@ -121,9 +122,9 @@ const BottomSheetModalComponent = forwardRef<
   const handlePresent = useCallback(() => {
     requestAnimationFrame(() => {
       setMount(true);
-      mountSheet(key, ref);
+      mountSheet(key, ref, stackBehavior);
     });
-  }, [key, mountSheet, ref]);
+  }, [key, stackBehavior, mountSheet, ref]);
   const handleDismiss = useCallback(
     (force: boolean = false) => {
       if (force) {
