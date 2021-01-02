@@ -6,6 +6,7 @@ import {
 } from '../../contexts';
 import BottomSheetContainer from '../bottomSheetContainer';
 import { WINDOW_HEIGHT } from '../../constants';
+import type { BottomSheetModalStackBehavior } from '../bottomSheetModal';
 import type {
   BottomSheetModalProviderProps,
   BottomSheetModalRef,
@@ -32,52 +33,60 @@ const BottomSheetModalProviderWrapper = (
   //#endregion
 
   //#region private methods
-  const handleMountSheet = useCallback((key: string, ref) => {
-    /**
-     * Here we try to minimize the current sheet if exists,
-     * also we make sure that it is not incoming mounted sheet.
-     */
-    const mountedSheet =
-      sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
-    if (mountedSheet && mountedSheet.key !== key && !mountedSheet.willUnmount) {
-      sheetsQueueRef.current[
-        sheetsQueueRef.current.length - 1
-      ].ref.current.minimize();
-    }
-
-    /**
-     * We check if the incoming sheet is already mounted.
-     */
-    const isIncomingSheetMounted =
-      sheetsQueueRef.current.find(item => item.key === key) !== undefined;
-
-    if (isIncomingSheetMounted) {
+  const handleMountSheet = useCallback(
+    (key: string, ref, stackBehavior: BottomSheetModalStackBehavior) => {
       /**
-       * We move the mounted incoming sheet to the
-       * end of the queue.
+       * Here we try to minimize the current sheet if exists,
+       * also we make sure that it is not incoming mounted sheet.
        */
-      const newSheetsQueue = sheetsQueueRef.current.filter(
-        item => item.key !== key
-      );
-      newSheetsQueue.push({
-        key,
-        ref,
-        willUnmount: false,
-      });
-      sheetsQueueRef.current = newSheetsQueue;
+      const mountedSheet =
+        sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
+      if (
+        stackBehavior === 'replace' &&
+        mountedSheet &&
+        mountedSheet.key !== key &&
+        !mountedSheet.willUnmount
+      ) {
+        sheetsQueueRef.current[
+          sheetsQueueRef.current.length - 1
+        ].ref.current.minimize();
+      }
 
-      ref.current.restore();
-    } else {
       /**
-       * We add the incoming sheet to the end of the queue.
+       * We check if the incoming sheet is already mounted.
        */
-      sheetsQueueRef.current.push({
-        key,
-        ref,
-        willUnmount: false,
-      });
-    }
-  }, []);
+      const isIncomingSheetMounted =
+        sheetsQueueRef.current.find(item => item.key === key) !== undefined;
+
+      if (isIncomingSheetMounted) {
+        /**
+         * We move the mounted incoming sheet to the
+         * end of the queue.
+         */
+        const newSheetsQueue = sheetsQueueRef.current.filter(
+          item => item.key !== key
+        );
+        newSheetsQueue.push({
+          key,
+          ref,
+          willUnmount: false,
+        });
+        sheetsQueueRef.current = newSheetsQueue;
+
+        ref.current.restore();
+      } else {
+        /**
+         * We add the incoming sheet to the end of the queue.
+         */
+        sheetsQueueRef.current.push({
+          key,
+          ref,
+          willUnmount: false,
+        });
+      }
+    },
+    []
+  );
   const handleUnmountSheet = useCallback((key: string) => {
     /**
      * Here we remove the unmounted sheet and update
