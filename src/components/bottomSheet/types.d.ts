@@ -151,7 +151,7 @@ export interface BottomSheetAnimationConfigs {
    */
   animationConfigs?: (
     point: number,
-    velocity: number = 0,
+    velocity: number,
     callback: () => void
   ) => number;
 }
