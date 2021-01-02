@@ -15,7 +15,6 @@ type InteractivePanGestureHandlerContextType = {
 };
 
 export const useInteractivePanGestureHandler = (
-  // @ts-ignore
   type: GESTURE,
   animatedPosition: Animated.SharedValue<number>,
   snapPoints: number[],
@@ -106,17 +105,6 @@ export const useInteractivePanGestureHandler = (
          * then no need to perform animation.
          */
         if (destinationPoint === animatedPosition.value) {
-          return;
-        }
-
-        /**
-         * if user ended the panning of the sheet content while
-         * the scrollable offset is not 0, it should not animate.
-         */
-        if (
-          type === GESTURE.CONTENT &&
-          (scrollableContentOffsetY?.value ?? 0) > 0
-        ) {
           return;
         }
 
