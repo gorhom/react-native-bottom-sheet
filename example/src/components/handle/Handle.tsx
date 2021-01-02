@@ -18,12 +18,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
   //#region animations
 
   const indicatorTransformOriginY = useDerivedValue(() =>
-    interpolate(
-      animatedIndex.value,
-      [0, 1, 2],
-      [-1, 0, 1],
-      Extrapolate.CLAMP
-    )
+    interpolate(animatedIndex.value, [0, 1, 2], [-1, 0, 1], Extrapolate.CLAMP)
   );
   //#endregion
 

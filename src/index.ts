@@ -30,3 +30,5 @@ export { default as BottomSheetModalProvider } from './components/bottomSheetMod
 // hooks
 export { useBottomSheet } from './hooks/useBottomSheet';
 export { useBottomSheetModal } from './hooks/useBottomSheetModal';
+export { useBottomSheetSpringConfigs } from './hooks/useBottomSheetSpringConfigs';
+export { useBottomSheetTimingConfigs } from './hooks/useBottomSheetTimingConfigs';

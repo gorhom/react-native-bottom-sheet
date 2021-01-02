@@ -36,6 +36,9 @@ export const useScrollableInternal = (type: ScrollableType) => {
   const handleScrollEvent = useAnimatedScrollHandler({
     onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
+        scrollablePosition.value = 0;
+        scrollableContentOffsetY.value = 0;
+        _rootScrollableContentOffsetY.value = 0;
         return;
       }
       scrollablePosition.value = y;
@@ -58,6 +61,8 @@ export const useScrollableInternal = (type: ScrollableType) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+        scrollablePosition.value = 0;
+        scrollableContentOffsetY.value = 0;
         return;
       }
     },
@@ -65,6 +70,8 @@ export const useScrollableInternal = (type: ScrollableType) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, scrollablePosition.value, false);
+        scrollablePosition.value = 0;
+        scrollableContentOffsetY.value = 0;
         return;
       }
     },

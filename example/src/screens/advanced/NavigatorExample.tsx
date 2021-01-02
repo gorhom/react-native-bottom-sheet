@@ -49,6 +49,10 @@ const Navigator = () => {
           <HeaderBackButton {...props} />
         </TouchableOpacity>
       ),
+      cardStyle: {
+        backgroundColor: 'white',
+        overflow: 'visible',
+      },
     }),
     []
   );
@@ -129,6 +133,7 @@ const NavigatorExample = () => {
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
+        animateOnMount={true}
         onChange={handleSheetChange}
       >
         <Navigator />

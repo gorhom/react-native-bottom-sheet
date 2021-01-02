@@ -17,13 +17,13 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useDerivedValue,
-  withTiming,
   runOnJS,
   interpolate,
   Extrapolate,
   runOnUI,
   useWorkletCallback,
   useAnimatedProps,
+  withTiming,
 } from 'react-native-reanimated';
 import { State, TapGestureHandler } from 'react-native-gesture-handler';
 import {
@@ -48,10 +48,12 @@ import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
   DEFAULT_HANDLE_HEIGHT,
-  DEFAULT_ANIMATE_ON_MOUNT,
-  DECELERATION_RATE,
+  DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
   DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
+  DEFAULT_ENABLE_OVER_DRAG,
+  DEFAULT_ANIMATE_ON_MOUNT,
+  DECELERATION_RATE,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -74,16 +76,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // animations configurations
       animationDuration = DEFAULT_ANIMATION_DURATION,
       animationEasing = DEFAULT_ANIMATION_EASING,
+      animationConfigs: _providedAnimationConfigs,
       // configurations
       index: _providedIndex = 0,
       snapPoints: _providedSnapPoints,
       animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
       enableContentPanningGesture = DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
+      enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       // layout
       handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
       topInset = 0,
+      overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
       // animated callback shared values
       animatedPosition: _providedAnimatedPosition,
       animatedIndex: _providedAnimatedIndex,
@@ -181,7 +186,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }, [snapPoints, animateOnMount, safeContainerHeight, topInset]);
 
     //content wrapper
-    const contentWrapperMaxDeltaY = useSharedValue<number>(0);
+    const contentWrapperMaxDeltaY = useSharedValue(0);
     const contentWrapperGestureState = useSharedValue<State>(
       State.UNDETERMINED
     );
@@ -198,7 +203,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       if (currentPositionIndex === snapPoints.length - 1) {
         flashScrollableIndicators();
       }
-    }, [contentWrapperMaxDeltaY, snapPoints, flashScrollableIndicators]);
+    }, [snapPoints, contentWrapperMaxDeltaY, flashScrollableIndicators]);
     const handleOnChange = useCallback(
       (index: number) => {
         if (index === currentIndexRef.current) {
@@ -266,8 +271,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animationState.value = ANIMATION_STATE.STOPPED;
     }, [animatedIndex, animationState, handleOnChange, refreshUIElements]);
     const animateToPoint = useWorkletCallback(
-      (point: number) => {
+      (point: number, velocity: number = 0) => {
         animationState.value = ANIMATION_STATE.RUNNING;
+        runOnJS(handleOnAnimate)(point);
+
+        if (_providedAnimationConfigs) {
+          animatedPosition.value = _providedAnimationConfigs(
+            point,
+            velocity,
+            animateToPointCompleted
+          );
+          return;
+        }
+
+        /**
+         * @deprecated this will be removed in next major release.
+         */
         animatedPosition.value = withTiming(
           point,
           {
@@ -276,10 +295,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
           animateToPointCompleted
         );
-
-        runOnJS(handleOnAnimate)(point);
       },
       [
+        _providedAnimationConfigs,
         animationState,
         animatedPosition,
         animationDuration,
@@ -298,6 +316,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animatedPosition,
       snapPoints,
       animateToPoint,
+      enableOverDrag,
+      overDragResistanceFactor,
       scrollableContentOffsetY
     );
 
@@ -308,7 +328,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       GESTURE.HANDLE,
       animatedPosition,
       snapPoints,
-      animateToPoint
+      animateToPoint,
+      enableOverDrag,
+      overDragResistanceFactor
     );
 
     // content wrapper
@@ -509,13 +531,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      */
     useAnimatedReaction(
       () => ({
+        _animatedIndex: animatedIndex.value,
         _animatedPosition: animatedPosition.value,
         _animationState: animationState.value,
         _contentGestureState: contentPanGestureState.value,
         _handleGestureState: handlePanGestureState.value,
       }),
-      ({ _animationState, _contentGestureState, _handleGestureState }) => {
+      ({
+        _animatedIndex,
+        _animationState,
+        _contentGestureState,
+        _handleGestureState,
+      }) => {
         if (
+          _animatedIndex % 1 === 0 &&
           _animationState === ANIMATION_STATE.STOPPED &&
           (_contentGestureState === State.END ||
             _contentGestureState === State.UNDETERMINED) &&
@@ -569,6 +598,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   animatedPosition={animatedPosition}
                   backgroundComponent={backgroundComponent}
                 />
+                {isLayoutCalculated && (
+                  <BottomSheetDraggableView
+                    key="BottomSheetRootDraggableView"
+                    style={contentContainerStyle}
+                  >
+                    {typeof children === 'function'
+                      ? (children as Function)()
+                      : children}
+                  </BottomSheetDraggableView>
+                )}
                 <BottomSheetHandleContainer
                   key="BottomSheetHandleContainer"
                   animatedIndex={animatedIndex}
@@ -581,23 +620,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   snapPoints={snapPoints}
                   onMeasureHeight={handleOnHandleMeasureHeight}
                 />
-                {isLayoutCalculated && (
-                  <BottomSheetDraggableView
-                    key="BottomSheetRootDraggableView"
-                    style={contentContainerStyle}
-                  >
-                    {typeof children === 'function'
-                      ? (children as Function)()
-                      : children}
-                  </BottomSheetDraggableView>
-                )}
               </BottomSheetInternalProvider>
             </Animated.View>
           </BottomSheetContentWrapper>
           {/* <BottomSheetDebugView
             values={{
-              animatedIndex,
               tapState: contentWrapperGestureState,
+              animatedIndex,
               animatedPosition,
               contentWrapperMaxDeltaY,
             }}
