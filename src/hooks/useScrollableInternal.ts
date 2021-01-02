@@ -17,6 +17,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
   const scrollablePosition = useSharedValue<number>(0);
   const scrollableContentOffsetY = useSharedValue<number>(0);
   const justStartedScrolling = useSharedValue<number>(0);
+  const initialScrollingPosition = useSharedValue<number>(0);
 
   // hooks
   const {
@@ -37,6 +38,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
   const handleScrollEvent = useAnimatedScrollHandler({
     onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
+        initialScrollingPosition.value = y;
         justStartedScrolling.value = 1;
         scrollablePosition.value = 0;
         scrollableContentOffsetY.value = 0;
@@ -51,7 +53,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
       if (justStartedScrolling.value === 1) {
         justStartedScrolling.value = 0;
         // @ts-ignore
-        scrollTo(scrollableRef, 0, 0, false);
+        scrollTo(scrollableRef, 0, initialScrollingPosition.value, false);
         return;
       }
       if (animatedIndex.value !== snapPointsCount - 1) {
