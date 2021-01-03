@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { findNodeHandle, NativeScrollEvent } from 'react-native';
+import { findNodeHandle, NativeScrollEvent, Platform } from 'react-native';
 import {
   useAnimatedRef,
   useAnimatedScrollHandler,
@@ -15,6 +15,8 @@ export const useScrollableInternal = (type: ScrollableType) => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
   const scrollableContentOffsetY = useSharedValue<number>(0);
+  const justStartedScrolling = useSharedValue<number>(0);
+  const initialScrollingPosition = useSharedValue<number>(0);
 
   // hooks
   const {
@@ -35,6 +37,8 @@ export const useScrollableInternal = (type: ScrollableType) => {
   const handleScrollEvent = useAnimatedScrollHandler({
     onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
+        initialScrollingPosition.value = y;
+        justStartedScrolling.value = 1;
         scrollableContentOffsetY.value = 0;
         _rootScrollableContentOffsetY.value = 0;
         return;
@@ -43,6 +47,12 @@ export const useScrollableInternal = (type: ScrollableType) => {
       _rootScrollableContentOffsetY.value = y;
     },
     onScroll: () => {
+      if (Platform.OS === 'android' && justStartedScrolling.value === 1) {
+        justStartedScrolling.value = 0;
+        // @ts-ignore
+        scrollTo(scrollableRef, 0, initialScrollingPosition.value, false);
+        return;
+      }
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
