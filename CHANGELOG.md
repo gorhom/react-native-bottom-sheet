@@ -1,6 +1,25 @@
 # Changelog
 
-## [v3.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.0...v3.0.1)
+## [v3.0.2-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.1...v3.0.2-alpha.0)
+
+#### Features
+
+- feat: add third party gestures integration ([`#143`](https://github.com/gorhom/react-native-bottom-sheet/pull/143)).
+- feat: added stack behavior to bottom sheet modal ([`#140`](https://github.com/gorhom/react-native-bottom-sheet/pull/140)).
+- feat: added over drag support ([`#139`](https://github.com/gorhom/react-native-bottom-sheet/pull/139)).
+- feat: added over scroll and bouncing support ([`#137`](https://github.com/gorhom/react-native-bottom-sheet/pull/137)).
+
+#### Improvements
+
+- chore: enable postinstall on example to patch react-native-tab-view ([e4db114](https://github.com/gorhom/react-native-bottom-sheet/commit/e4db114958b21b8b3d5d2965680b7aba34e9c099)).
+
+#### Fixes
+
+- fix: prevent scrollable glitches ([`#142`](https://github.com/gorhom/react-native-bottom-sheet/pull/142)).
+- fix: remove jumping on Android while starting scrolling ([`#141`](https://github.com/gorhom/react-native-bottom-sheet/pull/141)).
+- fix: fixed interaction glitch ([`#135`](https://github.com/gorhom/react-native-bottom-sheet/pull/135)).
+
+## [v3.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.0...v3.0.1) - 2020-12-23
 
 #### Improvements
 
