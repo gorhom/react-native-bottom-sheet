@@ -1,7 +1,10 @@
 import { createContext, Ref, RefObject } from 'react';
-import type { TapGestureHandler } from 'react-native-gesture-handler';
+import type {
+  TapGestureHandler,
+  GestureHandlerProperties,
+} from 'react-native-gesture-handler';
 import type Animated from 'react-native-reanimated';
-import { ANIMATION_STATE } from '../constants';
+import type { ANIMATION_STATE } from '../constants';
 import type { Scrollable, ScrollableRef } from '../types';
 
 export type BottomSheetInternalContextType = {
@@ -16,7 +19,7 @@ export type BottomSheetInternalContextType = {
   scrollableDecelerationRate: Animated.SharedValue<number>;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
-};
+} & Pick<GestureHandlerProperties, 'simultaneousHandlers' | 'waitFor'>;
 
 // @ts-ignore
 export const BottomSheetInternalContext = createContext<BottomSheetInternalContextType>();
