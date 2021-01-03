@@ -14,10 +14,7 @@ import type { Scrollable, ScrollableType } from '../types';
 export const useScrollableInternal = (type: ScrollableType) => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
-  const scrollablePosition = useSharedValue<number>(0);
   const scrollableContentOffsetY = useSharedValue<number>(0);
-  const justStartedScrolling = useSharedValue<number>(0);
-  const initialScrollingPosition = useSharedValue<number>(0);
 
   // hooks
   const {
@@ -38,40 +35,25 @@ export const useScrollableInternal = (type: ScrollableType) => {
   const handleScrollEvent = useAnimatedScrollHandler({
     onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
-        initialScrollingPosition.value = y;
-        justStartedScrolling.value = 1;
-        scrollablePosition.value = 0;
         scrollableContentOffsetY.value = 0;
         _rootScrollableContentOffsetY.value = 0;
         return;
       }
-      scrollablePosition.value = y;
       scrollableContentOffsetY.value = y;
       _rootScrollableContentOffsetY.value = y;
     },
-    onScroll: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (justStartedScrolling.value === 1) {
-        justStartedScrolling.value = 0;
-        // @ts-ignore
-        scrollTo(scrollableRef, 0, initialScrollingPosition.value, false);
-        return;
-      }
+    onScroll: () => {
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
-        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-        scrollablePosition.value = 0;
+        scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
         return;
       }
-      scrollablePosition.value = y;
-      scrollableContentOffsetY.value = y;
-      _rootScrollableContentOffsetY.value = y;
     },
     onEndDrag: () => {
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
-        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-        scrollablePosition.value = 0;
+        scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
         return;
       }
@@ -79,8 +61,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
     onMomentumEnd: () => {
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
-        scrollTo(scrollableRef, 0, scrollablePosition.value, false);
-        scrollablePosition.value = 0;
+        scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
         return;
       }

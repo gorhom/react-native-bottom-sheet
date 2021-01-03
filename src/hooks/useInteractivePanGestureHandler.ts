@@ -55,13 +55,13 @@ export const useInteractivePanGestureHandler = (
         gestureVelocityY.value = velocityY;
 
         const position = context.currentPosition + translationY;
-        const clampedScrollableContentOffset =
+        const negativeScrollableContentOffset =
           context.currentPosition === snapPoints[snapPoints.length - 1] &&
           scrollableContentOffsetY
             ? scrollableContentOffsetY.value * -1
             : 0;
         const clampedPosition = clamp(
-          position + clampedScrollableContentOffset,
+          position + negativeScrollableContentOffset,
           snapPoints[snapPoints.length - 1],
           snapPoints[0]
         );
