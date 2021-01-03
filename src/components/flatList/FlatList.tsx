@@ -34,7 +34,11 @@ const BottomSheetFlatListName = 'FlatList';
 const BottomSheetFlatListComponent = forwardRef(
   (props: BottomSheetFlatListProps<any>, ref: Ref<RNFlatList>) => {
     // props
-    const { focusHook: useFocusHook = useEffect, ...rest } = props;
+    const {
+      focusHook: useFocusHook = useEffect,
+      overScrollMode = 'never',
+      ...rest
+    } = props;
 
     // refs
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
@@ -72,7 +76,7 @@ const BottomSheetFlatListComponent = forwardRef(
             {...rest}
             // @ts-ignore
             ref={scrollableRef}
-            overScrollMode="always"
+            overScrollMode={overScrollMode}
             scrollEventThrottle={16}
             onScrollBeginDrag={handleScrollEvent}
             // @ts-ignore

@@ -3,10 +3,7 @@ import type { SectionListProps as RNSectionListProps } from 'react-native';
 
 type BottomSheetSectionListProps<T> = Omit<
   RNSectionListProps<T>,
-  | 'overScrollMode'
-  | 'decelerationRate'
-  | 'onScrollBeginDrag'
-  | 'scrollEventThrottle'
+  'decelerationRate' | 'onScrollBeginDrag' | 'scrollEventThrottle'
 > & {
   /**
    * This needed when bottom sheet used with multiple scrollables to allow bottom sheet detect the current scrollable ref, especially when used with `React Navigation`. You will need to provide `useFocusEffect` from `@react-navigation/native`.

@@ -34,7 +34,11 @@ const BottomSheetSectionListName = 'SectionList';
 const BottomSheetSectionListComponent = forwardRef(
   (props: BottomSheetSectionListProps<any>, ref: Ref<RNSectionList>) => {
     // props
-    const { focusHook: useFocusHook = useEffect, ...rest } = props;
+    const {
+      focusHook: useFocusHook = useEffect,
+      overScrollMode = 'never',
+      ...rest
+    } = props;
 
     // refs
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
@@ -72,7 +76,7 @@ const BottomSheetSectionListComponent = forwardRef(
             {...rest}
             // @ts-ignore
             ref={scrollableRef}
-            overScrollMode="always"
+            overScrollMode={overScrollMode}
             scrollEventThrottle={16}
             onScrollBeginDrag={handleScrollEvent}
             // @ts-ignore
