@@ -19,6 +19,7 @@ export type AppStackParamsList = {
   ['Advanced/BackdropExample']: undefined;
   ['Advanced/MapExample']: undefined;
   ['Advanced/DynamicSnapPointExample']: undefined;
+  ['Advanced/ViewPagerExample']: undefined;
 };
 
 export type Contact = {

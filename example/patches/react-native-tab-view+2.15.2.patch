@@ -1,0 +1,138 @@
+diff --git a/node_modules/react-native-tab-view/lib/commonjs/Pager.js b/node_modules/react-native-tab-view/lib/commonjs/Pager.js
+index 1c491e8..14241b1 100644
+--- a/node_modules/react-native-tab-view/lib/commonjs/Pager.js
++++ b/node_modules/react-native-tab-view/lib/commonjs/Pager.js
+@@ -96,7 +96,10 @@ class Pager extends React.Component {
+ 
+     _defineProperty(this, "mounted", false);
+ 
++    _defineProperty(this, "gestureHandlerRef", /*#__PURE__*/React.createRef());
++
+     _defineProperty(this, "providerVal", {
++      pagerRef: this.gestureHandlerRef,
+       addGestureHandlerRef: ref => {
+         if (!this.state.childPanGestureHandlerRefs.includes(ref) && this.mounted) {
+           this.setState(prevState => ({
+@@ -106,8 +109,6 @@ class Pager extends React.Component {
+       }
+     });
+ 
+-    _defineProperty(this, "gestureHandlerRef", /*#__PURE__*/React.createRef());
+-
+     _defineProperty(this, "clock", new Clock());
+ 
+     _defineProperty(this, "velocityX", new Value(0));
+diff --git a/node_modules/react-native-tab-view/lib/commonjs/index.js b/node_modules/react-native-tab-view/lib/commonjs/index.js
+index e3f00fc..9a39fc8 100644
+--- a/node_modules/react-native-tab-view/lib/commonjs/index.js
++++ b/node_modules/react-native-tab-view/lib/commonjs/index.js
+@@ -15,6 +15,12 @@ Object.defineProperty(exports, "TabView", {
+     return _TabView.default;
+   }
+ });
++Object.defineProperty(exports, "Pager", {
++  enumerable: true,
++  get: function get() {
++    return _Pager.default;
++  }
++});
+ Object.defineProperty(exports, "TabBarIndicator", {
+   enumerable: true,
+   get: function get() {
+@@ -60,5 +66,7 @@ var _SceneMap = _interopRequireDefault(require("./SceneMap"));
+ 
+ var _ScrollPager = _interopRequireDefault(require("./ScrollPager"));
+ 
++var _Pager = _interopRequireDefault(require("./Pager"));
++
+ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+ //# sourceMappingURL=index.js.map
+\ No newline at end of file
+diff --git a/node_modules/react-native-tab-view/lib/module/Pager.js b/node_modules/react-native-tab-view/lib/module/Pager.js
+index 406e30a..4482bcb 100644
+--- a/node_modules/react-native-tab-view/lib/module/Pager.js
++++ b/node_modules/react-native-tab-view/lib/module/Pager.js
+@@ -78,7 +78,10 @@ export default class Pager extends React.Component {
+ 
+     _defineProperty(this, "mounted", false);
+ 
++    _defineProperty(this, "gestureHandlerRef", /*#__PURE__*/React.createRef());
++
+     _defineProperty(this, "providerVal", {
++      pagerRef: this.gestureHandlerRef,
+       addGestureHandlerRef: ref => {
+         if (!this.state.childPanGestureHandlerRefs.includes(ref) && this.mounted) {
+           this.setState(prevState => ({
+@@ -88,8 +91,6 @@ export default class Pager extends React.Component {
+       }
+     });
+ 
+-    _defineProperty(this, "gestureHandlerRef", /*#__PURE__*/React.createRef());
+-
+     _defineProperty(this, "clock", new Clock());
+ 
+     _defineProperty(this, "velocityX", new Value(0));
+diff --git a/node_modules/react-native-tab-view/lib/module/index.js b/node_modules/react-native-tab-view/lib/module/index.js
+index c687a54..5466d89 100644
+--- a/node_modules/react-native-tab-view/lib/module/index.js
++++ b/node_modules/react-native-tab-view/lib/module/index.js
+@@ -5,4 +5,5 @@ export { default as TabBarItem } from './TabBarItem';
+ export { default as TouchableItem } from './TouchableItem';
+ export { default as SceneMap } from './SceneMap';
+ export { default as ScrollPager } from './ScrollPager';
++export { default as Pager } from './Pager';
+ //# sourceMappingURL=index.js.map
+\ No newline at end of file
+diff --git a/node_modules/react-native-tab-view/lib/typescript/src/index.d.ts b/node_modules/react-native-tab-view/lib/typescript/src/index.d.ts
+index 60cada6..2dc8881 100644
+--- a/node_modules/react-native-tab-view/lib/typescript/src/index.d.ts
++++ b/node_modules/react-native-tab-view/lib/typescript/src/index.d.ts
+@@ -9,4 +9,5 @@ export type { Props as TabBarItemProps } from './TabBarItem';
+ export { default as TouchableItem } from './TouchableItem';
+ export { default as SceneMap } from './SceneMap';
+ export { default as ScrollPager } from './ScrollPager';
++export { default as Pager } from './Pager';
+ export type { Route, NavigationState, SceneRendererProps } from './types';
+diff --git a/node_modules/react-native-tab-view/src/Pager.tsx b/node_modules/react-native-tab-view/src/Pager.tsx
+index 3441d69..1202c35 100644
+--- a/node_modules/react-native-tab-view/src/Pager.tsx
++++ b/node_modules/react-native-tab-view/src/Pager.tsx
+@@ -245,9 +245,15 @@ export default class Pager<T extends Route> extends React.Component<
+ 
+   static contextType = PagerContext;
+ 
++  // PanGestureHandler ref used for coordination with parent handlers
++  private gestureHandlerRef: React.RefObject<
++    PanGestureHandler
++  > = React.createRef();
++
+   // Mechanism to add child PanGestureHandler refs in the case that this
+   // Pager is a parent to child Pagers. Allows for coordination between handlers
+   private providerVal = {
++    pagerRef: this.gestureHandlerRef,
+     addGestureHandlerRef: (ref: React.RefObject<PanGestureHandler>) => {
+       if (
+         !this.state.childPanGestureHandlerRefs.includes(ref) &&
+@@ -263,11 +269,6 @@ export default class Pager<T extends Route> extends React.Component<
+     },
+   };
+ 
+-  // PanGestureHandler ref used for coordination with parent handlers
+-  private gestureHandlerRef: React.RefObject<
+-    PanGestureHandler
+-  > = React.createRef();
+-
+   // Clock used for tab transition animations
+   private clock = new Clock();
+ 
+diff --git a/node_modules/react-native-tab-view/src/index.tsx b/node_modules/react-native-tab-view/src/index.tsx
+index ce01571..a7dffb4 100644
+--- a/node_modules/react-native-tab-view/src/index.tsx
++++ b/node_modules/react-native-tab-view/src/index.tsx
+@@ -14,5 +14,6 @@ export { default as TouchableItem } from './TouchableItem';
+ 
+ export { default as SceneMap } from './SceneMap';
+ export { default as ScrollPager } from './ScrollPager';
++export { default as Pager } from './Pager';
+ 
+ export type { Route, NavigationState, SceneRendererProps } from './types';

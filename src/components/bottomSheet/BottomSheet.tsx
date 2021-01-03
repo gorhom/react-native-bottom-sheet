@@ -92,6 +92,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // animated callback shared values
       animatedPosition: _providedAnimatedPosition,
       animatedIndex: _providedAnimatedIndex,
+
+      // gestures
+      simultaneousHandlers: _providedSimultaneousHandlers,
+      waitFor: _providedWaitFor,
+
       // callbacks
       onChange: _providedOnChange,
       onAnimate: _providedOnAnimate,
@@ -395,6 +400,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         contentPanGestureHandler,
         scrollableContentOffsetY,
         scrollableDecelerationRate,
+        simultaneousHandlers: _providedSimultaneousHandlers,
+        waitFor: _providedWaitFor,
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,
       }),
@@ -409,6 +416,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         scrollableContentOffsetY,
         scrollableDecelerationRate,
         enableContentPanningGesture,
+        _providedSimultaneousHandlers,
+        _providedWaitFor,
       ]
     );
     const externalContextVariables = useMemo(
