@@ -70,6 +70,10 @@ const data = [
         name: 'Dynamic Snap Point',
         slug: 'Advanced/DynamicSnapPointExample',
       },
+      {
+        name: 'View Pager',
+        slug: 'Advanced/ViewPagerExample',
+      },
     ],
   },
 ];

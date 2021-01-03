@@ -6,13 +6,15 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start"
+    "start": "react-native start",
+    "posxtinstall": "npx patch-package"
   },
   "dependencies": {
     "@gorhom/portal": "^0.1.4",
     "@gorhom/showcase-template": "^1.0.2",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-navigation/material-top-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "faker": "^4.1.0",
@@ -25,7 +27,8 @@
     "react-native-reanimated": "^2.0.0-rc.1",
     "react-native-redash": "^16.0.4",
     "react-native-safe-area-context": "0.7.3",
-    "react-native-screens": "^2.16.1"
+    "react-native-screens": "^2.16.1",
+    "react-native-tab-view": "^2.15.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

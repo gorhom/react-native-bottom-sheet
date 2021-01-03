@@ -133,6 +133,16 @@ function App() {
               require('./screens/advanced/DynamicSnapPointExample').default
             }
           />
+
+          <Stack.Screen
+            name="Advanced/ViewPagerExample"
+            options={{
+              title: 'ViewPager Example',
+            }}
+            getComponent={() =>
+              require('./screens/advanced/ViewPagerExample').default
+            }
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </AppearanceProvider>
