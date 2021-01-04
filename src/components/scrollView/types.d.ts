@@ -6,10 +6,7 @@ import type {
 
 export type BottomSheetScrollViewProps = Omit<
   RNScrollViewProps,
-  | 'overScrollMode'
-  | 'decelerationRate'
-  | 'onScrollBeginDrag'
-  | 'scrollEventThrottle'
+  'decelerationRate' | 'onScrollBeginDrag' | 'scrollEventThrottle'
 > & {
   children: React.ReactNode[] | React.ReactNode;
   /**

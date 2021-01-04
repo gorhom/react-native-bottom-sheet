@@ -34,7 +34,11 @@ const BottomSheetScrollViewName = 'ScrollView';
 const BottomSheetScrollViewComponent = forwardRef(
   (props: BottomSheetScrollViewProps, ref: Ref<RNScrollView>) => {
     // props
-    const { focusHook: useFocusHook = useEffect, ...rest } = props;
+    const {
+      focusHook: useFocusHook = useEffect,
+      overScrollMode = 'never',
+      ...rest
+    } = props;
 
     // refs
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
@@ -70,7 +74,7 @@ const BottomSheetScrollViewComponent = forwardRef(
           <AnimatedScrollView
             {...rest}
             ref={scrollableRef}
-            overScrollMode="always"
+            overScrollMode={overScrollMode}
             scrollEventThrottle={16}
             onScrollBeginDrag={handleScrollEvent}
             // @ts-ignore
