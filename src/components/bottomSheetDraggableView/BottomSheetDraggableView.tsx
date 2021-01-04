@@ -22,6 +22,10 @@ const BottomSheetDraggableViewComponent = ({
     contentPanGestureHandler,
     simultaneousHandlers: _providedSimultaneousHandlers,
     waitFor,
+    activeOffsetX,
+    activeOffsetY,
+    failOffsetX,
+    failOffsetY,
   } = useBottomSheetInternal();
 
   // variables
@@ -61,6 +65,10 @@ const BottomSheetDraggableViewComponent = ({
       shouldCancelWhenOutside={false}
       waitFor={waitFor}
       onGestureEvent={contentPanGestureHandler}
+      activeOffsetX={activeOffsetX}
+      activeOffsetY={activeOffsetY}
+      failOffsetX={failOffsetX}
+      failOffsetY={failOffsetY}
     >
       <Animated.View style={containerStyle} {...rest}>
         {children}

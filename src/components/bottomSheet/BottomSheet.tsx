@@ -78,6 +78,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animationDuration = DEFAULT_ANIMATION_DURATION,
       animationEasing = DEFAULT_ANIMATION_EASING,
       animationConfigs: _providedAnimationConfigs,
+
       // configurations
       index: _providedIndex = 0,
       snapPoints: _providedSnapPoints,
@@ -86,11 +87,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       enableFlashScrollableIndicatorOnExpand = DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
+
       // layout
       handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
       topInset = 0,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
+
       // animated callback shared values
       animatedPosition: _providedAnimatedPosition,
       animatedIndex: _providedAnimatedIndex,
@@ -98,6 +101,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // gestures
       simultaneousHandlers: _providedSimultaneousHandlers,
       waitFor: _providedWaitFor,
+      activeOffsetX: _providedActiveOffsetX,
+      activeOffsetY: _providedActiveOffsetY,
+      failOffsetX: _providedFailOffsetX,
+      failOffsetY: _providedFailOffsetY,
 
       // callbacks
       onChange: _providedOnChange,
@@ -412,6 +419,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         scrollableDecelerationRate,
         simultaneousHandlers: _providedSimultaneousHandlers,
         waitFor: _providedWaitFor,
+        activeOffsetX: _providedActiveOffsetX,
+        activeOffsetY: _providedActiveOffsetY,
+        failOffsetX: _providedFailOffsetX,
+        failOffsetY: _providedFailOffsetY,
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,
       }),
@@ -428,6 +439,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         enableContentPanningGesture,
         _providedSimultaneousHandlers,
         _providedWaitFor,
+        _providedActiveOffsetX,
+        _providedActiveOffsetY,
+        _providedFailOffsetX,
+        _providedFailOffsetY,
       ]
     );
     const externalContextVariables = useMemo(

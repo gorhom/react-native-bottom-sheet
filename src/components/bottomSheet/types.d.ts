@@ -1,13 +1,20 @@
 import type React from 'react';
 import type Animated from 'react-native-reanimated';
-import type { GestureHandlerProperties } from 'react-native-gesture-handler';
+import type {
+  GestureHandlerProperties,
+  PanGestureHandlerProperties,
+} from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
-    Pick<GestureHandlerProperties, 'waitFor' | 'simultaneousHandlers'> {
+    Pick<GestureHandlerProperties, 'waitFor' | 'simultaneousHandlers'>,
+    Pick<
+      PanGestureHandlerProperties,
+      'activeOffsetY' | 'activeOffsetX' | 'failOffsetY' | 'failOffsetX'
+    > {
   // configuration
   /**
    * Initial snap index, you also could provide `-1` to initiate bottom sheet in closed state.
