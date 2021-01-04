@@ -52,6 +52,7 @@ import {
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
   DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
   DEFAULT_ENABLE_OVER_DRAG,
+  DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
   DEFAULT_ANIMATE_ON_MOUNT,
   DECELERATION_RATE,
 } from './constants';
@@ -84,6 +85,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableContentPanningGesture = DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
+      enableFlashScrollableIndicatorOnExpand = DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
       // layout
       handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
@@ -205,10 +207,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         snapPoints[snapPoints.length - 1] - snapPoints[currentPositionIndex]
       );
 
-      if (currentPositionIndex === snapPoints.length - 1) {
+      if (
+        enableFlashScrollableIndicatorOnExpand &&
+        currentPositionIndex === snapPoints.length - 1
+      ) {
         flashScrollableIndicators();
       }
-    }, [snapPoints, contentWrapperMaxDeltaY, flashScrollableIndicators]);
+    }, [
+      snapPoints,
+      contentWrapperMaxDeltaY,
+      flashScrollableIndicators,
+      enableFlashScrollableIndicatorOnExpand,
+    ]);
     const handleOnChange = useCallback(
       (index: number) => {
         if (index === currentIndexRef.current) {

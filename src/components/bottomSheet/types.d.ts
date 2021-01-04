@@ -72,6 +72,12 @@ export interface BottomSheetProps
    */
   enableOverDrag?: boolean;
   /**
+   * Enable flash the scrollable indicator when the sheet is expanded.
+   * @type boolean
+   * @default true
+   */
+  enableFlashScrollableIndicatorOnExpand?: boolean;
+  /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
    * @default false
