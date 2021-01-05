@@ -540,10 +540,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * sets provided animated position
      */
     useAnimatedReaction(
-      () => (_providedAnimatedPosition ? animatedPosition.value : null),
-      (value: number | null) => {
-        if (value) {
-          _providedAnimatedPosition!.value = value;
+      () => animatedPosition.value,
+      value => {
+        if (_providedAnimatedPosition) {
+          _providedAnimatedPosition.value = value;
         }
       }
     );
@@ -552,10 +552,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * sets provided animated index
      */
     useAnimatedReaction(
-      () => (_providedAnimatedIndex ? animatedIndex.value : null),
-      (value: number | null) => {
-        if (value) {
-          _providedAnimatedIndex!.value = value;
+      () => animatedIndex.value,
+      value => {
+        if (_providedAnimatedIndex) {
+          _providedAnimatedIndex.value = value;
         }
       }
     );
