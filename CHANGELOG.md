@@ -1,6 +1,17 @@
 # Changelog
 
-## [v3.0.2-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.1...v3.0.2-alpha.0)
+## [v3.0.2-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.0...v3.0.2-alpha.1)
+
+#### Features
+
+- feat: added more gesture handler props ([`#148`](https://github.com/gorhom/react-native-bottom-sheet/pull/148)).
+- feat: added a prop to control flashing scrollable on expand ([`#146`](https://github.com/gorhom/react-native-bottom-sheet/pull/146)).
+
+#### Improvements
+
+- refactor: updated overScrollMode to be come overridable ([`#145`](https://github.com/gorhom/react-native-bottom-sheet/pull/145)).
+
+## [v3.0.2-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.1...v3.0.2-alpha.0) - 2021-01-03
 
 #### Features
 
