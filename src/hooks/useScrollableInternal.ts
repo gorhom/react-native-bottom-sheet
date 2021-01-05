@@ -10,6 +10,7 @@ import {
 } from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 import type { Scrollable, ScrollableType } from '../types';
+import { ANIMATION_STATE } from '../constants';
 
 export const useScrollableInternal = (type: ScrollableType) => {
   // refs
@@ -21,6 +22,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
   // hooks
   const {
     snapPointsCount,
+    animationState,
     animatedIndex,
     scrollableDecelerationRate,
     scrollableContentOffsetY: _rootScrollableContentOffsetY,
@@ -60,20 +62,28 @@ export const useScrollableInternal = (type: ScrollableType) => {
         return;
       }
     },
-    onEndDrag: () => {
+    onEndDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
         return;
       }
+      if (animationState.value !== ANIMATION_STATE.RUNNING) {
+        scrollableContentOffsetY.value = y;
+        _rootScrollableContentOffsetY.value = y;
+      }
     },
-    onMomentumEnd: () => {
+    onMomentumEnd: ({ contentOffset: { y } }: NativeScrollEvent) => {
       if (animatedIndex.value !== snapPointsCount - 1) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
         return;
+      }
+      if (animationState.value !== ANIMATION_STATE.RUNNING) {
+        scrollableContentOffsetY.value = y;
+        _rootScrollableContentOffsetY.value = y;
       }
     },
   });
