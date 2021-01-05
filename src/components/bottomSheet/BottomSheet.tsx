@@ -547,6 +547,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
       }
     );
+
+    /**
+     * sets provided animated index
+     */
     useAnimatedReaction(
       () => animatedIndex.value,
       value => {
