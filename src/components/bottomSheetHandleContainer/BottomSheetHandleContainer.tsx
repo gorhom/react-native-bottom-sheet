@@ -4,6 +4,7 @@ import Animated from 'react-native-reanimated';
 import isEqual from 'lodash.isequal';
 import BottomSheetHandle from '../bottomSheetHandle';
 import type { BottomSheetHandleContainerProps } from './types';
+import { useBottomSheetInternal } from '../../hooks';
 
 const BottomSheetHandleContainerComponent = ({
   animatedIndex,
@@ -52,6 +53,13 @@ const BottomSheetHandleContainerComponent = ({
     );
   }, [animatedIndex, animatedPosition, _providedHandleComponent]);
 
+  const {
+    activeOffsetX,
+    activeOffsetY,
+    failOffsetX,
+    failOffsetY,
+  } = useBottomSheetInternal();
+
   // console.log(
   //   'BottomSheetHandleContainer',
   //   'render',
@@ -64,6 +72,10 @@ const BottomSheetHandleContainerComponent = ({
       simultaneousHandlers={simultaneousHandlers}
       shouldCancelWhenOutside={false}
       onGestureEvent={handlePanGestureHandler}
+      activeOffsetX={activeOffsetX}
+      activeOffsetY={activeOffsetY}
+      failOffsetX={failOffsetX}
+      failOffsetY={failOffsetY}
     >
       <Animated.View
         accessible={true}
