@@ -145,9 +145,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const shouldMeasureHandleHeight = useMemo(
       () =>
-        _providedHandleHeight === undefined &&
-        backgroundComponent !== undefined,
-      [_providedHandleHeight, backgroundComponent]
+        _providedHandleHeight === undefined && handleComponent !== undefined,
+      [_providedHandleHeight, handleComponent]
     );
 
     // refs
