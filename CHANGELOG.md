@@ -1,6 +1,17 @@
 # Changelog
 
-## [v3.0.2-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.0...v3.0.2-alpha.1)
+## [v3.0.2-alpha.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.1...v3.0.2-alpha.2)
+
+#### Improvements
+
+- chore: changed the default easing function to cubic ([`#151`](https://github.com/gorhom/react-native-bottom-sheet/pull/151)).
+
+#### Fixes
+
+- fix: apply additional panGH props to handle's gesture handler ([`#152`](https://github.com/gorhom/react-native-bottom-sheet/pull/152)).
+- fix: fixed animated reaction for animated callback nodes ([`#150`](https://github.com/gorhom/react-native-bottom-sheet/pull/150)).
+
+## [v3.0.2-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.0...v3.0.2-alpha.1) - 2021-01-05
 
 #### Features
 
