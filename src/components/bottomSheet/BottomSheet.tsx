@@ -22,10 +22,9 @@ import Animated, {
   Extrapolate,
   runOnUI,
   useWorkletCallback,
-  useAnimatedProps,
   withTiming,
 } from 'react-native-reanimated';
-import { State, TapGestureHandler } from 'react-native-gesture-handler';
+import { State } from 'react-native-gesture-handler';
 import {
   useInteractivePanGestureHandler,
   useScrollable,
@@ -40,7 +39,6 @@ import BottomSheetContainer from '../bottomSheetContainer';
 import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
-import BottomSheetContentWrapper from '../bottomSheetContentWrapper';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import { GESTURE, ANIMATION_STATE, WINDOW_HEIGHT } from '../../constants';
@@ -115,10 +113,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       backgroundComponent,
       children,
     } = props;
-    //#endregion
-
-    //#region component refs
-    const contentWrapperGestureRef = useRef<TapGestureHandler>(null);
     //#endregion
 
     //#region layout variables
@@ -199,20 +193,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         : snapPoints[currentIndexRef.current];
     }, [snapPoints, animateOnMount, safeContainerHeight, topInset]);
 
-    //content wrapper
-    const contentWrapperMaxDeltaY = useSharedValue(0);
-    const contentWrapperGestureState = useSharedValue<State>(
-      State.UNDETERMINED
-    );
     //#endregion
 
     //#region private methods
     const refreshUIElements = useCallback(() => {
       const currentPositionIndex = Math.max(currentIndexRef.current, 0);
-
-      contentWrapperMaxDeltaY.value = Math.abs(
-        snapPoints[snapPoints.length - 1] - snapPoints[currentPositionIndex]
-      );
 
       if (
         enableFlashScrollableIndicatorOnExpand &&
@@ -222,7 +207,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
     }, [
       snapPoints,
-      contentWrapperMaxDeltaY,
       flashScrollableIndicators,
       enableFlashScrollableIndicatorOnExpand,
     ]);
@@ -354,11 +338,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableOverDrag,
       overDragResistanceFactor
     );
-
-    // content wrapper
-    const contentWrapperAnimatedProps = useAnimatedProps(() => ({
-      maxDeltaY: contentWrapperMaxDeltaY.value,
-    }));
     //#endregion
 
     //#region layout callbacks
@@ -413,7 +392,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedIndex,
         animatedPosition,
         animationState,
-        contentWrapperGestureRef,
         contentPanGestureHandler,
         scrollableContentOffsetY,
         scrollableDecelerationRate,
@@ -614,49 +592,42 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           shouldMeasureHeight={shouldMeasureContainerHeight}
           onMeasureHeight={handleOnContainerMeasureHeight}
         >
-          <BottomSheetContentWrapper
-            ref={contentWrapperGestureRef}
-            gestureState={contentWrapperGestureState}
-            animatedProps={contentWrapperAnimatedProps}
+          <Animated.View
+            accessible={true}
+            accessibilityRole="adjustable"
+            accessibilityLabel="Bottom Sheet"
+            style={containerStyle}
           >
-            <Animated.View
-              accessible={true}
-              accessibilityRole="adjustable"
-              accessibilityLabel="Bottom Sheet"
-              style={containerStyle}
-            >
-              <BottomSheetInternalProvider value={internalContextVariables}>
-                <BottomSheetBackgroundContainer
-                  key="BottomSheetBackgroundContainer"
-                  animatedIndex={animatedIndex}
-                  animatedPosition={animatedPosition}
-                  backgroundComponent={backgroundComponent}
-                />
-                {isLayoutCalculated && (
-                  <BottomSheetDraggableView
-                    key="BottomSheetRootDraggableView"
-                    style={contentContainerStyle}
-                  >
-                    {typeof children === 'function'
-                      ? (children as Function)()
-                      : children}
-                  </BottomSheetDraggableView>
-                )}
-                <BottomSheetHandleContainer
-                  key="BottomSheetHandleContainer"
-                  animatedIndex={animatedIndex}
-                  animatedPosition={animatedPosition}
-                  simultaneousHandlers={contentWrapperGestureRef}
-                  shouldMeasureHeight={shouldMeasureHandleHeight}
-                  enableHandlePanningGesture={enableHandlePanningGesture}
-                  handlePanGestureHandler={handlePanGestureHandler}
-                  handleComponent={handleComponent}
-                  snapPoints={snapPoints}
-                  onMeasureHeight={handleOnHandleMeasureHeight}
-                />
-              </BottomSheetInternalProvider>
-            </Animated.View>
-          </BottomSheetContentWrapper>
+            <BottomSheetInternalProvider value={internalContextVariables}>
+              <BottomSheetBackgroundContainer
+                key="BottomSheetBackgroundContainer"
+                animatedIndex={animatedIndex}
+                animatedPosition={animatedPosition}
+                backgroundComponent={backgroundComponent}
+              />
+              {isLayoutCalculated && (
+                <BottomSheetDraggableView
+                  key="BottomSheetRootDraggableView"
+                  style={contentContainerStyle}
+                >
+                  {typeof children === 'function'
+                    ? (children as Function)()
+                    : children}
+                </BottomSheetDraggableView>
+              )}
+              <BottomSheetHandleContainer
+                key="BottomSheetHandleContainer"
+                animatedIndex={animatedIndex}
+                animatedPosition={animatedPosition}
+                shouldMeasureHeight={shouldMeasureHandleHeight}
+                enableHandlePanningGesture={enableHandlePanningGesture}
+                handlePanGestureHandler={handlePanGestureHandler}
+                handleComponent={handleComponent}
+                snapPoints={snapPoints}
+                onMeasureHeight={handleOnHandleMeasureHeight}
+              />
+            </BottomSheetInternalProvider>
+          </Animated.View>
           {/* <BottomSheetDebugView
             values={{
               tapState: contentWrapperGestureState,

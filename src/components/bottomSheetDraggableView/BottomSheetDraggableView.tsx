@@ -18,7 +18,6 @@ const BottomSheetDraggableViewComponent = ({
   // hooks
   const {
     enableContentPanningGesture,
-    contentWrapperGestureRef,
     contentPanGestureHandler,
     simultaneousHandlers: _providedSimultaneousHandlers,
     waitFor,
@@ -30,7 +29,7 @@ const BottomSheetDraggableViewComponent = ({
 
   // variables
   const simultaneousHandlers = useMemo(() => {
-    const refs = [contentWrapperGestureRef];
+    const refs = [];
 
     if (nativeGestureRef) {
       refs.push(nativeGestureRef);
@@ -45,11 +44,7 @@ const BottomSheetDraggableViewComponent = ({
     }
 
     return refs;
-  }, [
-    _providedSimultaneousHandlers,
-    contentWrapperGestureRef,
-    nativeGestureRef,
-  ]);
+  }, [_providedSimultaneousHandlers, nativeGestureRef]);
 
   // styles
   const containerStyle = useMemo(
