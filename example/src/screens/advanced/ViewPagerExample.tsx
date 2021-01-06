@@ -1,20 +1,18 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Pager } from 'react-native-tab-view';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ContactList from '../../components/contactList';
 
 const FirstRoute = () => {
-  // @ts-ignore
-  const { pagerRef } = useContext(Pager.contextType);
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
 
   return (
     <View style={[styles.scene, styles.firstScene]}>
       <BottomSheet
         snapPoints={snapPoints}
-        waitFor={pagerRef}
+        activeOffsetY={[-1, 1]}
+        failOffsetX={[-5, 5]}
         animateOnMount={true}
       >
         <ContactList type="FlatList" count={15} />

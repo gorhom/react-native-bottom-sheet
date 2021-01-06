@@ -146,7 +146,7 @@ export interface BottomSheetAnimationConfigs {
   /**
    * Snapping animation easing function.
    * @type Animated.EasingFunction
-   * @default Easing.out(Easing.exp)
+   * @default Easing.out(Easing.cubic)
    * @deprecated this prop will be dropped in the next major release.
    * @see animationConfigs
    */
