@@ -1,6 +1,16 @@
 # Changelog
 
-## [v2.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.0...v2.0.1)
+## [v2.0.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.1...v2.0.2)
+
+#### Improvements
+
+- chore: updated auto-changelog configs ([b374a07](https://github.com/gorhom/react-native-bottom-sheet/commit/b374a0748b30e27b3d3a1aa25e36b83b6ec8240f)).
+
+#### Fixes
+
+- fix: fixed shouldMeasureHandleHeight evaluation ([`#158`](https://github.com/gorhom/react-native-bottom-sheet/pull/158)).
+
+## [v2.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.0...v2.0.1) - 2020-12-22
 
 #### Improvements
 
