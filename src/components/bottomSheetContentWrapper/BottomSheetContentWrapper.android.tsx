@@ -21,8 +21,8 @@ const ContentWrapperComponent = forwardRef<
 
   return (
     <ScrollView
-      style={{ height: '100%', width: '100%' }}
-      contentContainerStyle={{ height: '100.1%', width: '100%' }}
+      style={{ height: '100%' }}
+      contentContainerStyle={{ height: '100.1%' }}
       showsVerticalScrollIndicator={false}
       overScrollMode="never"
     >
