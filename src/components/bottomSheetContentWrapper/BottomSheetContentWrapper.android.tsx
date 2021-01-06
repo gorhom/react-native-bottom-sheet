@@ -1,4 +1,5 @@
 import React, { forwardRef, memo } from 'react';
+import { ScrollView } from 'react-native';
 import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
@@ -19,16 +20,23 @@ const ContentWrapperComponent = forwardRef<
   const handleGestureEvent = useTapGestureHandler(gestureState);
 
   return (
-    <AnimatedTapGestureHandler
-      ref={ref}
-      maxDurationMs={1000000}
-      shouldCancelWhenOutside={false}
-      onGestureEvent={handleGestureEvent}
-      // @ts-ignore
-      animatedProps={animatedProps}
+    <ScrollView
+      style={{ height: '100%', width: '100%' }}
+      contentContainerStyle={{ height: '100.1%', width: '100%' }}
+      showsVerticalScrollIndicator={false}
+      overScrollMode="never"
     >
-      {children}
-    </AnimatedTapGestureHandler>
+      <AnimatedTapGestureHandler
+        ref={ref}
+        maxDurationMs={1000000}
+        shouldCancelWhenOutside={false}
+        onGestureEvent={handleGestureEvent}
+        // @ts-ignore
+        animatedProps={animatedProps}
+      >
+        {children}
+      </AnimatedTapGestureHandler>
+    </ScrollView>
   );
 });
 
