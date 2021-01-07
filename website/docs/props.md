@@ -29,8 +29,8 @@ Points for the bottom sheet to snap to, **points should be sorted from bottom to
 
 ```ts
 snapPoints={[200, 500]}
-snapPoints={[200, '%50']}
-snapPoints={[-1, '%100']}
+snapPoints={[200, '50%']}
+snapPoints={[-1, '100%']}
 ```
 
 ### `handleHeight`

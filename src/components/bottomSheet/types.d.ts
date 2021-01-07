@@ -19,8 +19,8 @@ export type BottomSheetProps = {
    * @type Array<string | number>
    * @example
    * snapPoints={[200, 500]}
-   * snapPoints={[200, '%50']}
-   * snapPoints={[-1, '%100']}
+   * snapPoints={[200, '50%']}
+   * snapPoints={[-1, '100%']}
    */
   snapPoints: Array<string | number>;
   /**
