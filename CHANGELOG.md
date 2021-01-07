@@ -1,6 +1,18 @@
 # Changelog
 
-## [v3.0.2-alpha.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.1...v3.0.2-alpha.2)
+## [v3.0.2-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.2...v3.0.2-alpha.3)
+
+#### Improvements
+
+- refactor: remove getNode from scrollables ([`#166`](https://github.com/gorhom/react-native-bottom-sheet/pull/166)).
+- refactor: handle & background layers ([`#165`](https://github.com/gorhom/react-native-bottom-sheet/pull/165)).
+- refactor: removed ContentWrapper from BottomSheet ([`#156`](https://github.com/gorhom/react-native-bottom-sheet/pull/156)).
+
+#### Fixes
+
+- fix: fixed shouldMeasureHandleHeight evaluation ([`#157`](https://github.com/gorhom/react-native-bottom-sheet/pull/157)).
+
+## [v3.0.2-alpha.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.1...v3.0.2-alpha.2) - 2021-01-06
 
 #### Improvements
 
@@ -85,7 +97,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.1...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.2...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
