@@ -107,6 +107,15 @@ function App() {
             }
           />
           <Stack.Screen
+            name="Advanced/CustomBackgroundExample"
+            options={{
+              title: 'Custom Background Example',
+            }}
+            getComponent={() =>
+              require('./screens/advanced/CustomBackgroundExample').default
+            }
+          />
+          <Stack.Screen
             name="Advanced/BackdropExample"
             options={{
               title: 'Backdrop Example',
