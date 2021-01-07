@@ -457,6 +457,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }),
       [sheetHeight]
     );
+
+    /**
+     * added safe area to prevent the sheet from floating above
+     * the bottom of the screen, when sheet being over dragged or
+     * when the sheet is resized.
+     */
+    const contentMaskContainerStyle = useMemo<ViewStyle>(
+      () => ({
+        ...styles.contentMaskContainer,
+        paddingBottom: sheetHeight,
+      }),
+      [sheetHeight]
+    );
     //#endregion
 
     //#region effects
@@ -604,16 +617,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 animatedPosition={animatedPosition}
                 backgroundComponent={backgroundComponent}
               />
-              {isLayoutCalculated && (
-                <BottomSheetDraggableView
-                  key="BottomSheetRootDraggableView"
-                  style={contentContainerStyle}
-                >
-                  {typeof children === 'function'
-                    ? (children as Function)()
-                    : children}
-                </BottomSheetDraggableView>
-              )}
+              <Animated.View
+                pointerEvents="box-none"
+                style={contentMaskContainerStyle}
+              >
+                {isLayoutCalculated && (
+                  <BottomSheetDraggableView
+                    key="BottomSheetRootDraggableView"
+                    style={contentContainerStyle}
+                  >
+                    {typeof children === 'function'
+                      ? (children as Function)()
+                      : children}
+                  </BottomSheetDraggableView>
+                )}
+              </Animated.View>
               <BottomSheetHandleContainer
                 key="BottomSheetHandleContainer"
                 animatedIndex={animatedIndex}

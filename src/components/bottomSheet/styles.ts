@@ -7,12 +7,9 @@ export const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    /**
-     * added safe area to prevent the sheet from floating above
-     * the bottom of the screen, when sheet being over dragged.
-     */
-    paddingBottom: 50,
-    overflow: 'hidden',
   },
   contentContainer: {},
+  contentMaskContainer: {
+    overflow: 'hidden',
+  },
 });
