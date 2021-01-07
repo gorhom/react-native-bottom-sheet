@@ -1,16 +1,16 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Handle from '../../components/handle';
+import CustomBackground from '../../components/customBackground';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
 
-const CustomHandleExample = () => {
+const CustomBackgroundExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
+  const snapPoints = useMemo(() => [150, 450], []);
 
   // styles
 
@@ -32,7 +32,7 @@ const CustomHandleExample = () => {
   const renderHeader = useCallback(() => {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Custom Handle Example</Text>
+        <Text style={styles.title}>Custom Background Example</Text>
       </View>
     );
   }, []);
@@ -41,11 +41,6 @@ const CustomHandleExample = () => {
     <View style={styles.container}>
       <Button
         label="Snap To 450"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(2)}
-      />
-      <Button
-        label="Snap To 300"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(1)}
       />
@@ -73,9 +68,10 @@ const CustomHandleExample = () => {
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
-        handleComponent={Handle}
+        animateOnMount={true}
+        backgroundComponent={CustomBackground}
       >
-        <ContactList type="FlatList" count={10} header={renderHeader} />
+        <ContactList type="View" count={3} header={renderHeader} />
       </BottomSheet>
     </View>
   );
@@ -106,11 +102,10 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingVertical: 24,
-    backgroundColor: 'white',
   },
   buttonContainer: {
     marginBottom: 6,
   },
 });
 
-export default CustomHandleExample;
+export default CustomBackgroundExample;

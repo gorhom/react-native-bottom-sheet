@@ -16,6 +16,7 @@ export type AppStackParamsList = {
   // advanced
   ['Advanced/NavigatorExample']: undefined;
   ['Advanced/CustomHandleExample']: undefined;
+  ['Advanced/CustomBackgroundExample']: undefined;
   ['Advanced/BackdropExample']: undefined;
   ['Advanced/MapExample']: undefined;
   ['Advanced/DynamicSnapPointExample']: undefined;
