@@ -9,7 +9,7 @@ import { useBottomSheetInternal } from '../../hooks';
 const BottomSheetHandleContainerComponent = ({
   animatedIndex,
   animatedPosition,
-  simultaneousHandlers,
+  simultaneousHandlers: _internalSimultaneousHandlers,
   enableHandlePanningGesture,
   shouldMeasureHeight,
   handlePanGestureHandler,
@@ -17,6 +17,33 @@ const BottomSheetHandleContainerComponent = ({
   handleComponent: _providedHandleComponent,
 }: BottomSheetHandleContainerProps) => {
   //#region variables
+  const {
+    activeOffsetX,
+    activeOffsetY,
+    failOffsetX,
+    failOffsetY,
+    waitFor,
+    simultaneousHandlers: _providedSimultaneousHandlers,
+  } = useBottomSheetInternal();
+
+  const simultaneousHandlers = useMemo<any>(() => {
+    const refs = [];
+
+    if (_internalSimultaneousHandlers) {
+      refs.push(_internalSimultaneousHandlers);
+    }
+
+    if (_providedSimultaneousHandlers) {
+      if (Array.isArray(_providedSimultaneousHandlers)) {
+        refs.push(..._providedSimultaneousHandlers);
+      } else {
+        refs.push(_providedSimultaneousHandlers);
+      }
+    }
+
+    return refs;
+  }, [_providedSimultaneousHandlers, _internalSimultaneousHandlers]);
+
   const shouldRenderHandle = useMemo(() => _providedHandleComponent !== null, [
     _providedHandleComponent,
   ]);
@@ -53,13 +80,6 @@ const BottomSheetHandleContainerComponent = ({
     );
   }, [animatedIndex, animatedPosition, _providedHandleComponent]);
 
-  const {
-    activeOffsetX,
-    activeOffsetY,
-    failOffsetX,
-    failOffsetY,
-  } = useBottomSheetInternal();
-
   // console.log(
   //   'BottomSheetHandleContainer',
   //   'render',
@@ -69,6 +89,7 @@ const BottomSheetHandleContainerComponent = ({
   return shouldRenderHandle ? (
     <PanGestureHandler
       enabled={enableHandlePanningGesture}
+      waitFor={waitFor}
       simultaneousHandlers={simultaneousHandlers}
       shouldCancelWhenOutside={false}
       onGestureEvent={handlePanGestureHandler}

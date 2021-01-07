@@ -50,10 +50,7 @@ const BottomSheetFlatListComponent = forwardRef(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal(BottomSheetFlatListName);
-    const {
-      contentWrapperGestureRef,
-      enableContentPanningGesture,
-    } = useBottomSheetInternal();
+    const { enableContentPanningGesture } = useBottomSheetInternal();
 
     // effects
     // @ts-ignore
@@ -69,7 +66,6 @@ const BottomSheetFlatListComponent = forwardRef(
         <NativeViewGestureHandler
           ref={nativeGestureRef}
           enabled={enableContentPanningGesture}
-          waitFor={contentWrapperGestureRef}
           shouldCancelWhenOutside={false}
         >
           <AnimatedFlatList

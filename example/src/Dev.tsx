@@ -1,14 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  StatusBar,
+  Button as RNButton,
+} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Button from '../../components/button';
-import ContactList from '../../components/contactList';
+import Button from './components/button';
+import ContactList from './components/contactList';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -119,13 +126,17 @@ const BasicExample = () => {
         topInset={StatusBar.currentHeight || topSafeArea}
         onChange={handleSheetChanges}
       >
-        <ContactList type="ScrollView" count={15} />
-        {/* <View
+        {/* <ContactList type="ScrollView" count={15} /> */}
+        <View
           style={{
             height: dynamicSnapPoint,
-            backgroundColor: 'red',
+            backgroundColor: 'black',
           }}
         >
+          <RNButton
+            onPress={() => console.log('Pressed !')}
+            title="Press Me!"
+          />
           <View
             pointerEvents="none"
             style={{
@@ -138,7 +149,7 @@ const BasicExample = () => {
               backgroundColor: 'white',
             }}
           />
-        </View> */}
+        </View>
       </BottomSheet>
       <Animated.View pointerEvents="none" style={sheetLineStyle} />
       <View pointerEvents="none" style={secondSnapPointLineStyle} />

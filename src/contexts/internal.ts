@@ -1,6 +1,5 @@
-import { createContext, Ref, RefObject } from 'react';
+import { createContext, RefObject } from 'react';
 import type {
-  TapGestureHandler,
   GestureHandlerProperties,
   PanGestureHandlerProperties,
 } from 'react-native-gesture-handler';
@@ -19,7 +18,6 @@ export interface BottomSheetInternalContextType
   animatedPosition: Animated.SharedValue<number>;
   animatedIndex: Animated.SharedValue<number>;
   animationState: Animated.SharedValue<ANIMATION_STATE>;
-  contentWrapperGestureRef: Ref<TapGestureHandler>;
   contentPanGestureHandler: any;
   scrollableContentOffsetY: Animated.SharedValue<number>;
   scrollableDecelerationRate: Animated.SharedValue<number>;

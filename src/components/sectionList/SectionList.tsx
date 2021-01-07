@@ -50,10 +50,7 @@ const BottomSheetSectionListComponent = forwardRef(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal(BottomSheetSectionListName);
-    const {
-      contentWrapperGestureRef,
-      enableContentPanningGesture,
-    } = useBottomSheetInternal();
+    const { enableContentPanningGesture } = useBottomSheetInternal();
 
     // effects
     // @ts-ignore
@@ -69,7 +66,6 @@ const BottomSheetSectionListComponent = forwardRef(
         <NativeViewGestureHandler
           ref={nativeGestureRef}
           enabled={enableContentPanningGesture}
-          waitFor={contentWrapperGestureRef}
           shouldCancelWhenOutside={false}
         >
           <AnimatedSectionList
