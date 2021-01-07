@@ -3,9 +3,6 @@ import { WINDOW_WIDTH } from '../../constants';
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
     padding: 10,
   },
 
