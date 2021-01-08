@@ -21,8 +21,9 @@ export const useNormalizedSnapPoints = (
       if (normalizedSnapPoint === 0 && handleHeight !== 0) {
         normalizedSnapPoint = normalizedSnapPoint - handleHeight;
       }
-      return Math.ceil(
-        Math.max(containerHeight - normalizedSnapPoint - handleHeight, topInset)
+      return Math.max(
+        containerHeight - normalizedSnapPoint - handleHeight,
+        topInset
       );
     });
   }, [snapPoints, topInset, containerHeight, handleHeight]);
