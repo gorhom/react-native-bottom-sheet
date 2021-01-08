@@ -358,7 +358,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       (index: number) => {
         invariant(
           index >= -1 && index <= snapPoints.length - 1,
-          `'index' was provided but out of the provided snap points range! expected value to be between -1, ${snapPoints.length - 1}`
+          `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
+            snapPoints.length - 1
+          }`
         );
         runOnUI(animateToPoint)(snapPoints[index]);
       },
@@ -565,11 +567,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _contentGestureState,
         _handleGestureState,
       }) => {
-
-        const tempCurrentPositionIndex = Math.round(_animatedIndex);
-
         if (
-          tempCurrentPositionIndex % 1 === 0 &&
+          _animatedIndex % 1 === 0 &&
           _animationState === ANIMATION_STATE.STOPPED &&
           (_contentGestureState === State.END ||
             _contentGestureState === State.UNDETERMINED) &&
