@@ -9,12 +9,11 @@ Here is a simple usage of the **Bottom Sheet Modal**, with non-scrollable conten
 
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
-import { Button } from 'react-native';
 
 const App = () => {
   // ref
