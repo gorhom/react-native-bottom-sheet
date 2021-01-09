@@ -1,9 +1,9 @@
 import { Platform } from 'react-native';
 import Animated, { Easing } from 'react-native-reanimated';
+import { exp } from '../../utilities/easingExp';
 
-const DEFAULT_ANIMATION_EASING: Animated.EasingFunction = Easing.out(
-  Easing.cubic
-);
+const DEFAULT_ANIMATION_EASING: Animated.EasingFunction = Easing.out(exp);
+
 const DEFAULT_ANIMATION_DURATION = 500;
 const DEFAULT_HANDLE_HEIGHT = 24;
 const DEFAULT_OVER_DRAG_RESISTANCE_FACTOR = 2.5;
