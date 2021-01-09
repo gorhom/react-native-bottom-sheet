@@ -59,6 +59,10 @@ const data = [
         slug: 'Advanced/CustomHandleExample',
       },
       {
+        name: 'Custom Background',
+        slug: 'Advanced/CustomBackgroundExample',
+      },
+      {
         name: 'Backdrop',
         slug: 'Advanced/BackdropExample',
       },

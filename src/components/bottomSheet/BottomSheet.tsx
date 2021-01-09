@@ -428,6 +428,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }),
       [sheetHeight]
     );
+
+    /**
+     * added safe area to prevent the sheet from floating above
+     * the bottom of the screen, when sheet being over dragged or
+     * when the sheet is resized.
+     */
+    const contentMaskContainerStyle = useMemo<ViewStyle>(
+      () => ({
+        ...styles.contentMaskContainer,
+        paddingBottom: animatedIsLayoutReady ? sheetHeight : 0,
+      }),
+      [sheetHeight, animatedIsLayoutReady]
+    );
     //#endregion
 
     //#region effects
@@ -538,7 +551,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region render
-    // console.log('BottomSheet', 'render', snapPoints, safeHandleHeight);
+    console.log(
+      'BottomSheet',
+      'render',
+      snapPoints,
+      sheetHeight,
+      safeHandleHeight
+    );
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer
@@ -581,12 +600,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   onMeasureHeight={handleOnHandleMeasureHeight}
                   {...handlePanGestureHandler}
                 />
-                <BottomSheetDraggableView
-                  key="BottomSheetRootDraggableView"
-                  style={contentContainerStyle}
+                <Animated.View
+                  pointerEvents="box-none"
+                  style={contentMaskContainerStyle}
                 >
-                  {children}
-                </BottomSheetDraggableView>
+                  <BottomSheetDraggableView
+                    key="BottomSheetRootDraggableView"
+                    style={contentContainerStyle}
+                  >
+                    {children}
+                  </BottomSheetDraggableView>
+                </Animated.View>
               </BottomSheetInternalProvider>
             </Animated.View>
           </BottomSheetContentWrapper>
