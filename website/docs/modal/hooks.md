@@ -12,10 +12,10 @@ This hook provides modal functionalities only, for sheet functionalities please 
 > This hook works at any component in `BottomSheetModalProvider`.
 
 ```tsx
-import { useBottomSheet} from '@gorhom/bottom-sheet';
+import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 
 const SheetContent = () => {
-  const { dismiss, dismissAll } = useBottomSheet();
+  const { dismiss, dismissAll } = useBottomSheetModal();
 
   return (
     <View>
