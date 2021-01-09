@@ -1,6 +1,17 @@
 # Changelog
 
-## [v3.0.2-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.2...v3.0.2-alpha.3)
+## [v3.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.3...v3.1.0)
+
+#### Improvements
+
+- chore: updated useInteractivePanGestureHandler ([`#174`](https://github.com/gorhom/react-native-bottom-sheet/pull/174)).
+
+#### Fixes
+
+- fix: exp easing flickers on android ([`#175`](https://github.com/gorhom/react-native-bottom-sheet/pull/175)).
+- fix: removed rounding up from useNormalizedSnapPoints hook. ([`#169`](https://github.com/gorhom/react-native-bottom-sheet/pull/169)).
+
+## [v3.0.2-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.2...v3.0.2-alpha.3) - 2021-01-07
 
 #### Improvements
 
