@@ -49,6 +49,10 @@ const Navigator = () => {
           <HeaderBackButton {...props} />
         </TouchableOpacity>
       ),
+      cardStyle: {
+        backgroundColor: 'white',
+        overflow: 'visible',
+      },
     }),
     []
   );

@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
   sectionHeaderContainer: {
     paddingTop: 24,
     paddingBottom: 6,
-    backgroundColor: 'white',
   },
   sectionHeaderTitle: {
     fontSize: 16,
@@ -171,7 +170,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: 24,
-    backgroundColor: 'white',
   },
 });
 
