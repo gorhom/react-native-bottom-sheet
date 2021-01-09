@@ -19,7 +19,7 @@ const SheetContent = () => {
 
   return (
     <View>
-      <Button onPress={expand}>
+      <Button onPress={dismiss}>
     </View>
   )
 }

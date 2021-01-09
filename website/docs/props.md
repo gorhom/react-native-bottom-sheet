@@ -23,7 +23,9 @@ Points for the bottom sheet to snap to, **points should be sorted from bottom to
 | --------------------- | -------- |
 | Array<number\|string> | YES      |
 
-> ⚠️ String values should be a percentage.
+:::caution
+String values should be a percentage.
+:::
 
 #### examples
 
@@ -57,6 +59,16 @@ Top inset value helps to calculate percentage snap points values. usually comes 
 | ------ | ------- | -------- |
 | number | 0       | NO       |
 
+### `overDragResistanceFactor`
+
+**`Available only on v3, for now.`**
+
+Defines how violently sheet has to stopped while over dragging.
+
+| type   | default | required |
+| ------ | ------- | -------- |
+| number | 2.5     | NO       |
+
 ### `enableContentPanningGesture`
 
 Enable content panning gesture interaction.
@@ -73,6 +85,26 @@ Enable handle panning gesture interaction.
 | ------- | ------- | -------- |
 | boolean | true    | NO       |
 
+### `enableOverDrag`
+
+**`Available only on v3, for now.`**
+
+Enable over drag for the sheet.
+
+| type    | default | required |
+| ------- | ------- | -------- |
+| boolean | true    | NO       |
+
+### `enableFlashScrollableIndicatorOnExpand`
+
+**`Available only on v3, for now.`**
+
+Enable flash the scrollable indicator when the sheet is expanded.
+
+| type    | default | required |
+| ------- | ------- | -------- |
+| boolean | true    | NO       |
+
 ### `animateOnMount`
 
 This will initially mount the sheet closed and when it's mounted and calculated the layout, it will snap to initial snap point index.
@@ -82,6 +114,27 @@ This will initially mount the sheet closed and when it's mounted and calculated 
 | boolean | false   | NO       |
 
 ## Animation Configuration
+
+### `animationConfigs`
+
+**`Available only on v3, for now.`**
+
+Animation configs, this could be created by:
+
+- `useBottomSheetSpringConfigs`
+- `useBottomSheetTimingConfigs`
+
+```ts
+type animationConfigs = (
+  point: number,
+  velocity: number,
+  callback: () => void
+) => number;
+```
+
+| type     | default   | required |
+| -------- | --------- | -------- |
+| function | undefined | NO       |
 
 ### `animationDuration`
 
@@ -98,6 +151,68 @@ Snapping animation easing function.
 | type             | default | required |
 | ---------------- | ------- | -------- |
 | `EasingFunction` | @TODO   | NO       |
+
+## Gesture Configuration
+
+### `waitFor`
+
+**`Available only on v3, for now.`**
+
+[Read about `waitFor`](https://docs.swmansion.com/react-native-gesture-handler/docs/handler-common#waitfor).
+
+| type                     | default | required |
+| ------------------------ | ------- | -------- |
+| React.Ref \| React.Ref[] | []      | NO       |
+
+### `simultaneousHandlers`
+
+**`Available only on v3, for now.`**
+
+[Read about `simultaneousHandlers`](https://docs.swmansion.com/react-native-gesture-handler/docs/handler-common#simultaneoushandlers).
+
+| type                     | default | required |
+| ------------------------ | ------- | -------- |
+| React.Ref \| React.Ref[] | []      | NO       |
+
+### `activeOffsetX`
+
+**`Available only on v3, for now.`**
+
+[Read about `activeOffsetX`](https://docs.swmansion.com/react-native-gesture-handler/docs/handler-pan#activeoffsetx).
+
+| type     | default   | required |
+| -------- | --------- | -------- |
+| number[] | undefined | NO       |
+
+### `activeOffsetY`
+
+**`Available only on v3, for now.`**
+
+[Read about `activeOffsetY`](https://docs.swmansion.com/react-native-gesture-handler/docs/handler-pan#activeoffsety).
+
+| type     | default   | required |
+| -------- | --------- | -------- |
+| number[] | undefined | NO       |
+
+### `failOffsetX`
+
+**`Available only on v3, for now.`**
+
+[Read about `failOffsetX`](https://docs.swmansion.com/react-native-gesture-handler/docs/handler-pan/#failoffsetx).
+
+| type     | default   | required |
+| -------- | --------- | -------- |
+| number[] | undefined | NO       |
+
+### `failOffsetY`
+
+**`Available only on v3, for now.`**
+
+[Read about `failOffsetY`](https://docs.swmansion.com/react-native-gesture-handler/docs/handler-pan/#failoffsety).
+
+| type     | default   | required |
+| -------- | --------- | -------- |
+| number[] | undefined | NO       |
 
 ## Animated Nodes
 

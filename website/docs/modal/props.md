@@ -16,6 +16,19 @@ Modal name to help identify the modal for later on.
 | ------ | ---------------------- | -------- |
 | string | `generated unique key` | NO       |
 
+### `stackBehavior`
+
+**`Available only on v3, for now.`**
+
+Defines the stack behavior when modal mounts.
+
+- `push` it will mount the modal on top of current modal.
+- `replace` it will minimize the current modal then mount the modal.
+
+| type                | default   | required |
+| ------------------- | --------- | -------- |
+| 'push' \| 'replace' | 'replace' | NO       |
+
 ### `dismissOnPanDown`
 
 Dismiss modal when panning down.
