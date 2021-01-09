@@ -118,6 +118,15 @@ export const useInteractivePanGestureHandler = (
 
         animateToPoint(destinationPoint, gestureVelocityY.value / 2);
       },
+      onCancel: ({ state }) => {
+        gestureState.value = state;
+      },
+      onFail: ({ state }) => {
+        gestureState.value = state;
+      },
+      onFinish: ({ state }) => {
+        gestureState.value = state;
+      },
     },
     [snapPoints, enableOverDrag, overDragResistanceFactor]
   );
