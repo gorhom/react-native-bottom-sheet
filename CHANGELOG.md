@@ -1,6 +1,22 @@
 # Changelog
 
-## [v2.0.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.1...v2.0.2)
+## [v2.0.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.2...v2.0.3)
+
+#### Improvements
+
+- refactor: updated bottom sheet layers ([`#176`](https://github.com/gorhom/react-native-bottom-sheet/pull/176)).
+
+#### Fixes
+
+- fix: prevent rounding up normalised snap points ([`#177`](https://github.com/gorhom/react-native-bottom-sheet/pull/177)).
+
+#### Documentations
+
+- docs: updated modal hooks docs ([`#172`](https://github.com/gorhom/react-native-bottom-sheet/pull/172)).
+- docs: updated snapPoints description example ([`#164`](https://github.com/gorhom/react-native-bottom-sheet/pull/164)).
+- docs: updated documentation website ([50a91e6](https://github.com/gorhom/react-native-bottom-sheet/commit/50a91e6e08b617396ac999809d10dffdc291f456)).
+
+## [v2.0.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.1...v2.0.2) - 2021-01-06
 
 #### Improvements
 
