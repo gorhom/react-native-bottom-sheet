@@ -69,7 +69,7 @@ export const useInteractivePanGestureHandler = (
         if (enableOverDrag) {
           if (
             type === GESTURE.HANDLE &&
-            clampedPosition <= snapPoints[snapPoints.length - 1]
+            position <= snapPoints[snapPoints.length - 1]
           ) {
             const resistedPosition =
               snapPoints[snapPoints.length - 1] -
@@ -79,7 +79,7 @@ export const useInteractivePanGestureHandler = (
             return;
           }
 
-          if (clampedPosition >= snapPoints[0]) {
+          if (position >= snapPoints[0]) {
             const resistedPosition =
               snapPoints[0] +
               Math.sqrt(1 + (position - snapPoints[0])) *
