@@ -1,1 +1,1 @@
-export { default } from './ContactList';
+export { default, ContactListProps } from './ContactList';
