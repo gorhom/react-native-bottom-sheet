@@ -85,6 +85,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       enableFlashScrollableIndicatorOnExpand = DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
+      style: _providedStyle,
 
       // layout
       handleHeight: _providedHandleHeight,
@@ -447,8 +448,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       };
     }, [safeContainerHeight, isLayoutCalculated]);
     const containerStyle = useMemo(
-      () => [styles.container, containerAnimatedStyle],
-      [containerAnimatedStyle]
+      () => [_providedStyle, styles.container, containerAnimatedStyle],
+      [_providedStyle, containerAnimatedStyle]
     );
     const contentContainerStyle = useMemo<ViewStyle>(
       () => ({
