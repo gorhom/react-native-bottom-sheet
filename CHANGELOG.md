@@ -1,6 +1,12 @@
 # Changelog
 
-## [v3.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.3...v3.1.0)
+## [v3.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.1.0...v3.1.1)
+
+#### Fixes
+
+- fix: fixed over-drag implementation ([`#186`](https://github.com/gorhom/react-native-bottom-sheet/pull/186)).
+
+## [v3.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.0.2-alpha.3...v3.1.0) - 2021-01-09
 
 #### Improvements
 
@@ -108,7 +114,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.2...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.3...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
