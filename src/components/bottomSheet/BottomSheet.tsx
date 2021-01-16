@@ -483,7 +483,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animateOnMount &&
         isLayoutCalculated &&
         didMountOnAnimate.current === false &&
-        snapPoints[_providedIndex] !== Math.round(safeContainerHeight)
+        snapPoints[_providedIndex] !== safeContainerHeight
       ) {
         requestAnimationFrame(() =>
           runOnUI(animateToPoint)(snapPoints[_providedIndex])
@@ -648,10 +648,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           </Animated.View>
           {/* <BottomSheetDebugView
             values={{
-              tapState: contentWrapperGestureState,
               animatedIndex,
               animatedPosition,
-              contentWrapperMaxDeltaY,
             }}
           /> */}
         </BottomSheetContainer>
