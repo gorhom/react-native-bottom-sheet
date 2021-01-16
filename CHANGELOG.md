@@ -1,6 +1,12 @@
 # Changelog
 
-## [v2.0.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.2...v2.0.3)
+## [v2.0.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.3...v2.0.4)
+
+#### Improvements
+
+- chore: added no console eslint rule ([`#199`](https://github.com/gorhom/react-native-bottom-sheet/pull/199)).
+
+## [v2.0.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.2...v2.0.3) - 2021-01-11
 
 #### Improvements
 
