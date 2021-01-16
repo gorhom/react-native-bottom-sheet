@@ -6947,19 +6947,19 @@ react-native-gesture-handler@^1.9.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-reanimated@^2.0.0-rc.1:
-  version "2.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.0.0-rc.1.tgz#51be1ca5bfa7df0d75a2878792612032bff792ae"
-  integrity sha512-97xo5N4IHNg8hwJ/sTrp7gVuS85AUH3QEjKEtkwZxkH6uijB1OViyNlly6VAIE/cZIaDEPcY7tmDYJakUUHIGA==
+react-native-reanimated@^2.0.0-rc.2:
+  version "2.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.0.0-rc.2.tgz#8ff0210986c5234940d951e384793874802f81aa"
+  integrity sha512-drOPEIMSh+224RTBZJrMasxZBdNodTcQcJKIfH5vMZPYhfSbljxfKTGfn7ZKn7ZYkX+wCPKKhJJPdD5+9Pevyw==
   dependencies:
     "@babel/plugin-transform-object-assign" "^7.10.4"
     fbjs "^3.0.0"
     string-hash-64 "^1.0.3"
 
-react-native-redash@^16.0.4:
-  version "16.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-redash/-/react-native-redash-16.0.4.tgz#d3bef676a91b21f22b8d663925231272aa3d1125"
-  integrity sha512-Pz+Tj09Esn5A6ESlUP+Mtc/U2UnAhZEUt7FUrPlkz7SHHsnnCb+9T3tOeWlXimuJrFc7uYnqFfHG9iVUlD/aDg==
+react-native-redash@^16.0.6:
+  version "16.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-redash/-/react-native-redash-16.0.6.tgz#7f2bd9b93cd1dd2dafef6c4277014e97e7efb495"
+  integrity sha512-03OvoJq1ow2886/Ipv6F18gQE1yhqTLWDwmDWzorT1+5DVfz429Z5G5R/e9q2hNKPfBkDp0+hAC4uc8K6t2EvQ==
   dependencies:
     abs-svg-path "^0.1.1"
     normalize-svg-path "^1.0.1"
