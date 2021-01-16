@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useCallback, useMemo, useRef, useState } from 'react';
@@ -98,7 +99,6 @@ const BasicExample = () => {
   //#endregion
 
   // renders
-  console.log('BasicExample', 'render');
   return (
     <View style={containerStyle}>
       <Button

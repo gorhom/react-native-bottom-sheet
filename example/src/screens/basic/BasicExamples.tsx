@@ -54,10 +54,12 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
 
     //#region callbacks
     const handleSheetChange = useCallback(index => {
+      // eslint-disable-next-line no-console
       console.log('handleSheetChange', index);
     }, []);
     const handleSheetAnimate = useCallback(
       (fromIndex: number, toIndex: number) => {
+        // eslint-disable-next-line no-console
         console.log('handleSheetAnimate', `from ${fromIndex} to ${toIndex}`);
       },
       []

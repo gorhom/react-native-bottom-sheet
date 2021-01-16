@@ -81,6 +81,7 @@ const NavigatorExample = () => {
 
   // callbacks
   const handleSheetChange = useCallback(index => {
+    // eslint-disable-next-line no-console
     console.log('handleSheetChange', index);
   }, []);
   const handleSnapPress = useCallback(index => {

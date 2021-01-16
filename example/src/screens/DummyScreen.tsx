@@ -21,6 +21,7 @@ const createDummyScreen = ({
     const { navigate } = useNavigation();
 
     const handleNavigatePress = useCallback(() => {
+      // eslint-disable-next-line no-console
       console.log('navigateTo', nextScreen);
       navigate(nextScreen);
       // eslint-disable-next-line react-hooks/exhaustive-deps

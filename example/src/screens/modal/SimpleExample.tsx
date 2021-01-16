@@ -10,9 +10,11 @@ const SimpleExample = () => {
 
   // callbacks
   const handleChange = useCallback((index: number) => {
+    // eslint-disable-next-line no-console
     console.log('index', index);
   }, []);
   const handleDismiss = useCallback(() => {
+    // eslint-disable-next-line no-console
     console.log('on dismiss');
   }, []);
   const handleDismissPress = useCallback(() => {
