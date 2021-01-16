@@ -1,6 +1,21 @@
 # Changelog
 
-## [v3.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.1.0...v3.1.1)
+## [v3.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.1.1...v3.2.0)
+
+#### Features
+
+- feat: added style prop ([`#189`](https://github.com/gorhom/react-native-bottom-sheet/pull/189)).
+
+#### Improvements
+
+- chore: updated reanimated to rc2 ([`#200`](https://github.com/gorhom/react-native-bottom-sheet/pull/200)).
+- chore: added no console eslint rule ([7d03829](https://github.com/gorhom/react-native-bottom-sheet/commit/7d03829574c88d5c8bdb2d5424fb5ab4a55e78c4)).
+
+#### Fixes
+
+- fix: removed rounding on evaluating position ([`#201`](https://github.com/gorhom/react-native-bottom-sheet/pull/201)).
+
+## [v3.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.1.0...v3.1.1) - 2021-01-12
 
 #### Fixes
 
@@ -114,7 +129,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.3...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.4...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
