@@ -33,6 +33,7 @@ const BasicExample = () => {
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
+    // eslint-disable-next-line no-console
     console.log('handleSheetChanges', index);
   }, []);
   const handleSnapPress = useCallback(index => {
@@ -46,7 +47,6 @@ const BasicExample = () => {
   }, []);
 
   // renders
-  console.log('BasicExample', 'render');
   return (
     <View style={containerStyle}>
       <Button
