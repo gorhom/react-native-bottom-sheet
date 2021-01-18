@@ -468,7 +468,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       if (
         animateOnMount &&
         isLayoutCalculated &&
-        didMountOnAnimate.current === false
+        didMountOnAnimate.current === false &&
+        isClosing.current === false
       ) {
         manualSnapToPoint.setValue(snapPoints[_providedIndex]);
         didMountOnAnimate.current = true;
@@ -485,7 +486,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * keep animated position synced with snap points.
      */
     useEffect(() => {
-      if (isLayoutCalculated && currentIndexRef.current !== -1) {
+      if (
+        isLayoutCalculated &&
+        currentIndexRef.current !== -1 &&
+        isClosing.current === false
+      ) {
         manualSnapToPoint.setValue(snapPoints[currentIndexRef.current]);
       }
     }, [isLayoutCalculated, snapPoints, manualSnapToPoint]);
