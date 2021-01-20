@@ -338,7 +338,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const handleSnapTo = useCallback(
       (index: number) => {
         invariant(
-          index >= -1 && index <= snapPoints.length - 1,
+          index >= 0 && index <= snapPoints.length - 1,
           `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
             snapPoints.length - 1
           }`
