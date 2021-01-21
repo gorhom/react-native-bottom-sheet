@@ -115,7 +115,7 @@ const BottomSheetModalComponent = forwardRef<
   const handleRestore = useCallback(() => {
     if (isMinimized.current) {
       isMinimized.current = false;
-      bottomSheetRef.current?.snapTo(nextIndexRef.current);
+      bottomSheetRef.current?.snapTo(nextIndexRef.current, true);
     }
   }, []);
   //#endregion

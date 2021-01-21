@@ -336,14 +336,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region public methods
     const handleSnapTo = useCallback(
-      (index: number) => {
+      (index: number, force: boolean = false) => {
         invariant(
           index >= 0 && index <= snapPoints.length - 1,
           `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
             snapPoints.length - 1
           }`
         );
-        if (isClosing.current) {
+        if (isClosing.current && !force) {
           return;
         }
         manualSnapToPoint.setValue(snapPoints[index]);
