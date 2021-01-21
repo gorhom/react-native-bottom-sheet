@@ -1,6 +1,13 @@
 # Changelog
 
-## [v3.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.1.1...v3.2.0)
+## [v3.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.2.0...v3.2.1)
+
+#### Fixes
+
+- fix: fixed sheet visibility when handle provided null ([`#223`](https://github.com/gorhom/react-native-bottom-sheet/pull/223)).
+- fix: allow backdrop style prop to override internal style ([`#211`](https://github.com/gorhom/react-native-bottom-sheet/pull/211)).
+
+## [v3.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.1.1...v3.2.0) - 2021-01-16
 
 #### Features
 
@@ -129,7 +136,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.4...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.5...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
