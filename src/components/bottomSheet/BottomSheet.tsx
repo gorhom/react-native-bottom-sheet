@@ -629,11 +629,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           )}
 
           {/* <BottomSheetDebugView
-          values={{
-            position,
-            manualSnapToPoint,
-          }}
-        /> */}
+            values={{
+              position,
+            }}
+          /> */}
         </BottomSheetContainer>
       </BottomSheetProvider>
     );

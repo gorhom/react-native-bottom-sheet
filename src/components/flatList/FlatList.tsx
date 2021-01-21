@@ -40,7 +40,7 @@ const BottomSheetFlatListComponent = forwardRef(
     // hooks
     const {
       scrollableRef,
-      handleScrollEvent,
+      handleOnBeginDragEvent,
       handleSettingScrollable,
     } = useScrollableInternal('FlatList');
     const {
@@ -73,8 +73,8 @@ const BottomSheetFlatListComponent = forwardRef(
             overScrollMode="never"
             bounces={false}
             decelerationRate={decelerationRate}
-            scrollEventThrottle={1}
-            onScrollBeginDrag={handleScrollEvent}
+            scrollEventThrottle={16}
+            onScrollBeginDrag={handleOnBeginDragEvent}
           />
         </NativeViewGestureHandler>
       </BottomSheetDraggableView>

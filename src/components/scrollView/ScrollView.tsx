@@ -40,7 +40,7 @@ const BottomSheetScrollViewComponent = forwardRef(
     // hooks
     const {
       scrollableRef,
-      handleScrollEvent,
+      handleOnBeginDragEvent,
       handleSettingScrollable,
     } = useScrollableInternal('ScrollView');
     const {
@@ -71,9 +71,8 @@ const BottomSheetScrollViewComponent = forwardRef(
             overScrollMode="never"
             bounces={false}
             decelerationRate={decelerationRate}
-            scrollEventThrottle={1}
-            onScroll={handleScrollEvent}
-            onScrollBeginDrag={handleScrollEvent}
+            scrollEventThrottle={16}
+            onScrollBeginDrag={handleOnBeginDragEvent}
           />
         </NativeViewGestureHandler>
       </BottomSheetDraggableView>
