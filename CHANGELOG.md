@@ -1,6 +1,18 @@
 # Changelog
 
-## [v2.0.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.3...v2.0.4)
+## [v2.0.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.4...v2.0.5)
+
+#### Improvements
+
+- chore: added auto-close github action ([4451d34](https://github.com/gorhom/react-native-bottom-sheet/commit/4451d3413de5f09d406f40e885d22baccd00241b)).
+
+#### Fixes
+
+- fix: removed onScroll event from BottomSheetScrollView ([`#225`](https://github.com/gorhom/react-native-bottom-sheet/pull/225)).
+- fix: fixed sheet visibility when handle provided null ([`#224`](https://github.com/gorhom/react-native-bottom-sheet/pull/224)).
+- fix: allow backdrop style prop to override internal style ([`#212`](https://github.com/gorhom/react-native-bottom-sheet/pull/212)).
+
+## [v2.0.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.3...v2.0.4) - 2021-01-16
 
 #### Improvements
 
