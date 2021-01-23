@@ -124,8 +124,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     // safe layout values
 
     const safeHandleHeight = useMemo(
-      () => handleHeight || DEFAULT_HANDLE_HEIGHT,
-      [handleHeight]
+      () =>
+        handleComponent === null ? 0 : handleHeight || DEFAULT_HANDLE_HEIGHT,
+      [handleHeight, handleComponent]
     );
     const safeContainerHeight = useMemo(
       () => _providedContainerHeight || containerHeight || WINDOW_HEIGHT,
@@ -139,7 +140,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const shouldMeasureHandleHeight = useMemo(
       () =>
-        _providedHandleHeight === undefined && handleComponent !== undefined,
+        _providedHandleHeight === undefined &&
+        handleComponent !== undefined &&
+        handleComponent !== null,
       [_providedHandleHeight, handleComponent]
     );
 
@@ -646,11 +649,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           )}
 
           {/* <BottomSheetDebugView
-          values={{
-            position,
-            manualSnapToPoint,
-          }}
-        /> */}
+            values={{
+              position,
+            }}
+          /> */}
         </BottomSheetContainer>
       </BottomSheetProvider>
     );

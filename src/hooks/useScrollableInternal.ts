@@ -19,7 +19,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
   } = useBottomSheetInternal();
 
   // callbacks
-  const handleScrollEvent = useMemo(
+  const handleOnBeginDragEvent = useMemo(
     () =>
       event([
         {
@@ -65,7 +65,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
 
   return {
     scrollableRef,
-    handleScrollEvent,
+    handleOnBeginDragEvent,
     handleSettingScrollable,
   };
 };
