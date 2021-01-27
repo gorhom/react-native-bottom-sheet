@@ -262,16 +262,25 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         adjustedSnapPointsIndexes.push(-1);
       }
 
-      return interpolate(position, {
-        inputRange: adjustedSnapPoints,
-        outputRange: adjustedSnapPointsIndexes,
-        extrapolate: Extrapolate.CLAMP,
-      });
-    }, [position, safeContainerHeight, snapPoints]);
+      return cond(
+        animatedIsLayoutReady,
+        interpolate(position, {
+          inputRange: adjustedSnapPoints,
+          outputRange: adjustedSnapPointsIndexes,
+          extrapolate: Extrapolate.CLAMP,
+        }),
+        0
+      );
+    }, [position, animatedIsLayoutReady, safeContainerHeight, snapPoints]);
 
     const animatedPosition = useMemo(
-      () => abs(sub(safeContainerHeight, position)),
-      [safeContainerHeight, position]
+      () =>
+        cond(
+          animatedIsLayoutReady,
+          abs(sub(safeContainerHeight, position)),
+          safeContainerHeight
+        ),
+      [safeContainerHeight, position, animatedIsLayoutReady]
     );
 
     /**
