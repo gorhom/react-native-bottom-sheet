@@ -44,6 +44,13 @@ export type BottomSheetProps = {
    */
   topInset?: number;
   /**
+   * Bottom inset value helps to calculate percentage snap points values,
+   * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
+   * @type number
+   * @default 0
+   */
+  bottomInset?: number;
+  /**
    * Enable content panning gesture interaction.
    * @type boolean
    * @default true

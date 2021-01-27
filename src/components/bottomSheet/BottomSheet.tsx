@@ -26,9 +26,11 @@ import Animated, {
   sub,
   abs,
   greaterThan,
+  concat,
 } from 'react-native-reanimated';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import {
+  ReText,
   usePanGestureHandler,
   // ReText,
 } from 'react-native-redash';
@@ -84,6 +86,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       snapPoints: _snapPoints,
       handleHeight: _handleHeight,
       topInset = 0,
+      bottomInset = 0,
       enableContentPanningGesture = DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
@@ -301,10 +304,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => ({
         ...styles.container,
         transform: [
-          { translateY: isLayoutCalculated ? position : containerHeight },
+          {
+            translateY: isLayoutCalculated
+              ? sub(position, bottomInset)
+              : containerHeight,
+          },
         ],
       }),
-      [containerHeight, position, isLayoutCalculated]
+      [containerHeight, position, isLayoutCalculated, bottomInset]
     );
     const contentContainerStyle = useMemo(
       () => ({
@@ -579,7 +586,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             exec={set(_animatedIndexCallbackNode, animatedIndex)}
           />
         )}
-        {/* <Animated.View pointerEvents="none" style={styles.debug}>
+        <Animated.View pointerEvents="none" style={styles.debug}>
           <ReText
             style={styles.debugText}
             text={concat('manualSnapToPoint: ', manualSnapToPoint)}
@@ -611,11 +618,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             style={styles.debugText}
             text={concat('position: ', position)}
           />
-          <ReText
+          {/* <ReText
             style={styles.debugText}
             text={concat('animatedPositionIndex: ', animatedPositionIndex)}
-          />
-        </Animated.View> */}
+          /> */}
+        </Animated.View>
       </>
     );
     //#endregion
