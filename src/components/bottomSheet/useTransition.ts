@@ -27,7 +27,7 @@ import { useReactiveValue, useReactiveValues } from '../../hooks';
 import type { BottomSheetTransitionConfig } from './types';
 
 export const useTransition = ({
-  isLayoutCalculated,
+  animatedIsLayoutReady,
   animationDuration,
   animationEasing,
   contentPanGestureState,
@@ -42,7 +42,6 @@ export const useTransition = ({
   initialPosition,
   onAnimate,
 }: BottomSheetTransitionConfig) => {
-  const isReady = useReactiveValue(isLayoutCalculated ? 1 : 0);
   const currentGesture = useValue<GESTURE>(GESTURE.UNDETERMINED);
   const currentPosition = useReactiveValue(initialPosition);
   const snapPoints = useReactiveValues(_snapPoints);
@@ -65,7 +64,7 @@ export const useTransition = ({
   const clock = useClock();
   const config = useMemo(
     () => ({
-      toValue: new Animated.Value(0),
+      toValue: new Animated.Value(-1),
       duration: animationDuration,
       easing: animationEasing,
     }),
@@ -134,17 +133,27 @@ export const useTransition = ({
         contentPanGestureVelocityY,
         handlePanGestureVelocityY
       ),
-    [contentPanGestureVelocityY, currentGesture, handlePanGestureVelocityY]
+    [contentPanGestureVelocityY, handlePanGestureVelocityY, currentGesture]
   );
   const isAnimationInterrupted = useMemo(
-    () => and(clockRunning(clock), or(isPanning, neq(manualSnapToPoint, -1))),
-    [clock, isPanning, manualSnapToPoint]
+    () =>
+      and(
+        clockRunning(clock),
+        or(
+          isPanning,
+          and(
+            neq(manualSnapToPoint, -1),
+            neq(manualSnapToPoint, config.toValue)
+          )
+        )
+      ),
+    [clock, isPanning, config.toValue, manualSnapToPoint]
   );
   const position = useMemo(
     () =>
       block([
         cond(
-          eq(isReady, 1),
+          animatedIsLayoutReady,
           [
             // debug('current gesture', currentGesture),
             /**
@@ -243,7 +252,10 @@ export const useTransition = ({
             cond(
               and(
                 neq(manualSnapToPoint, -1),
-                neq(manualSnapToPoint, currentPosition),
+                or(
+                  neq(manualSnapToPoint, currentPosition),
+                  neq(manualSnapToPoint, animationState.position)
+                ),
                 neq(manualSnapToPoint, config.toValue)
               ),
               [
@@ -296,7 +308,7 @@ export const useTransition = ({
         ),
       ]),
     [
-      isReady,
+      animatedIsLayoutReady,
       animationState,
       clock,
       config,
@@ -320,6 +332,7 @@ export const useTransition = ({
 
   return {
     position,
+    translateY,
     manualSnapToPoint,
     currentPosition,
     currentGesture,

@@ -63,12 +63,12 @@ const App = () => {
             }
           />
           <Stack.Screen
-            name="Modal/OverlayExample"
+            name="Modal/BackdropExample"
             options={{
-              title: 'Modal Overlay Example',
+              title: 'Modal Backdrop Example',
             }}
             getComponent={() =>
-              require('./screens/modal/OverlayExample').default
+              require('./screens/modal/BackdropExample').default
             }
           />
           <Stack.Screen
@@ -77,6 +77,15 @@ const App = () => {
               title: 'Stack Modals Example',
             }}
             getComponent={() => require('./screens/modal/StackExample').default}
+          />
+          <Stack.Screen
+            name="Modal/DynamicSnapPointExample"
+            options={{
+              title: 'Dynamic Snap Point',
+            }}
+            getComponent={() =>
+              require('./screens/modal/DynamicSnapPointExample').default
+            }
           />
           {/* advanced examples */}
           <Stack.Screen
@@ -98,12 +107,21 @@ const App = () => {
             }
           />
           <Stack.Screen
-            name="Advanced/OverlayExample"
+            name="Advanced/CustomBackgroundExample"
             options={{
-              title: 'Overlay Example',
+              title: 'Custom Background Example',
             }}
             getComponent={() =>
-              require('./screens/advanced/OverlayExample').default
+              require('./screens/advanced/CustomBackgroundExample').default
+            }
+          />
+          <Stack.Screen
+            name="Advanced/BackdropExample"
+            options={{
+              title: 'Backdrop Example',
+            }}
+            getComponent={() =>
+              require('./screens/advanced/BackdropExample').default
             }
           />
           <Stack.Screen

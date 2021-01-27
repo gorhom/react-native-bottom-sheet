@@ -8,12 +8,14 @@ export type AppStackParamsList = {
   ['Static/ViewExample']: undefined;
   // modal
   ['Modal/SimpleExample']: undefined;
-  ['Modal/OverlayExample']: undefined;
+  ['Modal/BackdropExample']: undefined;
   ['Modal/StackExample']: undefined;
+  ['Modal/DynamicSnapPointExample']: undefined;
   // Advanced
   ['Advanced/NavigatorExample']: undefined;
   ['Advanced/CustomHandleExample']: undefined;
-  ['Advanced/OverlayExample']: undefined;
+  ['Advanced/CustomBackgroundExample']: undefined;
+  ['Advanced/BackdropExample']: undefined;
   ['Advanced/MapExample']: undefined;
   ['Advanced/DynamicSnapPointExample']: undefined;
 };

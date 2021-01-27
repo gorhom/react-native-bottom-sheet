@@ -1,0 +1,7 @@
+{
+  "handlebarsSetup": "./scripts/auto-changelog.js",
+  "ignoreCommitPattern": "^chore: release v",
+  "tagPattern": "^v(0|1|2)+\\.\\d+\\.\\d+$",
+  "unreleased": false,
+  "commitLimit": false
+}

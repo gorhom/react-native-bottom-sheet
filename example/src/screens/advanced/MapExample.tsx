@@ -1,18 +1,27 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
-import { interpolate, Extrapolate, Easing, max } from 'react-native-reanimated';
+import { interpolate, Extrapolate, max } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
-import { useSafeArea } from 'react-native-safe-area-context';
-import BottomSheet, {
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  BottomSheetModal,
   BottomSheetScrollView,
-  BottomSheetOverlay,
+  BottomSheetBackdrop,
   TouchableOpacity,
-  useBottomSheetModal,
+  BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import withModalProvider from '../withModalProvider';
 import { createLocationListMockData, Location } from '../../utils';
-import SearchHandle from '../../components/searchHandle';
+import SearchHandle, {
+  SEARCH_HANDLE_HEIGHT,
+} from '../../components/searchHandle';
 import LocationItem from '../../components/locationItem';
 import LocationDetails, {
   LOCATION_DETAILS_HEIGHT,
@@ -24,37 +33,33 @@ import BlurredBackground from '../../components/blurredBackground';
 const { height: SCREEN_HEIGHT } = Dimensions.get('screen');
 
 const MapExample = () => {
+  const [selectedItem, setSelectedItem] = useState<Location>();
+
   // refs
   const mapRef = useRef<MapView>(null);
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const didRestoreMainSheetPosition = useRef(false);
+  const poiListModalRef = useRef<BottomSheetModal>(null);
+  const poiDetailsModalRef = useRef<BottomSheetModal>(null);
 
   // hooks
-  const { present, dismiss } = useBottomSheetModal();
-  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeArea();
+  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
 
   //#region variables
   const data = useMemo(() => createLocationListMockData(15), []);
-  const snapPoints = useMemo(
+  const poiListSnapPoints = useMemo(
     () => [
-      bottomSafeArea,
+      SEARCH_HANDLE_HEIGHT,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
       SCREEN_HEIGHT,
     ],
     [bottomSafeArea]
   );
+  const poiDetailsSnapPoints = useMemo(
+    () => [LOCATION_DETAILS_HEIGHT + bottomSafeArea, SCREEN_HEIGHT],
+    [bottomSafeArea]
+  );
   const animatedPosition = useValue<number>(0);
   const animatedModalPosition = useValue<number>(0);
   const animatedIndex = useValue<number>(0);
-  const animatedOverlayOpacity = useMemo(
-    () =>
-      interpolate(animatedPosition, {
-        inputRange: [snapPoints[1], snapPoints[2]],
-        outputRange: [0, 0.25],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    [animatedPosition, snapPoints]
-  );
   const weatherAnimatedPosition = useMemo(
     () => max(animatedModalPosition, animatedPosition),
     [animatedModalPosition, animatedPosition]
@@ -62,58 +67,22 @@ const MapExample = () => {
   //#endregion
 
   //#region callbacks
-  const handleLocationDetailSheetChanges = useCallback((index: number) => {
-    if (index === 0) {
-      if (!didRestoreMainSheetPosition.current) {
-        bottomSheetRef.current?.snapTo(1);
-      }
-      didRestoreMainSheetPosition.current = false;
-    }
-  }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
   const handleTouchStart = useCallback(() => {
-    bottomSheetRef.current?.collapse();
+    poiListModalRef.current?.collapse();
   }, []);
   const handleCloseLocationDetails = useCallback(() => {
-    didRestoreMainSheetPosition.current = true;
-    bottomSheetRef.current?.snapTo(1);
-    dismiss();
-  }, [dismiss]);
-  const handlePresentLocationDetails = useCallback(
-    (item: Location) => {
-      bottomSheetRef.current?.close();
-      present(
-        <LocationDetails onClose={handleCloseLocationDetails} {...item} />,
-        {
-          index: 1,
-          snapPoints,
-          topInset: topSafeArea,
-          animatedPosition: animatedModalPosition,
-          animationDuration: 500,
-          animationEasing: Easing.out(Easing.exp),
-          onChange: handleLocationDetailSheetChanges,
-          handleComponent: LocationDetailsHandle,
-          backgroundComponent: BlurredBackground,
-        }
-      );
-    },
-    [
-      snapPoints,
-      animatedModalPosition,
-      topSafeArea,
-      present,
-      handleCloseLocationDetails,
-      handleLocationDetailSheetChanges,
-    ]
-  );
+    poiDetailsModalRef.current?.dismiss();
+  }, []);
+  const handlePresentLocationDetails = useCallback((item: Location) => {
+    setSelectedItem(item);
+    poiDetailsModalRef.current?.present();
+  }, []);
   //#endregion
 
   //#region styles
-  const contentContainerStyle = useMemo(
+  const scrollViewStyle = useMemo(
     () => [
-      styles.contentContainerStyle,
+      styles.scrollView,
       {
         opacity: interpolate(animatedIndex, {
           inputRange: [0, 1],
@@ -122,9 +91,21 @@ const MapExample = () => {
         }),
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [animatedIndex]
   );
+  const scrollViewContentContainer = useMemo(
+    () => [
+      styles.scrollViewContentContainer,
+      { paddingBottom: bottomSafeArea },
+    ],
+    [bottomSafeArea]
+  );
+  //#endregion
+
+  //#region effects
+  useEffect(() => {
+    poiListModalRef.current?.present();
+  }, []);
   //#endregion
 
   // renders
@@ -138,6 +119,18 @@ const MapExample = () => {
       </TouchableOpacity>
     ),
     [handlePresentLocationDetails]
+  );
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        enableTouchThrough={true}
+        closeOnPress={false}
+        appearsOnIndex={2}
+        disappearsOnIndex={1}
+      />
+    ),
+    []
   );
   return (
     <View style={styles.container}>
@@ -157,36 +150,48 @@ const MapExample = () => {
         style={styles.mapContainer}
         onTouchStart={handleTouchStart}
       />
-      <BottomSheetOverlay
-        pointerEvents="none"
-        animatedOpacity={animatedOverlayOpacity}
-      />
-
       <Weather
         animatedPosition={weatherAnimatedPosition}
-        snapPoints={snapPoints}
+        snapPoints={poiListSnapPoints}
       />
-      <BottomSheet
-        ref={bottomSheetRef}
+      <BottomSheetModal
+        ref={poiListModalRef}
+        name="PoiListSheet"
         index={1}
-        snapPoints={snapPoints}
+        snapPoints={poiListSnapPoints}
         topInset={topSafeArea}
         animatedPosition={animatedPosition}
         animatedIndex={animatedIndex}
-        animationDuration={500}
-        animationEasing={Easing.out(Easing.exp)}
-        onChange={handleSheetChanges}
+        dismissOnPanDown={false}
         handleComponent={SearchHandle}
+        backdropComponent={renderBackdrop}
         backgroundComponent={BlurredBackground}
       >
         <BottomSheetScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="never"
-          style={contentContainerStyle}
+          style={scrollViewStyle}
+          contentContainerStyle={scrollViewContentContainer}
         >
           {data.map(renderItem)}
         </BottomSheetScrollView>
-      </BottomSheet>
+      </BottomSheetModal>
+
+      <BottomSheetModal
+        ref={poiDetailsModalRef}
+        name="PoiDetailsSheet"
+        index={0}
+        snapPoints={poiDetailsSnapPoints}
+        topInset={topSafeArea}
+        animatedPosition={animatedModalPosition}
+        handleComponent={LocationDetailsHandle}
+        backgroundComponent={BlurredBackground}
+      >
+        <LocationDetails
+          onClose={handleCloseLocationDetails}
+          {...(selectedItem as Location)}
+        />
+      </BottomSheetModal>
     </View>
   );
 };
@@ -199,8 +204,10 @@ const styles = StyleSheet.create({
   mapContainer: {
     ...StyleSheet.absoluteFillObject,
   },
-  contentContainerStyle: {
+  scrollView: {
     flex: 1,
+  },
+  scrollViewContentContainer: {
     paddingHorizontal: 16,
   },
 });

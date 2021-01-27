@@ -1,6 +1,13 @@
 import React, { useMemo, useCallback } from 'react';
-import { StyleSheet, Text, Platform, View, ViewStyle } from 'react-native';
-import { useSafeArea } from 'react-native-safe-area-context';
+import {
+  StyleSheet,
+  Text,
+  Platform,
+  View,
+  ViewStyle,
+  StyleProp,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import {
   BottomSheetFlatList,
@@ -17,27 +24,33 @@ import ContactItem from '../contactItem';
 export interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
+  style?: StyleProp<ViewStyle>;
   header?: (() => JSX.Element) | null;
-  style?: ViewStyle;
+  onItemPress?: () => void;
 }
+
+const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
 
 const ContactList = ({
   type,
   count = 25,
   header = null,
   style,
+  onItemPress,
 }: ContactListProps) => {
   // hooks
-  const { bottom: bottomSafeArea } = useSafeArea();
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
   // variables
   const sections = useMemo(() => createContactSectionsMockData(count), [count]);
   const data = useMemo(() => createContactListMockData(count), [count]);
+  const stickyHeaderIndices = useMemo(() => [0], []);
 
   // styles
   const contentContainerStyle = useMemo(
     () => ({
       ...styles.contentContainer,
+      // @ts-ignore
       ...style,
       paddingBottom: bottomSafeArea,
     }),
@@ -51,9 +64,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderSectionItem = useCallback(
     ({ item, index }) => (
@@ -61,9 +75,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderScrollViewItem = useCallback(
     (item, index) => (
@@ -71,9 +86,10 @@ const ContactList = ({
         key={`${type}.${item.name}.${index}`}
         title={`${index}: ${item.name}`}
         subTitle={item.jobTitle}
+        onPress={onItemPress}
       />
     ),
-    [type]
+    [type, onItemPress]
   );
   const renderSectionHeader = useCallback(
     ({ section }) => (
@@ -88,13 +104,13 @@ const ContactList = ({
     return (
       <BottomSheetFlatList
         data={data}
-        keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
+        keyExtractor={keyExtractor}
         initialNumToRender={5}
         windowSize={10}
         maxToRenderPerBatch={5}
         renderItem={renderFlatListItem}
         {...(header && {
-          stickyHeaderIndices: [0],
+          stickyHeaderIndices: stickyHeaderIndices,
           ListHeaderComponent: header,
         })}
         contentContainerStyle={contentContainerStyle}
@@ -120,7 +136,7 @@ const ContactList = ({
         windowSize={10}
         maxToRenderPerBatch={5}
         sections={sections}
-        keyExtractor={(item, index) => `${type}.${item.name}.${index}`}
+        keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionItem}
         {...(header && {
@@ -147,7 +163,6 @@ const styles = StyleSheet.create({
   sectionHeaderContainer: {
     paddingTop: 24,
     paddingBottom: 6,
-    backgroundColor: 'white',
   },
   sectionHeaderTitle: {
     fontSize: 16,
@@ -155,7 +170,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: 24,
-    backgroundColor: 'white',
   },
 });
 

@@ -1,0 +1,95 @@
+:root {
+  --ifm-code-font-size: 95%;
+  /* --ifm-toc-padding-left: 0px; */
+}
+
+:root[data-theme='dark'] {
+  --ifm-background-color: #000000;
+  --ifm-color-primary: #ffcc00;
+  --ifm-color-primary-dark: #e6b800;
+  --ifm-color-primary-darker: #d9ad00;
+  --ifm-color-primary-darkest: #b38f00;
+  --ifm-color-primary-light: #ffd11a;
+  --ifm-color-primary-lighter: #ffd426;
+  --ifm-color-primary-lightest: #ffdb4d;
+
+  --ifm-toggle-icon-color: #ffffff;
+  --ifm-table-border-color: #282c34;
+  --ifm-table-head-background: #242526;
+  --ifm-table-stripe-background: #101113;
+}
+
+:root[data-theme='light'] {
+  --ifm-background-color: #ffffff;
+  --ifm-color-primary: #8800ff;
+  --ifm-color-primary-dark: #7a00e6;
+  --ifm-color-primary-darker: #7400d9;
+  --ifm-color-primary-darkest: #5f00b3;
+  --ifm-color-primary-light: #941aff;
+  --ifm-color-primary-lighter: #9a26ff;
+  --ifm-color-primary-lightest: #ac4dff;
+
+  --ifm-toggle-icon-color: #000000;
+  --ifm-table-border-color: #dadde1;
+  --ifm-table-head-background: #ececec;
+  --ifm-table-stripe-background: #f5f6f7;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+body {
+  max-width: 1400px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.navbar {
+  background: var(--ifm-background-color);
+  box-shadow: none;
+}
+
+div[role='complementary'] {
+  border-right: none;
+}
+
+@media (min-width: 997px) {
+  div[role='complementary'] > div {
+    height: calc(100vh - var(--ifm-navbar-height));
+  }
+}
+
+article table {
+  display: table;
+  width: 100%;
+  font-size: 14px;
+}
+article table thead th {
+  text-align: left;
+  text-transform: uppercase;
+}
+
+article table th,
+article table td {
+  padding: 6px 10px;
+}
+
+article table tr:nth-child(2n) {
+  background-color: var(--ifm-table-stripe-background);
+}
+
+.row .col.col--3 {
+  padding: 0 var(--ifm-spacing-horizontal) 0, 0;
+}
+
+.table-of-contents ul {
+  padding-left: 0px;
+}
+
+.table-of-contents ul li {
+  margin-left: 0px;
+}

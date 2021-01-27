@@ -1,54 +1,72 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useBottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactListContainer from '../../components/contactListContainer';
 import withModalProvider from '../withModalProvider';
 
 const StackExample = () => {
-  const {
-    present: presentA,
-    dismiss: dismissA,
-    dismissAll,
-  } = useBottomSheetModal();
-  const { present: presentB, dismiss: dismissB } = useBottomSheetModal();
-  const { present: presentC, dismiss: dismissC } = useBottomSheetModal();
+  // hooks
+  const { dismiss, dismissAll } = useBottomSheetModal();
+
+  // refs
+  const bottomSheetModalARef = useRef<BottomSheetModal>(null);
+  const bottomSheetModalBRef = useRef<BottomSheetModal>(null);
+  const bottomSheetModalCRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
   const handlePresentAPress = useCallback(() => {
-    presentA(<ContactListContainer title="Modal A" type="FlatList" />, {
-      snapPoints: ['25%', '50%'],
-      animationDuration: 250,
-    });
-  }, [presentA]);
+    if (bottomSheetModalARef.current) {
+      bottomSheetModalARef.current.present();
+    }
+  }, []);
   const handleDismissAPress = useCallback(() => {
-    dismissA();
-  }, [dismissA]);
+    if (bottomSheetModalARef.current) {
+      bottomSheetModalARef.current.dismiss();
+    }
+  }, []);
   const handlePresentBPress = useCallback(() => {
-    presentB(<ContactListContainer title="Modal B" type="ScrollView" />, {
-      snapPoints: ['25%', '50%'],
-      animationDuration: 250,
-    });
-  }, [presentB]);
+    if (bottomSheetModalBRef.current) {
+      bottomSheetModalBRef.current.present();
+    }
+  }, []);
   const handleDismissBPress = useCallback(() => {
-    dismissB();
-  }, [dismissB]);
+    if (bottomSheetModalBRef.current) {
+      bottomSheetModalBRef.current.dismiss();
+    }
+  }, []);
   const handlePresentCPress = useCallback(() => {
-    presentC(<ContactListContainer title="Modal C" type="SectionList" />, {
-      index: 1,
-      snapPoints: ['25%', '50%'],
-      animationDuration: 250,
-      dismissOnScrollDown: false,
-    });
-  }, [presentC]);
+    if (bottomSheetModalCRef.current) {
+      bottomSheetModalCRef.current.present();
+    }
+  }, []);
   const handleDismissCPress = useCallback(() => {
-    dismissC();
-  }, [dismissC]);
+    if (bottomSheetModalCRef.current) {
+      bottomSheetModalCRef.current.dismiss();
+    }
+  }, []);
   const handleDismissAllPress = useCallback(() => {
     dismissAll();
   }, [dismissAll]);
+  const handleDismissByHookPress = useCallback(() => {
+    dismiss('A');
+  }, [dismiss]);
 
   // renders
+
+  const renderBottomSheetContent = useCallback(
+    (title, onPress) => (
+      <ContactListContainer
+        title={title}
+        type="FlatList"
+        onItemPress={onPress}
+      />
+    ),
+    []
+  );
   return (
     <View style={styles.container}>
       <Button
@@ -87,6 +105,35 @@ const StackExample = () => {
         style={styles.buttonContainer}
         onPress={handleDismissAllPress}
       />
+
+      <Button
+        label="Dismiss A By Hook"
+        style={styles.buttonContainer}
+        onPress={handleDismissByHookPress}
+      />
+
+      <BottomSheetModal
+        name="A"
+        ref={bottomSheetModalARef}
+        snapPoints={snapPoints}
+        children={renderBottomSheetContent('Modal A', handlePresentBPress)}
+      />
+
+      <BottomSheetModal
+        name="B"
+        ref={bottomSheetModalBRef}
+        snapPoints={snapPoints}
+        children={renderBottomSheetContent('Modal B', handlePresentCPress)}
+      />
+
+      <BottomSheetModal
+        name="C"
+        ref={bottomSheetModalCRef}
+        index={1}
+        snapPoints={snapPoints}
+        dismissOnPanDown={false}
+        children={renderBottomSheetContent('Modal C', handleDismissCPress)}
+      />
     </View>
   );
 };
@@ -95,6 +142,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    backgroundColor: '#dfdfdf',
   },
   buttonContainer: {
     marginBottom: 6,

@@ -11,6 +11,7 @@ const ContactListContainerComponent = ({
   count,
   type,
   title,
+  onItemPress,
 }: ContactListContainerProps) => {
   // renders
   const renderHeader = useCallback(() => {
@@ -26,6 +27,7 @@ const ContactListContainerComponent = ({
       header={renderHeader}
       type={type}
       count={count}
+      onItemPress={onItemPress}
     />
   );
 };

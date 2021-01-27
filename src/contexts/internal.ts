@@ -1,7 +1,7 @@
 import { createContext, Ref, RefObject } from 'react';
-import { TapGestureHandler, State } from 'react-native-gesture-handler';
+import type { TapGestureHandler, State } from 'react-native-gesture-handler';
 import type Animated from 'react-native-reanimated';
-import { Scrollable, ScrollableRef } from '../types';
+import type { Scrollable, ScrollableRef } from '../types';
 
 export type BottomSheetInternalContextType = {
   enableContentPanningGesture: boolean;
@@ -19,8 +19,6 @@ export type BottomSheetInternalContextType = {
 };
 
 // @ts-ignore
-export const BottomSheetInternalContext = createContext<
-  BottomSheetInternalContextType
->();
+export const BottomSheetInternalContext = createContext<BottomSheetInternalContextType>();
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;

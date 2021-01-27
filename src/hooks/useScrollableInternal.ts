@@ -19,7 +19,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
   } = useBottomSheetInternal();
 
   // callbacks
-  const handleScrollEvent = useMemo(
+  const handleOnBeginDragEvent = useMemo(
     () =>
       event([
         {
@@ -28,8 +28,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
           },
         },
       ]),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [scrollableContentOffsetY]
   );
   const handleSettingScrollable = useCallback(() => {
     _scrollableContentOffsetY.setValue(scrollableContentOffsetYRef.current);
@@ -50,8 +49,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
     return () => {
       removeScrollableRef(scrollableRef);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [type, _scrollableContentOffsetY, removeScrollableRef, setScrollableRef]);
 
   // effects
   useCode(
@@ -67,7 +65,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
 
   return {
     scrollableRef,
-    handleScrollEvent,
+    handleOnBeginDragEvent,
     handleSettingScrollable,
   };
 };
