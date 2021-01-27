@@ -26,11 +26,9 @@ import Animated, {
   sub,
   abs,
   greaterThan,
-  concat,
 } from 'react-native-reanimated';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import {
-  ReText,
   usePanGestureHandler,
   // ReText,
 } from 'react-native-redash';
@@ -586,7 +584,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             exec={set(_animatedIndexCallbackNode, animatedIndex)}
           />
         )}
-        <Animated.View pointerEvents="none" style={styles.debug}>
+        {/* <Animated.View pointerEvents="none" style={styles.debug}>
           <ReText
             style={styles.debugText}
             text={concat('manualSnapToPoint: ', manualSnapToPoint)}
@@ -618,11 +616,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             style={styles.debugText}
             text={concat('position: ', position)}
           />
-          {/* <ReText
+          <ReText
             style={styles.debugText}
             text={concat('animatedPositionIndex: ', animatedPositionIndex)}
-          /> */}
-        </Animated.View>
+          />
+        </Animated.View> */}
       </>
     );
     //#endregion
