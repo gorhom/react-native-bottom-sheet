@@ -54,6 +54,7 @@ const BottomSheetModalComponent = forwardRef<
   const isMinimized = useRef(false);
   const isForcedDismissed = useRef(false);
   const currentIndexRef = useRef(-1);
+  const nextIndexRef = useRef(-1);
   //#endregion
 
   //#region variables
@@ -62,6 +63,7 @@ const BottomSheetModalComponent = forwardRef<
     () => (dismissOnPanDown ? _providedIndex + 1 : _providedIndex),
     [_providedIndex, dismissOnPanDown]
   );
+  nextIndexRef.current = index;
   const snapPoints = useMemo(
     () =>
       dismissOnPanDown ? [0, ..._providedSnapPoints] : _providedSnapPoints,
@@ -89,6 +91,7 @@ const BottomSheetModalComponent = forwardRef<
 
       const adjustedIndex = dismissOnPanDown ? _index - 1 : _index;
       currentIndexRef.current = _index;
+      nextIndexRef.current = _index;
 
       if (adjustedIndex >= 0) {
         if (_providedOnChange) {
@@ -112,7 +115,7 @@ const BottomSheetModalComponent = forwardRef<
   const handleRestore = useCallback(() => {
     if (isMinimized.current) {
       isMinimized.current = false;
-      bottomSheetRef.current?.snapTo(currentIndexRef.current);
+      bottomSheetRef.current?.snapTo(nextIndexRef.current, true);
     }
   }, []);
   //#endregion
@@ -144,29 +147,29 @@ const BottomSheetModalComponent = forwardRef<
     if (isMinimized.current) {
       return;
     }
+    nextIndexRef.current = 0;
     bottomSheetRef.current?.close();
   }, []);
   const handleCollapse = useCallback(() => {
     if (isMinimized.current) {
       return;
     }
-    if (dismissOnPanDown) {
-      bottomSheetRef.current?.snapTo(1);
-    } else {
-      bottomSheetRef.current?.collapse();
-    }
+    nextIndexRef.current = dismissOnPanDown ? 1 : 0;
+    bottomSheetRef.current?.snapTo(dismissOnPanDown ? 1 : 0);
   }, [dismissOnPanDown]);
   const handleExpand = useCallback(() => {
     if (isMinimized.current) {
       return;
     }
+    nextIndexRef.current = snapPoints.length - 1;
     bottomSheetRef.current?.expand();
-  }, []);
+  }, [snapPoints]);
   const handleSnapTo = useCallback(
     (_index: number) => {
       if (isMinimized.current) {
         return;
       }
+      nextIndexRef.current = _index + (dismissOnPanDown ? 1 : 0);
       bottomSheetRef.current?.snapTo(_index + (dismissOnPanDown ? 1 : 0));
     },
     [dismissOnPanDown]
