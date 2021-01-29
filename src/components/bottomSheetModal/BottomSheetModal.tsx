@@ -43,7 +43,7 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region hooks
-  const { unmount } = usePortal();
+  const { unmount: unmountPortal } = usePortal();
   const {
     containerHeight,
     mountSheet,
@@ -58,7 +58,6 @@ const BottomSheetModalComponent = forwardRef<
   const isForcedDismissed = useRef(false);
   const currentIndexRef = useRef(-1);
   const nextIndexRef = useRef(-1);
-  const unmounted = useRef(false);
   //#endregion
 
   //#region variables
@@ -82,17 +81,14 @@ const BottomSheetModalComponent = forwardRef<
     }
 
     unmountSheet(key);
+    unmountPortal(key);
 
-    if (unmounted.current) {
-      unmount(key);
-      return;
-    }
     setMount(false);
 
     // reset
     isMinimized.current = false;
     isForcedDismissed.current = false;
-  }, [key, _providedOnDismiss, unmountSheet, unmount]);
+  }, [key, _providedOnDismiss, unmountSheet, unmountPortal]);
   const handleOnChange = useCallback(
     (_index: number) => {
       if (isMinimized.current && !isForcedDismissed.current) {
@@ -185,7 +181,6 @@ const BottomSheetModalComponent = forwardRef<
     }
   }, []);
   const handleOnUnmount = useCallback(() => {
-    unmounted.current = true;
     handleDismiss(true);
   }, [handleDismiss]);
   //#endregion
