@@ -1,6 +1,12 @@
 # Changelog
 
-## [v2.0.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.5...v2.0.6)
+## [v2.0.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.6...v2.0.7)
+
+#### Fixes
+
+- fix: prevent modal crash when navigating ([`#244`](https://github.com/gorhom/react-native-bottom-sheet/pull/244)).
+
+## [v2.0.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.5...v2.0.6) - 2021-01-29
 
 #### Fixes
 
