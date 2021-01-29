@@ -1,5 +1,4 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import React, { memo, useMemo, useRef } from 'react';
 import Animated, {
   interpolate,
   Extrapolate,
@@ -7,7 +6,13 @@ import Animated, {
   useAnimatedProps,
   useSharedValue,
   useAnimatedReaction,
+  useAnimatedGestureHandler,
+  runOnJS,
 } from 'react-native-reanimated';
+import {
+  TapGestureHandler,
+  TapGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
 import isEqual from 'lodash.isequal';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import {
@@ -20,10 +25,6 @@ import {
 import { WINDOW_HEIGHT } from '../../constants';
 import type { BottomSheetDefaultBackdropProps } from './types';
 import { styles } from './styles';
-
-const AnimatedTouchableWithoutFeedback = Animated.createAnimatedComponent(
-  TouchableWithoutFeedback
-);
 
 const BottomSheetBackdropComponent = ({
   animatedIndex,
@@ -45,30 +46,27 @@ const BottomSheetBackdropComponent = ({
   ]);
   //#endregion
 
-  //#region callbacks
-  const handleOnPress = useCallback(() => {
-    close();
-  }, [close]);
+  //#region tap gesture
+  const gestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>(
+    {
+      onStart: () => {
+        runOnJS(close)();
+      },
+    }
+  );
   //#endregion
 
   //#region animated props
   const isContainerTouchable = useSharedValue<boolean>(closeOnPress, true);
-  const containerAnimatedProps = useAnimatedProps(() => ({
-    pointerEvents: isContainerTouchable.value ? 'auto' : 'none',
-  }));
-  //#endregion
-
-  //#region styles
-  const buttonAnimatedStyle = useAnimatedStyle(
+  const containerAnimatedProps = useAnimatedProps(
     () => ({
-      top: animatedIndex.value <= disappearsOnIndex ? WINDOW_HEIGHT : 0,
+      pointerEvents: animatedIndex.value > disappearsOnIndex ? 'auto' : 'none',
     }),
     [disappearsOnIndex]
   );
-  const buttonStyle = useMemo(() => [style, buttonAnimatedStyle], [
-    style,
-    buttonAnimatedStyle,
-  ]);
+  //#endregion
+
+  //#region styles
   const containerAnimatedStyle = useAnimatedStyle(
     () => ({
       opacity: interpolate(
@@ -77,6 +75,7 @@ const BottomSheetBackdropComponent = ({
         [0, 0, opacity],
         Extrapolate.CLAMP
       ),
+      top: animatedIndex.value <= disappearsOnIndex ? WINDOW_HEIGHT : 0,
     }),
     [opacity, disappearsOnIndex, appearsOnIndex]
   );
@@ -101,21 +100,18 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   return closeOnPress ? (
-    <AnimatedTouchableWithoutFeedback
-      accessible={true}
-      accessibilityRole="button"
-      accessibilityLabel="Bottom Sheet backdrop"
-      accessibilityHint="Tap to close the Bottom Sheet"
-      onPress={handleOnPress}
-      style={buttonStyle}
-    >
+    <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View
         ref={containerRef}
         style={containerStyle}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Bottom Sheet backdrop"
+        accessibilityHint="Tap to close the Bottom Sheet"
         // @ts-ignore
         animatedProps={containerAnimatedProps}
       />
-    </AnimatedTouchableWithoutFeedback>
+    </TapGestureHandler>
   ) : (
     <Animated.View pointerEvents={pointerEvents} style={containerStyle} />
   );
