@@ -76,18 +76,19 @@ const BottomSheetModalComponent = forwardRef<
 
   //#region callbacks
   const doDismiss = useCallback(() => {
-    if (_providedOnDismiss) {
-      _providedOnDismiss();
-    }
-
-    unmountSheet(key);
-    unmountPortal(key);
-
-    setMount(false);
-
     // reset
     isMinimized.current = false;
     isForcedDismissed.current = false;
+
+    // unmount the sheet and the portal
+    unmountSheet(key);
+    unmountPortal(key);
+    setMount(false);
+
+    // fire the call back
+    if (_providedOnDismiss) {
+      _providedOnDismiss();
+    }
   }, [key, _providedOnDismiss, unmountSheet, unmountPortal]);
   const handleOnChange = useCallback(
     (_index: number) => {
