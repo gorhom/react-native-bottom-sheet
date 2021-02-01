@@ -363,6 +363,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [snapPoints, manualSnapToPoint]
     );
     const handleClose = useCallback(() => {
+      const currentIndexValue = currentIndexRef.current;
+      if (currentIndexValue === -1 || isClosing.current) {
+       return;
+      }
       isClosing.current = true;
       manualSnapToPoint.setValue(safeContainerHeight);
     }, [manualSnapToPoint, safeContainerHeight]);
