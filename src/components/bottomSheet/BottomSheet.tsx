@@ -267,13 +267,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       adjustedSnapPoints.push(safeContainerHeight);
       adjustedSnapPointsIndexes.push(-1);
 
-      return interpolate(
-        animatedPosition.value,
-        adjustedSnapPoints,
-        adjustedSnapPointsIndexes,
-        Extrapolate.CLAMP
-      );
-    }, [snapPoints, safeContainerHeight]);
+      return isLayoutCalculated
+        ? interpolate(
+            animatedPosition.value,
+            adjustedSnapPoints,
+            adjustedSnapPointsIndexes,
+            Extrapolate.CLAMP
+          )
+        : -1;
+    }, [snapPoints, safeContainerHeight, isLayoutCalculated]);
 
     // callbacks
     const animateToPointCompleted = useWorkletCallback(() => {
