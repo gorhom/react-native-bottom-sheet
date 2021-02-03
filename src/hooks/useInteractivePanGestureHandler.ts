@@ -17,7 +17,7 @@ type InteractivePanGestureHandlerContextType = {
 export const useInteractivePanGestureHandler = (
   type: GESTURE,
   animatedPosition: Animated.SharedValue<number>,
-  snapPoints: number[],
+  snapPoints: Animated.SharedValue<number[]>,
   animateToPoint: (point: number, velocity: number) => void,
   enableOverDrag: boolean,
   overDragResistanceFactor: number,
@@ -56,33 +56,36 @@ export const useInteractivePanGestureHandler = (
 
         const position = context.currentPosition + translationY;
         const negativeScrollableContentOffset =
-          context.currentPosition === snapPoints[snapPoints.length - 1] &&
+          context.currentPosition ===
+            snapPoints.value[snapPoints.value.length - 1] &&
           scrollableContentOffsetY
             ? scrollableContentOffsetY.value * -1
             : 0;
         const clampedPosition = clamp(
           position + negativeScrollableContentOffset,
-          snapPoints[snapPoints.length - 1],
-          snapPoints[0]
+          snapPoints.value[snapPoints.value.length - 1],
+          snapPoints.value[0]
         );
 
         if (enableOverDrag) {
           if (
             type === GESTURE.HANDLE &&
-            position <= snapPoints[snapPoints.length - 1]
+            position <= snapPoints.value[snapPoints.value.length - 1]
           ) {
             const resistedPosition =
-              snapPoints[snapPoints.length - 1] -
-              Math.sqrt(1 + (snapPoints[snapPoints.length - 1] - position)) *
+              snapPoints.value[snapPoints.value.length - 1] -
+              Math.sqrt(
+                1 + (snapPoints.value[snapPoints.value.length - 1] - position)
+              ) *
                 overDragResistanceFactor;
             animatedPosition.value = resistedPosition;
             return;
           }
 
-          if (position >= snapPoints[0]) {
+          if (position >= snapPoints.value[0]) {
             const resistedPosition =
-              snapPoints[0] +
-              Math.sqrt(1 + (position - snapPoints[0])) *
+              snapPoints.value[0] +
+              Math.sqrt(1 + (position - snapPoints.value[0])) *
                 overDragResistanceFactor;
             animatedPosition.value = resistedPosition;
             return;
@@ -97,7 +100,7 @@ export const useInteractivePanGestureHandler = (
         const destinationPoint = snapPoint(
           gestureTranslationY.value + context.currentPosition,
           gestureVelocityY.value,
-          snapPoints
+          snapPoints.value
         );
 
         /**
@@ -110,8 +113,10 @@ export const useInteractivePanGestureHandler = (
 
         if (
           (scrollableContentOffsetY ? scrollableContentOffsetY.value : 0) > 0 &&
-          context.currentPosition === snapPoints[snapPoints.length - 1] &&
-          animatedPosition.value === snapPoints[snapPoints.length - 1]
+          context.currentPosition ===
+            snapPoints.value[snapPoints.value.length - 1] &&
+          animatedPosition.value ===
+            snapPoints.value[snapPoints.value.length - 1]
         ) {
           return;
         }
