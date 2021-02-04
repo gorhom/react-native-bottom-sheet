@@ -253,6 +253,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region gesture interaction / animation
     // variables
     const animationState = useSharedValue(ANIMATION_STATE.UNDETERMINED, false);
+    const animatedSnapPoints = useSharedValue(snapPoints, true);
     const animatedPosition = useSharedValue(initialPosition, true);
     const animatedIndex = useDerivedValue(() => {
       const adjustedSnapPoints = snapPoints.slice().reverse();
@@ -325,7 +326,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     ] = useInteractivePanGestureHandler(
       GESTURE.CONTENT,
       animatedPosition,
-      snapPoints,
+      animatedSnapPoints,
       animateToPoint,
       enableOverDrag,
       overDragResistanceFactor,
@@ -338,7 +339,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     ] = useInteractivePanGestureHandler(
       GESTURE.HANDLE,
       animatedPosition,
-      snapPoints,
+      animatedSnapPoints,
       animateToPoint,
       enableOverDrag,
       overDragResistanceFactor
