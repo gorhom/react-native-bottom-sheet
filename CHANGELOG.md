@@ -1,6 +1,19 @@
 # Changelog
 
-## [v2.0.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.4...v2.0.5)
+## [v2.0.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.6...v2.0.7)
+
+#### Fixes
+
+- fix: prevent modal crash when navigating ([`#244`](https://github.com/gorhom/react-native-bottom-sheet/pull/244)).
+
+## [v2.0.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.5...v2.0.6) - 2021-01-29
+
+#### Fixes
+
+- fix: prevent animation when modal is closing ([`#205`](https://github.com/gorhom/react-native-bottom-sheet/pull/205)).
+- fix: stabilise animated callback node variables ([`#239`](https://github.com/gorhom/react-native-bottom-sheet/pull/239)).
+
+## [v2.0.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.4...v2.0.5) - 2021-01-21
 
 #### Improvements
 

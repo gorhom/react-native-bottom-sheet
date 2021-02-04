@@ -6,7 +6,7 @@ export interface BottomSheetMethods {
    * Snap to one of the provided points from `snapPoints`.
    * @type (index: number) => void
    */
-  snapTo: (index: number) => void;
+  snapTo: (index: number, force?: boolean) => void;
   /**
    * Snap to the maximum provided point from `snapPoints`.
    * @type () => void
