@@ -63,6 +63,27 @@ export type BottomSheetProps = {
    * @default false
    */
   animateOnMount?: boolean;
+
+  /**
+   * View style to be applied at the sheet container,
+   * it also could be an Animated Style.
+   * @type Animated.AnimateStyle<ViewStyle>
+   * @default undefined
+   */
+  style?: Animated.AnimateStyle<
+    Omit<
+      ViewStyle,
+      | 'flexDirection'
+      | 'position'
+      | 'top'
+      | 'left'
+      | 'bottom'
+      | 'right'
+      | 'opacity'
+      | 'transform'
+    >
+  >;
+
   // animated nodes
   /**
    * Animated value to be used as a callback of the position node internally.
