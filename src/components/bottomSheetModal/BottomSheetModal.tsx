@@ -32,7 +32,6 @@ const BottomSheetModalComponent = forwardRef<
     index: _providedIndex = 0,
     snapPoints: _providedSnapPoints,
     onChange: _providedOnChange,
-    bottomInset: bottomInset = 0,
 
     // components
     children,
@@ -198,7 +197,6 @@ const BottomSheetModalComponent = forwardRef<
         index={index}
         snapPoints={snapPoints}
         animateOnMount={true}
-        bottomInset={bottomInset}
         containerHeight={containerHeight}
         onChange={handleOnChange}
         children={children}

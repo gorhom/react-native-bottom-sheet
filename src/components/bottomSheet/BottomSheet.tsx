@@ -347,8 +347,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [snapPoints, manualSnapToPoint]
     );
     const handleClose = useCallback(() => {
-      manualSnapToPoint.setValue(safeContainerHeight);
-    }, [manualSnapToPoint, safeContainerHeight]);
+      manualSnapToPoint.setValue(safeContainerHeight + safeHandleHeight);
+    }, [manualSnapToPoint, safeContainerHeight, safeHandleHeight]);
     const handleExpand = useCallback(() => {
       manualSnapToPoint.setValue(snapPoints[snapPoints.length - 1]);
     }, [snapPoints, manualSnapToPoint]);
