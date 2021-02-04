@@ -79,6 +79,15 @@ const App = () => {
             getComponent={() => require('./screens/modal/StackExample').default}
           />
           <Stack.Screen
+            name="Modal/StackWithBottomInsetExample"
+            options={{
+              title: 'Stack Modals With Footer Example',
+            }}
+            getComponent={() =>
+              require('./screens/modal/StackWithBottomInsetExample').default
+            }
+          />
+          <Stack.Screen
             name="Modal/DynamicSnapPointExample"
             options={{
               title: 'Dynamic Snap Point',
