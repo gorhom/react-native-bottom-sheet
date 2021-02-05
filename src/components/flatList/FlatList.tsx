@@ -9,7 +9,6 @@ import React, {
 import {
   FlatList as RNFlatList,
   FlatListProps as RNFlatListProps,
-  ViewStyle,
 } from 'react-native';
 import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
@@ -22,12 +21,9 @@ import type {
 } from './types';
 import { styles } from './styles';
 
-const AnimatedFlatList = Animated.createAnimatedComponent(
+const AnimatedFlatList = Animated.createAnimatedComponent<RNFlatListProps<any>>(
   RNFlatList
-) as React.ComponentClass<
-  Animated.AnimateProps<ViewStyle, RNFlatListProps<any>>,
-  any
->;
+);
 
 const BottomSheetFlatListName = 'FlatList';
 

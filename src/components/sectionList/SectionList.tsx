@@ -9,7 +9,6 @@ import React, {
 import {
   SectionList as RNSectionList,
   SectionListProps as RNSectionListProps,
-  ViewStyle,
 } from 'react-native';
 import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
@@ -22,12 +21,9 @@ import type {
 } from './types';
 import { styles } from './styles';
 
-const AnimatedSectionList = Animated.createAnimatedComponent(
-  RNSectionList
-) as React.ComponentClass<
-  Animated.AnimateProps<ViewStyle, RNSectionListProps<any>>,
-  any
->;
+const AnimatedSectionList = Animated.createAnimatedComponent<
+  RNSectionListProps<any>
+>(RNSectionList);
 
 const BottomSheetSectionListName = 'SectionList';
 
