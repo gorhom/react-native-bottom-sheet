@@ -13,7 +13,7 @@ import {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
@@ -46,7 +46,7 @@ const MapExample = () => {
   const poiDetailsModalRef = useRef<BottomSheetModal>(null);
 
   // hooks
-  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeArea();
+  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
 
   //#region variables
   const data = useMemo(() => createLocationListMockData(15), []);
@@ -79,12 +79,9 @@ const MapExample = () => {
 
   //#region animated variables
   const animatedPOIListIndex = useSharedValue<number>(0);
-  const animatedPOIListPosition = useSharedValue<number>(SCREEN_HEIGHT, false);
+  const animatedPOIListPosition = useSharedValue<number>(SCREEN_HEIGHT);
   const animatedPOIDetailsIndex = useSharedValue<number>(0);
-  const animatedPOIDetailsPosition = useSharedValue<number>(
-    SCREEN_HEIGHT,
-    false
-  );
+  const animatedPOIDetailsPosition = useSharedValue<number>(SCREEN_HEIGHT);
 
   const weatherAnimatedIndex = useDerivedValue(() =>
     animatedPOIListIndex.value < animatedPOIDetailsIndex.value
@@ -165,7 +162,6 @@ const MapExample = () => {
     []
   );
 
-  console.log('map', poiListSnapPoints);
   return (
     <View style={styles.container}>
       <MapView

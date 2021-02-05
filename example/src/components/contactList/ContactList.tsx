@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, Text, Platform, View, ViewStyle } from 'react-native';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import {
   BottomSheetFlatList,
@@ -32,7 +32,7 @@ const ContactList = ({
   onItemPress,
 }: ContactListProps) => {
   // hooks
-  const { bottom: bottomSafeArea } = useSafeArea();
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
   // variables
   const sections = useMemo(() => createContactSectionsMockData(count), [count]);

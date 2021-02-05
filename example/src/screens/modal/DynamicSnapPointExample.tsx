@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Button from '../../components/button';
 import withModalProvider from '../withModalProvider';
 
@@ -12,7 +12,7 @@ const DynamicSnapPointExample = () => {
 
   // hooks
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const { bottom: safeBottomArea } = useSafeArea();
+  const { bottom: safeBottomArea } = useSafeAreaInsets();
 
   // variables
   const snapPoints = useMemo(() => [contentHeight], [contentHeight]);
