@@ -113,6 +113,14 @@ This will initially mount the sheet closed and when it's mounted and calculated 
 | ------- | ------- | -------- |
 | boolean | false   | NO       |
 
+### `style`
+
+View style to be applied at the sheet container, it also could be an `AnimatedStyle`. This is helpful to add shadow to the sheet.
+
+| type                       | default   | required |
+| -------------------------- | --------- | -------- |
+| ViewStyle \| AnimatedStyle | undefined | NO       |
+
 ## Animation Configuration
 
 ### `animationConfigs`
