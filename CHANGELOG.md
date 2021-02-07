@@ -1,6 +1,22 @@
 # Changelog
 
-## [v2.0.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.6...v2.0.7)
+## [v2.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.7...v2.1.0)
+
+#### Features
+
+- feat: allow to override sheet container style ([`#265`](https://github.com/gorhom/react-native-bottom-sheet/pull/265)).
+
+#### Fixes
+
+- fix: prevent duplicated close triggers ([`#257`](https://github.com/gorhom/react-native-bottom-sheet/pull/257)).
+- fix: stabilise modal un-mounting ([`#254`](https://github.com/gorhom/react-native-bottom-sheet/pull/254)).
+
+#### Documentations
+
+- docs: added question issue template ([d11a889](https://github.com/gorhom/react-native-bottom-sheet/commit/d11a88922f596a4c9baa6ee843a43c3a25ef439e)).
+- docs: added style to props page ([b765973](https://github.com/gorhom/react-native-bottom-sheet/commit/b76597304e779b20bfa8a4a3b7726d37f61bd48f)).
+
+## [v2.0.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.6...v2.0.7) - 2021-01-29
 
 #### Fixes
 
