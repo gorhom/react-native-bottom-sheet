@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
-import ContactList from '../../components/contactList';
+import ContactListContainer from '../../components/contactListContainer';
 
 const BackdropExample = () => {
   // hooks
@@ -26,14 +26,6 @@ const BackdropExample = () => {
   }, []);
 
   // renders
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>Backdrop Example</Text>
-      </View>
-    );
-  }, []);
-
   return (
     <View style={styles.container}>
       <Button
@@ -70,9 +62,11 @@ const BackdropExample = () => {
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
+        style={styles.sheetContainer}
         backdropComponent={BottomSheetBackdrop}
+        backgroundComponent={null}
       >
-        <ContactList type="View" count={3} header={renderHeader} />
+        <ContactListContainer type="View" count={4} title="Backdrop Example" />
       </BottomSheet>
     </View>
   );
@@ -83,27 +77,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
-  contentContainerStyle: {
-    paddingTop: 12,
-    paddingHorizontal: 24,
+  sheetContainer: {
+    shadowColor: '#000',
     backgroundColor: 'white',
-  },
-  shadowBackdrop: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-  },
-  title: {
-    fontSize: 46,
-    lineHeight: 46,
-    fontWeight: '800',
-  },
-  headerContainer: {
-    paddingVertical: 24,
-    backgroundColor: 'white',
+    shadowOffset: {
+      width: 0,
+      height: 11,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 14.78,
+
+    elevation: 22,
   },
   buttonContainer: {
     marginBottom: 6,
