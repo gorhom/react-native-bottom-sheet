@@ -13,8 +13,10 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
+import { TextInput } from 'react-native-gesture-handler';
 import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheetKeyboardView from '../../src/components/bottomSheetKeyboardView';
 import Button from './components/button';
 import ContactList from './components/contactList';
 
@@ -96,6 +98,9 @@ const BasicExample = () => {
   const handleIncreaseDynamicSnapPoint = useCallback(() => {
     setDynamicSnapPoint(state => state + 50);
   }, []);
+  const handleFocus = useCallback(() => {
+    bottomSheetRef.current.fullScreenExpand();
+  }, []);
   //#endregion
 
   // renders
@@ -130,9 +135,9 @@ const BasicExample = () => {
         <View
           style={{
             height: dynamicSnapPoint,
-            backgroundColor: 'black',
           }}
         >
+          <TextInput style={styles.textInput} />
           <RNButton
             onPress={() => console.log('Pressed !')}
             title="Press Me!"
@@ -146,7 +151,7 @@ const BasicExample = () => {
               bottom: 0,
               height: bottomSafeArea,
               borderWidth: 1,
-              backgroundColor: 'white',
+              backgroundColor: 'red',
             }}
           />
         </View>
@@ -162,10 +167,15 @@ const BasicExample = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#222',
     padding: 24,
   },
   buttonContainer: {
     marginBottom: 6,
+  },
+  textInput: {
+    backgroundColor: 'blue',
+    padding: 6,
   },
   line: {
     position: 'absolute',

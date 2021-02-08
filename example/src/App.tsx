@@ -9,10 +9,15 @@ function App() {
   return (
     <AppearanceProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Root">
+        <Stack.Navigator initialRouteName="Dev">
           <Stack.Screen
             name="Root"
             getComponent={() => require('./screens/Root').default}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Dev"
+            getComponent={() => require('./Dev').default}
             options={{ headerShown: false }}
           />
           {/* static examples */}

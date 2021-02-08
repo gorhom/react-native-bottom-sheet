@@ -1,7 +1,9 @@
+import { Keyboard } from 'react-native';
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
   cancelAnimation,
+  runOnJS,
 } from 'react-native-reanimated';
 import {
   State,
@@ -53,6 +55,8 @@ export const useInteractivePanGestureHandler = (
         gestureState.value = state;
         gestureTranslationY.value = translationY;
         gestureVelocityY.value = velocityY;
+
+        runOnJS(Keyboard.dismiss)();
 
         const position = context.currentPosition + translationY;
         const negativeScrollableContentOffset =
