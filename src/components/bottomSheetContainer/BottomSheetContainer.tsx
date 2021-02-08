@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import isEqual from 'lodash.isequal';
 import type { BottomSheetContainerProps } from './types';
@@ -6,6 +6,7 @@ import { styles } from './styles';
 
 const BottomSheetContainerComponent = ({
   shouldMeasureHeight,
+  containerHeight,
   onMeasureHeight,
   children,
 }: BottomSheetContainerProps) => {
@@ -22,12 +23,22 @@ const BottomSheetContainerComponent = ({
   );
   //#endregion
 
+  //#region styles
+  const containerStyle = useMemo(
+    () => [
+      styles.container,
+      containerHeight ? { height: containerHeight } : {},
+    ],
+    [containerHeight]
+  );
+  //#endregion
+
   //#region render
   // console.log('BottomSheetContainer', 'render', shouldMeasureHeight);
   return (
     <View
       pointerEvents="box-none"
-      style={styles.container}
+      style={containerStyle}
       onLayout={shouldMeasureHeight ? handleOnLayout : undefined}
       children={children}
     />
