@@ -9,7 +9,6 @@ import React, {
 import {
   ScrollView as RNScrollView,
   ScrollViewProps as RNScrollViewProps,
-  ViewStyle,
 } from 'react-native';
 import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
@@ -22,12 +21,9 @@ import type {
 } from './types';
 import { styles } from './styles';
 
-const AnimatedScrollView = Animated.createAnimatedComponent(
+const AnimatedScrollView = Animated.createAnimatedComponent<RNScrollViewProps>(
   RNScrollView
-) as React.ComponentClass<
-  Animated.AnimateProps<ViewStyle, RNScrollViewProps>,
-  any
->;
+);
 
 const BottomSheetScrollViewName = 'ScrollView';
 
@@ -69,6 +65,7 @@ const BottomSheetScrollViewComponent = forwardRef(
         >
           <AnimatedScrollView
             {...rest}
+            // @ts-ignore
             ref={scrollableRef}
             overScrollMode={overScrollMode}
             scrollEventThrottle={16}

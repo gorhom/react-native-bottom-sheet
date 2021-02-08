@@ -4,7 +4,6 @@ import Animated, {
   Extrapolate,
   useAnimatedStyle,
   useAnimatedProps,
-  useSharedValue,
   useAnimatedReaction,
   useAnimatedGestureHandler,
   runOnJS,
@@ -14,7 +13,7 @@ import {
   TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import isEqual from 'lodash.isequal';
-import { useBottomSheet } from '../../hooks/useBottomSheet';
+import { useBottomSheet, useReactiveSharedValue } from '../../hooks';
 import {
   DEFAULT_OPACITY,
   DEFAULT_APPEARS_ON_INDEX,
@@ -57,7 +56,7 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   //#region animated props
-  const isContainerTouchable = useSharedValue<boolean>(closeOnPress, true);
+  const isContainerTouchable = useReactiveSharedValue<boolean>(closeOnPress);
   const containerAnimatedProps = useAnimatedProps(
     () => ({
       pointerEvents: animatedIndex.value > disappearsOnIndex ? 'auto' : 'none',

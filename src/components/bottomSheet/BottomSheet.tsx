@@ -30,6 +30,7 @@ import {
   useScrollable,
   usePropsValidator,
   useNormalizedSnapPoints,
+  useReactiveSharedValue,
 } from '../../hooks';
 import {
   BottomSheetInternalProvider,
@@ -252,9 +253,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region gesture interaction / animation
     // variables
-    const animationState = useSharedValue(ANIMATION_STATE.UNDETERMINED, false);
-    const animatedSnapPoints = useSharedValue(snapPoints, true);
-    const animatedPosition = useSharedValue(initialPosition, true);
+    const animationState = useSharedValue(ANIMATION_STATE.UNDETERMINED);
+    const animatedSnapPoints = useReactiveSharedValue(snapPoints);
+    const animatedPosition = useSharedValue(initialPosition);
     const animatedIndex = useDerivedValue(() => {
       const adjustedSnapPoints = snapPoints.slice().reverse();
       const adjustedSnapPointsIndexes = snapPoints
@@ -589,14 +590,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    // console.log(
-    //   'BottomSheet',
-    //   'render',
-    //   snapPoints,
-    //   safeContainerHeight,
-    //   safeHandleHeight,
-    //   isLayoutCalculated
-    // );
+    // console.log('BottomSheet', 'render', snapPoints, sheetHeight);
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer

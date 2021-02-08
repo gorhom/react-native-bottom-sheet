@@ -8,7 +8,7 @@ import Animated, {
 import { useAppearance } from '../../hooks';
 import Text from '../text';
 import { SEARCH_HANDLE_HEIGHT } from '../../components/searchHandle';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LOCATION_DETAILS_HEIGHT } from '../locationDetails';
 
 interface WeatherProps {
@@ -26,7 +26,7 @@ const Weather = ({
 }: WeatherProps) => {
   // hooks
   const { appearance } = useAppearance();
-  const { bottom: bottomSafeArea } = useSafeArea();
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
   // styles
   const lockedYPosition = useMemo(
