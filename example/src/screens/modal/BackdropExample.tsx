@@ -1,12 +1,20 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { BottomSheetModal, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+} from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactListContainer from '../../components/contactListContainer';
 import withModalProvider from '../withModalProvider';
 
 const BackdropExample = () => {
+  // refs
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
   const handleDismiss = useCallback(() => {
@@ -17,6 +25,12 @@ const BackdropExample = () => {
   }, []);
 
   // renders
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop {...props} appearsOnIndex={2} />
+    ),
+    []
+  );
   return (
     <View style={styles.container}>
       <Button
@@ -26,10 +40,9 @@ const BackdropExample = () => {
       />
       <BottomSheetModal
         ref={bottomSheetRef}
-        snapPoints={['25%', '50%']}
-        animationDuration={250}
+        snapPoints={snapPoints}
         onDismiss={handleDismiss}
-        backdropComponent={BottomSheetBackdrop}
+        backdropComponent={renderBackdrop}
       >
         <ContactListContainer title="Modal FlatList" type="FlatList" />
       </BottomSheetModal>
