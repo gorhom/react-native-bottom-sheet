@@ -1,6 +1,17 @@
 # Changelog
 
-## [v3.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.2.0...v3.2.1)
+## [v3.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.2.1...v3.3.0)
+
+#### Features
+
+- feat: updated reanimated to rc3 ([`#268`](https://github.com/gorhom/react-native-bottom-sheet/pull/268)).
+
+#### Fixes
+
+- fix: prevent crash when resizing container height on Android ([`#253`](https://github.com/gorhom/react-native-bottom-sheet/pull/253)).
+- fix: prevent default backdrop from blocking ui behind ([`#246`](https://github.com/gorhom/react-native-bottom-sheet/pull/246)).
+
+## [v3.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.2.0...v3.2.1) - 2021-01-21
 
 #### Fixes
 
@@ -136,7 +147,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.5...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.1.0...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 

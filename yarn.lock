@@ -1188,10 +1188,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@gorhom/portal@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-0.1.4.tgz#ef9e50d4b6c98ebe606a16d22d6cb58d661421b4"
-  integrity sha512-iU3D0i9NureT5ULTvD8moF2FWyFvVGcr/ahcRMDzBblUO1AwwixZRZ+Lf3d6uk0w4ujOQZ7+Az+uUnI+AsXXBw==
+"@gorhom/portal@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-0.2.0.tgz#65423726b1352e2b9e3c3b8da83a58e4dff48ce6"
+  integrity sha512-PoYYSliPCl624ORih+zyI1pVbH2Y2Mj+EY6nXeAIi2r1LGv10hItZLzdgnbPPfQ0neikTDYArlOzuB5zKIex5w==
   dependencies:
     lodash.isequal "^4.5.0"
     nanoid "^3.1.20"
@@ -6947,10 +6947,10 @@ react-native-gesture-handler@^1.9.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-reanimated@^2.0.0-rc.2:
-  version "2.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.0.0-rc.2.tgz#8ff0210986c5234940d951e384793874802f81aa"
-  integrity sha512-drOPEIMSh+224RTBZJrMasxZBdNodTcQcJKIfH5vMZPYhfSbljxfKTGfn7ZKn7ZYkX+wCPKKhJJPdD5+9Pevyw==
+react-native-reanimated@^2.0.0-rc.3:
+  version "2.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.0.0-rc.3.tgz#7c9e0228ccab0e40831c1c80eb23cf834f6d5707"
+  integrity sha512-tjFGraTI1mnwQ9TspNpxs1oVqi1OImEAvKhRwBYvZoVuIS+VPQuMfB+DdohQIDe+hxzbfvoZMXe+A3TzJuSM0g==
   dependencies:
     "@babel/plugin-transform-object-assign" "^7.10.4"
     fbjs "^3.0.0"

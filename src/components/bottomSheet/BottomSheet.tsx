@@ -30,6 +30,7 @@ import {
   useScrollable,
   usePropsValidator,
   useNormalizedSnapPoints,
+  useReactiveSharedValue,
 } from '../../hooks';
 import {
   BottomSheetInternalProvider,
@@ -252,9 +253,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region gesture interaction / animation
     // variables
-    const animationState = useSharedValue(ANIMATION_STATE.UNDETERMINED, false);
-    const animatedSnapPoints = useSharedValue(snapPoints, true);
-    const animatedPosition = useSharedValue(initialPosition, true);
+    const animationState = useSharedValue(ANIMATION_STATE.UNDETERMINED);
+    const animatedSnapPoints = useReactiveSharedValue(snapPoints);
+    const animatedPosition = useSharedValue(initialPosition);
     const animatedIndex = useDerivedValue(() => {
       const adjustedSnapPoints = snapPoints.slice().reverse();
       const adjustedSnapPointsIndexes = snapPoints
@@ -369,7 +370,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             snapPoints.length - 1
           }`
         );
-        runOnUI(animateToPoint)(snapPoints[index]);
+        const newSnapPoint = snapPoints[index];
+        runOnUI(animateToPoint)(newSnapPoint);
       },
       [animateToPoint, snapPoints]
     );
@@ -377,10 +379,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       runOnUI(animateToPoint)(safeContainerHeight);
     }, [animateToPoint, safeContainerHeight]);
     const handleExpand = useCallback(() => {
-      runOnUI(animateToPoint)(snapPoints[snapPoints.length - 1]);
+      const newSnapPoint = snapPoints[snapPoints.length - 1];
+      runOnUI(animateToPoint)(newSnapPoint);
     }, [animateToPoint, snapPoints]);
     const handleCollapse = useCallback(() => {
-      runOnUI(animateToPoint)(snapPoints[0]);
+      const newSnapPoint = snapPoints[0];
+      runOnUI(animateToPoint)(newSnapPoint);
     }, [animateToPoint, snapPoints]);
     useImperativeHandle(ref, () => ({
       snapTo: handleSnapTo,
@@ -491,9 +495,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         didMountOnAnimate.current === false &&
         snapPoints[_providedIndex] !== safeContainerHeight
       ) {
-        requestAnimationFrame(() =>
-          runOnUI(animateToPoint)(snapPoints[_providedIndex])
-        );
+        const newSnapPoint = snapPoints[_providedIndex];
+        requestAnimationFrame(() => runOnUI(animateToPoint)(newSnapPoint));
         didMountOnAnimate.current = true;
       }
     }, [
@@ -510,9 +513,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      */
     useEffect(() => {
       if (isLayoutCalculated && currentIndexRef.current !== -1) {
-        requestAnimationFrame(() =>
-          runOnUI(animateToPoint)(snapPoints[currentIndexRef.current])
-        );
+        const newSnapPoint = snapPoints[currentIndexRef.current];
+        requestAnimationFrame(() => runOnUI(animateToPoint)(newSnapPoint));
       }
     }, [isLayoutCalculated, snapPoints, animateToPoint]);
 
@@ -591,14 +593,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    // console.log(
-    //   'BottomSheet',
-    //   'render',
-    //   snapPoints,
-    //   safeContainerHeight,
-    //   safeHandleHeight,
-    //   isLayoutCalculated
-    // );
+    // console.log('BottomSheet', 'render', snapPoints, sheetHeight);
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer
@@ -609,6 +604,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         />
         <BottomSheetContainer
           key="BottomSheetContainer"
+          containerHeight={safeContainerHeight}
           shouldMeasureHeight={shouldMeasureContainerHeight}
           onMeasureHeight={handleOnContainerMeasureHeight}
         >

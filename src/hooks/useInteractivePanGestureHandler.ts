@@ -28,9 +28,9 @@ export const useInteractivePanGestureHandler = (
   Animated.SharedValue<number>,
   Animated.SharedValue<number>
 ] => {
-  const gestureState = useSharedValue<State>(State.UNDETERMINED, false);
-  const gestureTranslationY = useSharedValue(0, false);
-  const gestureVelocityY = useSharedValue(0, false);
+  const gestureState = useSharedValue<State>(State.UNDETERMINED);
+  const gestureTranslationY = useSharedValue(0);
+  const gestureVelocityY = useSharedValue(0);
 
   const gestureHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,

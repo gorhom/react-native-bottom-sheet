@@ -1,6 +1,6 @@
 {
   "name": "@gorhom/bottom-sheet",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -36,7 +36,7 @@
     "bootstrap": "yarn install && yarn example"
   },
   "dependencies": {
-    "@gorhom/portal": "^0.1.4",
+    "@gorhom/portal": "^0.2.0",
     "invariant": "^2.2.4",
     "lodash.isequal": "^4.5.0",
     "nanoid": "^3.1.20",
@@ -63,7 +63,7 @@
     "react": "~16.9.0",
     "react-native": "^0.62.2",
     "react-native-gesture-handler": "^1.9.0",
-    "react-native-reanimated": "^2.0.0-rc.2",
+    "react-native-reanimated": "^2.0.0-rc.3",
     "release-it": "^14.2.2",
     "typescript": "^4.1.3"
   },
@@ -71,7 +71,7 @@
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=1.9.0",
-    "react-native-reanimated": ">=2.0.0-rc.1"
+    "react-native-reanimated": ">=2.0.0-rc.2"
   },
   "husky": {
     "hooks": {
