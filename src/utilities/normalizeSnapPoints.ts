@@ -6,11 +6,12 @@ import { validateSnapPoint } from './validateSnapPoint';
 export const normalizeSnapPoints = (
   snapPoints: Array<number | string>,
   containerHeight: number,
-  topInset: number
+  verticalInset: number
 ) =>
   snapPoints.map(snapPoint => {
     validateSnapPoint(snapPoint);
     return typeof snapPoint === 'number'
       ? snapPoint
-      : (Number(snapPoint.split('%')[0]) * (containerHeight - topInset)) / 100;
+      : (Number(snapPoint.split('%')[0]) * (containerHeight - verticalInset)) /
+          100;
   });

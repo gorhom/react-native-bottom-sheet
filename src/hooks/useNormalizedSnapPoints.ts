@@ -3,7 +3,7 @@ import { normalizeSnapPoints } from '../utilities';
 
 export const useNormalizedSnapPoints = (
   snapPoints: Array<number | string>,
-  topInset: number,
+  verticalInset: number,
   containerHeight: number = 0,
   handleHeight: number = 0
 ) =>
@@ -11,7 +11,7 @@ export const useNormalizedSnapPoints = (
     const normalizedSnapPoints = normalizeSnapPoints(
       snapPoints,
       containerHeight,
-      topInset
+      verticalInset
     );
     return normalizedSnapPoints.map(normalizedSnapPoint => {
       /**
@@ -23,7 +23,7 @@ export const useNormalizedSnapPoints = (
       }
       return Math.max(
         containerHeight - normalizedSnapPoint - handleHeight,
-        topInset
+        verticalInset
       );
     });
-  }, [snapPoints, topInset, containerHeight, handleHeight]);
+  }, [snapPoints, verticalInset, containerHeight, handleHeight]);

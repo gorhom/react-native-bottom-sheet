@@ -184,7 +184,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     const snapPoints = useNormalizedSnapPoints(
       _providedSnapPoints,
-      topInset,
+      topInset + bottomInset,
       safeContainerHeight,
       safeHandleHeight
     );
@@ -602,13 +602,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region render
-    // console.log(
-    //   'BottomSheet',
-    //   'render',
+    // console.log('BottomSheet', 'render', {
     //   snapPoints,
-    //   sheetHeight,
-    //   safeHandleHeight
-    // );
+    //   shouldMeasureContainerHeight,
+    //   safeContainerHeight,
+    //   topInset,
+    //   bottomInset,
+    // });
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer
