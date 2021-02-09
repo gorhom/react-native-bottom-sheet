@@ -1,6 +1,16 @@
 # Changelog
 
-## [v2.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.7...v2.1.0)
+## [v2.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.1.0...v2.2.0)
+
+#### Features
+
+- feat: added bottom inset ([`#237`](https://github.com/gorhom/react-native-bottom-sheet/pull/237)).
+
+#### Documentations
+
+- docs: added bottomInset description ([913ed68](https://github.com/gorhom/react-native-bottom-sheet/commit/913ed68d44c849d5145eaef2a94e4504e80294b0)).
+
+## [v2.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.0.7...v2.1.0) - 2021-02-07
 
 #### Features
 
