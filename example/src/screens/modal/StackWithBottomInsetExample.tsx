@@ -114,16 +114,16 @@ const StackExample = () => {
           name="A"
           ref={bottomSheetModalARef}
           snapPoints={snapPoints}
-          children={renderBottomSheetContent('Modal A', handlePresentBPress)}
           bottomInset={footerHeight}
+          children={renderBottomSheetContent('Modal A', handlePresentBPress)}
         />
 
         <BottomSheetModal
           name="B"
           ref={bottomSheetModalBRef}
           snapPoints={snapPoints}
-          children={renderBottomSheetContent('Modal B', handlePresentCPress)}
           bottomInset={footerHeight}
+          children={renderBottomSheetContent('Modal B', handlePresentCPress)}
         />
 
         <BottomSheetModal
@@ -132,8 +132,8 @@ const StackExample = () => {
           index={1}
           snapPoints={snapPoints}
           dismissOnPanDown={false}
-          children={renderBottomSheetContent('Modal C', handleDismissCPress)}
           bottomInset={footerHeight}
+          children={renderBottomSheetContent('Modal C', handleDismissCPress)}
         />
       </View>
       <View style={styles.footer}>
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: '#dfdfdf',
   },
   buttonContainer: {
     marginBottom: 6,
