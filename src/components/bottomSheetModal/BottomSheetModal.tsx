@@ -66,7 +66,6 @@ const BottomSheetModalComponent = forwardRef<
     () => (dismissOnPanDown ? _providedIndex + 1 : _providedIndex),
     [_providedIndex, dismissOnPanDown]
   );
-  nextIndexRef.current = index;
   const snapPoints = useMemo(
     () =>
       dismissOnPanDown ? [0, ..._providedSnapPoints] : _providedSnapPoints,
@@ -79,6 +78,8 @@ const BottomSheetModalComponent = forwardRef<
     // reset
     isMinimized.current = false;
     isForcedDismissed.current = false;
+    currentIndexRef.current = -1;
+    nextIndexRef.current = -1;
 
     // unmount the sheet and the portal
     unmountSheet(key);
@@ -115,10 +116,11 @@ const BottomSheetModalComponent = forwardRef<
   //#region public methods
   const handlePresent = useCallback(() => {
     requestAnimationFrame(() => {
+      nextIndexRef.current = index;
       setMount(true);
       mountSheet(key, ref);
     });
-  }, [key, mountSheet, ref]);
+  }, [key, mountSheet, ref, index]);
   const handleDismiss = useCallback(
     (force: boolean = false) => {
       if (force) {
@@ -131,6 +133,7 @@ const BottomSheetModalComponent = forwardRef<
       } else {
         willUnmountSheet(key);
       }
+      nextIndexRef.current = -1;
       bottomSheetRef.current?.close();
     },
     [key, doDismiss, willUnmountSheet]
@@ -139,7 +142,7 @@ const BottomSheetModalComponent = forwardRef<
     if (isMinimized.current) {
       return;
     }
-    nextIndexRef.current = 0;
+    nextIndexRef.current = -1;
     bottomSheetRef.current?.close();
   }, []);
   const handleCollapse = useCallback(() => {
@@ -147,7 +150,7 @@ const BottomSheetModalComponent = forwardRef<
       return;
     }
     nextIndexRef.current = dismissOnPanDown ? 1 : 0;
-    bottomSheetRef.current?.snapTo(dismissOnPanDown ? 1 : 0);
+    bottomSheetRef.current?.snapTo(nextIndexRef.current);
   }, [dismissOnPanDown]);
   const handleExpand = useCallback(() => {
     if (isMinimized.current) {
@@ -162,7 +165,7 @@ const BottomSheetModalComponent = forwardRef<
         return;
       }
       nextIndexRef.current = _index + (dismissOnPanDown ? 1 : 0);
-      bottomSheetRef.current?.snapTo(_index + (dismissOnPanDown ? 1 : 0));
+      bottomSheetRef.current?.snapTo(nextIndexRef.current);
     },
     [dismissOnPanDown]
   );
@@ -182,7 +185,9 @@ const BottomSheetModalComponent = forwardRef<
     }
   }, []);
   const handleOnUnmount = useCallback(() => {
-    handleDismiss(true);
+    if (currentIndexRef.current !== -1) {
+      handleDismiss(true);
+    }
   }, [handleDismiss]);
   //#endregion
 
