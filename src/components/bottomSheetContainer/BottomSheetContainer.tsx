@@ -30,7 +30,6 @@ const BottomSheetContainerComponent = ({
       {
         top: topInset,
         bottom: bottomInset,
-        overflow: 'hidden',
       },
     ],
     [bottomInset, topInset]
