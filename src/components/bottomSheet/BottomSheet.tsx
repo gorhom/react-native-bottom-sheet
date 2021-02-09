@@ -87,6 +87,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // animations configurations
       animationDuration = DEFAULT_ANIMATION_DURATION,
       animationEasing = DEFAULT_ANIMATION_EASING,
+
       // configurations
       index: _providedIndex = 0,
       snapPoints: _providedSnapPoints,
@@ -97,12 +98,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableContentPanningGesture = DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
+      style: _providedStyle,
+
       // animated nodes callback
       animatedPosition: _providedAnimatedPosition,
       animatedIndex: _providedAnimatedIndex,
+
       // callbacks
       onChange: _providedOnChange,
       onAnimate: _providedOnAnimate,
+
       // components
       handleComponent,
       backdropComponent,
@@ -437,21 +442,30 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region styles
-    const containerStyle = useMemo<Animated.AnimateStyle<ViewStyle>>(
-      () => ({
-        ...styles.container,
-        opacity: animatedIsLayoutReady,
-        transform: [
-          {
-            translateY: cond(
-              animatedIsLayoutReady,
-              sub(position, bottomInset),
-              safeContainerHeight
-            ),
-          },
-        ],
-      }),
-      [safeContainerHeight, position, animatedIsLayoutReady, bottomInset]
+    const containerStyle = useMemo(
+      () => [
+        _providedStyle,
+        styles.container,
+        {
+          opacity: animatedIsLayoutReady,
+          transform: [
+            {
+              translateY: cond(
+                animatedIsLayoutReady,
+                sub(position, bottomInset),
+                safeContainerHeight
+              ),
+            },
+          ],
+        },
+      ],
+      [
+        safeContainerHeight,
+        _providedStyle,
+        position,
+        animatedIsLayoutReady,
+        bottomInset,
+      ]
     );
     const contentContainerStyle = useMemo(
       () => ({
