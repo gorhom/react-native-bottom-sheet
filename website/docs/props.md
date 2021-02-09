@@ -53,7 +53,15 @@ Container height helps to calculate the internal sheet layouts. If `containerHei
 
 ### `topInset`
 
-Top inset value helps to calculate percentage snap points values. usually comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
+Top inset to be added to the bottom sheet container, usually it comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
+
+| type   | default | required |
+| ------ | ------- | -------- |
+| number | 0       | NO       |
+
+### `bottomInset`
+
+Bottom inset to be added to the bottom sheet container.
 
 | type   | default | required |
 | ------ | ------- | -------- |
