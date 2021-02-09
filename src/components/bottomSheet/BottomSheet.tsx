@@ -94,6 +94,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
       topInset = 0,
+      bottomInset = 0,
       enableContentPanningGesture = DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       animateOnMount = DEFAULT_ANIMATE_ON_MOUNT,
@@ -183,7 +184,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     const snapPoints = useNormalizedSnapPoints(
       _providedSnapPoints,
-      topInset,
+      topInset + bottomInset,
       safeContainerHeight,
       safeHandleHeight
     );
@@ -451,14 +452,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             {
               translateY: cond(
                 animatedIsLayoutReady,
-                position,
+                sub(position, bottomInset),
                 safeContainerHeight
               ),
             },
           ],
         },
       ],
-      [safeContainerHeight, _providedStyle, position, animatedIsLayoutReady]
+      [
+        safeContainerHeight,
+        _providedStyle,
+        position,
+        animatedIsLayoutReady,
+        bottomInset,
+      ]
     );
     const contentContainerStyle = useMemo(
       () => ({
@@ -595,13 +602,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region render
-    // console.log(
-    //   'BottomSheet',
-    //   'render',
+    // console.log('BottomSheet', 'render', {
     //   snapPoints,
-    //   sheetHeight,
-    //   safeHandleHeight
-    // );
+    //   shouldMeasureContainerHeight,
+    //   safeContainerHeight,
+    //   topInset,
+    //   bottomInset,
+    // });
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer
@@ -614,6 +621,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           key="BottomSheetContainer"
           shouldMeasureHeight={shouldMeasureContainerHeight}
           onMeasureHeight={handleOnContainerMeasureHeight}
+          topInset={topInset}
+          bottomInset={bottomInset}
         >
           <BottomSheetContentWrapper
             key="BottomSheetContentWrapper"
