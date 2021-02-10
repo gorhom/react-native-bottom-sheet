@@ -1,6 +1,16 @@
 # Changelog
 
-## [v3.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.2.1...v3.3.0)
+## [v3.3.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.0...v3.3.1)
+
+#### Improvements
+
+- chore: added reanimated rc3 patch ([aea1bdf](https://github.com/gorhom/react-native-bottom-sheet/commit/aea1bdf348019f5579db2f47404726bf52ffbedd)).
+
+#### Fixes
+
+- fix: stabilise animated callback node variables ([`#256`](https://github.com/gorhom/react-native-bottom-sheet/pull/256)).
+
+## [v3.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.2.1...v3.3.0) - 2021-02-08
 
 #### Features
 
@@ -147,7 +157,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.1.0...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.0...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
