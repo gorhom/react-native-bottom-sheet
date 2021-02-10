@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef } from 'react';
+import React, { memo, useMemo } from 'react';
 import Animated, {
   interpolate,
   Extrapolate,
@@ -39,7 +39,6 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   //#region variables
-  const containerRef = useRef<Animated.View>(null);
   const pointerEvents = useMemo(() => (enableTouchThrough ? 'none' : 'auto'), [
     enableTouchThrough,
   ]);
@@ -48,7 +47,7 @@ const BottomSheetBackdropComponent = ({
   //#region tap gesture
   const gestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>(
     {
-      onStart: () => {
+      onFinish: () => {
         runOnJS(close)();
       },
     }
@@ -66,18 +65,20 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   //#region styles
-  const containerAnimatedStyle = useAnimatedStyle(
-    () => ({
-      opacity: interpolate(
-        animatedIndex.value,
-        [-1, disappearsOnIndex, appearsOnIndex],
-        [0, 0, opacity],
-        Extrapolate.CLAMP
-      ),
-      top: animatedIndex.value <= disappearsOnIndex ? WINDOW_HEIGHT : 0,
-    }),
-    [opacity, disappearsOnIndex, appearsOnIndex]
-  );
+  const containerAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      animatedIndex.value,
+      [-1, disappearsOnIndex, appearsOnIndex],
+      [0, 0, opacity],
+      Extrapolate.CLAMP
+    ),
+    transform: [
+      {
+        translateY:
+          animatedIndex.value <= disappearsOnIndex ? WINDOW_HEIGHT : 0,
+      },
+    ],
+  }));
   const containerStyle = useMemo(
     () => [styles.container, style, containerAnimatedStyle],
     [style, containerAnimatedStyle]
@@ -101,7 +102,6 @@ const BottomSheetBackdropComponent = ({
   return closeOnPress ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View
-        ref={containerRef}
         style={containerStyle}
         accessible={true}
         accessibilityRole="button"
