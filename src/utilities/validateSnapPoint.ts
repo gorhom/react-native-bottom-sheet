@@ -14,7 +14,8 @@ export const validateSnapPoint = (snapPoint: any) => {
 
   invariant(
     typeof snapPoint === 'number' ||
-      (typeof snapPoint === 'string' && Number(snapPoint.split('%')[0])),
+      (typeof snapPoint === 'string' &&
+        !Number.isNaN(Number(snapPoint.split('%')[0]))),
     `'${snapPoint}' is not a valid percentage snap point! expected percentage snap point must be only numbers and '%'. e.g. '50%'`
   );
 };
