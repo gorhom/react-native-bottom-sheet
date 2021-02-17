@@ -184,7 +184,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     const snapPoints = useNormalizedSnapPoints(
       _providedSnapPoints,
-      topInset + bottomInset,
       safeContainerHeight,
       safeHandleHeight
     );
@@ -199,9 +198,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     const initialPosition = useMemo(() => {
       return currentIndexRef.current < 0 || animateOnMount
-        ? safeContainerHeight - topInset
+        ? safeContainerHeight
         : snapPoints[currentIndexRef.current];
-    }, [snapPoints, animateOnMount, safeContainerHeight, topInset]);
+    }, [snapPoints, animateOnMount, safeContainerHeight]);
     //#endregion
 
     //#region gestures
@@ -452,20 +451,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             {
               translateY: cond(
                 animatedIsLayoutReady,
-                sub(position, bottomInset),
+                position,
                 safeContainerHeight
               ),
             },
           ],
         },
       ],
-      [
-        safeContainerHeight,
-        _providedStyle,
-        position,
-        animatedIsLayoutReady,
-        bottomInset,
-      ]
+      [safeContainerHeight, _providedStyle, position, animatedIsLayoutReady]
     );
     const contentContainerStyle = useMemo(
       () => ({

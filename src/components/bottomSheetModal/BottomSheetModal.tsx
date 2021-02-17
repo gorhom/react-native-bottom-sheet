@@ -32,6 +32,8 @@ const BottomSheetModalComponent = forwardRef<
     index: _providedIndex = 0,
     snapPoints: _providedSnapPoints,
     onChange: _providedOnChange,
+    topInset = 0,
+    bottomInset = 0,
 
     // components
     children,
@@ -70,6 +72,10 @@ const BottomSheetModalComponent = forwardRef<
     () =>
       dismissOnPanDown ? [0, ..._providedSnapPoints] : _providedSnapPoints,
     [_providedSnapPoints, dismissOnPanDown]
+  );
+  const safeContainerHeight = useMemo(
+    () => containerHeight - topInset - bottomInset,
+    [containerHeight, topInset, bottomInset]
   );
   //#endregion
 
@@ -215,7 +221,7 @@ const BottomSheetModalComponent = forwardRef<
         index={index}
         snapPoints={snapPoints}
         animateOnMount={true}
-        containerHeight={containerHeight}
+        containerHeight={safeContainerHeight}
         onChange={handleOnChange}
         children={children}
       />
