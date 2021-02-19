@@ -47,7 +47,7 @@ const MapExample = () => {
   const data = useMemo(() => createLocationListMockData(15), []);
   const poiListSnapPoints = useMemo(
     () => [
-      SEARCH_HANDLE_HEIGHT,
+      bottomSafeArea,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
       SCREEN_HEIGHT,
     ],
@@ -160,6 +160,7 @@ const MapExample = () => {
         index={1}
         snapPoints={poiListSnapPoints}
         topInset={topSafeArea}
+        handleHeight={SEARCH_HANDLE_HEIGHT}
         animatedPosition={animatedPosition}
         animatedIndex={animatedIndex}
         dismissOnPanDown={false}
@@ -199,7 +200,6 @@ const MapExample = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
   },
   mapContainer: {
     ...StyleSheet.absoluteFillObject,
