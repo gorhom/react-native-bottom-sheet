@@ -7,6 +7,7 @@ import type { Scrollable, ScrollableType } from '../types';
 
 export const useScrollableInternal = (type: ScrollableType) => {
   // refs
+  const scrollableContentHeightRef = useRef<number>(0);
   const scrollableContentOffsetYRef = useRef<number>(0);
   const scrollableContentOffsetY = useValue<number>(0);
   const scrollableRef = useRef<Scrollable>(null);
@@ -19,6 +20,19 @@ export const useScrollableInternal = (type: ScrollableType) => {
   } = useBottomSheetInternal();
 
   // callbacks
+  /**
+   * Reset the scrollable offset y when its size get smaller,
+   * this fixes #286.
+   */
+  const handleOnContentSizeChange = useCallback(
+    (_, height: number) => {
+      if (scrollableContentHeightRef.current > height) {
+        scrollableContentOffsetY.setValue(0);
+      }
+      scrollableContentHeightRef.current = height;
+    },
+    [scrollableContentOffsetY]
+  );
   const handleOnBeginDragEvent = useMemo(
     () =>
       event([
@@ -66,6 +80,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
   return {
     scrollableRef,
     handleOnBeginDragEvent,
+    handleOnContentSizeChange,
     handleSettingScrollable,
   };
 };

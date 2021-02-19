@@ -41,6 +41,7 @@ const BottomSheetSectionListComponent = forwardRef(
     const {
       scrollableRef,
       handleOnBeginDragEvent,
+      handleOnContentSizeChange,
       handleSettingScrollable,
     } = useScrollableInternal('SectionList');
     const {
@@ -73,6 +74,7 @@ const BottomSheetSectionListComponent = forwardRef(
             bounces={false}
             decelerationRate={decelerationRate}
             scrollEventThrottle={16}
+            onContentSizeChange={handleOnContentSizeChange}
             onScrollBeginDrag={handleOnBeginDragEvent}
           />
         </NativeViewGestureHandler>
