@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
@@ -7,6 +7,9 @@ import withModalProvider from '../withModalProvider';
 
 const SimpleExample = () => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
   const handleChange = useCallback((index: number) => {
@@ -55,7 +58,7 @@ const SimpleExample = () => {
       />
       <BottomSheetModal
         ref={bottomSheetRef}
-        snapPoints={['25%', '50%']}
+        snapPoints={snapPoints}
         animationDuration={250}
         onDismiss={handleDismiss}
         onChange={handleChange}
