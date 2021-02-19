@@ -1,6 +1,17 @@
 # Changelog
 
-## [v2.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.1.0...v2.2.0)
+## [v2.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.0...v2.2.1)
+
+#### Fixes
+
+- fix: bottom sheet container layout ([`#296`](https://github.com/gorhom/react-native-bottom-sheet/pull/296)).
+- fix: allow 0% snap points ([`#278`](https://github.com/gorhom/react-native-bottom-sheet/pull/278)).
+
+#### Documentations
+
+- docs: updated reanimated version on installation  ([`#288`](https://github.com/gorhom/react-native-bottom-sheet/pull/288)).
+
+## [v2.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.1.0...v2.2.0) - 2021-02-09
 
 #### Features
 
