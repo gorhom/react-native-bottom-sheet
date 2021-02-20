@@ -1,7 +1,6 @@
 import React from 'react';
-import { TextProps as RNTextProps } from 'react-native';
+import { TextProps as RNTextProps, TextInput } from 'react-native';
 import Animated, { useAnimatedProps } from 'react-native-reanimated';
-import { TextInput } from 'react-native-gesture-handler';
 
 interface TextProps {
   text: string;

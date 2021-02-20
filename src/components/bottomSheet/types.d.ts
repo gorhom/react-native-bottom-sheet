@@ -1,20 +1,21 @@
 import type React from 'react';
 import type { ViewStyle } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import type {
-  GestureHandlerProperties,
-  PanGestureHandlerProperties,
-} from 'react-native-gesture-handler';
+import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
-    Pick<GestureHandlerProperties, 'waitFor' | 'simultaneousHandlers'>,
     Pick<
-      PanGestureHandlerProperties,
-      'activeOffsetY' | 'activeOffsetX' | 'failOffsetY' | 'failOffsetX'
+      PanGestureHandlerProps,
+      | 'activeOffsetY'
+      | 'activeOffsetX'
+      | 'failOffsetY'
+      | 'failOffsetX'
+      | 'waitFor'
+      | 'simultaneousHandlers'
     > {
   // configuration
   /**

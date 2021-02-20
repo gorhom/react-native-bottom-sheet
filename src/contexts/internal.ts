@@ -1,18 +1,19 @@
 import { createContext, RefObject } from 'react';
-import type {
-  GestureHandlerProperties,
-  PanGestureHandlerProperties,
-} from 'react-native-gesture-handler';
+import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type Animated from 'react-native-reanimated';
 import type { ANIMATION_STATE } from '../constants';
 import type { Scrollable, ScrollableRef } from '../types';
 
 export interface BottomSheetInternalContextType
-  extends Pick<GestureHandlerProperties, 'waitFor' | 'simultaneousHandlers'>,
-    Pick<
-      PanGestureHandlerProperties,
-      'activeOffsetY' | 'activeOffsetX' | 'failOffsetY' | 'failOffsetX'
-    > {
+  extends Pick<
+    PanGestureHandlerProps,
+    | 'activeOffsetY'
+    | 'activeOffsetX'
+    | 'failOffsetY'
+    | 'failOffsetX'
+    | 'waitFor'
+    | 'simultaneousHandlers'
+  > {
   enableContentPanningGesture: boolean;
   snapPointsCount: number;
   animatedPosition: Animated.SharedValue<number>;
