@@ -1,6 +1,12 @@
 # Changelog
 
-## [v2.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.0...v2.2.1)
+## [v2.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.1...v2.2.2)
+
+#### Fixes
+
+- fix: reset scrollable offset when its size change ([`#301`](https://github.com/gorhom/react-native-bottom-sheet/pull/301)).
+
+## [v2.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.0...v2.2.1) - 2021-02-19
 
 #### Fixes
 
