@@ -10,7 +10,7 @@
     "postinstall": "npx patch-package"
   },
   "dependencies": {
-    "@gorhom/portal": "^0.2.0",
+    "@gorhom/portal": "^1.0.3",
     "@gorhom/showcase-template": "^1.0.2",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "0.1.10",
