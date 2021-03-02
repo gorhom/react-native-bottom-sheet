@@ -14,4 +14,15 @@ enum ANIMATION_STATE {
   STOPPED,
 }
 
-export { WINDOW_HEIGHT, WINDOW_WIDTH, GESTURE, ANIMATION_STATE };
+const MODAL_STACK_BEHAVIOR = {
+  replace: 'replace',
+  push: 'push',
+};
+
+export {
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
+  GESTURE,
+  ANIMATION_STATE,
+  MODAL_STACK_BEHAVIOR,
+};

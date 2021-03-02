@@ -1,4 +1,5 @@
-import { BottomSheetProps } from '../bottomSheet';
+import type { BottomSheetProps } from '../bottomSheet';
+import type { MODAL_STACK_BEHAVIOR } from '../../constants';
 
 export interface BottomSheetModalPrivateMethods {
   dismiss: (force?: boolean) => void;
@@ -6,10 +7,10 @@ export interface BottomSheetModalPrivateMethods {
   restore: () => void;
 }
 
-export type BottomSheetModalStackBehavior = 'push' | 'replace';
+export type BottomSheetModalStackBehavior = keyof typeof MODAL_STACK_BEHAVIOR;
 
 export interface BottomSheetModalProps
-  extends Exclude<BottomSheetProps, 'animateOnMount' | 'containerHeight'> {
+  extends Omit<BottomSheetProps, 'animateOnMount' | 'containerHeight'> {
   /**
    * Modal name to help identify the modal for later on.
    * @type string
