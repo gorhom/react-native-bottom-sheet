@@ -55,13 +55,7 @@ const StackExample = () => {
     dismiss('A');
   }, [dismiss]);
 
-  const handleModalDismiss = useCallback(
-    () => console.log('Modal Dismissed'),
-    []
-  );
-
   // renders
-
   const renderBottomSheetContent = useCallback(
     (title, onPress) => (
       <ContactListContainer
@@ -121,7 +115,6 @@ const StackExample = () => {
         name="A"
         ref={bottomSheetModalARef}
         snapPoints={snapPoints}
-        onDismiss={handleModalDismiss}
         children={renderBottomSheetContent('Modal A', handlePresentBPress)}
       />
 
@@ -129,7 +122,6 @@ const StackExample = () => {
         name="B"
         ref={bottomSheetModalBRef}
         snapPoints={snapPoints}
-        onDismiss={handleModalDismiss}
         children={renderBottomSheetContent('Modal B', handlePresentCPress)}
       />
 
@@ -139,7 +131,6 @@ const StackExample = () => {
         index={1}
         snapPoints={snapPoints}
         dismissOnPanDown={false}
-        onDismiss={handleModalDismiss}
         children={renderBottomSheetContent('Modal C', handleDismissCPress)}
       />
     </View>
