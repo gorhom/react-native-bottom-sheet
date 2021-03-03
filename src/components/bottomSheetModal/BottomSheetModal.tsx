@@ -62,6 +62,7 @@ const BottomSheetModalComponent = forwardRef<
   const restoreIndexRef = useRef(-1);
   const minimized = useRef(false);
   const forcedDismissed = useRef(false);
+  const mounted = useRef(true);
   //#endregion
 
   //#region variables
@@ -82,6 +83,7 @@ const BottomSheetModalComponent = forwardRef<
     currentIndexRef.current = -1;
     restoreIndexRef.current = -1;
     minimized.current = false;
+    mounted.current = true;
     forcedDismissed.current = false;
   }, []);
   const adjustIndex = useCallback(
@@ -89,6 +91,8 @@ const BottomSheetModalComponent = forwardRef<
     [dismissOnPanDown]
   );
   const unmount = useCallback(() => {
+    const _mounted = mounted.current;
+
     // reset variables
     resetVariables();
 
@@ -96,8 +100,10 @@ const BottomSheetModalComponent = forwardRef<
     unmountSheet(key);
     unmountPortal(key);
 
-    // unmount the node
-    setMount(false);
+    // unmount the node, if sheet is still mounted
+    if (_mounted) {
+      setMount(false);
+    }
 
     // fire `onDismiss` callback
     if (_providedOnDismiss) {
@@ -197,6 +203,7 @@ const BottomSheetModalComponent = forwardRef<
       return;
     }
 
+    mounted.current = false;
     forcedDismissed.current = true;
 
     if (minimized.current) {
