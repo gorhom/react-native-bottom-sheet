@@ -1,6 +1,17 @@
 # Changelog
 
-## [v2.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.1...v2.2.2)
+## [v2.2.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.2...v2.2.3)
+
+#### Improvements
+
+- chore: export bottom sheet props ([60514b4](https://github.com/gorhom/react-native-bottom-sheet/commit/60514b40d59ca091573720c9cbcde83a6c328fcd)).
+
+#### Fixes
+
+- fix: export of internal modal type ([`#309`](https://github.com/gorhom/react-native-bottom-sheet/pull/309)).
+- fix: prevent closing when sheet is out of screen ([`#322`](https://github.com/gorhom/react-native-bottom-sheet/pull/322)).
+
+## [v2.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.1...v2.2.2) - 2021-02-20
 
 #### Fixes
 
