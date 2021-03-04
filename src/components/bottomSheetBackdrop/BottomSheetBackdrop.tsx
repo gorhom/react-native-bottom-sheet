@@ -117,5 +117,6 @@ const BottomSheetBackdropComponent = ({
 };
 
 const BottomSheetBackdrop = memo(BottomSheetBackdropComponent, isEqual);
+BottomSheetBackdrop.displayName = 'BottomSheetBackdrop';
 
 export default BottomSheetBackdrop;

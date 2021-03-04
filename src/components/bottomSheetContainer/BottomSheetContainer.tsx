@@ -47,5 +47,6 @@ const BottomSheetContainerComponent = ({
 };
 
 const BottomSheetContainer = memo(BottomSheetContainerComponent, isEqual);
+BottomSheetContainer.displayName = 'BottomSheetContainer';
 
 export default BottomSheetContainer;

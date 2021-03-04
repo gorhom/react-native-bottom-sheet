@@ -270,5 +270,6 @@ const BottomSheetModalComponent = forwardRef<
 });
 
 const BottomSheetModal = memo(BottomSheetModalComponent, isEqual);
+BottomSheetModal.displayName = 'BottomSheetModal';
 
 export default BottomSheetModal;

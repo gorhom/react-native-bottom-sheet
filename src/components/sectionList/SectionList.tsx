@@ -81,5 +81,6 @@ const BottomSheetSectionListComponent = forwardRef(
 );
 
 const BottomSheetSectionList = memo(BottomSheetSectionListComponent, isEqual);
+BottomSheetSectionList.displayName = 'BottomSheetSectionList';
 
 export default (BottomSheetSectionList as any) as typeof BottomSheetSectionListType;

@@ -12,5 +12,6 @@ const BottomSheetHandleComponent = () => {
 };
 
 const BottomSheetHandle = memo(BottomSheetHandleComponent, isEqual);
+BottomSheetHandle.displayName = 'BottomSheetHandle';
 
 export default BottomSheetHandle;

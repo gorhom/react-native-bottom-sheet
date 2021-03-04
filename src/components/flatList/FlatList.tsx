@@ -81,5 +81,6 @@ const BottomSheetFlatListComponent = forwardRef(
 );
 
 const BottomSheetFlatList = memo(BottomSheetFlatListComponent, isEqual);
+BottomSheetFlatList.displayName = 'BottomSheetFlatList';
 
 export default (BottomSheetFlatList as any) as typeof BottomSheetFlatListType;

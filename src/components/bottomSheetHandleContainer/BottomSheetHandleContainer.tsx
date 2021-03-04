@@ -116,5 +116,6 @@ const BottomSheetHandleContainer = memo(
   BottomSheetHandleContainerComponent,
   isEqual
 );
+BottomSheetHandleContainer.displayName = 'BottomSheetHandleContainer';
 
 export default BottomSheetHandleContainer;

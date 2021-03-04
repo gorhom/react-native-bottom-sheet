@@ -12,5 +12,6 @@ const BottomSheetBackgroundComponent = ({
 );
 
 const BottomSheetBackground = memo(BottomSheetBackgroundComponent, isEqual);
+BottomSheetBackground.displayName = 'BottomSheetBackground';
 
 export default BottomSheetBackground;

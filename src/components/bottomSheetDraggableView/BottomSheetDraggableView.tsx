@@ -76,5 +76,6 @@ const BottomSheetDraggableView = memo(
   BottomSheetDraggableViewComponent,
   isEqual
 );
+BottomSheetDraggableView.displayName = 'BottomSheetDraggableView';
 
 export default BottomSheetDraggableView;

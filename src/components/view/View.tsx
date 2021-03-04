@@ -44,5 +44,6 @@ const BottomSheetViewComponent = ({
 };
 
 const BottomSheetView = memo(BottomSheetViewComponent, isEqual);
+BottomSheetView.displayName = 'BottomSheetView';
 
 export default BottomSheetView;

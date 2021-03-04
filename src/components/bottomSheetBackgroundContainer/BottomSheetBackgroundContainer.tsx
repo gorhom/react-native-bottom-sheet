@@ -27,5 +27,6 @@ const BottomSheetBackgroundContainer = memo(
   BottomSheetBackgroundContainerComponent,
   isEqual
 );
+BottomSheetBackgroundContainer.displayName = 'BottomSheetBackgroundContainer';
 
 export default BottomSheetBackgroundContainer;

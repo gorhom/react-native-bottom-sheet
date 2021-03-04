@@ -685,5 +685,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 );
 
 const BottomSheet = memo(BottomSheetComponent, isEqual);
+BottomSheet.displayName = 'BottomSheet';
 
 export default BottomSheet;

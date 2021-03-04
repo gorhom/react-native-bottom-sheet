@@ -80,5 +80,6 @@ const BottomSheetScrollViewComponent = forwardRef(
 );
 
 const BottomSheetScrollView = memo(BottomSheetScrollViewComponent, isEqual);
+BottomSheetScrollView.displayName = 'BottomSheetScrollView';
 
 export default (BottomSheetScrollView as any) as typeof BottomSheetScrollViewType;
