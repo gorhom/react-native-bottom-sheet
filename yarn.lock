@@ -1720,10 +1720,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@gorhom/portal@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.3.tgz#7a16341ac7f1860ad9c82dc78cab6f776496ba6e"
-  integrity sha512-4kq3eD8g6FEmTmUsqfBHdEpanVC7EMtBqcThD6kbB0GJqCVhhnl/f4lGNSs0D5ilUkOYtMDNmh7LjDcEbHthHA==
+"@gorhom/portal@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.4.tgz#643c7baaffee223819cdd99dad748c3d9dc6bd73"
+  integrity sha512-KalM9E6Op1TCzi00YKhczBz86EV0yYpWuRuTt5J4VS09O2gGbGAEEJwUKb/Rvr3XadtinpLjePj0tZ6lFVPp+g==
   dependencies:
     immer "^8.0.1"
     lodash.isequal "^4.5.0"
