@@ -1,6 +1,18 @@
 # Changelog
 
-## [v3.3.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.0...v3.3.1)
+## [v3.3.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.1...v3.3.2)
+
+#### Improvements
+
+- chore: update dependencies ([e204d97](https://github.com/gorhom/react-native-bottom-sheet/commit/e204d97fd64416600c3bdb56774ed8cc2118a2fa)).
+- chore: export bottom sheet props type ([849e9f4](https://github.com/gorhom/react-native-bottom-sheet/commit/849e9f45ea4cdf3215477bc938d33f4c8f773b65)).
+- refactor: added display name for components ([36a76f6](https://github.com/gorhom/react-native-bottom-sheet/commit/36a76f6473248c6e68ba69e7d9d125a519542132)).
+
+#### Fixes
+
+- fix: unmounting modals with navigation ([`#315`](https://github.com/gorhom/react-native-bottom-sheet/pull/315)).
+
+## [v3.3.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.0...v3.3.1) - 2021-02-10
 
 #### Improvements
 
@@ -157,7 +169,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.0...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.3...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
