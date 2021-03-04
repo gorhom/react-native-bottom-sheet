@@ -84,7 +84,7 @@ const MapExample = () => {
   const animatedPOIDetailsPosition = useSharedValue<number>(SCREEN_HEIGHT);
 
   const weatherAnimatedIndex = useDerivedValue(() =>
-    animatedPOIListIndex.value < animatedPOIDetailsIndex.value
+    animatedPOIListIndex.value > animatedPOIDetailsIndex.value
       ? animatedPOIListIndex.value
       : animatedPOIDetailsIndex.value
   );
