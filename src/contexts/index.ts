@@ -10,5 +10,5 @@ export {
 export {
   BottomSheetModalInternalContext,
   BottomSheetModalInternalProvider,
-  BottomSheetModalInternalContextType,
 } from './modal/internal';
+export type { BottomSheetModalInternalContextType } from './modal/internal';
