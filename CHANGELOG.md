@@ -1,6 +1,17 @@
 # Changelog
 
-## [v3.3.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.1...v3.3.2)
+## [v3.3.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.2...v3.3.3)
+
+#### Improvements
+
+- chore: updated reanimated to v2 stable ([35d172c](https://github.com/gorhom/react-native-bottom-sheet/commit/35d172c10bf82f9038ddacf500b67d52caf19dfe)).
+- chore: updated map example ([8bb7ca9](https://github.com/gorhom/react-native-bottom-sheet/commit/8bb7ca9592e92b14fcb523b9d0cb74b3725b9c70)).
+
+#### Fixes
+
+- fix: bottom sheet container layout measuring ([1c348bf](https://github.com/gorhom/react-native-bottom-sheet/commit/1c348bf68fe7a72c5d6c0cc9e73d6541d9f3a869)).
+
+## [v3.3.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.1...v3.3.2) - 2021-03-04
 
 #### Improvements
 
