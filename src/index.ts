@@ -15,11 +15,6 @@ export const {
   TouchableWithoutFeedback,
 } = BottomSheetTouchable;
 
-// default components / types
-export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
-export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop';
-export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
-
 // backdrop
 export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 
@@ -30,3 +25,10 @@ export { default as BottomSheetModalProvider } from './components/bottomSheetMod
 // hooks
 export { useBottomSheet } from './hooks/useBottomSheet';
 export { useBottomSheetModal } from './hooks/useBottomSheetModal';
+
+// default types
+export type { BottomSheetProps } from './components/bottomSheet';
+export type { BottomSheetModalProps } from './components/bottomSheetModal';
+export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
+export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop';
+export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
