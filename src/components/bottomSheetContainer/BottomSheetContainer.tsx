@@ -27,9 +27,11 @@ const BottomSheetContainerComponent = ({
   const containerStyle = useMemo(
     () => [
       styles.container,
-      containerHeight ? { height: containerHeight } : {},
+      !shouldMeasureHeight && containerHeight
+        ? { height: containerHeight }
+        : {},
     ],
-    [containerHeight]
+    [containerHeight, shouldMeasureHeight]
   );
   //#endregion
 
