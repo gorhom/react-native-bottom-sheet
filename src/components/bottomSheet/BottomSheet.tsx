@@ -201,6 +201,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         ? safeContainerHeight
         : snapPoints[currentIndexRef.current];
     }, [snapPoints, animateOnMount, safeContainerHeight]);
+    const currentPositionRef = useRef<number>(initialPosition);
     //#endregion
 
     //#region gestures
@@ -369,7 +370,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleClose = useCallback(() => {
       const currentIndexValue = currentIndexRef.current;
-      if (currentIndexValue === -1 || isClosing.current) {
+      if (
+        currentIndexValue === -1 ||
+        isClosing.current ||
+        currentPositionRef.current === safeContainerHeight
+      ) {
         return;
       }
       isClosing.current = true;
@@ -565,6 +570,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             });
 
             currentIndexRef.current = currentPositionIndex;
+            currentPositionRef.current = args[0];
             refreshUIElements();
             handleOnChange(currentPositionIndex);
           }),
