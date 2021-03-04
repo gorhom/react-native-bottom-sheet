@@ -36,7 +36,7 @@
     "bootstrap": "yarn install && yarn example"
   },
   "dependencies": {
-    "@gorhom/portal": "^0.2.0",
+    "@gorhom/portal": "^1.0.4",
     "invariant": "^2.2.4",
     "lodash.isequal": "^4.5.0",
     "nanoid": "^3.1.20",

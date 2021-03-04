@@ -1720,11 +1720,12 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@gorhom/portal@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-0.2.0.tgz#65423726b1352e2b9e3c3b8da83a58e4dff48ce6"
-  integrity sha512-PoYYSliPCl624ORih+zyI1pVbH2Y2Mj+EY6nXeAIi2r1LGv10hItZLzdgnbPPfQ0neikTDYArlOzuB5zKIex5w==
+"@gorhom/portal@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.4.tgz#643c7baaffee223819cdd99dad748c3d9dc6bd73"
+  integrity sha512-KalM9E6Op1TCzi00YKhczBz86EV0yYpWuRuTt5J4VS09O2gGbGAEEJwUKb/Rvr3XadtinpLjePj0tZ6lFVPp+g==
   dependencies:
+    immer "^8.0.1"
     lodash.isequal "^4.5.0"
     nanoid "^3.1.20"
 
@@ -5095,6 +5096,11 @@ image-size@^0.6.0:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
   integrity sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA==
+
+immer@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.1.tgz#9c73db683e2b3975c424fb0572af5889877ae656"
+  integrity sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA==
 
 import-cwd@3.0.0:
   version "3.0.0"
