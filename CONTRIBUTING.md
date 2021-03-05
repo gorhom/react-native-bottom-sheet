@@ -27,7 +27,7 @@ yarn example android
 To run the example app on iOS:
 
 ```sh
-yarn example android
+yarn example ios
 ```
 
 Make sure your code passes TypeScript and ESLint. Run the following to verify:
