@@ -7,7 +7,7 @@ export interface BottomSheetModalPrivateMethods {
 }
 
 export interface BottomSheetModalProps
-  extends Exclude<BottomSheetProps, 'animateOnMount' | 'containerHeight'> {
+  extends Omit<BottomSheetProps, 'animateOnMount' | 'containerHeight'> {
   /**
    * Modal name to help identify the modal for later on.
    * @type string

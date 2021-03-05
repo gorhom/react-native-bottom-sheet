@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { PortalHost } from '@gorhom/portal';
+import { PortalProvider } from '@gorhom/portal';
 import {
   BottomSheetModalProvider,
   BottomSheetModalInternalProvider,
@@ -11,12 +11,9 @@ import type {
   BottomSheetModalRef,
 } from './types';
 
-const BottomSheetModalProviderWrapper = (
-  props: BottomSheetModalProviderProps
-) => {
-  // extract props
-  const { children } = props;
-
+const BottomSheetModalProviderWrapper = ({
+  children,
+}: BottomSheetModalProviderProps) => {
   //#region layout state
   const [containerHeight, setContainerHeight] = useState(WINDOW_HEIGHT);
   //#endregion
@@ -33,94 +30,91 @@ const BottomSheetModalProviderWrapper = (
 
   //#region private methods
   const handleMountSheet = useCallback((key: string, ref) => {
+    const _sheetsQueue = sheetsQueueRef.current.slice();
+    const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
+    const sheetOnTop = sheetIndex === _sheetsQueue.length - 1;
+
     /**
-     * Here we try to minimize the current sheet if exists,
-     * also we make sure that it is not incoming mounted sheet.
+     * Exit the method, if sheet is already presented
+     * and at the top.
      */
-    const mountedSheet =
-      sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
-    if (mountedSheet && mountedSheet.key !== key && !mountedSheet.willUnmount) {
-      sheetsQueueRef.current[
-        sheetsQueueRef.current.length - 1
-      ].ref.current.minimize();
+    if (sheetIndex !== -1 && sheetOnTop) {
+      return;
     }
 
     /**
-     * We check if the incoming sheet is already mounted.
+     * Minimize the current sheet if:
+     * - it exists.
+     * - it is not unmounting.
      */
-    const isIncomingSheetMounted =
-      sheetsQueueRef.current.find(item => item.key === key) !== undefined;
+    const currentMountedSheet = _sheetsQueue[_sheetsQueue.length - 1];
+    if (currentMountedSheet && !currentMountedSheet.willUnmount) {
+      currentMountedSheet.ref.current.minimize();
+    }
 
-    if (isIncomingSheetMounted) {
-      /**
-       * We move the mounted incoming sheet to the
-       * end of the queue.
-       */
-      const newSheetsQueue = sheetsQueueRef.current.filter(
-        item => item.key !== key
-      );
-      newSheetsQueue.push({
-        key,
-        ref,
-        willUnmount: false,
-      });
-      sheetsQueueRef.current = newSheetsQueue;
-
+    /**
+     * Restore and remove incoming sheet from the queue,
+     * if it was registered.
+     */
+    if (sheetIndex !== -1) {
+      _sheetsQueue.splice(sheetIndex, 1);
       ref.current.restore();
-    } else {
-      /**
-       * We add the incoming sheet to the end of the queue.
-       */
-      sheetsQueueRef.current.push({
-        key,
-        ref,
-        willUnmount: false,
-      });
     }
+
+    _sheetsQueue.push({
+      key,
+      ref,
+      willUnmount: false,
+    });
+    sheetsQueueRef.current = _sheetsQueue;
   }, []);
   const handleUnmountSheet = useCallback((key: string) => {
+    const _sheetsQueue = sheetsQueueRef.current.slice();
+    const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
+    const sheetOnTop = sheetIndex === _sheetsQueue.length - 1;
+
     /**
      * Here we remove the unmounted sheet and update
      * the sheets queue.
      */
-    const newSheetsQueue = sheetsQueueRef.current.filter(
-      item => item.key !== key
-    );
-    sheetsQueueRef.current = newSheetsQueue;
+    _sheetsQueue.splice(sheetIndex, 1);
+    sheetsQueueRef.current = _sheetsQueue;
 
     /**
-     * Here we try to restore previous sheet position,
-     * This is needed when user dismiss the modal by panning down.
+     * Here we try to restore previous sheet position if unmounted
+     * sheet was on top. This is needed when user dismiss
+     * the modal by panning down.
      */
     const hasMinimizedSheet = sheetsQueueRef.current.length > 0;
-    if (hasMinimizedSheet) {
+    if (sheetOnTop && hasMinimizedSheet) {
       sheetsQueueRef.current[
         sheetsQueueRef.current.length - 1
       ].ref.current.restore();
     }
   }, []);
   const handleWillUnmountSheet = useCallback((key: string) => {
+    const _sheetsQueue = sheetsQueueRef.current.slice();
+    const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
+    const sheetOnTop = sheetIndex === _sheetsQueue.length - 1;
+
     /**
      * Here we mark the sheet that will unmount,
      * so it won't be restored.
      */
-    const sheetToBeUnmount = sheetsQueueRef.current.find(
-      item => item.key === key
-    );
-    if (sheetToBeUnmount) {
-      sheetToBeUnmount.willUnmount = true;
+    if (sheetIndex !== -1) {
+      _sheetsQueue[sheetIndex].willUnmount = true;
     }
 
     /**
      * Here we try to restore previous sheet position,
      * This is needed when user dismiss the modal by fire the dismiss action.
      */
-    const hasMinimizedSheet = sheetsQueueRef.current.length > 1;
-    if (hasMinimizedSheet) {
-      sheetsQueueRef.current[
-        sheetsQueueRef.current.length - 2
-      ].ref.current.restore();
+    const hasMinimizedSheet = _sheetsQueue.length > 1;
+    if (sheetOnTop && hasMinimizedSheet) {
+      _sheetsQueue[_sheetsQueue.length - 2].ref.current.restore();
     }
+
+    sheetsQueueRef.current = _sheetsQueue;
   }, []);
   //#endregion
 
@@ -173,7 +167,7 @@ const BottomSheetModalProviderWrapper = (
           onMeasureHeight={handleOnContainerMeasureHeight}
           children={null}
         />
-        <PortalHost>{children}</PortalHost>
+        <PortalProvider>{children}</PortalProvider>
       </BottomSheetModalInternalProvider>
     </BottomSheetModalProvider>
   );
