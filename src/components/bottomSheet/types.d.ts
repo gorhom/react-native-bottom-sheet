@@ -5,6 +5,7 @@ import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
+import type { KEYBOARD_BEHAVIOR } from '../../constants';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
@@ -92,6 +93,16 @@ export interface BottomSheetProps
    * @default false
    */
   animateOnMount?: boolean;
+  /**
+   * Defines the keyboard appearance behavior.
+   * - `none`: do nothing.
+   * - `extend`: extend the sheet to its maximum snap point.
+   * - `fullScreen`: extend the sheet to full screen.
+   * - `interactive`: offset the sheet by the size of the keyboard.
+   * @type `none` | `extend` | `interactive`
+   * @default none
+   */
+  keyboardBehavior?: keyof typeof KEYBOARD_BEHAVIOR;
 
   /**
    * View style to be applied at the sheet container,

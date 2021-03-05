@@ -10,7 +10,11 @@ import {
 } from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 import type { Scrollable, ScrollableType } from '../types';
-import { ANIMATION_STATE } from '../constants';
+import {
+  ANIMATION_STATE,
+  SCROLLABLE_DECELERATION_RATE_MAPPER,
+  SCROLLABLE_STATE,
+} from '../constants';
 
 export const useScrollableInternal = (type: ScrollableType) => {
   // refs
@@ -21,10 +25,8 @@ export const useScrollableInternal = (type: ScrollableType) => {
 
   // hooks
   const {
-    snapPointsCount,
+    scrollableState,
     animationState,
-    animatedIndex,
-    scrollableDecelerationRate,
     scrollableContentOffsetY: _rootScrollableContentOffsetY,
     setScrollableRef,
     removeScrollableRef,
@@ -32,13 +34,14 @@ export const useScrollableInternal = (type: ScrollableType) => {
 
   // variables
   const scrollableAnimatedProps = useAnimatedProps(() => ({
-    decelerationRate: scrollableDecelerationRate.value,
+    decelerationRate:
+      SCROLLABLE_DECELERATION_RATE_MAPPER[scrollableState.value],
   }));
 
   // callbacks
   const handleScrollEvent = useAnimatedScrollHandler({
     onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (animatedIndex.value !== snapPointsCount - 1) {
+      if (scrollableState.value === SCROLLABLE_STATE.LOCKED) {
         initialScrollingPosition.value = y;
         justStartedScrolling.value = 1;
         scrollableContentOffsetY.value = 0;
@@ -55,7 +58,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
         scrollTo(scrollableRef, 0, initialScrollingPosition.value, false);
         return;
       }
-      if (animatedIndex.value !== snapPointsCount - 1) {
+      if (scrollableState.value === SCROLLABLE_STATE.LOCKED) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
@@ -63,7 +66,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
       }
     },
     onEndDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (animatedIndex.value !== snapPointsCount - 1) {
+      if (scrollableState.value === SCROLLABLE_STATE.LOCKED) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
@@ -75,7 +78,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
       }
     },
     onMomentumEnd: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (animatedIndex.value !== snapPointsCount - 1) {
+      if (scrollableState.value === SCROLLABLE_STATE.LOCKED) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;

@@ -6,7 +6,6 @@ import {
   NativeSyntheticEvent,
   TextInputChangeEventData,
 } from 'react-native';
-import { useBottomSheet } from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native-gesture-handler';
 import isEqual from 'lodash.isequal';
 import { useAppearance } from '../../hooks';
@@ -19,7 +18,6 @@ const BottomSheetHandleComponent = () => {
   const [value, setValue] = useState('');
 
   // hooks
-  const { snapTo } = useBottomSheet();
   const { appearance } = useAppearance();
 
   // styles
@@ -45,9 +43,6 @@ const BottomSheetHandleComponent = () => {
     },
     []
   );
-  const handleInputFocus = useCallback(() => {
-    snapTo(2);
-  }, [snapTo]);
 
   // render
   return (
@@ -59,7 +54,6 @@ const BottomSheetHandleComponent = () => {
         textContentType="location"
         placeholder="Search for a place or address"
         onChange={handleInputChange}
-        onFocus={handleInputFocus}
       />
     </View>
   );

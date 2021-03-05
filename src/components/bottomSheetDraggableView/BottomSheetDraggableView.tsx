@@ -5,6 +5,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetDraggableViewProps } from './types';
 import { styles } from './styles';
+import { StyleSheet } from 'react-native';
 
 const BottomSheetDraggableViewComponent = ({
   nativeGestureRef,
@@ -47,10 +48,17 @@ const BottomSheetDraggableViewComponent = ({
   }, [_providedSimultaneousHandlers, nativeGestureRef]);
 
   // styles
-  const containerStyle = useMemo(
-    () => (style ? [styles.container, style] : styles.container),
-    [style]
-  );
+  const containerStyle = useMemo(() => {
+    if (!style) {
+      return styles.container;
+    }
+
+    if (Array.isArray(style)) {
+      return [styles.container, ...style];
+    }
+
+    return [styles.container, style];
+  }, [style]);
 
   return (
     <PanGestureHandler

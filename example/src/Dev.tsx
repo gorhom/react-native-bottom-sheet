@@ -13,10 +13,9 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import { TextInput } from 'react-native-gesture-handler';
 import { useSafeArea } from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
-import BottomSheetKeyboardView from '../../src/components/bottomSheetKeyboardView';
+import SearchHandle from './components/searchHandle'
 import Button from './components/button';
 import ContactList from './components/contactList';
 
@@ -106,7 +105,7 @@ const BasicExample = () => {
   // renders
   return (
     <View style={containerStyle}>
-      <Button
+      {/* <Button
         label="Increase Dynamic Snap Point"
         style={styles.buttonContainer}
         onPress={handleIncreaseDynamicSnapPoint}
@@ -115,7 +114,7 @@ const BasicExample = () => {
         label="Snap To 150"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
-      />
+      /> */}
       <Button
         label="Close"
         style={styles.buttonContainer}
@@ -127,12 +126,14 @@ const BasicExample = () => {
         snapPoints={snapPoints}
         animateOnMount={true}
         animatedPosition={animatedPosition}
+        keyboardBehavior="fullScreen"
+        handleComponent={SearchHandle}
         containerHeight={windowHeight}
         topInset={StatusBar.currentHeight || topSafeArea}
         onChange={handleSheetChanges}
       >
-        {/* <ContactList type="ScrollView" count={15} /> */}
-        <View
+        <ContactList type="FlatList" count={20} />
+        {/* <View
           style={{
             height: dynamicSnapPoint,
           }}
@@ -154,12 +155,12 @@ const BasicExample = () => {
               backgroundColor: 'red',
             }}
           />
-        </View>
+        </View> */}
       </BottomSheet>
-      <Animated.View pointerEvents="none" style={sheetLineStyle} />
+      {/* <Animated.View pointerEvents="none" style={sheetLineStyle} />
       <View pointerEvents="none" style={secondSnapPointLineStyle} />
       <View pointerEvents="none" style={firstSnapPointLineStyle} />
-      <View pointerEvents="none" style={safeBottomLineStyle} />
+      <View pointerEvents="none" style={safeBottomLineStyle} /> */}
     </View>
   );
 };
@@ -174,8 +175,11 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   textInput: {
-    backgroundColor: 'blue',
+    backgroundColor: 'red',
+    opacity: 1,
     padding: 6,
+    margin: 6,
+    borderRadius: 24,
   },
   line: {
     position: 'absolute',
