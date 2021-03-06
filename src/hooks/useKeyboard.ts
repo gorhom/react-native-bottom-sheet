@@ -63,7 +63,8 @@ export const useKeyboard = () => {
     const handleKeyboardHide = (event: KeyboardEvent) => {
       runOnUI((height, duration, easing) => {
         keyboardState.value = KEYBOARD_STATE.HIDDEN;
-        keyboardHeight.value = height;
+        // prevent zeroing the height
+        keyboardHeight.value = height === 0 ? keyboardHeight.value : height;
         keyboardAnimationDuration.value = duration;
         keyboardAnimationEasing.value = easing;
       })(event.endCoordinates.height, event.duration, event.easing);

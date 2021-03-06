@@ -183,7 +183,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     // scrollable variables
     const {
       scrollableContentOffsetY,
-      // scrollableDecelerationRate,
+      scrollableDecelerationRate,
       setScrollableRef,
       removeScrollableRef,
       flashScrollableIndicators,
@@ -281,10 +281,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region gesture interaction / animation
     // variables
     const animatedSheetHeight = useDerivedValue(() => {
-      if (!isExtendedByKeyboard.value) {
-        return sheetHeight;
-      }
-
       if (
         keyboardBehavior === KEYBOARD_BEHAVIOR.none ||
         keyboardBehavior === KEYBOARD_BEHAVIOR.extend
@@ -296,16 +292,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         return safeContainerHeight - topInset - safeHandleHeight;
       }
 
-      return (
-        sheetHeight + (isExtendedByKeyboard.value ? keyboardHeight.value : 0)
-      );
-    }, [
-      sheetHeight,
-      keyboardBehavior,
-      safeContainerHeight,
-      topInset,
-      safeHandleHeight,
-    ]);
+      if (
+        keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
+        isExtendedByKeyboard.value
+      ) {
+        return keyboardState.value === KEYBOARD_STATE.SHOWN
+          ? sheetHeight
+          : sheetHeight + keyboardHeight.value;
+      }
+
+      return sheetHeight;
+    });
     const animationState = useSharedValue(ANIMATION_STATE.UNDETERMINED);
     const animatedSnapPoints = useReactiveSharedValue(snapPoints);
     const animatedPosition = useSharedValue(initialPosition);
@@ -334,10 +331,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedSheetState = useDerivedValue(() => {
       const extendedSheetPosition =
         safeContainerHeight - safeHandleHeight - sheetHeight;
+      const extendedSheetWithKeyboardPosition =
+        safeContainerHeight -
+        safeHandleHeight -
+        sheetHeight -
+        keyboardHeight.value;
 
       if (animatedPosition.value >= safeContainerHeight) {
         return SHEET_STATE.CLOSED;
-      } else if (animatedPosition.value === extendedSheetPosition) {
+      } else if (
+        animatedPosition.value === extendedSheetPosition ||
+        (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
+          isExtendedByKeyboard.value &&
+          animatedPosition.value === extendedSheetWithKeyboardPosition)
+      ) {
         return SHEET_STATE.EXTENDED;
       } else if (animatedPosition.value === topInset) {
         return SHEET_STATE.FULL_SCREEN;
@@ -583,7 +590,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => ({
         height: animatedSheetHeight.value,
       }),
-      [sheetHeight]
+      []
     );
     const contentContainerStyle = useMemo(
       () => [styles.contentContainer, contentContainerAnimatedStyle],
@@ -678,20 +685,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        // if (
-        //   state === KEYBOARD_STATE.SHOWN &&
-        //   keyboardBehavior === KEYBOARD_BEHAVIOR.fullScreen
-        // ) {
-        //   animateToPoint(topInset);
-        // } else if (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive) {
-        //   animatedKeyboardOffset.value = withTiming(
-        //     state === KEYBOARD_STATE.SHOWN ? keyboardHeight.value * -1 : 0,
-        //     {
-        //       duration: keyboardAnimationDuration.value,
-        //       easing: KEYBOARD_EASING_MAPPER[keyboardAnimationEasing.value],
-        //     }
-        //   );
-        // }
+        if (
+          keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
+          state === KEYBOARD_STATE.SHOWN
+        ) {
+          isExtendedByKeyboard.value = true;
+          const newSnapPoint = snapPoints[snapPoints.length - 1];
+          animateToPoint(newSnapPoint - keyboardHeight.value);
+        }
       },
       [snapPoints, keyboardBehavior, topInset, animateToPoint]
     );
@@ -700,18 +701,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * set scrollable deceleration rate based on sheet
      * position.
      */
-    // useAnimatedReaction(
-    //   () => [animatedSheetState, animatedPosition],
-    //   ([_state, _position]) => {
-    //     // const newDecelerationRate = shouldNormalizeDecelerationRate
-    //     //   ? DECELERATION_RATE
-    //     //   : 0;
-    //     // if (scrollableDecelerationRate.value !== newDecelerationRate) {
-    //     //   scrollableDecelerationRate.value = newDecelerationRate;
-    //     // }
-    //   },
-    //   [snapPoints.length]
-    // );
+    useAnimatedReaction(
+      () => scrollableState.value,
+      (_scrollableState, _prevScrollableState) => {
+        if (_prevScrollableState === _scrollableState) {
+          return;
+        }
+        const newDecelerationRate =
+          _scrollableState === SCROLLABLE_STATE.UNLOCKED
+            ? DECELERATION_RATE
+            : 0;
+        if (scrollableDecelerationRate.value !== newDecelerationRate) {
+          scrollableDecelerationRate.value = newDecelerationRate;
+        }
+      },
+      [snapPoints.length]
+    );
 
     /**
      * sets provided animated position
@@ -843,7 +848,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               keyboardAnimationDuration,
               animatedSheetHeight,
               animatedSheetState,
+              scrollableContentOffsetY,
               scrollableState,
+              isExtendedByKeyboard,
             }}
           />
         </BottomSheetContainer>

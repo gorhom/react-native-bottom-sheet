@@ -1,4 +1,4 @@
-import { Keyboard } from 'react-native';
+import { Keyboard, Platform } from 'react-native';
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
@@ -36,7 +36,6 @@ export const useInteractivePanGestureHandler = ({
   enableOverDrag,
   overDragResistanceFactor,
   keyboardState,
-  keyboardHeight,
   keyboardBehavior,
   isExtendedByKeyboard,
   animatedPosition,
@@ -83,8 +82,6 @@ export const useInteractivePanGestureHandler = ({
       gestureTranslationY.value = translationY;
       gestureVelocityY.value = velocityY;
 
-      runOnJS(Keyboard.dismiss)();
-
       const position = context.currentPosition + translationY;
       const maxSnapPoint = isExtendedByKeyboard.value
         ? context.currentPosition
@@ -109,10 +106,28 @@ export const useInteractivePanGestureHandler = ({
           return;
         }
 
-        if (position >= animatedSnapPoints.value[0]) {
+        if (type === GESTURE.HANDLE && position > animatedSnapPoints.value[0]) {
           const resistedPosition =
             animatedSnapPoints.value[0] +
             Math.sqrt(1 + (position - animatedSnapPoints.value[0])) *
+              overDragResistanceFactor;
+          animatedPosition.value = resistedPosition;
+          return;
+        }
+
+        if (
+          type === GESTURE.CONTENT &&
+          position + negativeScrollableContentOffset >
+            animatedSnapPoints.value[0]
+        ) {
+          const resistedPosition =
+            animatedSnapPoints.value[0] +
+            Math.sqrt(
+              1 +
+                (position +
+                  negativeScrollableContentOffset -
+                  animatedSnapPoints.value[0])
+            ) *
               overDragResistanceFactor;
           animatedPosition.value = resistedPosition;
           return;
@@ -124,22 +139,23 @@ export const useInteractivePanGestureHandler = ({
     onEnd: ({ state }, context) => {
       gestureState.value = state;
 
-      /**
-       *
-       */
-      console.log(
-        'currentPosition',
-        context.currentPosition,
-        'animatedPosition',
-        animatedPosition.value
-      );
       if (
         isExtendedByKeyboard.value &&
         context.currentPosition >= animatedPosition.value
       ) {
         return;
       }
-      isExtendedByKeyboard.value = false;
+
+      if (isExtendedByKeyboard.value) {
+        /**
+         * dismiss the keyboard when panning down, this is required
+         * for android.
+         */
+        if (Platform.OS === 'android') {
+          runOnJS(Keyboard.dismiss)();
+        }
+        isExtendedByKeyboard.value = false;
+      }
 
       const destinationPoint = snapPoint(
         gestureTranslationY.value + context.currentPosition,
