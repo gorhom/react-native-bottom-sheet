@@ -107,6 +107,7 @@ const ContactList = ({
           ListHeaderComponent: header,
         })}
         style={styles.container}
+        keyboardDismissMode="interactive"
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
       />

@@ -32,7 +32,7 @@ const BasicExample = () => {
   //#endregion
 
   //#region variables
-  const snapPoints = useMemo(() => [150, dynamicSnapPoint], [dynamicSnapPoint]);
+  const snapPoints = useMemo(() => [200], [dynamicSnapPoint]);
   const animatedPosition = useSharedValue<number>(0);
   //#endregion
 
@@ -122,15 +122,15 @@ const BasicExample = () => {
       />
       <BottomSheet
         ref={bottomSheetRef}
-        index={1}
+        index={0}
         snapPoints={snapPoints}
         animateOnMount={true}
         animatedPosition={animatedPosition}
-        keyboardBehavior="fullScreen"
+        keyboardBehavior="interactive"
         handleComponent={SearchHandle}
-        containerHeight={windowHeight}
-        topInset={StatusBar.currentHeight || topSafeArea}
-        onChange={handleSheetChanges}
+        containerHeight={windowHeight - (StatusBar.currentHeight ?? 0)}
+        topInset={topSafeArea}
+        // onChange={handleSheetChanges}
       >
         <ContactList type="FlatList" count={20} />
         {/* <View
