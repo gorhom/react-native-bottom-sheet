@@ -1,7 +1,26 @@
 import { useEffect } from 'react';
-import { Keyboard, KeyboardEvent, KeyboardEventEasing } from 'react-native';
+import {
+  Keyboard,
+  KeyboardEvent,
+  KeyboardEventEasing,
+  KeyboardEventName,
+  Platform,
+} from 'react-native';
 import { runOnUI, useSharedValue } from 'react-native-reanimated';
 import { KEYBOARD_STATE } from '../constants';
+
+const KEYBOARD_EVENT_MAPPER = {
+  KEYBOARD_SHOW: Platform.select({
+    ios: 'keyboardWillShow',
+    android: 'keyboardDidShow',
+    default: '',
+  }) as KeyboardEventName,
+  KEYBOARD_HIDE: Platform.select({
+    ios: 'keyboardWillHide',
+    android: 'keyboardDidHide',
+    default: '',
+  }) as KeyboardEventName,
+};
 
 export const useKeyboard = () => {
   //#region variables
@@ -17,7 +36,7 @@ export const useKeyboard = () => {
 
   //#region effects
   useEffect(() => {
-    const handleKeyboardWillShow = (event: KeyboardEvent) => {
+    const handleKeyboardShow = (event: KeyboardEvent) => {
       runOnUI((height, duration, easing) => {
         keyboardState.value = KEYBOARD_STATE.SHOWN;
         keyboardHeight.value = height;
@@ -25,16 +44,23 @@ export const useKeyboard = () => {
         keyboardAnimationEasing.value = easing;
       })(event.endCoordinates.height, event.duration, event.easing);
     };
-    Keyboard.addListener('keyboardWillShow', handleKeyboardWillShow);
+
+    Keyboard.addListener(
+      KEYBOARD_EVENT_MAPPER.KEYBOARD_SHOW,
+      handleKeyboardShow
+    );
 
     return () => {
-      Keyboard.removeListener('keyboardWillShow', handleKeyboardWillShow);
+      Keyboard.removeListener(
+        KEYBOARD_EVENT_MAPPER.KEYBOARD_SHOW,
+        handleKeyboardShow
+      );
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const handleKeyboardWillHide = (event: KeyboardEvent) => {
+    const handleKeyboardHide = (event: KeyboardEvent) => {
       runOnUI((height, duration, easing) => {
         keyboardState.value = KEYBOARD_STATE.HIDDEN;
         keyboardHeight.value = height;
@@ -42,10 +68,16 @@ export const useKeyboard = () => {
         keyboardAnimationEasing.value = easing;
       })(event.endCoordinates.height, event.duration, event.easing);
     };
-    Keyboard.addListener('keyboardWillHide', handleKeyboardWillHide);
+    Keyboard.addListener(
+      KEYBOARD_EVENT_MAPPER.KEYBOARD_HIDE,
+      handleKeyboardHide
+    );
 
     return () => {
-      Keyboard.removeListener('keyboardWillHide', handleKeyboardWillHide);
+      Keyboard.removeListener(
+        KEYBOARD_EVENT_MAPPER.KEYBOARD_HIDE,
+        handleKeyboardHide
+      );
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
