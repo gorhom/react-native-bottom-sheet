@@ -14,7 +14,6 @@ export const useScrollable = () => {
     SCROLLABLE_STATE.LOCKED
   );
   const scrollableContentOffsetY = useSharedValue<number>(0);
-  const scrollableDecelerationRate = useSharedValue<number>(0);
 
   // callbacks
   const setScrollableRef = useCallback((ref: ScrollableRef) => {
@@ -83,7 +82,6 @@ export const useScrollable = () => {
     scrollableRef,
     scrollableState,
     scrollableContentOffsetY,
-    scrollableDecelerationRate,
     setScrollableRef,
     removeScrollableRef,
     flashScrollableIndicators,

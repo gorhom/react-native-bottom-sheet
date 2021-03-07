@@ -27,7 +27,7 @@ export interface BottomSheetInternalContextType
   contentPanGestureHandler: any;
   scrollableState: Animated.SharedValue<SCROLLABLE_STATE>;
   scrollableContentOffsetY: Animated.SharedValue<number>;
-  scrollableDecelerationRate: Animated.SharedValue<number>;
+  shouldHandleKeyboardEvents: Animated.SharedValue<boolean>;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
 }
