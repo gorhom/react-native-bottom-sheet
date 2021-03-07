@@ -1,18 +1,13 @@
-import Animated, {
-  useWorkletCallback,
-  withSpring,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import { ANIMATION_METHOD } from '../constants';
+import { animate } from '../utilities';
 
+/**
+ * Generate spring animation configs.
+ * @param configs overridable configs.
+ */
 export const useBottomSheetSpringConfigs = (
   configs: Omit<Animated.WithSpringConfig, 'velocity'>
 ) => {
-  const animationConfig = useWorkletCallback(
-    (point: number, velocity: number = 0, callback: () => void) => {
-      // @ts-ignore override velocity
-      configs.velocity = velocity;
-      return withSpring(point, configs, callback);
-    },
-    [configs]
-  );
-  return animationConfig;
+  return animate(ANIMATION_METHOD.SPRING, configs);
 };
