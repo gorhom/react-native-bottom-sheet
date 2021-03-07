@@ -87,7 +87,8 @@ const BottomSheetModalComponent = forwardRef<
     forcedDismissed.current = false;
   }, []);
   const adjustIndex = useCallback(
-    (_index: number) => (dismissOnPanDown ? _index - 1 : _index),
+    (_index: number, internal = true) =>
+      dismissOnPanDown ? (internal ? _index - 1 : _index + 1) : _index,
     [dismissOnPanDown]
   );
   const unmount = useCallback(() => {
@@ -113,34 +114,40 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region bottom sheet methods
-  const handleSnapTo = useCallback(() => {
-    if (minimized.current) {
-      return;
-    }
+  const handleSnapTo = useCallback(
+    (_index: number, ...args) => {
+      if (minimized.current) {
+        return;
+      }
 
-    bottomSheetRef.current?.snapTo(adjustIndex(currentIndexRef.current));
-  }, [adjustIndex]);
-  const handleExpand = useCallback(() => {
+      bottomSheetRef.current?.snapTo(adjustIndex(_index, false), ...args);
+    },
+    [adjustIndex]
+  );
+  const handleExpand = useCallback((...args) => {
     if (minimized.current) {
       return;
     }
-    bottomSheetRef.current?.expand();
+    bottomSheetRef.current?.expand(...args);
   }, []);
-  const handleCollapse = useCallback(() => {
+  const handleCollapse = useCallback(
+    (...args) => {
+      if (minimized.current) {
+        return;
+      }
+      if (dismissOnPanDown) {
+        bottomSheetRef.current?.snapTo(1, ...args);
+      } else {
+        bottomSheetRef.current?.collapse(...args);
+      }
+    },
+    [dismissOnPanDown]
+  );
+  const handleClose = useCallback((...args) => {
     if (minimized.current) {
       return;
     }
-    if (dismissOnPanDown) {
-      bottomSheetRef.current?.snapTo(1);
-    } else {
-      bottomSheetRef.current?.collapse();
-    }
-  }, [dismissOnPanDown]);
-  const handleClose = useCallback(() => {
-    if (minimized.current) {
-      return;
-    }
-    bottomSheetRef.current?.close();
+    bottomSheetRef.current?.close(...args);
   }, []);
   //#endregion
 
@@ -151,22 +158,25 @@ const BottomSheetModalComponent = forwardRef<
       mountSheet(key, ref, stackBehavior);
     });
   }, [key, stackBehavior, ref, mountSheet]);
-  const handleDismiss = useCallback(() => {
-    /**
-     * if modal is already been dismiss, we exit the method.
-     */
-    if (currentIndexRef.current === -1 && minimized.current === false) {
-      return;
-    }
+  const handleDismiss = useCallback(
+    (...args) => {
+      /**
+       * if modal is already been dismiss, we exit the method.
+       */
+      if (currentIndexRef.current === -1 && minimized.current === false) {
+        return;
+      }
 
-    if (minimized.current) {
-      unmount();
-      return;
-    }
-    willUnmountSheet(key);
-    forcedDismissed.current = true;
-    bottomSheetRef.current?.close();
-  }, [willUnmountSheet, unmount, key]);
+      if (minimized.current) {
+        unmount();
+        return;
+      }
+      willUnmountSheet(key);
+      forcedDismissed.current = true;
+      bottomSheetRef.current?.close(...args);
+    },
+    [willUnmountSheet, unmount, key]
+  );
   const handleMinimize = useCallback(() => {
     if (minimized.current) {
       return;
