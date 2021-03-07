@@ -14,6 +14,11 @@ enum ANIMATION_STATE {
   STOPPED,
 }
 
+enum ANIMATION_METHOD {
+  TIMING,
+  SPRING,
+}
+
 const MODAL_STACK_BEHAVIOR = {
   replace: 'replace',
   push: 'push',
@@ -24,5 +29,6 @@ export {
   WINDOW_WIDTH,
   GESTURE,
   ANIMATION_STATE,
+  ANIMATION_METHOD,
   MODAL_STACK_BEHAVIOR,
 };
