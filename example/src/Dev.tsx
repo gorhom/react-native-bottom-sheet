@@ -1,21 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  StatusBar,
-  Button as RNButton,
-} from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
-import SearchHandle from './components/searchHandle'
+import SearchHandle from './components/searchHandle';
 import Button from './components/button';
 import ContactList from './components/contactList';
 
@@ -28,11 +18,11 @@ const BasicExample = () => {
 
   //#region hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeArea();
+  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
   //#endregion
 
   //#region variables
-  const snapPoints = useMemo(() => [200], [dynamicSnapPoint]);
+  const snapPoints = useMemo(() => [200, dynamicSnapPoint], [dynamicSnapPoint]);
   const animatedPosition = useSharedValue<number>(0);
   //#endregion
 
@@ -96,9 +86,6 @@ const BasicExample = () => {
   }, []);
   const handleIncreaseDynamicSnapPoint = useCallback(() => {
     setDynamicSnapPoint(state => state + 50);
-  }, []);
-  const handleFocus = useCallback(() => {
-    bottomSheetRef.current.fullScreenExpand();
   }, []);
   //#endregion
 

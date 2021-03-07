@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   Keyboard,
   KeyboardEvent,
@@ -6,7 +6,11 @@ import {
   KeyboardEventName,
   Platform,
 } from 'react-native';
-import { runOnUI, useSharedValue } from 'react-native-reanimated';
+import {
+  runOnUI,
+  useSharedValue,
+  useWorkletCallback,
+} from 'react-native-reanimated';
 import { KEYBOARD_STATE } from '../constants';
 
 const KEYBOARD_EVENT_MAPPER = {
@@ -24,6 +28,7 @@ const KEYBOARD_EVENT_MAPPER = {
 
 export const useKeyboard = () => {
   //#region variables
+  const shouldHandleKeyboardEvents = useSharedValue(false);
   const keyboardState = useSharedValue<KEYBOARD_STATE>(
     KEYBOARD_STATE.UNDETERMINED
   );
@@ -34,54 +39,79 @@ export const useKeyboard = () => {
   const keyboardAnimationDuration = useSharedValue(0);
   //#endregion
 
+  //#region worklets
+  const handleKeyboardEvent = useWorkletCallback(
+    (state, height, duration, easing) => {
+      if (state === KEYBOARD_STATE.SHOWN && !shouldHandleKeyboardEvents.value) {
+        return;
+      }
+      keyboardState.value = state;
+      keyboardHeight.value =
+        state === KEYBOARD_STATE.SHOWN
+          ? height
+          : height === 0
+          ? keyboardHeight.value
+          : height;
+      keyboardAnimationDuration.value = duration;
+      keyboardAnimationEasing.value = easing;
+    }
+  );
+  //#endregion
+
+  //#region callbacks
+  const handleOnKeyboardShow = useCallback(
+    (event: KeyboardEvent) => {
+      runOnUI(handleKeyboardEvent)(
+        KEYBOARD_STATE.SHOWN,
+        event.endCoordinates.height,
+        event.duration,
+        event.easing
+      );
+    },
+    [handleKeyboardEvent]
+  );
+
+  const handleOnKeyboardHide = useCallback(
+    (event: KeyboardEvent) => {
+      runOnUI(handleKeyboardEvent)(
+        KEYBOARD_STATE.HIDDEN,
+        event.endCoordinates.height,
+        event.duration,
+        event.easing
+      );
+    },
+    [handleKeyboardEvent]
+  );
+  //#endregion
+
   //#region effects
   useEffect(() => {
-    const handleKeyboardShow = (event: KeyboardEvent) => {
-      runOnUI((height, duration, easing) => {
-        keyboardState.value = KEYBOARD_STATE.SHOWN;
-        keyboardHeight.value = height;
-        keyboardAnimationDuration.value = duration;
-        keyboardAnimationEasing.value = easing;
-      })(event.endCoordinates.height, event.duration, event.easing);
-    };
-
     Keyboard.addListener(
       KEYBOARD_EVENT_MAPPER.KEYBOARD_SHOW,
-      handleKeyboardShow
+      handleOnKeyboardShow
     );
 
     return () => {
       Keyboard.removeListener(
         KEYBOARD_EVENT_MAPPER.KEYBOARD_SHOW,
-        handleKeyboardShow
+        handleOnKeyboardShow
       );
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleOnKeyboardShow]);
 
   useEffect(() => {
-    const handleKeyboardHide = (event: KeyboardEvent) => {
-      runOnUI((height, duration, easing) => {
-        keyboardState.value = KEYBOARD_STATE.HIDDEN;
-        // prevent zeroing the height
-        keyboardHeight.value = height === 0 ? keyboardHeight.value : height;
-        keyboardAnimationDuration.value = duration;
-        keyboardAnimationEasing.value = easing;
-      })(event.endCoordinates.height, event.duration, event.easing);
-    };
     Keyboard.addListener(
       KEYBOARD_EVENT_MAPPER.KEYBOARD_HIDE,
-      handleKeyboardHide
+      handleOnKeyboardHide
     );
 
     return () => {
       Keyboard.removeListener(
         KEYBOARD_EVENT_MAPPER.KEYBOARD_HIDE,
-        handleKeyboardHide
+        handleOnKeyboardHide
       );
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleOnKeyboardHide]);
   //#endregion
 
   return {
@@ -89,5 +119,6 @@ export const useKeyboard = () => {
     height: keyboardHeight,
     animationDuration: keyboardAnimationDuration,
     animationEasing: keyboardAnimationEasing,
+    shouldHandleKeyboardEvents,
   };
 };

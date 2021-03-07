@@ -64,7 +64,6 @@ import {
   DEFAULT_ENABLE_OVER_DRAG,
   DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
   DEFAULT_ANIMATE_ON_MOUNT,
-  DECELERATION_RATE,
   DEFAULT_KEYBOARD_BEHAVIOR,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
@@ -184,7 +183,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     // scrollable variables
     const {
       scrollableContentOffsetY,
-      scrollableDecelerationRate,
       setScrollableRef,
       removeScrollableRef,
       flashScrollableIndicators,
@@ -198,6 +196,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       height: keyboardHeight,
       animationDuration: keyboardAnimationDuration,
       animationEasing: keyboardAnimationEasing,
+      shouldHandleKeyboardEvents,
     } = useKeyboard();
 
     // normalize snap points
@@ -297,9 +296,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
         isExtendedByKeyboard.value
       ) {
-        return keyboardState.value === KEYBOARD_STATE.SHOWN
-          ? sheetHeight
-          : sheetHeight + keyboardHeight.value;
+        const safeFullScreenSheetHeight =
+          safeContainerHeight - topInset - safeHandleHeight;
+        const sheetWithKeyboardHeight = sheetHeight + keyboardHeight.value;
+
+        if (keyboardState.value === KEYBOARD_STATE.SHOWN) {
+          if (sheetHeight >= safeFullScreenSheetHeight) {
+            return safeFullScreenSheetHeight - keyboardHeight.value;
+          }
+          return sheetHeight;
+        }
+
+        if (sheetWithKeyboardHeight > safeFullScreenSheetHeight) {
+          return safeFullScreenSheetHeight;
+        }
+
+        return sheetWithKeyboardHeight;
       }
 
       return sheetHeight;
@@ -534,6 +546,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         contentPanGestureHandler,
         scrollableState,
         scrollableContentOffsetY,
+        shouldHandleKeyboardEvents,
         simultaneousHandlers: _providedSimultaneousHandlers,
         waitFor: _providedWaitFor,
         activeOffsetX: _providedActiveOffsetX,
@@ -552,6 +565,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         contentPanGestureHandler,
         handleSettingScrollableRef,
         removeScrollableRef,
+        shouldHandleKeyboardEvents,
         scrollableState,
         scrollableContentOffsetY,
         enableContentPanningGesture,
@@ -683,7 +697,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           state === KEYBOARD_STATE.SHOWN
         ) {
           const newSnapPoint = snapPoints[snapPoints.length - 1];
-          animateToPoint(newSnapPoint);
+          animateToPoint(
+            newSnapPoint,
+            0,
+            keyboardAnimationDuration.value,
+            KEYBOARD_EASING_MAPPER[keyboardAnimationEasing.value]
+          );
           return;
         }
 
@@ -695,41 +714,32 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           state === KEYBOARD_STATE.SHOWN
         ) {
           isExtendedByKeyboard.value = true;
-          animateToPoint(topInset);
+          animateToPoint(
+            topInset,
+            0,
+            keyboardAnimationDuration.value,
+            KEYBOARD_EASING_MAPPER[keyboardAnimationEasing.value]
+          );
           return;
         }
 
+        /**
+         * handle interactive behavior
+         */
         if (
           keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
           state === KEYBOARD_STATE.SHOWN
         ) {
           isExtendedByKeyboard.value = true;
           const newSnapPoint = snapPoints[snapPoints.length - 1];
-          animateToPoint(newSnapPoint - keyboardHeight.value);
+          animateToPoint(
+            Math.max(topInset, newSnapPoint - keyboardHeight.value),
+            0,
+            keyboardAnimationDuration.value,
+            KEYBOARD_EASING_MAPPER[keyboardAnimationEasing.value]
+          );
         }
-      },
-      [snapPoints, keyboardBehavior, topInset, animateToPoint]
-    );
-
-    /**
-     * set scrollable deceleration rate based on sheet
-     * position.
-     */
-    useAnimatedReaction(
-      () => scrollableState.value,
-      (_scrollableState, _prevScrollableState) => {
-        if (_prevScrollableState === _scrollableState) {
-          return;
-        }
-        const newDecelerationRate =
-          _scrollableState === SCROLLABLE_STATE.UNLOCKED
-            ? DECELERATION_RATE
-            : 0;
-        if (scrollableDecelerationRate.value !== newDecelerationRate) {
-          scrollableDecelerationRate.value = newDecelerationRate;
-        }
-      },
-      [snapPoints.length]
+      }
     );
 
     /**
@@ -790,14 +800,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    console.log(
-      'BottomSheet',
-      'render',
-      snapPoints,
-      safeContainerHeight,
-      safeHandleHeight,
-      sheetHeight
-    );
+    // console.log(
+    //   'BottomSheet',
+    //   'render',
+    //   snapPoints,
+    //   safeContainerHeight,
+    //   safeHandleHeight,
+    //   sheetHeight
+    // );
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetBackdropContainer

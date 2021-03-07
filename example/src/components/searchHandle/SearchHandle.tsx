@@ -6,7 +6,7 @@ import {
   NativeSyntheticEvent,
   TextInputChangeEventData,
 } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import isEqual from 'lodash.isequal';
 import { useAppearance } from '../../hooks';
 
@@ -48,7 +48,7 @@ const BottomSheetHandleComponent = () => {
   return (
     <View style={styles.container}>
       <View style={indicatorStyle} />
-      <TextInput
+      <BottomSheetTextInput
         style={styles.input}
         value={value}
         textContentType="location"
