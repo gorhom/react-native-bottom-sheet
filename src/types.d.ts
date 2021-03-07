@@ -1,27 +1,50 @@
 import type { FlatList, ScrollView, SectionList } from 'react-native';
+import type Animated from 'react-native-reanimated';
 
 //#region Methods
 export interface BottomSheetMethods {
   /**
    * Snap to one of the provided points from `snapPoints`.
+   * @param index snap point index.
+   * @param animationDuration snap animation duration.
+   * @param animationEasing snap animation easing function.
    * @type (index: number) => void
    */
-  snapTo: (index: number) => void;
+  snapTo: (
+    index: number,
+    animationDuration?: number,
+    animationEasing?: Animated.EasingFunction
+  ) => void;
   /**
    * Snap to the maximum provided point from `snapPoints`.
+   * @param animationDuration snap animation duration.
+   * @param animationEasing snap animation easing function.
    * @type () => void
    */
-  expand: () => void;
+  expand: (
+    animationDuration?: number,
+    animationEasing?: Animated.EasingFunction
+  ) => void;
   /**
    * Snap to the minimum provided point from `snapPoints`.
+   * @param animationDuration snap animation duration.
+   * @param animationEasing snap animation easing function.
    * @type () => void
    */
-  collapse: () => void;
+  collapse: (
+    animationDuration?: number,
+    animationEasing?: Animated.EasingFunction
+  ) => void;
   /**
    * Close the bottom sheet.
+   * @param animationDuration snap animation duration.
+   * @param animationEasing snap animation easing function.
    * @type () => void
    */
-  close: () => void;
+  close: (
+    animationDuration?: number,
+    animationEasing?: Animated.EasingFunction
+  ) => void;
 }
 
 export interface BottomSheetModalMethods extends BottomSheetMethods {
@@ -32,9 +55,14 @@ export interface BottomSheetModalMethods extends BottomSheetMethods {
   present: () => void;
   /**
    * Close and unmount the modal.
+   * @param animationDuration snap animation duration.
+   * @param animationEasing snap animation easing function.
    * @type () => void;
    */
-  dismiss: () => void;
+  dismiss: (
+    animationDuration?: number,
+    animationEasing?: Animated.EasingFunction
+  ) => void;
 }
 //#endregion
 

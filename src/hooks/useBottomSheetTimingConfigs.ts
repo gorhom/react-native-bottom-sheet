@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
-import Animated, {
-  useWorkletCallback,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import { ANIMATION_METHOD } from '../constants';
+import { animate } from '../utilities';
 import {
   DEFAULT_ANIMATION_DURATION,
   DEFAULT_ANIMATION_EASING,
 } from '../components/bottomSheet/constants';
 
 /**
- * Generate animation timing configs.
+ * Generate timing animation configs.
  * @default
  * - easing: Easing.out(Easing.exp)
  * - duration 500
@@ -33,10 +32,6 @@ export const useBottomSheetTimingConfigs = (
     }
     return _configs;
   }, [configs.duration, configs.easing]);
-  const animationConfig = useWorkletCallback(
-    (point: number, _, callback: () => void) =>
-      withTiming(point, overrideConfigs, callback),
-    [overrideConfigs]
-  );
-  return animationConfig;
+
+  return animate(ANIMATION_METHOD.TIMING, overrideConfigs);
 };

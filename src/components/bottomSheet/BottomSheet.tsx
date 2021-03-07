@@ -22,7 +22,6 @@ import Animated, {
   Extrapolate,
   runOnUI,
   useWorkletCallback,
-  withTiming,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import {
@@ -42,7 +41,13 @@ import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
-import { GESTURE, ANIMATION_STATE, WINDOW_HEIGHT } from '../../constants';
+import {
+  GESTURE,
+  ANIMATION_STATE,
+  WINDOW_HEIGHT,
+  ANIMATION_METHOD,
+} from '../../constants';
+import { animate } from '../../utilities';
 import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
@@ -74,8 +79,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region extract props
     const {
       // animations configurations
-      animationDuration = DEFAULT_ANIMATION_DURATION,
-      animationEasing = DEFAULT_ANIMATION_EASING,
+      animationDuration: _providedAnimationDuration = DEFAULT_ANIMATION_DURATION,
+      animationEasing: _providedAnimationEasing = DEFAULT_ANIMATION_EASING,
       animationConfigs: _providedAnimationConfigs,
 
       // configurations
@@ -289,39 +294,52 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animationState.value = ANIMATION_STATE.STOPPED;
     }, [animatedIndex, animationState, handleOnChange, refreshUIElements]);
     const animateToPoint = useWorkletCallback(
-      (point: number, velocity: number = 0) => {
+      (
+        point: number,
+        velocity: number = 0,
+        animationDuration?: number,
+        animationEasing?: Animated.EasingFunction
+      ) => {
         animationState.value = ANIMATION_STATE.RUNNING;
         runOnJS(handleOnAnimate)(point);
 
-        if (_providedAnimationConfigs) {
+        /**
+         * force animation configs from parameters, if provided
+         */
+        if (animationDuration !== undefined) {
+          animatedPosition.value = animate(ANIMATION_METHOD.TIMING, {
+            duration: animationDuration,
+            easing: animationEasing
+              ? animationEasing
+              : DEFAULT_ANIMATION_EASING,
+          })(point, velocity, animateToPointCompleted);
+        } else if (_providedAnimationConfigs) {
+          /**
+           * use animationConfigs callback, if provided
+           */
           animatedPosition.value = _providedAnimationConfigs(
             point,
             velocity,
             animateToPointCompleted
           );
-          return;
+        } else {
+          /**
+           * @deprecated this will be removed in next major release.
+           */
+          animatedPosition.value = animate(ANIMATION_METHOD.TIMING, {
+            duration: _providedAnimationDuration,
+            easing: _providedAnimationEasing,
+          })(point, velocity, animateToPointCompleted);
         }
-
-        /**
-         * @deprecated this will be removed in next major release.
-         */
-        animatedPosition.value = withTiming(
-          point,
-          {
-            duration: animationDuration,
-            easing: animationEasing,
-          },
-          animateToPointCompleted
-        );
       },
       [
-        _providedAnimationConfigs,
         animationState,
         animatedPosition,
-        animationDuration,
-        animationEasing,
         animateToPointCompleted,
         handleOnAnimate,
+        _providedAnimationConfigs,
+        _providedAnimationDuration,
+        _providedAnimationEasing,
       ]
     );
 
@@ -368,7 +386,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region public methods
     const handleSnapTo = useCallback(
-      (index: number) => {
+      (index: number, ...args) => {
         invariant(
           index >= -1 && index <= snapPoints.length - 1,
           `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
@@ -379,31 +397,40 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
         const newSnapPoint = snapPoints[index];
-        runOnUI(animateToPoint)(newSnapPoint);
+        runOnUI(animateToPoint)(newSnapPoint, 0, ...args);
       },
       [animateToPoint, snapPoints]
     );
-    const handleClose = useCallback(() => {
-      if (isClosing.current) {
-        return;
-      }
-      isClosing.current = true;
-      runOnUI(animateToPoint)(safeContainerHeight);
-    }, [animateToPoint, safeContainerHeight]);
-    const handleExpand = useCallback(() => {
-      if (isClosing.current) {
-        return;
-      }
-      const newSnapPoint = snapPoints[snapPoints.length - 1];
-      runOnUI(animateToPoint)(newSnapPoint);
-    }, [animateToPoint, snapPoints]);
-    const handleCollapse = useCallback(() => {
-      if (isClosing.current) {
-        return;
-      }
-      const newSnapPoint = snapPoints[0];
-      runOnUI(animateToPoint)(newSnapPoint);
-    }, [animateToPoint, snapPoints]);
+    const handleClose = useCallback(
+      (...args) => {
+        if (isClosing.current) {
+          return;
+        }
+        isClosing.current = true;
+        runOnUI(animateToPoint)(safeContainerHeight, 0, ...args);
+      },
+      [animateToPoint, safeContainerHeight]
+    );
+    const handleExpand = useCallback(
+      (...args) => {
+        if (isClosing.current) {
+          return;
+        }
+        const newSnapPoint = snapPoints[snapPoints.length - 1];
+        runOnUI(animateToPoint)(newSnapPoint, 0, ...args);
+      },
+      [animateToPoint, snapPoints]
+    );
+    const handleCollapse = useCallback(
+      (...args) => {
+        if (isClosing.current) {
+          return;
+        }
+        const newSnapPoint = snapPoints[0];
+        runOnUI(animateToPoint)(newSnapPoint, 0, ...args);
+      },
+      [animateToPoint, snapPoints]
+    );
     useImperativeHandle(ref, () => ({
       snapTo: handleSnapTo,
       expand: handleExpand,
@@ -512,7 +539,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isLayoutCalculated &&
         didMountOnAnimate.current === false &&
         isClosing.current === false &&
-        snapPoints[_providedIndex] !== safeContainerHeight
+        snapPoints[_providedIndex] !== safeContainerHeight &&
+        _providedIndex !== -1
       ) {
         const newSnapPoint = snapPoints[_providedIndex];
         requestAnimationFrame(() => runOnUI(animateToPoint)(newSnapPoint));
