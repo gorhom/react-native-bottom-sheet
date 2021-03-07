@@ -1,6 +1,12 @@
 # Changelog
 
-## [v3.3.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.2...v3.3.3)
+## [v3.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.3...v3.4.0)
+
+#### Features
+
+- feat: allow modify animation configs ([`#333`](https://github.com/gorhom/react-native-bottom-sheet/pull/333)).
+
+## [v3.3.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.2...v3.3.3) - 2021-03-04
 
 #### Improvements
 
