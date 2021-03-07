@@ -60,6 +60,9 @@ const KEYBOARD_BEHAVIOR = {
   interactive: 'interactive',
 } as const;
 
+const KEYBOARD_ANIMATION_DURATION = 125;
+const KEYBOARD_DISMISS_THRESHOLD = 50;
+
 const KEYBOARD_EASING_MAPPER = {
   easeIn: Easing.in(Easing.ease),
   easeOut: Easing.out(Easing.ease),
@@ -80,5 +83,7 @@ export {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   MODAL_STACK_BEHAVIOR,
   KEYBOARD_BEHAVIOR,
+  KEYBOARD_ANIMATION_DURATION,
+  KEYBOARD_DISMISS_THRESHOLD,
   KEYBOARD_EASING_MAPPER,
 };

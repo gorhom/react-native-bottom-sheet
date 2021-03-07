@@ -10,7 +10,12 @@ import {
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import { clamp, snapPoint } from 'react-native-redash';
-import { GESTURE, KEYBOARD_BEHAVIOR, KEYBOARD_STATE } from '../constants';
+import {
+  GESTURE,
+  KEYBOARD_BEHAVIOR,
+  KEYBOARD_DISMISS_THRESHOLD,
+  KEYBOARD_STATE,
+} from '../constants';
 
 interface useInteractivePanGestureHandlerConfigs {
   type: GESTURE;
@@ -97,6 +102,19 @@ export const useInteractivePanGestureHandler = ({
         animatedSnapPoints.value[0]
       );
 
+      /**
+       * dismiss the keyboard when panning down
+       */
+      if (translationY > KEYBOARD_DISMISS_THRESHOLD) {
+        if (
+          keyboardState.value === KEYBOARD_STATE.SHOWN &&
+          (Platform.OS === 'android' ||
+            keyboardBehavior !== KEYBOARD_BEHAVIOR.interactive)
+        ) {
+          runOnJS(Keyboard.dismiss)();
+        }
+      }
+
       if (enableOverDrag) {
         if (type === GESTURE.HANDLE && position <= maxSnapPoint) {
           const resistedPosition =
@@ -147,13 +165,6 @@ export const useInteractivePanGestureHandler = ({
       }
 
       if (isExtendedByKeyboard.value) {
-        /**
-         * dismiss the keyboard when panning down, this is required
-         * for android.
-         */
-        if (Platform.OS === 'android') {
-          runOnJS(Keyboard.dismiss)();
-        }
         isExtendedByKeyboard.value = false;
       }
 

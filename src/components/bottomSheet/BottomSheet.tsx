@@ -41,7 +41,7 @@ import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
-import BottomSheetDebugView from '../bottomSheetDebugView';
+// import BottomSheetDebugView from '../bottomSheetDebugView';
 import {
   GESTURE,
   ANIMATION_METHOD,
@@ -863,7 +863,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               />
             </BottomSheetInternalProvider>
           </Animated.View>
-          <BottomSheetDebugView
+          {/* <BottomSheetDebugView
             values={{
               animatedIndex,
               animatedPosition,
@@ -876,7 +876,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               scrollableState,
               isExtendedByKeyboard,
             }}
-          />
+          /> */}
         </BottomSheetContainer>
       </BottomSheetProvider>
     );
