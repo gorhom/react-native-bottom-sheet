@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 import Animated from 'react-native-reanimated';
-import { ANIMATION_METHOD } from '../constants';
-import { animate } from '../utilities';
 import {
   DEFAULT_ANIMATION_DURATION,
   DEFAULT_ANIMATION_EASING,
@@ -17,7 +15,7 @@ import {
 export const useBottomSheetTimingConfigs = (
   configs: Animated.WithTimingConfig
 ) => {
-  const overrideConfigs = useMemo(() => {
+  return useMemo(() => {
     const _configs: Animated.WithTimingConfig = {
       easing: DEFAULT_ANIMATION_EASING,
       duration: DEFAULT_ANIMATION_DURATION,
@@ -32,6 +30,4 @@ export const useBottomSheetTimingConfigs = (
     }
     return _configs;
   }, [configs.duration, configs.easing]);
-
-  return animate(ANIMATION_METHOD.TIMING, overrideConfigs);
 };

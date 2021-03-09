@@ -13,7 +13,7 @@ const { height: windowHeight } = Dimensions.get('window');
 
 const BasicExample = () => {
   //#region state
-  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(450);
+  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(400);
   //#endregion
 
   //#region hooks
@@ -22,7 +22,7 @@ const BasicExample = () => {
   //#endregion
 
   //#region variables
-  const snapPoints = useMemo(() => [200, dynamicSnapPoint], [dynamicSnapPoint]);
+  const snapPoints = useMemo(() => [dynamicSnapPoint], [dynamicSnapPoint]);
   const animatedPosition = useSharedValue<number>(0);
   //#endregion
 

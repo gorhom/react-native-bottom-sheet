@@ -1,6 +1,5 @@
-import Animated from 'react-native-reanimated';
-import { ANIMATION_METHOD } from '../constants';
-import { animate } from '../utilities';
+import { useMemo } from 'react';
+import type Animated from 'react-native-reanimated';
 
 /**
  * Generate spring animation configs.
@@ -9,5 +8,5 @@ import { animate } from '../utilities';
 export const useBottomSheetSpringConfigs = (
   configs: Omit<Animated.WithSpringConfig, 'velocity'>
 ) => {
-  return animate(ANIMATION_METHOD.SPRING, configs);
+  return useMemo(() => configs, [configs]);
 };

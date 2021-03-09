@@ -161,6 +161,9 @@ export const useInteractivePanGestureHandler = ({
         isExtendedByKeyboard.value &&
         context.currentPosition >= animatedPosition.value
       ) {
+        if (context.currentPosition > animatedPosition.value) {
+          animateToPoint(context.currentPosition, gestureVelocityY.value / 2);
+        }
         return;
       }
 

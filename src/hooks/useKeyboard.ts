@@ -2,16 +2,18 @@ import { useCallback, useEffect } from 'react';
 import {
   Keyboard,
   KeyboardEvent,
-  KeyboardEventEasing,
   KeyboardEventName,
   Platform,
 } from 'react-native';
-import {
+import Animated, {
   runOnUI,
   useSharedValue,
   useWorkletCallback,
 } from 'react-native-reanimated';
-import { KEYBOARD_STATE, KEYBOARD_ANIMATION_DURATION } from '../constants';
+import {
+  KEYBOARD_STATE,
+  KEYBOARD_DEFAULT_ANIMATION_CONFIGS,
+} from '../constants';
 
 const KEYBOARD_EVENT_MAPPER = {
   KEYBOARD_SHOW: Platform.select({
@@ -33,10 +35,9 @@ export const useKeyboard = () => {
     KEYBOARD_STATE.UNDETERMINED
   );
   const keyboardHeight = useSharedValue(0);
-  const keyboardAnimationEasing = useSharedValue<KeyboardEventEasing>(
-    'keyboard'
-  );
-  const keyboardAnimationDuration = useSharedValue(0);
+  const keyboardAnimationConfigs = useSharedValue<
+    Animated.WithTimingConfig | Animated.WithSpringConfig
+  >(KEYBOARD_DEFAULT_ANIMATION_CONFIGS);
   //#endregion
 
   //#region worklets
@@ -52,9 +53,14 @@ export const useKeyboard = () => {
           : height === 0
           ? keyboardHeight.value
           : height;
-      keyboardAnimationDuration.value =
-        duration === 0 ? KEYBOARD_ANIMATION_DURATION : duration;
-      keyboardAnimationEasing.value = easing;
+
+      if (easing === 'keyboard') {
+        return;
+      }
+      keyboardAnimationConfigs.value = {
+        duration: duration,
+        easing: easing,
+      };
     }
   );
   //#endregion
@@ -118,8 +124,7 @@ export const useKeyboard = () => {
   return {
     state: keyboardState,
     height: keyboardHeight,
-    animationDuration: keyboardAnimationDuration,
-    animationEasing: keyboardAnimationEasing,
+    animationConfigs: keyboardAnimationConfigs,
     shouldHandleKeyboardEvents,
   };
 };

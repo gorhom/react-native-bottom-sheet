@@ -44,7 +44,6 @@ import BottomSheetDraggableView from '../bottomSheetDraggableView';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import {
   GESTURE,
-  ANIMATION_METHOD,
   ANIMATION_STATE,
   WINDOW_HEIGHT,
   KEYBOARD_STATE,
@@ -194,8 +193,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const {
       state: keyboardState,
       height: keyboardHeight,
-      animationDuration: keyboardAnimationDuration,
-      animationEasing: keyboardAnimationEasing,
+      animationConfigs: keyboardAnimationConfigs,
       shouldHandleKeyboardEvents,
     } = useKeyboard();
 
@@ -376,8 +374,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       (
         point: number,
         velocity: number = 0,
-        animationDuration?: number,
-        animationEasing?: Animated.EasingFunction
+        configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
       ) => {
         animationState.value = ANIMATION_STATE.RUNNING;
         runOnJS(handleOnAnimate)(point);
@@ -385,30 +382,33 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * force animation configs from parameters, if provided
          */
-        if (animationDuration !== undefined) {
-          animatedPosition.value = animate(ANIMATION_METHOD.TIMING, {
-            duration: animationDuration,
-            easing: animationEasing
-              ? animationEasing
-              : DEFAULT_ANIMATION_EASING,
-          })(point, velocity, animateToPointCompleted);
+        if (configs !== undefined) {
+          animatedPosition.value = animate(
+            point,
+            configs,
+            velocity,
+            animateToPointCompleted
+          );
         } else if (_providedAnimationConfigs) {
           /**
            * use animationConfigs callback, if provided
            */
-          animatedPosition.value = _providedAnimationConfigs(
+          animatedPosition.value = animate(
             point,
+            _providedAnimationConfigs,
             velocity,
             animateToPointCompleted
           );
         } else {
-          /**
-           * @deprecated this will be removed in next major release.
-           */
-          animatedPosition.value = animate(ANIMATION_METHOD.TIMING, {
-            duration: _providedAnimationDuration,
-            easing: _providedAnimationEasing,
-          })(point, velocity, animateToPointCompleted);
+          animatedPosition.value = animate(
+            point,
+            {
+              duration: _providedAnimationDuration,
+              easing: _providedAnimationEasing,
+            },
+            0,
+            animateToPointCompleted
+          );
         }
       },
       [
@@ -480,7 +480,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region public methods
     const handleSnapTo = useCallback(
-      (index: number, ...args) => {
+      (
+        index: number,
+        animationDuration?: number,
+        animationEasing?: Animated.EasingFunction
+      ) => {
         invariant(
           index >= -1 && index <= snapPoints.length - 1,
           `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
@@ -491,37 +495,58 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
         const newSnapPoint = snapPoints[index];
-        runOnUI(animateToPoint)(newSnapPoint, 0, ...args);
+        runOnUI(animateToPoint)(newSnapPoint, 0, {
+          duration: animationDuration,
+          easing: animationEasing,
+        });
       },
       [animateToPoint, snapPoints]
     );
     const handleClose = useCallback(
-      (...args) => {
+      (
+        animationDuration?: number,
+        animationEasing?: Animated.EasingFunction
+      ) => {
         if (isClosing.current) {
           return;
         }
         isClosing.current = true;
-        runOnUI(animateToPoint)(safeContainerHeight, 0, ...args);
+        runOnUI(animateToPoint)(safeContainerHeight, 0, {
+          duration: animationDuration,
+          easing: animationEasing,
+        });
       },
       [animateToPoint, safeContainerHeight]
     );
     const handleExpand = useCallback(
-      (...args) => {
+      (
+        animationDuration?: number,
+        animationEasing?: Animated.EasingFunction
+      ) => {
         if (isClosing.current) {
           return;
         }
         const newSnapPoint = snapPoints[snapPoints.length - 1];
-        runOnUI(animateToPoint)(newSnapPoint, 0, ...args);
+        runOnUI(animateToPoint)(newSnapPoint, 0, {
+          duration: animationDuration,
+          easing: animationEasing,
+        });
       },
       [animateToPoint, snapPoints]
     );
     const handleCollapse = useCallback(
-      (...args) => {
+      (
+        animationDuration?: number,
+        animationEasing?: Animated.EasingFunction
+      ) => {
         if (isClosing.current) {
           return;
         }
         const newSnapPoint = snapPoints[0];
-        runOnUI(animateToPoint)(newSnapPoint, 0, ...args);
+        runOnUI(animateToPoint)(newSnapPoint, 0, {
+          duration: animationDuration,
+          easing: animationEasing,
+        });
       },
       [animateToPoint, snapPoints]
     );
@@ -689,6 +714,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        const configs = keyboardAnimationConfigs.value;
+        if (!configs) {
+          return;
+        }
+
+        if ('easing' in configs) {
+          // @ts-ignore
+          configs.easing = KEYBOARD_EASING_MAPPER[configs.easing];
+        }
+
         /**
          * Handle extend behavior
          */
@@ -697,12 +732,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           state === KEYBOARD_STATE.SHOWN
         ) {
           const newSnapPoint = snapPoints[snapPoints.length - 1];
-          animateToPoint(
-            newSnapPoint,
-            0,
-            keyboardAnimationDuration.value,
-            KEYBOARD_EASING_MAPPER[keyboardAnimationEasing.value]
-          );
+          animateToPoint(newSnapPoint, 0, configs);
           return;
         }
 
@@ -714,12 +744,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           state === KEYBOARD_STATE.SHOWN
         ) {
           isExtendedByKeyboard.value = true;
-          animateToPoint(
-            topInset,
-            0,
-            keyboardAnimationDuration.value,
-            KEYBOARD_EASING_MAPPER[keyboardAnimationEasing.value]
-          );
+          animateToPoint(topInset, 0, configs);
           return;
         }
 
@@ -735,8 +760,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animateToPoint(
             Math.max(topInset, newSnapPoint - keyboardHeight.value),
             0,
-            keyboardAnimationDuration.value,
-            KEYBOARD_EASING_MAPPER[keyboardAnimationEasing.value]
+            configs
           );
         }
       }

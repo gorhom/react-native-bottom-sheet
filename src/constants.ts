@@ -60,14 +60,20 @@ const KEYBOARD_BEHAVIOR = {
   interactive: 'interactive',
 } as const;
 
-const KEYBOARD_ANIMATION_DURATION = 125;
+const KEYBOARD_DEFAULT_ANIMATION_CONFIGS = {
+  damping: 500,
+  stiffness: 1000,
+  mass: 3,
+  overshootClamping: true,
+  restDisplacementThreshold: 10,
+  restSpeedThreshold: 10,
+};
 const KEYBOARD_DISMISS_THRESHOLD = 50;
 
 const KEYBOARD_EASING_MAPPER = {
   easeIn: Easing.in(Easing.ease),
   easeOut: Easing.out(Easing.ease),
   easeInEaseOut: Easing.inOut(Easing.ease),
-  keyboard: Easing.bezier(0.17, 0.59, 0.4, 0.77),
   linear: Easing.linear,
 };
 
@@ -83,7 +89,7 @@ export {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   MODAL_STACK_BEHAVIOR,
   KEYBOARD_BEHAVIOR,
-  KEYBOARD_ANIMATION_DURATION,
+  KEYBOARD_DEFAULT_ANIMATION_CONFIGS,
   KEYBOARD_DISMISS_THRESHOLD,
   KEYBOARD_EASING_MAPPER,
 };

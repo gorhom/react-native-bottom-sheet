@@ -196,11 +196,7 @@ export interface BottomSheetAnimationConfigs {
    * Animation configs, this could be created by:
    * - `useBottomSheetSpringConfigs`
    * - `useBottomSheetTimingConfigs`
-   * @type (point: number, velocity: number = 0, callback: () => void) => AnimationConfigs
+   * @type Animated.WithSpringConfig | Animated.WithTimingConfig
    */
-  animationConfigs?: (
-    point: number,
-    velocity: number,
-    callback: () => void
-  ) => number;
+  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig;
 }
