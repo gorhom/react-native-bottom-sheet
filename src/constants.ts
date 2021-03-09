@@ -68,7 +68,8 @@ const KEYBOARD_DEFAULT_ANIMATION_CONFIGS = {
   restDisplacementThreshold: 10,
   restSpeedThreshold: 10,
 };
-const KEYBOARD_DISMISS_THRESHOLD = 50;
+
+const KEYBOARD_DISMISS_THRESHOLD = 25;
 
 const KEYBOARD_EASING_MAPPER = {
   easeIn: Easing.in(Easing.ease),
