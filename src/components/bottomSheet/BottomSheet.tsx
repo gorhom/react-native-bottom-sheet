@@ -498,7 +498,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animateOnMount &&
         isLayoutCalculated &&
         didMountOnAnimate.current === false &&
-        isClosing.current === false
+        isClosing.current === false &&
+        _providedIndex !== -1
       ) {
         manualSnapToPoint.setValue(snapPoints[_providedIndex]);
         didMountOnAnimate.current = true;
