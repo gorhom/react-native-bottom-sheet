@@ -15,6 +15,7 @@ import {
   KEYBOARD_BEHAVIOR,
   KEYBOARD_DISMISS_THRESHOLD,
   KEYBOARD_STATE,
+  WINDOW_HEIGHT,
 } from '../constants';
 
 interface useInteractivePanGestureHandlerConfigs {
@@ -42,6 +43,7 @@ export const useInteractivePanGestureHandler = ({
   overDragResistanceFactor,
   keyboardState,
   keyboardBehavior,
+  keyboardHeight,
   isExtendedByKeyboard,
   animatedPosition,
   animatedSnapPoints,
@@ -82,7 +84,7 @@ export const useInteractivePanGestureHandler = ({
       gestureTranslationY.value = translationY;
       gestureVelocityY.value = velocityY;
     },
-    onActive: ({ state, translationY, velocityY }, context) => {
+    onActive: ({ state, translationY, velocityY, absoluteY }, context) => {
       gestureState.value = state;
       gestureTranslationY.value = translationY;
       gestureVelocityY.value = velocityY;
@@ -109,7 +111,9 @@ export const useInteractivePanGestureHandler = ({
         if (
           keyboardState.value === KEYBOARD_STATE.SHOWN &&
           (Platform.OS === 'android' ||
-            keyboardBehavior !== KEYBOARD_BEHAVIOR.interactive)
+            keyboardBehavior !== KEYBOARD_BEHAVIOR.interactive ||
+            (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
+              absoluteY < WINDOW_HEIGHT - keyboardHeight.value))
         ) {
           runOnJS(Keyboard.dismiss)();
         }
