@@ -363,7 +363,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         );
         if (isClosing.current && !force) {
           return;
+        } else {
+          isClosing.current = false;
         }
+
         manualSnapToPoint.setValue(snapPoints[index]);
       },
       [snapPoints, manualSnapToPoint]
