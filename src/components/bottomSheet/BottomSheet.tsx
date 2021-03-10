@@ -287,7 +287,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
 
       if (keyboardBehavior === KEYBOARD_BEHAVIOR.fullScreen) {
-        return safeContainerHeight - topInset - safeHandleHeight;
+        return isExtendedByKeyboard.value
+          ? safeContainerHeight - topInset - safeHandleHeight
+          : sheetHeight;
       }
 
       if (
@@ -893,7 +895,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               animatedPosition,
               keyboardState,
               keyboardHeight,
-              keyboardAnimationDuration,
               animatedSheetHeight,
               animatedSheetState,
               scrollableContentOffsetY,
