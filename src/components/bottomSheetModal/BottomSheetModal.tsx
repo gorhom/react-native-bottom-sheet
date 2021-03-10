@@ -120,13 +120,17 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region public methods
-  const handlePresent = useCallback(() => {
-    requestAnimationFrame(() => {
-      nextIndexRef.current = index;
-      setMount(true);
-      mountSheet(key, ref);
-    });
-  }, [key, mountSheet, ref, index]);
+  const handlePresent = useCallback(
+    (snapPointIndex?: number) => {
+      requestAnimationFrame(() => {
+        nextIndexRef.current =
+          snapPointIndex || snapPointIndex === 0 ? snapPointIndex : index;
+        setMount(true);
+        mountSheet(key, ref);
+      });
+    },
+    [key, mountSheet, ref, index]
+  );
   const handleDismiss = useCallback(
     (force: boolean = false) => {
       if (force) {
