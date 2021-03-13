@@ -1,6 +1,17 @@
 # Changelog
 
-## [v2.2.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.2...v2.2.3)
+## [v2.2.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.3...v2.2.4)
+
+#### Fixes
+
+- fix: updated modal unmounting handling ([`#327`](https://github.com/gorhom/react-native-bottom-sheet/pull/327)).
+- fix: prevent crash when set index -1 with animateOnMount ([2c7b763](https://github.com/gorhom/react-native-bottom-sheet/commit/2c7b763144bebf4c95b4d181d568a337da1d0ec7)).
+
+#### Documentations
+
+- docs: fix typo in contributing document ([`#325`](https://github.com/gorhom/react-native-bottom-sheet/pull/325)).
+
+## [v2.2.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.2...v2.2.3) - 2021-03-04
 
 #### Improvements
 
