@@ -32,7 +32,12 @@ export const useScrollable = () => {
 
   const removeScrollableRef = useCallback((ref: RefObject<Scrollable>) => {
     // find node handle id
-    let id = findNodeHandle(ref.current);
+    let id;
+    try {
+      id = findNodeHandle(ref.current);
+    } catch {
+      return;
+    }
 
     // get current node handle id
     let currentRefId = scrollableRef.current?.id ?? null;
