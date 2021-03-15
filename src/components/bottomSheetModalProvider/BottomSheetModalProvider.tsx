@@ -89,13 +89,20 @@ const BottomSheetModalProviderWrapper = ({
     _sheetsQueue.splice(sheetIndex, 1);
     sheetsQueueRef.current = _sheetsQueue;
 
-    // /**
-    //  * Here we try to restore previous sheet position if unmounted
-    //  * sheet was on top. This is needed when user dismiss
-    //  * the modal by panning down.
-    //  */
+    /**
+     * Here we try to restore previous sheet position if unmounted
+     * sheet was on top. This is needed when user dismiss
+     * the modal by panning down.
+     */
     const hasMinimizedSheet = sheetsQueueRef.current.length > 0;
-    if (sheetOnTop && hasMinimizedSheet) {
+    const minimizedSheet =
+      sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
+    if (
+      sheetOnTop &&
+      hasMinimizedSheet &&
+      minimizedSheet &&
+      !minimizedSheet.willUnmount
+    ) {
       sheetsQueueRef.current[
         sheetsQueueRef.current.length - 1
       ].ref.current.restore();

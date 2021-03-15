@@ -21,6 +21,7 @@ import Animated, {
   interpolate,
   Extrapolate,
   runOnUI,
+  cancelAnimation,
   useWorkletCallback,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
@@ -292,7 +293,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     // callbacks
     const animateToPointCompleted = useWorkletCallback(() => {
       animationState.value = ANIMATION_STATE.STOPPED;
-    }, [animatedIndex, animationState, handleOnChange, refreshUIElements]);
+    });
     const animateToPoint = useWorkletCallback(
       (
         point: number,
@@ -300,7 +301,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animationDuration?: number,
         animationEasing?: Animated.EasingFunction
       ) => {
+        /**
+         * cancel current running animation
+         */
+        cancelAnimation(animatedPosition);
+
+        /**
+         * set animation state to running
+         */
         animationState.value = ANIMATION_STATE.RUNNING;
+
+        /**
+         * fire `onAnimate` callback
+         */
         runOnJS(handleOnAnimate)(point);
 
         /**

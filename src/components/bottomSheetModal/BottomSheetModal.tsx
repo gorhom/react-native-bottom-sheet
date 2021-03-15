@@ -167,7 +167,10 @@ const BottomSheetModalComponent = forwardRef<
         return;
       }
 
-      if (minimized.current) {
+      if (
+        minimized.current ||
+        (currentIndexRef.current === 0 && dismissOnPanDown)
+      ) {
         unmount();
         return;
       }
@@ -175,7 +178,7 @@ const BottomSheetModalComponent = forwardRef<
       forcedDismissed.current = true;
       bottomSheetRef.current?.close(...args);
     },
-    [willUnmountSheet, unmount, key]
+    [willUnmountSheet, unmount, key, dismissOnPanDown]
   );
   const handleMinimize = useCallback(() => {
     if (minimized.current) {
