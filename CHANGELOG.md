@@ -1,6 +1,16 @@
 # Changelog
 
-## [v3.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.3...v3.4.0)
+## [v3.4.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.4.0...v3.4.1)
+
+#### Improvements
+
+- chore: updated react-native to 64 and enable builds on M1 chip ([`#345`](https://github.com/gorhom/react-native-bottom-sheet/pull/345)).
+
+#### Fixes
+
+- fix: improve modal dismissing ([`#346`](https://github.com/gorhom/react-native-bottom-sheet/pull/346)).
+
+## [v3.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.3.3...v3.4.0) - 2021-03-07
 
 #### Features
 
@@ -186,7 +196,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.3...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.4...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
