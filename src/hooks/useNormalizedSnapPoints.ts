@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { normalizeSnapPoints } from '../utilities';
 
 export const useNormalizedSnapPoints = (
-  snapPoints: Array<number | string>,
+  snapPoints: ReadonlyArray<number | string>,
   containerHeight: number = 0,
   handleHeight: number = 0
 ) =>
