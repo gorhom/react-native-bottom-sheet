@@ -115,13 +115,16 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region bottom sheet methods
-  const handleSnapTo = useCallback(() => {
-    if (minimized.current) {
-      return;
-    }
+  const handleSnapTo = useCallback(
+    (_index: number) => {
+      if (minimized.current) {
+        return;
+      }
 
-    bottomSheetRef.current?.snapTo(adjustIndex(currentIndexRef.current));
-  }, [adjustIndex]);
+      bottomSheetRef.current?.snapTo(adjustIndex(_index));
+    },
+    [adjustIndex]
+  );
   const handleExpand = useCallback(() => {
     if (minimized.current) {
       return;
