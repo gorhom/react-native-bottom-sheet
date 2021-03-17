@@ -1,6 +1,12 @@
 # Changelog
 
-## [v2.2.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.3...v2.2.4)
+## [v2.2.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.4...v2.2.5)
+
+#### Fixes
+
+- fix: update handleSnapTo on modal to use index parameter ([789b8da](https://github.com/gorhom/react-native-bottom-sheet/commit/789b8dacd2855569bc6d12f887e086a27e2860b5)).
+
+## [v2.2.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.3...v2.2.4) - 2021-03-13
 
 #### Fixes
 
