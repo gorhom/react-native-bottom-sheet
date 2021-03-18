@@ -16,13 +16,13 @@ export type BottomSheetProps = {
   /**
    * Points for the bottom sheet to snap to. It accepts array of number, string or mix.
    * String values should be a percentage.
-   * @type Array<string | number>
+   * @type ReadonlyArray<string | number>
    * @example
    * snapPoints={[200, 500]}
    * snapPoints={[200, '50%']}
    * snapPoints={[-1, '100%']}
    */
-  snapPoints: Array<string | number>;
+  snapPoints: ReadonlyArray<string | number>;
   /**
    * Handle height helps to calculate the internal container and sheet layouts,
    * if `handleComponent` is provided, the library internally will calculate its layout,
@@ -171,7 +171,7 @@ export interface BottomSheetTransitionConfig
   handlePanGestureVelocityY: Animated.Value<number>;
 
   scrollableContentOffsetY: Animated.Value<number>;
-  snapPoints: number[];
+  snapPoints: ReadonlyArray<number>;
   initialPosition: number;
 
   currentIndexRef: React.RefObject<number>;

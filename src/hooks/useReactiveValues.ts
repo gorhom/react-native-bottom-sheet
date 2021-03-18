@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import Animated from 'react-native-reanimated';
 
-export const useReactiveValues = (values: number[]) => {
+export const useReactiveValues = (values: ReadonlyArray<number>) => {
   // ref
   const ref = useRef<Animated.Value<number>[]>(null);
   if (ref.current === null) {

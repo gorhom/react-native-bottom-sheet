@@ -4,7 +4,7 @@ import { validateSnapPoint } from './validateSnapPoint';
  * Converts snap points with percentage to fixed numbers.
  */
 export const normalizeSnapPoints = (
-  snapPoints: Array<number | string>,
+  snapPoints: ReadonlyArray<number | string>,
   containerHeight: number
 ) =>
   snapPoints.map(snapPoint => {
