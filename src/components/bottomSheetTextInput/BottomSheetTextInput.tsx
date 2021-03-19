@@ -1,15 +1,14 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, forwardRef } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
 import { runOnUI } from 'react-native-reanimated';
 import isEqual from 'lodash.isequal';
-import type { BottomSheetTextInputProps } from './types';
 import { useBottomSheetInternal } from '../../hooks';
+import type { BottomSheetTextInputProps } from './types';
 
-const BottomSheetTextInputComponent = ({
-  onFocus,
-  onBlur,
-  ...rest
-}: BottomSheetTextInputProps) => {
+const BottomSheetTextInputComponent = forwardRef<
+  TextInput,
+  BottomSheetTextInputProps
+>(({ onFocus, onBlur, ...rest }, ref) => {
   //#region hooks
   const { shouldHandleKeyboardEvents } = useBottomSheetInternal();
   //#endregion
@@ -39,8 +38,15 @@ const BottomSheetTextInputComponent = ({
   );
   //#endregion
 
-  return <TextInput onFocus={handleOnFocus} onBlur={handleOnBlur} {...rest} />;
-};
+  return (
+    <TextInput
+      ref={ref}
+      onFocus={handleOnFocus}
+      onBlur={handleOnBlur}
+      {...rest}
+    />
+  );
+});
 
 const BottomSheetTextInput = memo(BottomSheetTextInputComponent, isEqual);
 BottomSheetTextInput.displayName = 'BottomSheetTextInput';
