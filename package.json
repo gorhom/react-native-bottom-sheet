@@ -1,6 +1,6 @@
 {
   "name": "@gorhom/bottom-sheet",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

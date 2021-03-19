@@ -1,6 +1,16 @@
 # Changelog
 
-## [v2.2.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.4...v2.2.5)
+## [v2.2.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.5...v2.2.6)
+
+#### Improvements
+
+- chore: changed all arrays to ReadonlyArray ([`#350`](https://github.com/gorhom/react-native-bottom-sheet/pull/350)).
+
+#### Fixes
+
+- fix: reset isclosing variable when position changed ([5302e20](https://github.com/gorhom/react-native-bottom-sheet/commit/5302e20dd4edadfcaeb2133f5242b1ae06890c18)).
+
+## [v2.2.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.4...v2.2.5) - 2021-03-17
 
 #### Fixes
 
