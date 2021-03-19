@@ -338,10 +338,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       if (_providedOnChange) {
         _providedOnChange(index);
       }
-
-      if (isClosing.current && (index === 0 || index === -1)) {
-        isClosing.current = false;
-      }
     });
     const handleSettingScrollableRef = useCallback(
       (scrollableRef: ScrollableRef) => {
@@ -538,6 +534,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         onChange(currentPosition, [
           call([currentPosition], args => {
             const currentPositionIndex = snapPoints.indexOf(args[0]);
+
+            /**
+             * reset is closing
+             */
+            isClosing.current = false;
 
             /**
              * if animation was interrupted, we ignore the change.
