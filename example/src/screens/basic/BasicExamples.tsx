@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   buttonContainer: {
-    marginBottom: 6,
+    marginBottom: 0,
   },
 });
 

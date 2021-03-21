@@ -1,19 +1,19 @@
 import React, { useMemo } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
-import { useAppearance } from '../../hooks';
+import { useShowcaseTheme } from '@gorhom/showcase-template';
 
 const BlurredBackground = () => {
-  const { appearance } = useAppearance();
+  const { colors } = useShowcaseTheme();
   const containerStyle = useMemo(
     () => [
       styles.container,
       {
-        backgroundColor: appearance === 'light' ? 'white' : 'black',
+        backgroundColor: colors.background,
         opacity: 0.95,
       },
     ],
-    [appearance]
+    [colors.background]
   );
   return Platform.OS === 'ios' ? (
     <View style={styles.container}>

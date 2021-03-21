@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CustomBackground from '../../components/customBackground';
 import Button from '../../components/button';
-import ContactList from '../../components/contactList';
+import ContactListContainer from '../../components/contactListContainer';
 
 const CustomBackgroundExample = () => {
   // hooks
@@ -27,16 +27,6 @@ const CustomBackgroundExample = () => {
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
-
-  // renders
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>Custom Background Example</Text>
-      </View>
-    );
-  }, []);
-
   return (
     <View style={styles.container}>
       <Button
@@ -71,7 +61,12 @@ const CustomBackgroundExample = () => {
         animateOnMount={true}
         backgroundComponent={CustomBackground}
       >
-        <ContactList type="View" count={3} header={renderHeader} />
+        <ContactListContainer
+          type="View"
+          count={3}
+          title="Custom Background Example"
+          headerStyle={styles.headerContainer}
+        />
       </BottomSheet>
     </View>
   );
@@ -87,21 +82,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: 'white',
   },
-  shadowOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-  },
-  title: {
-    fontSize: 46,
-    lineHeight: 46,
-    fontWeight: '800',
-  },
   headerContainer: {
-    paddingVertical: 24,
+    backgroundColor: 'transparent',
   },
   buttonContainer: {
     marginBottom: 6,

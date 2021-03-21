@@ -96,7 +96,7 @@ const App = () => {
         {mount && (
           <BottomSheet
             ref={bottomSheetRef}
-            initialSnapIndex={initialSnapPoint.current}
+            index={initialSnapPoint.current}
             snapPoints={snapPoints}
           >
             <View style={styles.content} onLayout={finishPerformanceTest} />

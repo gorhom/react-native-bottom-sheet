@@ -1,25 +1,22 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { useAppearance } from '../../hooks';
+import { useShowcaseTheme } from '@gorhom/showcase-template';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 const LocationDetailsHandle = () => {
   // hooks
-  const { appearance } = useAppearance();
+  const { colors } = useShowcaseTheme();
 
   // styles
   const indicatorStyle = useMemo(
     () => [
       styles.indicator,
       {
-        backgroundColor:
-          appearance === 'light'
-            ? 'rgba(0, 0, 0, 0.25)'
-            : 'rgba(255, 255, 255, 0.25)',
+        backgroundColor: colors.border,
       },
     ],
-    [appearance]
+    [colors.border]
   );
 
   // render

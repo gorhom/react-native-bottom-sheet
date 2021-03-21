@@ -1,1 +1,0 @@
-export { AppearanceContext } from './AppearanceContext';
