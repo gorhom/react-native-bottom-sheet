@@ -13,17 +13,17 @@ import {
   TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import isEqual from 'lodash.isequal';
-import { useBottomSheet, useReactiveSharedValue } from '../../hooks';
+import { useReactiveSharedValue } from '../../hooks';
 import {
   DEFAULT_OPACITY,
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
-  DEFAULT_CLOSE_ON_PRESS,
 } from './constants';
 import { WINDOW_HEIGHT } from '../../constants';
-import type { BottomSheetDefaultBackdropProps } from './types';
+import { BottomSheetDefaultBackdropProps } from './types';
 import { styles } from './styles';
+import usePressBehavior from './usePressBehavior';
 
 const BottomSheetBackdropComponent = ({
   animatedIndex,
@@ -31,11 +31,16 @@ const BottomSheetBackdropComponent = ({
   appearsOnIndex = DEFAULT_APPEARS_ON_INDEX,
   disappearsOnIndex = DEFAULT_DISAPPEARS_ON_INDEX,
   enableTouchThrough = DEFAULT_ENABLE_TOUCH_THROUGH,
-  closeOnPress = DEFAULT_CLOSE_ON_PRESS,
+  pressBehavior,
+  closeOnPress,
   style,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
-  const { close } = useBottomSheet();
+  const { handleOnPress, syntheticPressBehavior } = usePressBehavior({
+    pressBehavior,
+    closeOnPress,
+    disappearsOnIndex,
+  });
   //#endregion
 
   //#region variables
@@ -48,14 +53,17 @@ const BottomSheetBackdropComponent = ({
   const gestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>(
     {
       onFinish: () => {
-        runOnJS(close)();
+        runOnJS(handleOnPress)();
       },
-    }
+    },
+    [handleOnPress]
   );
   //#endregion
 
   //#region animated props
-  const isContainerTouchable = useReactiveSharedValue<boolean>(closeOnPress);
+  const isContainerTouchable = useReactiveSharedValue<boolean>(
+    syntheticPressBehavior === 'close'
+  );
   const containerAnimatedProps = useAnimatedProps(
     () => ({
       pointerEvents: animatedIndex.value > disappearsOnIndex ? 'auto' : 'none',
@@ -99,14 +107,18 @@ const BottomSheetBackdropComponent = ({
   );
   //#endregion
 
-  return closeOnPress ? (
+  return syntheticPressBehavior !== 'none' ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View
         style={containerStyle}
         accessible={true}
         accessibilityRole="button"
         accessibilityLabel="Bottom Sheet backdrop"
-        accessibilityHint="Tap to close the Bottom Sheet"
+        accessibilityHint={`Tap to ${
+          typeof syntheticPressBehavior === 'string'
+            ? syntheticPressBehavior
+            : 'move'
+        } the Bottom Sheet`}
         // @ts-ignore
         animatedProps={containerAnimatedProps}
       />
