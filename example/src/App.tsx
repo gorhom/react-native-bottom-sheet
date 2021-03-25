@@ -144,6 +144,16 @@ function App() {
           />
 
           <Stack.Screen
+            name="Advanced/NestedScrollableExample"
+            options={{
+              title: 'Nested Scrollable',
+            }}
+            getComponent={() =>
+              require('./screens/advanced/NestedScrollableExample').default
+            }
+          />
+
+          <Stack.Screen
             name="Advanced/ViewPagerExample"
             options={{
               title: 'ViewPager Example',

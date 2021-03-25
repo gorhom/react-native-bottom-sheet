@@ -75,6 +75,10 @@ const data = [
         slug: 'Advanced/DynamicSnapPointExample',
       },
       {
+        name: 'Nested Scrollable',
+        slug: 'Advanced/NestedScrollableExample',
+      },
+      {
         name: 'View Pager',
         slug: 'Advanced/ViewPagerExample',
       },

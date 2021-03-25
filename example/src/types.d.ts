@@ -20,6 +20,7 @@ export type AppStackParamsList = {
   ['Advanced/BackdropExample']: undefined;
   ['Advanced/MapExample']: undefined;
   ['Advanced/DynamicSnapPointExample']: undefined;
+  ['Advanced/NestedScrollableExample']: undefined;
   ['Advanced/ViewPagerExample']: undefined;
 };
 
