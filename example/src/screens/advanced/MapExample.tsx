@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
-import {
+import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useDerivedValue,
@@ -162,6 +162,15 @@ const MapExample = () => {
     []
   );
 
+  const testStyle = useAnimatedStyle(() => ({
+    position: 'absolute',
+    left: 0,
+    width: 100,
+    height: 100,
+    backgroundColor: 'red',
+    bottom: animatedPOIListPosition.value - topSafeArea,
+  }));
+
   return (
     <View style={styles.container}>
       <MapView
@@ -199,25 +208,26 @@ const MapExample = () => {
         >
           {data.map(renderItem)}
         </BottomSheetScrollView>
+        <Animated.View style={testStyle} />
       </BottomSheetModal>
 
-      <BottomSheetModal
-        ref={poiDetailsModalRef}
-        key="PoiDetailsSheet"
-        name="PoiDetailsSheet"
-        index={0}
-        snapPoints={poiDetailsSnapPoints}
-        topInset={topSafeArea}
-        animatedIndex={animatedPOIDetailsIndex}
-        animatedPosition={animatedPOIDetailsPosition}
-        handleComponent={LocationDetailsHandle}
-        backgroundComponent={BlurredBackground}
-      >
-        <LocationDetails
-          onClose={handleCloseLocationDetails}
-          {...(selectedItem as Location)}
-        />
-      </BottomSheetModal>
+      {/*<BottomSheetModal*/}
+      {/*  ref={poiDetailsModalRef}*/}
+      {/*  key="PoiDetailsSheet"*/}
+      {/*  name="PoiDetailsSheet"*/}
+      {/*  index={0}*/}
+      {/*  snapPoints={poiDetailsSnapPoints}*/}
+      {/*  topInset={topSafeArea}*/}
+      {/*  animatedIndex={animatedPOIDetailsIndex}*/}
+      {/*  animatedPosition={animatedPOIDetailsPosition}*/}
+      {/*  handleComponent={LocationDetailsHandle}*/}
+      {/*  backgroundComponent={BlurredBackground}*/}
+      {/*>*/}
+      {/*  <LocationDetails*/}
+      {/*    onClose={handleCloseLocationDetails}*/}
+      {/*    {...(selectedItem as Location)}*/}
+      {/*  />*/}
+      {/*</BottomSheetModal>*/}
     </View>
   );
 };

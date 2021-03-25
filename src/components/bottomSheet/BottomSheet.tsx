@@ -64,6 +64,7 @@ import {
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
 import { styles } from './styles';
+import BottomSheetDebugView from '../bottomSheetDebugView';
 
 Animated.addWhitelistedUIProps({
   decelerationRate: true,
@@ -713,12 +714,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               />
             </BottomSheetInternalProvider>
           </Animated.View>
-          {/* <BottomSheetDebugView
+          <BottomSheetDebugView
             values={{
               animatedIndex,
               animatedPosition,
             }}
-          /> */}
+          />
         </BottomSheetContainer>
       </BottomSheetProvider>
     );
