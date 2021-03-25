@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { ShowcaseLabel } from '@gorhom/showcase-template';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { ShowcaseLabel, useShowcaseTheme } from '@gorhom/showcase-template';
 import Button from '../button';
 import type { Location } from '../../types';
 
@@ -20,6 +20,23 @@ const LocationDetails = ({
   photos,
   onClose,
 }: LocationDetailsProps) => {
+  //#region hooks
+  const { colors } = useShowcaseTheme();
+  //#endregion
+
+  //#region styles
+  const closeButtonStyle = useMemo(
+    () => [
+      styles.closeButton,
+      {
+        backgroundColor: colors.secondaryCard,
+      },
+    ],
+    [colors.secondaryCard]
+  );
+  //#endregion
+
+  //#region renders
   const renderPhoto = useCallback(({ item }) => {
     return (
       <Image
@@ -43,12 +60,9 @@ const LocationDetails = ({
           <ShowcaseLabel style={styles.address}>{address}</ShowcaseLabel>
         </View>
 
-        <Button
-          label="X"
-          onPress={onClose}
-          style={styles.closeButton}
-          labelStyle={styles.closeText}
-        />
+        <TouchableOpacity style={closeButtonStyle} onPress={onClose}>
+          <ShowcaseLabel style={styles.closeText}>X</ShowcaseLabel>
+        </TouchableOpacity>
       </View>
 
       <Button
@@ -90,6 +104,7 @@ const LocationDetails = ({
       </View>
     </View>
   );
+  //#endregion
 };
 
 const styles = StyleSheet.create({
@@ -121,6 +136,7 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 30,
     padding: 0,
+    margin: 0,
   },
   closeText: {
     fontSize: 15,

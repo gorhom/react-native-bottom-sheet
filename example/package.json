@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@gorhom/portal": "^1.0.4",
-    "@gorhom/showcase-template": "^2.0.3",
+    "@gorhom/showcase-template": "^2.0.4",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/material-top-tabs": "^5.3.14",

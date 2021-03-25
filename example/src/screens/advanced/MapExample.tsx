@@ -14,6 +14,7 @@ import {
   useDerivedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useHeaderHeight } from '@react-navigation/stack';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
@@ -46,13 +47,14 @@ const MapExample = () => {
   const poiDetailsModalRef = useRef<BottomSheetModal>(null);
 
   // hooks
-  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
+  const headerHeight = useHeaderHeight();
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
   //#region variables
   const data = useMemo(() => createLocationListMockData(15), []);
   const poiListSnapPoints = useMemo(
     () => [
-      SEARCH_HANDLE_HEIGHT,
+      bottomSafeArea,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
       SCREEN_HEIGHT,
     ],
@@ -101,9 +103,11 @@ const MapExample = () => {
   }, []);
   const handleCloseLocationDetails = useCallback(() => {
     setSelectedItem(undefined);
+    poiDetailsModalRef.current?.dismiss();
   }, []);
   const handlePresentLocationDetails = useCallback((item: Location) => {
     setSelectedItem(item);
+    poiDetailsModalRef.current?.present();
   }, []);
   //#endregion
 
@@ -129,11 +133,11 @@ const MapExample = () => {
     poiListModalRef.current?.present();
   }, []);
   useEffect(() => {
-    if (selectedItem) {
-      poiDetailsModalRef.current?.present();
-    } else {
-      poiDetailsModalRef.current?.dismiss();
-    }
+    // if (selectedItem) {
+    //   poiDetailsModalRef.current?.present();
+    // } else {
+    //   poiDetailsModalRef.current?.dismiss();
+    // }
   }, [selectedItem]);
   //#endregion
 
@@ -183,7 +187,7 @@ const MapExample = () => {
         index={1}
         snapPoints={poiListSnapPoints}
         handleHeight={SEARCH_HANDLE_HEIGHT}
-        topInset={topSafeArea}
+        topInset={headerHeight}
         animatedPosition={animatedPOIListPosition}
         animatedIndex={animatedPOIListIndex}
         dismissOnPanDown={false}
@@ -205,9 +209,8 @@ const MapExample = () => {
         ref={poiDetailsModalRef}
         key="PoiDetailsSheet"
         name="PoiDetailsSheet"
-        index={0}
         snapPoints={poiDetailsSnapPoints}
-        topInset={topSafeArea}
+        topInset={headerHeight}
         animatedIndex={animatedPOIDetailsIndex}
         animatedPosition={animatedPOIDetailsPosition}
         handleComponent={LocationDetailsHandle}

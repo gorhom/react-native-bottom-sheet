@@ -1011,10 +1011,10 @@
     lodash.isequal "^4.5.0"
     nanoid "^3.1.20"
 
-"@gorhom/showcase-template@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@gorhom/showcase-template/-/showcase-template-2.0.3.tgz#ac0306cefcfc3a3bab9d8ff6963f550528fda97d"
-  integrity sha512-V2NrVArdowPAmcs2i6IebWQhnhKQ7gP6umsgGguJ72jG2PvOYGyQU+N/RqCm27V48VQ3nFKtxkT7EHF4FNZ2zQ==
+"@gorhom/showcase-template@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@gorhom/showcase-template/-/showcase-template-2.0.4.tgz#f8ffc2112d7f76062fdeda57db37842c5369726a"
+  integrity sha512-UPK3MIJmZq5s7xwRSGW48YEC4GVVH1XjV93tZEn69dI6CpE406sjp91R5BIHEY0sa5DBt5NzpqD555tAE4/k4Q==
 
 "@hapi/hoek@^9.0.0":
   version "9.1.1"
