@@ -7,8 +7,8 @@ import {
   TextInputChangeEventData,
 } from 'react-native';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { useShowcaseTheme } from '@gorhom/showcase-template';
 import isEqual from 'lodash.isequal';
-import { useAppearance } from '../../hooks';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 export const SEARCH_HANDLE_HEIGHT = 69;
@@ -18,20 +18,19 @@ const BottomSheetHandleComponent = () => {
   const [value, setValue] = useState('');
 
   // hooks
-  const { appearance } = useAppearance();
+  const { dark } = useShowcaseTheme();
 
   // styles
   const indicatorStyle = useMemo(
     () => [
       styles.indicator,
       {
-        backgroundColor:
-          appearance === 'light'
-            ? 'rgba(0, 0, 0, 0.25)'
-            : 'rgba(255, 255, 255, 0.25)',
+        backgroundColor: !dark
+          ? 'rgba(0, 0, 0, 0.25)'
+          : 'rgba(255, 255, 255, 0.25)',
       },
     ],
-    [appearance]
+    [dark]
   );
 
   // callbacks

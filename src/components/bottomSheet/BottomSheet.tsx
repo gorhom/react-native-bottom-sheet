@@ -427,9 +427,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
       },
       [
-        animationState,
-        animatedPosition,
-        animateToPointCompleted,
         handleOnAnimate,
         _providedAnimationConfigs,
         _providedAnimationDuration,

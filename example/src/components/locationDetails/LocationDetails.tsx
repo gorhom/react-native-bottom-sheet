@@ -1,14 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { Location } from '../../types';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { ShowcaseLabel, useShowcaseTheme } from '@gorhom/showcase-template';
 import Button from '../button';
-import Text from '../text';
+import type { Location } from '../../types';
 
 const keyExtractor = (item: string, index: number) => `${index}${item}`;
 const photoSize = 180;
-const buttonLabelColors = ['rgba(0, 0, 0, 0.5)', 'rgba(255, 255, 255, 0.5)'];
-const backgroundColors = ['rgba(0, 0, 0, 0.125)', 'rgba(255, 255, 255, 0.125)'];
 
 export const LOCATION_DETAILS_HEIGHT = 298;
 
@@ -22,6 +20,23 @@ const LocationDetails = ({
   photos,
   onClose,
 }: LocationDetailsProps) => {
+  //#region hooks
+  const { colors } = useShowcaseTheme();
+  //#endregion
+
+  //#region styles
+  const closeButtonStyle = useMemo(
+    () => [
+      styles.closeButton,
+      {
+        backgroundColor: colors.secondaryCard,
+      },
+    ],
+    [colors.secondaryCard]
+  );
+  //#endregion
+
+  //#region renders
   const renderPhoto = useCallback(({ item }) => {
     return (
       <Image
@@ -41,21 +56,20 @@ const LocationDetails = ({
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.headerContentContainer}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.address}>{address}</Text>
+          <ShowcaseLabel style={styles.name}>{name}</ShowcaseLabel>
+          <ShowcaseLabel style={styles.address}>{address}</ShowcaseLabel>
         </View>
 
-        <Button
-          label="X"
-          onPress={onClose}
-          containerColor={backgroundColors}
-          labelColor={buttonLabelColors}
-          style={styles.closeButton}
-          labelStyle={styles.closeText}
-        />
+        <TouchableOpacity style={closeButtonStyle} onPress={onClose}>
+          <ShowcaseLabel style={styles.closeText}>X</ShowcaseLabel>
+        </TouchableOpacity>
       </View>
 
-      <Button label="Directions" style={styles.directionsButton} />
+      <Button
+        label="Directions"
+        style={styles.directionsButton}
+        onPress={() => {}}
+      />
 
       <FlatList
         data={photos}
@@ -71,25 +85,26 @@ const LocationDetails = ({
       <View style={styles.actionsContainer}>
         <Button
           label="Call"
-          containerColor={backgroundColors}
           labelStyle={styles.actionButtonLabel}
           style={styles.actionButton}
+          onPress={() => {}}
         />
         <Button
           label="Save"
-          containerColor={backgroundColors}
           labelStyle={styles.actionButtonLabel}
           style={styles.actionButton}
+          onPress={() => {}}
         />
         <Button
           label="Share"
-          containerColor={backgroundColors}
           labelStyle={styles.actionButtonLabel}
           style={styles.actionButton}
+          onPress={() => {}}
         />
       </View>
     </View>
   );
+  //#endregion
 };
 
 const styles = StyleSheet.create({
@@ -121,6 +136,7 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 30,
     padding: 0,
+    margin: 0,
   },
   closeText: {
     fontSize: 15,

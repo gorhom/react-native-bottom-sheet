@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Handle from '../../components/handle';
 import Button from '../../components/button';
-import ContactList from '../../components/contactList';
+import ContactListContainer from '../../components/contactListContainer';
 
 const CustomHandleExample = () => {
   // hooks
@@ -29,14 +29,6 @@ const CustomHandleExample = () => {
   }, []);
 
   // renders
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>Custom Handle Example</Text>
-      </View>
-    );
-  }, []);
-
   return (
     <View style={styles.container}>
       <Button
@@ -75,7 +67,11 @@ const CustomHandleExample = () => {
         snapPoints={snapPoints}
         handleComponent={Handle}
       >
-        <ContactList type="FlatList" count={10} header={renderHeader} />
+        <ContactListContainer
+          count={10}
+          type="FlatList"
+          title="Custom Handle Example"
+        />
       </BottomSheet>
     </View>
   );
@@ -89,23 +85,6 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingTop: 12,
     paddingHorizontal: 24,
-    backgroundColor: 'white',
-  },
-  shadowOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-  },
-  title: {
-    fontSize: 46,
-    lineHeight: 46,
-    fontWeight: '800',
-  },
-  headerContainer: {
-    paddingVertical: 24,
     backgroundColor: 'white',
   },
   buttonContainer: {

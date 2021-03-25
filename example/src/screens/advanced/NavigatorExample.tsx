@@ -2,38 +2,38 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
   createStackNavigator,
-  HeaderBackButton,
   StackNavigationOptions,
   TransitionPresets,
 } from '@react-navigation/stack';
-import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import createDummyScreen from '../DummyScreen';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 const ScreenA = createDummyScreen({
   title: 'FlatList Screen',
-  nextScreen: 'ScreenB',
+  nextScreen: 'ScrollView Screen',
   type: 'FlatList',
 });
 
 const ScreenB = createDummyScreen({
   title: 'ScrollView Screen',
-  nextScreen: 'ScreenC',
+  nextScreen: 'SectionList Screen',
   type: 'ScrollView',
   count: 25,
 });
 
 const ScreenC = createDummyScreen({
   title: 'SectionList Screen',
-  nextScreen: 'ScreenD',
+  nextScreen: 'View Screen',
   type: 'SectionList',
   count: 20,
 });
 
 const ScreenD = createDummyScreen({
   title: 'View Screen',
-  nextScreen: 'ScreenA',
+  nextScreen: 'FlatList Screen',
   type: 'View',
   count: 5,
 });
@@ -42,13 +42,9 @@ const Navigator = () => {
   const screenOptions = useMemo<StackNavigationOptions>(
     () => ({
       ...TransitionPresets.SlideFromRightIOS,
+
       headerShown: true,
       safeAreaInsets: { top: 0 },
-      headerLeft: ({ onPress, ...props }) => (
-        <TouchableOpacity onPress={onPress}>
-          <HeaderBackButton {...props} />
-        </TouchableOpacity>
-      ),
       cardStyle: {
         backgroundColor: 'white',
         overflow: 'visible',
@@ -59,16 +55,18 @@ const Navigator = () => {
 
   const screenAOptions = useMemo(() => ({ headerLeft: () => null }), []);
   return (
-    <Stack.Navigator screenOptions={screenOptions} headerMode="screen">
-      <Stack.Screen
-        name="ScreenA"
-        options={screenAOptions}
-        component={ScreenA}
-      />
-      <Stack.Screen name="ScreenB" component={ScreenB} />
-      <Stack.Screen name="ScreenC" component={ScreenC} />
-      <Stack.Screen name="ScreenD" component={ScreenD} />
-    </Stack.Navigator>
+    <NavigationContainer independent={true}>
+      <Stack.Navigator screenOptions={screenOptions} headerMode="screen">
+        <Stack.Screen
+          name="FlatList Screen"
+          options={screenAOptions}
+          component={ScreenA}
+        />
+        <Stack.Screen name="ScrollView Screen" component={ScreenB} />
+        <Stack.Screen name="SectionList Screen" component={ScreenC} />
+        <Stack.Screen name="View Screen" component={ScreenD} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

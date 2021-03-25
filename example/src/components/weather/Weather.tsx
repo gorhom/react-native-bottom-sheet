@@ -5,10 +5,9 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { useAppearance } from '../../hooks';
-import Text from '../text';
-import { SEARCH_HANDLE_HEIGHT } from '../../components/searchHandle';
+import { ShowcaseLabel, useShowcaseTheme } from '@gorhom/showcase-template';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SEARCH_HANDLE_HEIGHT } from '../../components/searchHandle';
 import { LOCATION_DETAILS_HEIGHT } from '../locationDetails';
 
 interface WeatherProps {
@@ -25,7 +24,7 @@ const Weather = ({
   snapPoints,
 }: WeatherProps) => {
   // hooks
-  const { appearance } = useAppearance();
+  const { colors } = useShowcaseTheme();
   const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
   // styles
@@ -61,14 +60,14 @@ const Weather = ({
   const containerStyle = useMemo(
     () => [
       styles.container,
-      { backgroundColor: appearance === 'dark' ? '#333' : '#FCFCFC' },
+      { backgroundColor: colors.secondaryCard },
       containerAnimatedStyle,
     ],
-    [appearance, containerAnimatedStyle]
+    [colors.secondaryCard, containerAnimatedStyle]
   );
   return (
     <Animated.View style={containerStyle}>
-      <Text style={styles.label}>☁️12°</Text>
+      <ShowcaseLabel style={styles.label}>☁️12°</ShowcaseLabel>
     </Animated.View>
   );
 };
