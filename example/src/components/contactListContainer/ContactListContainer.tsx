@@ -1,34 +1,34 @@
-import React, { memo, useCallback } from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, View } from 'react-native';
+import React, { memo, useMemo } from 'react';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import ContactList, { ContactListProps } from '../contactList';
 
 interface ContactListContainerProps extends Omit<ContactListProps, 'header'> {
   title: string;
+  headerStyle?: ViewStyle;
 }
 
 const ContactListContainerComponent = ({
   count,
   type,
   title,
+  headerStyle: _headerStyle,
   onItemPress,
 }: ContactListContainerProps) => {
-  // renders
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.headerContainer}>
+  const headerStyle = useMemo(() => [styles.headerContainer, _headerStyle], [
+    _headerStyle,
+  ]);
+  return (
+    <>
+      <View style={headerStyle}>
         <Text style={styles.title}>{title}</Text>
       </View>
-    );
-  }, [title]);
-  return (
-    <ContactList
-      key={`${type}.list`}
-      header={renderHeader}
-      type={type}
-      count={count}
-      onItemPress={onItemPress}
-    />
+      <ContactList
+        key={`${type}.list`}
+        type={type}
+        count={count}
+        onItemPress={onItemPress}
+      />
+    </>
   );
 };
 
@@ -39,8 +39,9 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   headerContainer: {
-    paddingVertical: 24,
+    padding: 24,
     backgroundColor: 'white',
+    zIndex: 99999,
   },
 });
 

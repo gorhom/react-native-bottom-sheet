@@ -1,14 +1,12 @@
 import React, { useCallback } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Location } from '../../types';
+import { ShowcaseLabel } from '@gorhom/showcase-template';
 import Button from '../button';
-import Text from '../text';
+import type { Location } from '../../types';
 
 const keyExtractor = (item: string, index: number) => `${index}${item}`;
 const photoSize = 180;
-const buttonLabelColors = ['rgba(0, 0, 0, 0.5)', 'rgba(255, 255, 255, 0.5)'];
-const backgroundColors = ['rgba(0, 0, 0, 0.125)', 'rgba(255, 255, 255, 0.125)'];
 
 export const LOCATION_DETAILS_HEIGHT = 298;
 
@@ -41,21 +39,23 @@ const LocationDetails = ({
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.headerContentContainer}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.address}>{address}</Text>
+          <ShowcaseLabel style={styles.name}>{name}</ShowcaseLabel>
+          <ShowcaseLabel style={styles.address}>{address}</ShowcaseLabel>
         </View>
 
         <Button
           label="X"
           onPress={onClose}
-          containerColor={backgroundColors}
-          labelColor={buttonLabelColors}
           style={styles.closeButton}
           labelStyle={styles.closeText}
         />
       </View>
 
-      <Button label="Directions" style={styles.directionsButton} />
+      <Button
+        label="Directions"
+        style={styles.directionsButton}
+        onPress={() => {}}
+      />
 
       <FlatList
         data={photos}
@@ -71,21 +71,21 @@ const LocationDetails = ({
       <View style={styles.actionsContainer}>
         <Button
           label="Call"
-          containerColor={backgroundColors}
           labelStyle={styles.actionButtonLabel}
           style={styles.actionButton}
+          onPress={() => {}}
         />
         <Button
           label="Save"
-          containerColor={backgroundColors}
           labelStyle={styles.actionButtonLabel}
           style={styles.actionButton}
+          onPress={() => {}}
         />
         <Button
           label="Share"
-          containerColor={backgroundColors}
           labelStyle={styles.actionButtonLabel}
           style={styles.actionButton}
+          onPress={() => {}}
         />
       </View>
     </View>

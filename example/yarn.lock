@@ -1011,10 +1011,10 @@
     lodash.isequal "^4.5.0"
     nanoid "^3.1.20"
 
-"@gorhom/showcase-template@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@gorhom/showcase-template/-/showcase-template-1.0.2.tgz#4dfefde1a2e05d28ac6420827d576ababb133272"
-  integrity sha512-D0mV9qsncJdwXfkkwE1eWpEANxMEFe8jwhVXJK7z6wJ1S3we3WXwzFleOc2Xl4tnwpcLOi6ijoowedwIPTjb1A==
+"@gorhom/showcase-template@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@gorhom/showcase-template/-/showcase-template-2.0.3.tgz#ac0306cefcfc3a3bab9d8ff6963f550528fda97d"
+  integrity sha512-V2NrVArdowPAmcs2i6IebWQhnhKQ7gP6umsgGguJ72jG2PvOYGyQU+N/RqCm27V48VQ3nFKtxkT7EHF4FNZ2zQ==
 
 "@hapi/hoek@^9.0.0":
   version "9.1.1"
@@ -3856,10 +3856,10 @@ react-native-maps@^0.27.1:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
   integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
 
-react-native-pager-view@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.1.1.tgz#63f739b9c909b530c70e76217a2ded9a7048647c"
-  integrity sha512-QEEYvEucKNZfjknXAEcbhIXGVJLd+TXPmrREWPM4xpgt7npMr1l+elLWVhsyWsOFHMJM71U9lOg8atdBSliLoA==
+react-native-pager-view@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.1.2.tgz#a6957afc81f5729cbb884fe963df3482e2f46877"
+  integrity sha512-UvPvjtuIkiI9Ti8NoMH+fiFj0ehfFv4WkNUGM46dOJfOxmE6Z/hoyJjymOHU//iLkQSMO+YNherZs0HcijdA2A==
 
 react-native-reanimated@^2.0.0:
   version "2.0.0"

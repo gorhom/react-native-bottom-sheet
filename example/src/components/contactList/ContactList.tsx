@@ -18,7 +18,6 @@ export interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
   style?: ViewStyle;
-  header?: (() => JSX.Element) | null;
   onItemPress?: () => void;
 }
 
@@ -27,7 +26,6 @@ const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
 const ContactList = ({
   type,
   count = 25,
-  header = null,
   style,
   onItemPress,
 }: ContactListProps) => {
@@ -37,7 +35,6 @@ const ContactList = ({
   // variables
   const sections = useMemo(() => createContactSectionsMockData(count), [count]);
   const data = useMemo(() => createContactListMockData(count), [count]);
-  const stickyHeaderIndices = useMemo(() => [0], []);
 
   // styles
   const contentContainerStyle = useMemo(
@@ -102,10 +99,6 @@ const ContactList = ({
         windowSize={10}
         maxToRenderPerBatch={5}
         renderItem={renderFlatListItem}
-        {...(header && {
-          stickyHeaderIndices: stickyHeaderIndices,
-          ListHeaderComponent: header,
-        })}
         style={styles.container}
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
@@ -119,7 +112,6 @@ const ContactList = ({
         bounces={true}
         focusHook={useFocusEffect}
       >
-        {header && header()}
         {data.map(renderScrollViewItem)}
       </BottomSheetScrollView>
     );
@@ -137,10 +129,6 @@ const ContactList = ({
         keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionItem}
-        {...(header && {
-          stickyHeaderIndices: [0],
-          ListHeaderComponent: header,
-        })}
         focusHook={useFocusEffect}
         removeClippedSubviews={Platform.OS === 'android' && sections.length > 0}
       />
@@ -148,7 +136,6 @@ const ContactList = ({
   } else if (type === 'View') {
     return (
       <BottomSheetView style={styles.contentContainer}>
-        {header && header()}
         {data.map(renderScrollViewItem)}
       </BottomSheetView>
     );

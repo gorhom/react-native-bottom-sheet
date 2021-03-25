@@ -1,84 +1,21 @@
-import React, { useMemo } from 'react';
-import {
-  Text,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
-  View,
-  Platform,
-} from 'react-native';
-import { TouchableOpacity } from '@gorhom/bottom-sheet';
-import { useAppearance } from '../../hooks';
+import React from 'react';
+import { ViewStyle, TextStyle } from 'react-native';
+import { ShowcaseButton, ShowcaseLabel } from '@gorhom/showcase-template';
 
 interface ButtonProps {
   label: string;
-  labelColor?: string[];
   labelStyle?: TextStyle;
-  containerColor?: string[];
   style?: ViewStyle;
-  onPress?: () => void;
+  onPress: () => void;
 }
 
-const Button = ({
-  label,
-  labelColor,
-  labelStyle: _labelStyle,
-  containerColor,
-  style,
-  onPress,
-}: ButtonProps) => {
-  // hooks
-  const { appearance } = useAppearance();
-
-  // styles
-  const containerStyle = useMemo(
-    () => [
-      styles.container,
-      style,
-      containerColor && {
-        backgroundColor:
-          appearance === 'light' ? containerColor[0] : containerColor[1],
-      },
-    ],
-    [style, containerColor, appearance]
-  );
-  const labelStyle = useMemo(
-    () => [
-      styles.label,
-      _labelStyle,
-      labelColor && {
-        color: appearance === 'light' ? labelColor[0] : labelColor[1],
-      },
-    ],
-    [_labelStyle, labelColor, appearance]
-  );
-
+const Button = ({ label, labelStyle, style, onPress }: ButtonProps) => {
   // render
-
-  return Platform.OS === 'ios' ? (
-    // @ts-ignore
-    <TouchableOpacity style={containerStyle} onPress={onPress}>
-      <Text style={labelStyle}>{label}</Text>
-    </TouchableOpacity>
-  ) : (
-    <View style={containerStyle}>
-      <TouchableOpacity onPress={onPress}>
-        <Text style={labelStyle}>{label}</Text>
-      </TouchableOpacity>
-    </View>
+  return (
+    <ShowcaseButton containerStyle={style} onPress={onPress}>
+      <ShowcaseLabel style={labelStyle}>{label}</ShowcaseLabel>
+    </ShowcaseButton>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 12,
-    borderRadius: 4,
-    backgroundColor: '#333',
-    overflow: 'hidden',
-  },
-  label: {
-    color: 'white',
-  },
-});
 
 export default Button;
