@@ -4,7 +4,7 @@ import ContactList, { ContactListProps } from '../contactList';
 
 interface ContactListContainerProps extends Omit<ContactListProps, 'header'> {
   title: string;
-  headerStyle: ViewStyle;
+  headerStyle?: ViewStyle;
 }
 
 const ContactListContainerComponent = ({
