@@ -14,6 +14,8 @@ export interface BottomSheetBackdropProps extends Pick<ViewProps, 'style'> {
   animatedPosition: Animated.Node<number>;
 }
 
+export type BackdropPressBehavior = 'none' | 'close' | 'collapse' | number;
+
 export interface BottomSheetDefaultBackdropProps
   extends BottomSheetBackdropProps {
   /**
@@ -43,7 +45,13 @@ export interface BottomSheetDefaultBackdropProps
   /**
    * Close sheet when user press on backdrop.
    * @type boolean
-   * @default true
+   * @deprecated Use pressBehavior instead.
    */
   closeOnPress?: boolean;
+  /**
+   * What should happen when user press backdrop?
+   * @type BackdropPressBehavior
+   * @default 'close'
+   */
+  pressBehavior?: BackdropPressBehavior;
 }

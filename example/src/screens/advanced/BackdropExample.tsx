@@ -1,19 +1,33 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactListContainer from '../../components/contactListContainer';
 
 const BackdropExample = () => {
+  // state
+  const [backdropPressBehavior, setBackdropPressBehavior] = useState<
+    'none' | 'close' | 'collapse'
+  >('collapse');
+
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
-  const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapTo(index);
+  const handleTogglePressBehavior = useCallback(() => {
+    setBackdropPressBehavior(state => {
+      switch (state) {
+        case 'none':
+          return 'close';
+        case 'close':
+          return 'collapse';
+        case 'collapse':
+          return 'none';
+      }
+    });
   }, []);
   const handleExpandPress = useCallback(() => {
     bottomSheetRef.current?.expand();
@@ -26,45 +40,38 @@ const BackdropExample = () => {
   }, []);
 
   // renders
+  const renderBackdrop = useCallback(
+    props => (
+      <BottomSheetBackdrop {...props} pressBehavior={backdropPressBehavior} />
+    ),
+    [backdropPressBehavior]
+  );
   return (
     <View style={styles.container}>
       <Button
-        label="Snap To 90%"
+        label={`Toggle Press Behavior: ${backdropPressBehavior}`}
         style={styles.buttonContainer}
-        onPress={() => handleSnapPress(2)}
-      />
-      <Button
-        label="Snap To 50%"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(1)}
-      />
-      <Button
-        label="Snap To 25%"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
+        onPress={handleTogglePressBehavior}
       />
       <Button
         label="Expand"
         style={styles.buttonContainer}
-        onPress={() => handleExpandPress()}
+        onPress={handleExpandPress}
       />
       <Button
         label="Collapse"
         style={styles.buttonContainer}
-        onPress={() => handleCollapsePress()}
+        onPress={handleCollapsePress}
       />
       <Button
         label="Close"
         style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
+        onPress={handleClosePress}
       />
       <BottomSheet
         ref={bottomSheetRef}
-        index={1}
         snapPoints={snapPoints}
-        style={styles.sheetContainer}
-        backdropComponent={BottomSheetBackdrop}
-        backgroundComponent={null}
+        backdropComponent={renderBackdrop}
       >
         <ContactListContainer type="View" count={4} title="Backdrop Example" />
       </BottomSheet>

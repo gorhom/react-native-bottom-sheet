@@ -1,7 +1,8 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
+import React, { memo, useMemo, useRef } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import Animated, {
   and,
+  block,
   call,
   cond,
   eq,
@@ -9,20 +10,20 @@ import Animated, {
   neq,
   not,
   set,
+  useCode,
 } from 'react-native-reanimated';
 import isEqual from 'lodash.isequal';
-import { useValue } from 'react-native-redash';
-import { useBottomSheet } from '../../hooks/useBottomSheet';
+import { useReactiveValue } from '../../hooks';
 import {
   DEFAULT_OPACITY,
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
-  DEFAULT_CLOSE_ON_PRESS,
 } from './constants';
 import { WINDOW_HEIGHT } from '../../constants';
-import type { BottomSheetDefaultBackdropProps } from './types';
+import { usePressBehavior } from './usePressBehavior';
 import { styles } from './styles';
+import type { BottomSheetDefaultBackdropProps } from './types';
 
 const {
   interpolate: interpolateV1,
@@ -36,16 +37,20 @@ const AnimatedTouchableWithoutFeedback = Animated.createAnimatedComponent(
 
 const BottomSheetBackdropComponent = ({
   animatedIndex,
-  animatedPosition,
   opacity = DEFAULT_OPACITY,
   appearsOnIndex = DEFAULT_APPEARS_ON_INDEX,
   disappearsOnIndex = DEFAULT_DISAPPEARS_ON_INDEX,
   enableTouchThrough = DEFAULT_ENABLE_TOUCH_THROUGH,
-  closeOnPress = DEFAULT_CLOSE_ON_PRESS,
+  pressBehavior,
+  closeOnPress,
   style,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
-  const { close } = useBottomSheet();
+  const { handleOnPress, syntheticPressBehavior } = usePressBehavior({
+    pressBehavior,
+    closeOnPress,
+    disappearsOnIndex,
+  });
   //#endregion
 
   //#region variables
@@ -56,7 +61,9 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   //#region animation variables
-  const isTouchable = useValue(closeOnPress !== undefined ? 1 : 0);
+  const isTouchable = useReactiveValue(
+    syntheticPressBehavior !== 'none' ? 1 : 0
+  );
   const animatedOpacity = useMemo(
     () =>
       interpolate(animatedIndex, {
@@ -68,18 +75,20 @@ const BottomSheetBackdropComponent = ({
   );
   //#endregion
 
-  //#region callbacks
-  const handleOnPress = useCallback(() => {
-    close();
-  }, [close]);
-  //#endregion
-
   //#region styles
   const buttonStyle = useMemo(
     () => [
       style,
       {
-        top: cond(eq(animatedIndex, disappearsOnIndex), WINDOW_HEIGHT, 0),
+        transform: [
+          {
+            translateY: cond(
+              eq(animatedIndex, disappearsOnIndex),
+              WINDOW_HEIGHT,
+              0
+            ),
+          },
+        ],
       },
     ],
     [disappearsOnIndex, style, animatedIndex]
@@ -95,49 +104,55 @@ const BottomSheetBackdropComponent = ({
     [style, animatedOpacity]
   );
   //#endregion
-  return closeOnPress ? (
-    <>
-      <AnimatedTouchableWithoutFeedback
-        accessible={true}
-        accessibilityRole="button"
-        accessibilityLabel="Bottom Sheet backdrop"
-        accessibilityHint="Tap to close the Bottom Sheet"
-        onPress={handleOnPress}
-        style={buttonStyle}
-      >
-        <Animated.View ref={containerRef} style={containerStyle} />
-      </AnimatedTouchableWithoutFeedback>
-      <Animated.Code>
-        {() =>
-          cond(
-            and(eq(animatedPosition, disappearsOnIndex), isTouchable),
-            [
-              set(isTouchable, 0),
-              call([], () => {
-                // @ts-ignore
-                containerRef.current.setNativeProps({
-                  pointerEvents: 'none',
-                });
-              }),
-            ],
-            cond(
-              and(neq(animatedPosition, disappearsOnIndex), not(isTouchable)),
-              [
-                set(isTouchable, 1),
-                call([], () => {
-                  // @ts-ignore
-                  containerRef.current.setNativeProps({
-                    pointerEvents: 'auto',
-                  });
-                }),
-              ]
-            )
-          )
-        }
-      </Animated.Code>
-    </>
+
+  //#region effects
+  useCode(
+    () =>
+      block([
+        cond(
+          and(eq(animatedIndex, disappearsOnIndex), isTouchable),
+          [
+            set(isTouchable, 0),
+            call([], () => {
+              // @ts-ignore
+              containerRef.current.setNativeProps({
+                pointerEvents: 'none',
+              });
+            }),
+          ],
+          cond(and(neq(animatedIndex, disappearsOnIndex), not(isTouchable)), [
+            set(isTouchable, 1),
+            call([], () => {
+              // @ts-ignore
+              containerRef.current.setNativeProps({
+                pointerEvents: 'auto',
+              });
+            }),
+          ])
+        ),
+      ]),
+    []
+  );
+  //#endregion
+
+  return syntheticPressBehavior !== 'none' ? (
+    <AnimatedTouchableWithoutFeedback
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel="Bottom Sheet backdrop"
+      accessibilityHint="Tap to close the Bottom Sheet"
+      onPress={handleOnPress}
+      style={buttonStyle}
+    >
+      <Animated.View key="backdrop" ref={containerRef} style={containerStyle} />
+    </AnimatedTouchableWithoutFeedback>
   ) : (
-    <Animated.View pointerEvents={pointerEvents} style={containerStyle} />
+    <Animated.View
+      key="backdrop"
+      ref={containerRef}
+      pointerEvents={pointerEvents}
+      style={containerStyle}
+    />
   );
 };
 

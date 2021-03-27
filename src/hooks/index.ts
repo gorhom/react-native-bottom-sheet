@@ -12,3 +12,6 @@ export { useReactiveValues } from './useReactiveValues';
 // modal
 export { useBottomSheetModal } from './useBottomSheetModal';
 export { useBottomSheetModalInternal } from './useBottomSheetModalInternal';
+
+// sheet
+export { useBottomSheet } from './useBottomSheet';
