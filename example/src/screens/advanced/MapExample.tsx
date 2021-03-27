@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -132,13 +131,6 @@ const MapExample = () => {
   useLayoutEffect(() => {
     poiListModalRef.current?.present();
   }, []);
-  useEffect(() => {
-    // if (selectedItem) {
-    //   poiDetailsModalRef.current?.present();
-    // } else {
-    //   poiDetailsModalRef.current?.dismiss();
-    // }
-  }, [selectedItem]);
   //#endregion
 
   // renders
@@ -188,9 +180,10 @@ const MapExample = () => {
         snapPoints={poiListSnapPoints}
         handleHeight={SEARCH_HANDLE_HEIGHT}
         topInset={headerHeight}
+        dismissOnPanDown={false}
+        keyboardBehavior="extend"
         animatedPosition={animatedPOIListPosition}
         animatedIndex={animatedPOIListIndex}
-        dismissOnPanDown={false}
         handleComponent={SearchHandle}
         backdropComponent={renderBackdrop}
         backgroundComponent={BlurredBackground}

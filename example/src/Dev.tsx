@@ -2,18 +2,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SearchHandle from './components/searchHandle';
 import Button from './components/button';
 import ContactList from './components/contactList';
+import { NavigationContainer } from '@react-navigation/native';
 
 const { height: windowHeight } = Dimensions.get('window');
 
 const BasicExample = () => {
   //#region state
-  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(400);
+  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(300);
   //#endregion
 
   //#region hooks
@@ -22,7 +24,7 @@ const BasicExample = () => {
   //#endregion
 
   //#region variables
-  const snapPoints = useMemo(() => [dynamicSnapPoint], [dynamicSnapPoint]);
+  const snapPoints = useMemo(() => [150, dynamicSnapPoint], [dynamicSnapPoint]);
   const animatedPosition = useSharedValue<number>(0);
   //#endregion
 
@@ -113,7 +115,8 @@ const BasicExample = () => {
         snapPoints={snapPoints}
         animateOnMount={true}
         animatedPosition={animatedPosition}
-        keyboardBehavior="interactive"
+        keyboardBehavior="fullScreen"
+        keyboardBlurBehavior="restore"
         handleComponent={SearchHandle}
         containerHeight={windowHeight - (StatusBar.currentHeight ?? 0)}
         topInset={topSafeArea}
@@ -125,11 +128,6 @@ const BasicExample = () => {
             height: dynamicSnapPoint,
           }}
         >
-          <TextInput style={styles.textInput} />
-          <RNButton
-            onPress={() => console.log('Pressed !')}
-            title="Press Me!"
-          />
           <View
             pointerEvents="none"
             style={{
@@ -185,4 +183,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BasicExample;
+const Stack = createStackNavigator();
+export default () => (
+  <NavigationContainer>
+    <Stack.Navigator headerMode="none" initialRouteName="root">
+      <Stack.Screen name="root">{() => <BasicExample />}</Stack.Screen>
+    </Stack.Navigator>
+  </NavigationContainer>
+);
