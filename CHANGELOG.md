@@ -1,6 +1,26 @@
 # Changelog
 
-## [v3.4.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.4.0...v3.4.1)
+## [v3.5.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.5.0...v3.5.1)
+
+#### Fixes
+
+- fix: crash when last snap point get removed ([31311f9](https://github.com/gorhom/react-native-bottom-sheet/commit/31311f920edf4b69ddecef20ece8d7943826e68b)).
+
+## [v3.5.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.4.1...v3.5.0) - 2021-03-27
+
+#### Features
+
+- feat: support new prop for BottomSheetBackdrop, "pressBehavior" ([`#361`](https://github.com/gorhom/react-native-bottom-sheet/pull/361)).
+
+#### Improvements
+
+- chore: updated example theming ([`#369`](https://github.com/gorhom/react-native-bottom-sheet/pull/369)).
+
+#### Fixes
+
+- fix: animateToPoint callback dependencies ([468f920](https://github.com/gorhom/react-native-bottom-sheet/commit/468f9204d30fc327e5e6a3e1c43976a0afe13e51)).
+
+## [v3.4.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.4.0...v3.4.1) - 2021-03-15
 
 #### Improvements
 
@@ -196,7 +216,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.4...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.6...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 

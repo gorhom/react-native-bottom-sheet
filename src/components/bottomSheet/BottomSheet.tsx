@@ -711,7 +711,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         currentIndexRef.current !== -1 &&
         isClosing.current === false
       ) {
-        const newSnapPoint = snapPoints[currentIndexRef.current];
+        /**
+         * Set index to new the snap points length, if previous index
+         * is out of bond.
+         */
+        const safeCurrentIndex = Math.min(
+          currentIndexRef.current,
+          snapPoints.length - 1
+        );
+
+        const newSnapPoint = snapPoints[safeCurrentIndex];
         requestAnimationFrame(() => runOnUI(animateToPoint)(newSnapPoint));
       }
     }, [isLayoutCalculated, snapPoints, animateToPoint]);
