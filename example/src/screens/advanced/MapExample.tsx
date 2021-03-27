@@ -158,7 +158,7 @@ const MapExample = () => {
       <BottomSheetBackdrop
         {...props}
         enableTouchThrough={true}
-        closeOnPress={false}
+        pressBehavior="none"
         appearsOnIndex={2}
         disappearsOnIndex={1}
       />
