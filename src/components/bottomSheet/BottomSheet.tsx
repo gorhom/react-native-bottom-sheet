@@ -494,8 +494,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const handleSnapTo = useCallback(
       (
         index: number,
-        animationDuration?: number,
-        animationEasing?: Animated.EasingFunction
+        animationDuration: number = DEFAULT_ANIMATION_DURATION,
+        animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
       ) => {
         invariant(
           index >= -1 && index <= snapPoints.length - 1,
@@ -516,8 +516,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleClose = useCallback(
       (
-        animationDuration?: number,
-        animationEasing?: Animated.EasingFunction
+        animationDuration: number = DEFAULT_ANIMATION_DURATION,
+        animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
       ) => {
         if (isClosing.current) {
           return;
@@ -532,8 +532,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleExpand = useCallback(
       (
-        animationDuration?: number,
-        animationEasing?: Animated.EasingFunction
+        animationDuration: number = DEFAULT_ANIMATION_DURATION,
+        animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
       ) => {
         if (isClosing.current) {
           return;
@@ -548,8 +548,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleCollapse = useCallback(
       (
-        animationDuration?: number,
-        animationEasing?: Animated.EasingFunction
+        animationDuration: number = DEFAULT_ANIMATION_DURATION,
+        animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
       ) => {
         if (isClosing.current) {
           return;
