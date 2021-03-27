@@ -1,6 +1,12 @@
 # Changelog
 
-## [v3.5.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.4.1...v3.5.0)
+## [v3.5.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.5.0...v3.5.1)
+
+#### Fixes
+
+- fix: crash when last snap point get removed ([31311f9](https://github.com/gorhom/react-native-bottom-sheet/commit/31311f920edf4b69ddecef20ece8d7943826e68b)).
+
+## [v3.5.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.4.1...v3.5.0) - 2021-03-27
 
 #### Features
 
