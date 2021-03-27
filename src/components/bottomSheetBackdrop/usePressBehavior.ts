@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useBottomSheet } from '../../hooks';
 import { DEFAULT_PRESS_BEHAVIOR } from './constants';
-import {
+import type {
   BackdropPressBehavior,
   BottomSheetDefaultBackdropProps,
 } from './types';
 
-export default function usePressBehavior({
+export const usePressBehavior = ({
   closeOnPress,
   disappearsOnIndex,
   pressBehavior,
 }: Pick<
   BottomSheetDefaultBackdropProps,
   'closeOnPress' | 'disappearsOnIndex' | 'pressBehavior'
->) {
+>) => {
   //#region hooks
   const { snapTo, close } = useBottomSheet();
   //#endregion
@@ -57,4 +57,4 @@ export default function usePressBehavior({
     handleOnPress,
     syntheticPressBehavior,
   };
-}
+};

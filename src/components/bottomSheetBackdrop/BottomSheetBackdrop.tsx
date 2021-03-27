@@ -21,9 +21,9 @@ import {
   DEFAULT_ENABLE_TOUCH_THROUGH,
 } from './constants';
 import { WINDOW_HEIGHT } from '../../constants';
-import { BottomSheetDefaultBackdropProps } from './types';
+import { usePressBehavior } from './usePressBehavior';
 import { styles } from './styles';
-import usePressBehavior from './usePressBehavior';
+import type { BottomSheetDefaultBackdropProps } from './types';
 
 const BottomSheetBackdropComponent = ({
   animatedIndex,
@@ -62,7 +62,7 @@ const BottomSheetBackdropComponent = ({
 
   //#region animated props
   const isContainerTouchable = useReactiveSharedValue<boolean>(
-    syntheticPressBehavior === 'close'
+    syntheticPressBehavior !== 'none'
   );
   const containerAnimatedProps = useAnimatedProps(
     () => ({
