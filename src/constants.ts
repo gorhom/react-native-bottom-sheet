@@ -60,6 +60,11 @@ const KEYBOARD_BEHAVIOR = {
   interactive: 'interactive',
 } as const;
 
+const KEYBOARD_BLUR_BEHAVIOR = {
+  none: 'none',
+  restore: 'restore',
+} as const;
+
 const KEYBOARD_DEFAULT_ANIMATION_CONFIGS = {
   damping: 500,
   stiffness: 1000,
@@ -69,7 +74,7 @@ const KEYBOARD_DEFAULT_ANIMATION_CONFIGS = {
   restSpeedThreshold: 10,
 };
 
-const KEYBOARD_DISMISS_THRESHOLD = 25;
+const KEYBOARD_DISMISS_THRESHOLD = 12.5;
 
 const KEYBOARD_EASING_MAPPER = {
   easeIn: Easing.in(Easing.ease),
@@ -90,6 +95,7 @@ export {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   MODAL_STACK_BEHAVIOR,
   KEYBOARD_BEHAVIOR,
+  KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_DEFAULT_ANIMATION_CONFIGS,
   KEYBOARD_DISMISS_THRESHOLD,
   KEYBOARD_EASING_MAPPER,

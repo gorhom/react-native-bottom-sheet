@@ -5,7 +5,10 @@ import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
-import type { KEYBOARD_BEHAVIOR } from '../../constants';
+import type {
+  KEYBOARD_BEHAVIOR,
+  KEYBOARD_BLUR_BEHAVIOR,
+} from '../../constants';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
@@ -103,6 +106,12 @@ export interface BottomSheetProps
    * @default none
    */
   keyboardBehavior?: keyof typeof KEYBOARD_BEHAVIOR;
+  /**
+   * Defines the keyboard blur behavior.
+   * - `none`: do nothing.
+   * - `restore`: restore sheet position.
+   */
+  keyboardBlurBehavior?: keyof typeof KEYBOARD_BLUR_BEHAVIOR;
 
   /**
    * View style to be applied at the sheet container,

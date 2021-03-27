@@ -52,6 +52,7 @@ import {
   KEYBOARD_BEHAVIOR,
   SHEET_STATE,
   SCROLLABLE_STATE,
+  KEYBOARD_BLUR_BEHAVIOR,
 } from '../../constants';
 import { animate } from '../../utilities';
 import {
@@ -65,6 +66,7 @@ import {
   DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
   DEFAULT_ANIMATE_ON_MOUNT,
   DEFAULT_KEYBOARD_BEHAVIOR,
+  DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -97,8 +99,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       enableFlashScrollableIndicatorOnExpand = DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
-      keyboardBehavior = DEFAULT_KEYBOARD_BEHAVIOR,
       style: _providedStyle,
+
+      // keyboard
+      keyboardBehavior = DEFAULT_KEYBOARD_BEHAVIOR,
+      keyboardBlurBehavior = DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
 
       // layout
       handleHeight: _providedHandleHeight,
@@ -368,6 +373,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       return SHEET_STATE.OPENED;
     });
+    const animatedCurrentIndex = useSharedValue(currentIndexRef.current);
 
     // callbacks
     const animateToPointCompleted = useWorkletCallback(() => {
@@ -746,6 +752,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         /**
+         * Handle restore sheet position on blur
+         */
+        if (
+          keyboardBlurBehavior === KEYBOARD_BLUR_BEHAVIOR.restore &&
+          state === KEYBOARD_STATE.HIDDEN &&
+          contentPanGestureState.value !== State.ACTIVE &&
+          handlePanGestureState.value !== State.ACTIVE
+        ) {
+          isExtendedByKeyboard.value = false;
+          const newSnapPoint = snapPoints[animatedCurrentIndex.value];
+          animateToPoint(newSnapPoint, 0, configs);
+        }
+
+        /**
          * Handle extend behavior
          */
         if (
@@ -836,6 +856,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           (_handleGestureState === State.END ||
             _handleGestureState === State.UNDETERMINED)
         ) {
+          animatedCurrentIndex.value = animatedIndex.value;
           runOnJS(handleOnChange)(animatedIndex.value);
           runOnJS(refreshUIElements)();
         }
