@@ -1,6 +1,12 @@
 # Changelog
 
-## [v2.2.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.5...v2.2.6)
+## [v2.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.6...v2.3.0)
+
+#### Features
+
+- feat: support new prop for BottomSheetBackdrop, "pressBehavior" ([`#373`](https://github.com/gorhom/react-native-bottom-sheet/pull/373)).
+
+## [v2.2.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.5...v2.2.6) - 2021-03-19
 
 #### Improvements
 
