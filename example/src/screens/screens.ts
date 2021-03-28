@@ -57,11 +57,6 @@ export const screens = [
     title: 'Advanced',
     data: [
       {
-        name: 'React Navigation',
-        slug: 'Advanced/NavigatorExample',
-        getScreen: () => require('./advanced/NavigatorExample').default,
-      },
-      {
         name: 'Custom Handle',
         slug: 'Advanced/CustomHandleExample',
         getScreen: () => require('./advanced/CustomHandleExample').default,
@@ -77,22 +72,37 @@ export const screens = [
         getScreen: () => require('./advanced/BackdropExample').default,
       },
       {
-        name: 'Map',
-        slug: 'Advanced/MapExample',
-        getScreen: () => require('./advanced/MapExample').default,
-        screenOptions: {
-          headerTransparent: true,
-        },
-      },
-      {
         name: 'Dynamic Snap Point',
         slug: 'Advanced/DynamicSnapPointExample',
         getScreen: () => require('./advanced/DynamicSnapPointExample').default,
       },
       {
+        name: 'Keyboard Handling',
+        slug: 'Advanced/KeyboardHandlingExample',
+        getScreen: () => require('./advanced/KeyboardHandlingExample').default,
+      },
+    ] as ShowcaseScreenType[],
+  },
+  {
+    title: 'Third Party Integration',
+    data: [
+      {
+        name: 'React Navigation',
+        slug: 'Integrations/NavigatorExample',
+        getScreen: () => require('./integrations/NavigatorExample').default,
+      },
+      {
         name: 'View Pager',
-        slug: 'Advanced/ViewPagerExample',
-        getScreen: () => require('./advanced/ViewPagerExample').default,
+        slug: 'Integrations/ViewPagerExample',
+        getScreen: () => require('./integrations/ViewPagerExample').default,
+      },
+      {
+        name: 'Map',
+        slug: 'Integrations/MapExample',
+        getScreen: () => require('./integrations/MapExample').default,
+        screenOptions: {
+          headerTransparent: true,
+        },
       },
     ] as ShowcaseScreenType[],
   },

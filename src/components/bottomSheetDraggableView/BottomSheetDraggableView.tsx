@@ -47,10 +47,17 @@ const BottomSheetDraggableViewComponent = ({
   }, [_providedSimultaneousHandlers, nativeGestureRef]);
 
   // styles
-  const containerStyle = useMemo(
-    () => (style ? [styles.container, style] : styles.container),
-    [style]
-  );
+  const containerStyle = useMemo(() => {
+    if (!style) {
+      return styles.container;
+    }
+
+    if (Array.isArray(style)) {
+      return [styles.container, ...style];
+    }
+
+    return [styles.container, style];
+  }, [style]);
 
   return (
     <PanGestureHandler

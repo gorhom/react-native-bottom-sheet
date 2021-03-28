@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useMemo } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,9 +6,8 @@ import {
   NativeSyntheticEvent,
   TextInputChangeEventData,
 } from 'react-native';
-import { useBottomSheet } from '@gorhom/bottom-sheet';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useShowcaseTheme } from '@gorhom/showcase-template';
-import { TextInput } from 'react-native-gesture-handler';
 import isEqual from 'lodash.isequal';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
@@ -19,21 +18,7 @@ const BottomSheetHandleComponent = () => {
   const [value, setValue] = useState('');
 
   // hooks
-  const { snapTo } = useBottomSheet();
-  const { dark } = useShowcaseTheme();
-
-  // styles
-  const indicatorStyle = useMemo(
-    () => [
-      styles.indicator,
-      {
-        backgroundColor: !dark
-          ? 'rgba(0, 0, 0, 0.25)'
-          : 'rgba(255, 255, 255, 0.25)',
-      },
-    ],
-    [dark]
-  );
+  const { colors } = useShowcaseTheme();
 
   // callbacks
   const handleInputChange = useCallback(
@@ -44,21 +29,18 @@ const BottomSheetHandleComponent = () => {
     },
     []
   );
-  const handleInputFocus = useCallback(() => {
-    snapTo(2);
-  }, [snapTo]);
 
   // render
   return (
     <View style={styles.container}>
-      <View style={indicatorStyle} />
-      <TextInput
+      <View style={styles.indicator} />
+      <BottomSheetTextInput
         style={styles.input}
         value={value}
         textContentType="location"
+        placeholderTextColor={colors.secondaryText}
         placeholder="Search for a place or address"
         onChange={handleInputChange}
-        onFocus={handleInputFocus}
       />
     </View>
   );

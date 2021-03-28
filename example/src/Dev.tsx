@@ -1,33 +1,26 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  StatusBar,
-  Button as RNButton,
-} from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
-import { useSafeArea } from 'react-native-safe-area-context';
+import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SearchHandle from './components/searchHandle';
 import Button from './components/button';
 import ContactList from './components/contactList';
+import { NavigationContainer } from '@react-navigation/native';
 
 const { height: windowHeight } = Dimensions.get('window');
 
 const BasicExample = () => {
   //#region state
-  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(450);
+  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(300);
   //#endregion
 
   //#region hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeArea();
+  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
   //#endregion
 
   //#region variables
@@ -101,7 +94,7 @@ const BasicExample = () => {
   // renders
   return (
     <View style={containerStyle}>
-      <Button
+      {/* <Button
         label="Increase Dynamic Snap Point"
         style={styles.buttonContainer}
         onPress={handleIncreaseDynamicSnapPoint}
@@ -110,7 +103,7 @@ const BasicExample = () => {
         label="Snap To 150"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
-      />
+      /> */}
       <Button
         label="Close"
         style={styles.buttonContainer}
@@ -118,25 +111,23 @@ const BasicExample = () => {
       />
       <BottomSheet
         ref={bottomSheetRef}
-        index={1}
+        index={0}
         snapPoints={snapPoints}
         animateOnMount={true}
         animatedPosition={animatedPosition}
-        containerHeight={windowHeight}
-        topInset={StatusBar.currentHeight || topSafeArea}
-        onChange={handleSheetChanges}
+        keyboardBehavior="fullScreen"
+        keyboardBlurBehavior="restore"
+        handleComponent={SearchHandle}
+        containerHeight={windowHeight - (StatusBar.currentHeight ?? 0)}
+        topInset={topSafeArea}
+        // onChange={handleSheetChanges}
       >
-        {/* <ContactList type="ScrollView" count={15} /> */}
-        <View
+        <ContactList type="FlatList" count={20} />
+        {/* <View
           style={{
             height: dynamicSnapPoint,
-            backgroundColor: 'black',
           }}
         >
-          <RNButton
-            onPress={() => console.log('Pressed !')}
-            title="Press Me!"
-          />
           <View
             pointerEvents="none"
             style={{
@@ -146,15 +137,15 @@ const BasicExample = () => {
               bottom: 0,
               height: bottomSafeArea,
               borderWidth: 1,
-              backgroundColor: 'white',
+              backgroundColor: 'red',
             }}
           />
-        </View>
+        </View> */}
       </BottomSheet>
-      <Animated.View pointerEvents="none" style={sheetLineStyle} />
+      {/* <Animated.View pointerEvents="none" style={sheetLineStyle} />
       <View pointerEvents="none" style={secondSnapPointLineStyle} />
       <View pointerEvents="none" style={firstSnapPointLineStyle} />
-      <View pointerEvents="none" style={safeBottomLineStyle} />
+      <View pointerEvents="none" style={safeBottomLineStyle} /> */}
     </View>
   );
 };
@@ -162,10 +153,18 @@ const BasicExample = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#222',
     padding: 24,
   },
   buttonContainer: {
     marginBottom: 6,
+  },
+  textInput: {
+    backgroundColor: 'red',
+    opacity: 1,
+    padding: 6,
+    margin: 6,
+    borderRadius: 24,
   },
   line: {
     position: 'absolute',
@@ -184,4 +183,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BasicExample;
+const Stack = createStackNavigator();
+export default () => (
+  <NavigationContainer>
+    <Stack.Navigator headerMode="none" initialRouteName="root">
+      <Stack.Screen name="root">{() => <BasicExample />}</Stack.Screen>
+    </Stack.Navigator>
+  </NavigationContainer>
+);

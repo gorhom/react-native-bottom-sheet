@@ -5,7 +5,7 @@ import ReText from './ReText';
 import { styles } from './styles';
 
 interface BottomSheetDebugViewProps {
-  values: Record<string, Animated.SharedValue<number>>;
+  values: Record<string, Animated.SharedValue<number | boolean>>;
 }
 
 const BottomSheetDebugView = ({ values }: BottomSheetDebugViewProps) => {

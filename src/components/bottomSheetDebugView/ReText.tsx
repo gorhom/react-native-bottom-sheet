@@ -4,7 +4,7 @@ import Animated, { useAnimatedProps } from 'react-native-reanimated';
 
 interface TextProps {
   text: string;
-  value: Animated.SharedValue<number>;
+  value: Animated.SharedValue<number | boolean>;
   style?: Animated.AnimateProps<RNTextProps>['style'];
 }
 
@@ -14,14 +14,22 @@ const ReText = (props: TextProps) => {
   const { text, value: _providedValue, style } = { style: {}, ...props };
   const animatedProps = useAnimatedProps(() => {
     return {
-      text: `${text}: ${_providedValue.value.toFixed(2)}`,
+      text: `${text}: ${
+        typeof _providedValue.value === 'number'
+          ? _providedValue.value.toFixed(2)
+          : _providedValue.value
+      }`,
     };
   }, [_providedValue.value]);
   return (
     <AnimatedTextInput
       underlineColorAndroid="transparent"
       editable={false}
-      value={`${text}: ${_providedValue.value.toFixed(2)}`}
+      value={`${text}: ${
+        typeof _providedValue.value === 'number'
+          ? _providedValue.value.toFixed(2)
+          : _providedValue.value
+      }`}
       style={style}
       // @ts-ignore
       animatedProps={animatedProps}
