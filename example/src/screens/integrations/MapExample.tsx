@@ -53,7 +53,7 @@ const MapExample = () => {
   const data = useMemo(() => createLocationListMockData(15), []);
   const poiListSnapPoints = useMemo(
     () => [
-      bottomSafeArea,
+      bottomSafeArea === 0 ? SEARCH_HANDLE_HEIGHT / 2 : bottomSafeArea,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
       SCREEN_HEIGHT,
     ],
