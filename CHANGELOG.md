@@ -1,6 +1,12 @@
 # Changelog
 
-## [v3.5.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.5.0...v3.5.1)
+## [v3.6.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.5.1...v3.6.0)
+
+#### Features
+
+- feat: added keyboard handling ([`#334`](https://github.com/gorhom/react-native-bottom-sheet/pull/334)).
+
+## [v3.5.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.5.0...v3.5.1) - 2021-03-27
 
 #### Fixes
 
@@ -216,7 +222,7 @@
 - docs: updated readme file ([befae85](https://github.com/gorhom/react-native-bottom-sheet/commit/befae85647b1f7ad4a2bbbf046b8d0598f1c75c0)).
 - docs: updated readme file ([5d42f33](https://github.com/gorhom/react-native-bottom-sheet/commit/5d42f3356146beac6410941c8fb9eb8dba736a14)).
 
-## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.6...v3.0.0-alpha.0) - 2020-11-27
+## [v3.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.3.0...v3.0.0-alpha.0) - 2020-11-27
 
 #### Improvements
 
