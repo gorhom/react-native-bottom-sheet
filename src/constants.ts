@@ -1,5 +1,4 @@
 import { Dimensions, Platform } from 'react-native';
-import { Easing } from 'react-native-reanimated';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 
@@ -65,23 +64,7 @@ const KEYBOARD_BLUR_BEHAVIOR = {
   restore: 'restore',
 } as const;
 
-const KEYBOARD_DEFAULT_ANIMATION_CONFIGS = {
-  damping: 500,
-  stiffness: 1000,
-  mass: 3,
-  overshootClamping: true,
-  restDisplacementThreshold: 10,
-  restSpeedThreshold: 10,
-};
-
 const KEYBOARD_DISMISS_THRESHOLD = 12.5;
-
-const KEYBOARD_EASING_MAPPER = {
-  easeIn: Easing.in(Easing.ease),
-  easeOut: Easing.out(Easing.ease),
-  easeInEaseOut: Easing.inOut(Easing.ease),
-  linear: Easing.linear,
-};
 
 export {
   GESTURE,
@@ -96,7 +79,5 @@ export {
   MODAL_STACK_BEHAVIOR,
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
-  KEYBOARD_DEFAULT_ANIMATION_CONFIGS,
   KEYBOARD_DISMISS_THRESHOLD,
-  KEYBOARD_EASING_MAPPER,
 };

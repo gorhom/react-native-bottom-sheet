@@ -48,13 +48,12 @@ import {
   ANIMATION_STATE,
   WINDOW_HEIGHT,
   KEYBOARD_STATE,
-  KEYBOARD_EASING_MAPPER,
   KEYBOARD_BEHAVIOR,
   SHEET_STATE,
   SCROLLABLE_STATE,
   KEYBOARD_BLUR_BEHAVIOR,
 } from '../../constants';
-import { animate } from '../../utilities';
+import { animate, getKeyboardAnimationConfigs } from '../../utilities';
 import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
@@ -199,7 +198,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const {
       state: keyboardState,
       height: keyboardHeight,
-      animationConfigs: keyboardAnimationConfigs,
+      animationDuration: keyboardAnimationDuration,
+      animationEasing: keyboardAnimationEasing,
       shouldHandleKeyboardEvents,
     } = useKeyboard();
 
@@ -741,15 +741,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        const configs = keyboardAnimationConfigs.value;
-        if (!configs) {
-          return;
-        }
-
-        if ('easing' in configs) {
-          // @ts-ignore
-          configs.easing = KEYBOARD_EASING_MAPPER[configs.easing];
-        }
+        let animationConfigs = getKeyboardAnimationConfigs(
+          keyboardAnimationEasing.value,
+          keyboardAnimationDuration.value
+        );
 
         /**
          * Handle restore sheet position on blur
@@ -762,7 +757,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         ) {
           isExtendedByKeyboard.value = false;
           const newSnapPoint = snapPoints[animatedCurrentIndex.value];
-          animateToPoint(newSnapPoint, 0, configs);
+          animateToPoint(newSnapPoint, 0, animationConfigs);
         }
 
         /**
@@ -773,7 +768,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           state === KEYBOARD_STATE.SHOWN
         ) {
           const newSnapPoint = snapPoints[snapPoints.length - 1];
-          animateToPoint(newSnapPoint, 0, configs);
+          animateToPoint(newSnapPoint, 0, animationConfigs);
           return;
         }
 
@@ -785,7 +780,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           state === KEYBOARD_STATE.SHOWN
         ) {
           isExtendedByKeyboard.value = true;
-          animateToPoint(topInset, 0, configs);
+          animateToPoint(topInset, 0, animationConfigs);
           return;
         }
 
@@ -801,7 +796,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animateToPoint(
             Math.max(topInset, newSnapPoint - keyboardHeight.value),
             0,
-            configs
+            animationConfigs
           );
         }
       }
