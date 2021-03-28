@@ -256,7 +256,7 @@ PODS:
     - React
   - react-native-maps (0.27.1):
     - React
-  - react-native-pager-view (5.1.1):
+  - react-native-pager-view (5.1.2):
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
@@ -540,7 +540,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-pager-view: 52aed9e0ed93f7fbdf4cfe8ed4254d93c6d12baf
+  react-native-pager-view: c1ec84a464024641ccb1102e9ec12be020d3d74c
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
   React-RCTActionSheet: 3080b6e12e0e1a5b313c8c0050699b5c794a1b11

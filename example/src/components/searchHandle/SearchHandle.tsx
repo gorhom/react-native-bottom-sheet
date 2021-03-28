@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useMemo } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -18,20 +18,7 @@ const BottomSheetHandleComponent = () => {
   const [value, setValue] = useState('');
 
   // hooks
-  const { dark } = useShowcaseTheme();
-
-  // styles
-  const indicatorStyle = useMemo(
-    () => [
-      styles.indicator,
-      {
-        backgroundColor: !dark
-          ? 'rgba(0, 0, 0, 0.25)'
-          : 'rgba(255, 255, 255, 0.25)',
-      },
-    ],
-    [dark]
-  );
+  const { colors } = useShowcaseTheme();
 
   // callbacks
   const handleInputChange = useCallback(
@@ -46,11 +33,12 @@ const BottomSheetHandleComponent = () => {
   // render
   return (
     <View style={styles.container}>
-      <View style={indicatorStyle} />
+      <View style={styles.indicator} />
       <BottomSheetTextInput
         style={styles.input}
         value={value}
         textContentType="location"
+        placeholderTextColor={colors.secondaryText}
         placeholder="Search for a place or address"
         onChange={handleInputChange}
       />
