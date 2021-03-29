@@ -1,9 +1,8 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useRef } from 'react';
 import Animated, {
   interpolate,
   Extrapolate,
   useAnimatedStyle,
-  useAnimatedProps,
   useAnimatedReaction,
   useAnimatedGestureHandler,
   runOnJS,
@@ -13,14 +12,12 @@ import {
   TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import isEqual from 'lodash.isequal';
-import { useReactiveSharedValue } from '../../hooks';
 import {
   DEFAULT_OPACITY,
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
 } from './constants';
-import { WINDOW_HEIGHT } from '../../constants';
 import { usePressBehavior } from './usePressBehavior';
 import { styles } from './styles';
 import type { BottomSheetDefaultBackdropProps } from './types';
@@ -43,6 +40,8 @@ const BottomSheetBackdropComponent = ({
   });
   //#endregion
 
+  const containerRef = useRef<Animated.View>(null);
+
   //#region variables
   const pointerEvents = useMemo(() => (enableTouchThrough ? 'none' : 'auto'), [
     enableTouchThrough,
@@ -60,18 +59,6 @@ const BottomSheetBackdropComponent = ({
   );
   //#endregion
 
-  //#region animated props
-  const isContainerTouchable = useReactiveSharedValue<boolean>(
-    syntheticPressBehavior !== 'none'
-  );
-  const containerAnimatedProps = useAnimatedProps(
-    () => ({
-      pointerEvents: animatedIndex.value > disappearsOnIndex ? 'auto' : 'none',
-    }),
-    [disappearsOnIndex]
-  );
-  //#endregion
-
   //#region styles
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -80,15 +67,10 @@ const BottomSheetBackdropComponent = ({
       [0, 0, opacity],
       Extrapolate.CLAMP
     ),
-    transform: [
-      {
-        translateY:
-          animatedIndex.value <= disappearsOnIndex ? WINDOW_HEIGHT : 0,
-      },
-    ],
+    flex: 1,
   }));
   const containerStyle = useMemo(
-    () => [styles.container, style, containerAnimatedStyle],
+    () => [style, styles.container, containerAnimatedStyle],
     [style, containerAnimatedStyle]
   );
   //#endregion
@@ -96,12 +78,14 @@ const BottomSheetBackdropComponent = ({
   //#region effects
   useAnimatedReaction(
     () => animatedIndex.value <= disappearsOnIndex,
-    shouldDisableTouchability => {
-      if (shouldDisableTouchability) {
-        isContainerTouchable.value = false;
-      } else {
-        isContainerTouchable.value = true;
+    (shouldDisableTouchability, previous) => {
+      if (!containerRef.current || shouldDisableTouchability === previous) {
+        return;
       }
+      // @ts-ignore
+      containerRef.current.setNativeProps({
+        pointerEvents: shouldDisableTouchability ? 'none' : 'auto',
+      });
     },
     [disappearsOnIndex]
   );
@@ -110,6 +94,7 @@ const BottomSheetBackdropComponent = ({
   return syntheticPressBehavior !== 'none' ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View
+        ref={containerRef}
         style={containerStyle}
         accessible={true}
         accessibilityRole="button"
@@ -119,8 +104,6 @@ const BottomSheetBackdropComponent = ({
             ? syntheticPressBehavior
             : 'move'
         } the Bottom Sheet`}
-        // @ts-ignore
-        animatedProps={containerAnimatedProps}
       />
     </TapGestureHandler>
   ) : (
