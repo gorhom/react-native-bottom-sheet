@@ -525,7 +525,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animationDuration: number = DEFAULT_ANIMATION_DURATION,
         animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
       ) => {
-        if (isClosing.current) {
+        if (
+          isClosing.current ||
+          animatedPosition.value === safeContainerHeight
+        ) {
           return;
         }
         isClosing.current = true;
@@ -534,7 +537,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           easing: animationEasing,
         });
       },
-      [animateToPoint, safeContainerHeight]
+      [animateToPoint, safeContainerHeight, animatedPosition]
     );
     const handleExpand = useCallback(
       (
