@@ -73,7 +73,7 @@ const BackdropExample = () => {
         onDismiss={handleDismiss}
         backdropComponent={renderBackdrop}
       >
-        <ContactListContainer title="Modal FlatList" type="FlatList" />
+        <ContactListContainer title="Modal View" type="View" />
       </BottomSheetModal>
     </View>
   );
