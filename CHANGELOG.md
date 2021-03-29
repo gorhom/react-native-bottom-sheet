@@ -1,6 +1,12 @@
 # Changelog
 
-## [v3.6.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.5.1...v3.6.0)
+## [v3.6.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.0...v3.6.1)
+
+#### Fixes
+
+- fix: prevent sheet from stucking on close state ([63a1891](https://github.com/gorhom/react-native-bottom-sheet/commit/63a189134cdc9f73c3bb495412ac3633197886c5)).
+
+## [v3.6.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.5.1...v3.6.0) - 2021-03-28
 
 #### Features
 
