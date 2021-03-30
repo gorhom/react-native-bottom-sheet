@@ -1,8 +1,21 @@
 ---
 id: usage
 title: Usage
+description: Bottom Sheet modal usage.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /modal/usage
-hide_table_of_contents: true
 ---
 
 Here is a simple usage of the **Bottom Sheet Modal**, with non-scrollable content. For more scrollable usage please read [Scrollables](../scrollables).

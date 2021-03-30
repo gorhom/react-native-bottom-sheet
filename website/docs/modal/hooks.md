@@ -1,8 +1,21 @@
 ---
 id: hooks
 title: Hooks
+description: Bottom Sheet modal hooks.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /modal/hooks
-hide_table_of_contents: true
 ---
 
 ## `useBottomSheetModal`
@@ -12,6 +25,8 @@ This hook provides modal functionalities only, for sheet functionalities please 
 > This hook works at any component in `BottomSheetModalProvider`.
 
 ```tsx
+import React from 'react';
+import { View, Button } from 'react-native';
 import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 
 const SheetContent = () => {

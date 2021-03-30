@@ -1,8 +1,21 @@
 ---
 id: methods
 title: Methods
+description: Bottom Sheet modal methods.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /modal/methods
-hide_table_of_contents: true
 ---
 
 
@@ -11,15 +24,19 @@ hide_table_of_contents: true
 These methods are accessible using the bottom sheet modal reference:
 
 ```tsx
+import React, { useRef } from 'react';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 const App = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-  const present = () => bottomSheetModalRef.current.present()
+  const handlePresentPress = () => bottomSheetModalRef.current.present()
 
   return (
-    <BottomSheetModal ref={bottomSheetModalRef}>
+    <>
+      <Button title="Present Sheet" onPress={handlePresentPress} />
+      <BottomSheetModal ref={bottomSheetModalRef}>
+    </>
   )
 }
 

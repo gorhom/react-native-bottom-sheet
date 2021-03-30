@@ -1,6 +1,20 @@
 ---
 id: faq
 title: FAQ
+description: Bottom Sheet FAQ.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /faq
 ---
 

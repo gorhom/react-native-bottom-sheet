@@ -1,0 +1,165 @@
+---
+id: methods
+title: Methods
+description: Bottom Sheet methods.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
+slug: /methods
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+These methods are accessible using the bottom sheet reference.
+
+```tsx
+import React, { useRef } from 'react';
+import { Button } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
+
+const App = () => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const handleClosePress = () => bottomSheetRef.current.close()
+
+  return (
+    <>
+      <Button title="Close Sheet" onPress={handleClosePress} />
+      <BottomSheet ref={bottomSheetRef}>
+    </>
+  )
+}
+
+```
+
+### `snapTo`
+
+Animate the sheet to one of the provided point from `snapPoints`.
+
+<Tabs
+  defaultValue="v3"
+  values={[
+    { label: 'v2', value: 'v2', },
+    { label: 'v3', value: 'v3', },
+  ]
+}>
+<TabItem value="v2">
+
+```ts
+type snapTo = (index: number) => void;
+```
+
+</TabItem>
+<TabItem value="v3">
+
+```ts
+type snapTo = (
+  index: number,
+  animationDuration?: number,
+  animationEasing?: Animated.EasingFunction
+) => void;
+```
+
+</TabItem>
+</Tabs>
+
+### `expand`
+
+Animate the sheet to the maximum provided point from `snapPoints`.
+
+<Tabs
+  defaultValue="v3"
+  values={[
+    { label: 'v2', value: 'v2', },
+    { label: 'v3', value: 'v3', },
+  ]
+}>
+<TabItem value="v2">
+
+```ts
+type expand = () => void;
+```
+
+</TabItem>
+<TabItem value="v3">
+
+```ts
+type expand = (
+  animationDuration?: number,
+  animationEasing?: Animated.EasingFunction
+) => void;
+```
+
+</TabItem>
+</Tabs>
+
+### `collapse`
+
+Animate the sheet to the minimum provided point from `snapPoints`.
+
+<Tabs
+  defaultValue="v3"
+  values={[
+    { label: 'v2', value: 'v2', },
+    { label: 'v3', value: 'v3', },
+  ]
+}>
+<TabItem value="v2">
+
+```ts
+type collapse = () => void;
+```
+
+</TabItem>
+<TabItem value="v3">
+
+```ts
+type collapse = (
+  animationDuration?: number,
+  animationEasing?: Animated.EasingFunction
+) => void;
+```
+
+</TabItem>
+</Tabs>
+
+### `close`
+
+Close the sheet.
+
+<Tabs
+  defaultValue="v3"
+  values={[
+    { label: 'v2', value: 'v2', },
+    { label: 'v3', value: 'v3', },
+  ]
+}>
+<TabItem value="v2">
+
+```ts
+type close = () => void;
+```
+
+</TabItem>
+<TabItem value="v3">
+
+```ts
+type close = (
+  animationDuration?: number,
+  animationEasing?: Animated.EasingFunction
+) => void;
+```
+
+</TabItem>
+</Tabs>

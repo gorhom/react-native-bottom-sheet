@@ -13,7 +13,7 @@ module.exports = {
     image: 'img/icon.png',
     navbar: {
       title: 'Bottom Sheet',
-      hideOnScroll: true,
+      hideOnScroll: false,
       items: [
         {
           to: 'modal/',
@@ -28,8 +28,15 @@ module.exports = {
         },
       ],
     },
+    prism: {
+      theme: require('prism-react-renderer/themes/dracula'),
+    },
     footer: {
-      style: 'dark',
+      copyright: `Copyright © ${new Date().getFullYear()} <a rel="noreferrer" href="https://gorhom.dev/" target="_blank">Mo Gorhom</a>. Built with Docusaurus.`,
+    },
+    googleAnalytics: {
+      trackingID: 'G-3VBJNN0W64',
+      anonymizeIP: true,
     },
   },
   presets: [
@@ -40,7 +47,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: '/',
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+            'https://github.com/gorhom/react-native-bottom-sheet/edit/master/website/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -48,4 +55,5 @@ module.exports = {
       },
     ],
   ],
+  plugins: ['@docusaurus/plugin-google-analytics'],
 };
