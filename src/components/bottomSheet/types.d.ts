@@ -12,7 +12,7 @@ import type {
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
-    Pick<
+    Partial<Pick<
       PanGestureHandlerProps,
       | 'activeOffsetY'
       | 'activeOffsetX'
@@ -20,7 +20,7 @@ export interface BottomSheetProps
       | 'failOffsetX'
       | 'waitFor'
       | 'simultaneousHandlers'
-    > {
+    >> {
   // configuration
   /**
    * Initial snap index, you also could provide `-1` to initiate bottom sheet in closed state.
