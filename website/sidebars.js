@@ -9,15 +9,15 @@ module.exports = {
         'props',
         'methods',
         'hooks',
+        'scrollables',
         {
           type: 'category',
           label: 'Guides',
           items: [
-            'scrollables',
-            'react-navigation-integration',
             'custom-handle',
             'custom-backdrop',
             'custom-background',
+            'react-navigation-integration',
           ],
         },
         'troubleshooting',
