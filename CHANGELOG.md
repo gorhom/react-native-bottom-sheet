@@ -1,6 +1,13 @@
 # Changelog
 
-## [v3.6.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.0...v3.6.1)
+## [v3.6.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.1...v3.6.2)
+
+#### Fixes
+
+- fix: backdrop random appearance ([`#378`](https://github.com/gorhom/react-native-bottom-sheet/pull/378)).
+- fix: updated gesture props to be optional ([`#380`](https://github.com/gorhom/react-native-bottom-sheet/pull/380)).
+
+## [v3.6.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.0...v3.6.1) - 2021-03-29
 
 #### Fixes
 
