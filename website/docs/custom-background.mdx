@@ -1,9 +1,25 @@
 ---
 id: custom-background
 title: Custom Background
+description: Bottom Sheet custom background.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /custom-background
-hide_table_of_contents: true
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 To override the default background, you will need to pass the prop `backgroundComponent` to the `BottomSheet` component.
 
@@ -17,11 +33,20 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import { Video } from '../components/video';
 
 <Video
-  title="React Native Bottom Sheet"
+  title="React Native Bottom Sheet Custom Background"
   url={useBaseUrl('video/bottom-sheet-custom-background-preview.mp4')}
 />
 
-Here is an example of a custom background component: 
+Here is an example of a custom background component:
+
+<Tabs
+  defaultValue="v3"
+  values={[
+    { label: 'v2', value: 'v2', },
+    { label: 'v3', value: 'v3', },
+  ]
+}>
+<TabItem value="v2">
 
 ```tsx
 import React, { useMemo } from 'react';
@@ -62,3 +87,44 @@ const CustomBackground = ({
 
 export default CustomBackground;
 ```
+
+</TabItem>
+
+<TabItem value="v3">
+
+```tsx
+import React, { useMemo } from 'react';
+import { BottomSheetBackgroundProps } from '@gorhom/bottom-sheet';
+import Animated, {
+  useAnimatedStyle,
+  interpolateColor,
+} from 'react-native-reanimated';
+
+const CustomBackground: React.FC<BottomSheetBackgroundProps> = ({
+  style,
+  animatedIndex,
+}) => {
+  //#region styles
+  const containerAnimatedStyle = useAnimatedStyle(() => ({
+    // @ts-ignore
+    backgroundColor: interpolateColor(
+      animatedIndex.value,
+      [0, 1],
+      ['#ffffff', '#a8b5eb']
+    ),
+  }));
+  const containerStyle = useMemo(
+    () => [style, containerAnimatedStyle],
+    [style, containerAnimatedStyle]
+  );
+  //#endregion
+
+  // render
+  return <Animated.View pointerEvents="none" style={containerStyle} />;
+};
+
+export default CustomBackground;
+```
+
+</TabItem>
+</Tabs>

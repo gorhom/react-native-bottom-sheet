@@ -1,8 +1,21 @@
 ---
 id: react-navigation-integration
 title: React Navigation Integration
+description: Bottom Sheet React Navigation integration.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /react-navigation-integration
-hide_table_of_contents: true
 ---
 
 One of the main goal of this library, is to allow user to fully integrate a navigator in the bottom sheet. This integration allow lots of opportunities for a native-like experience in your app 😇

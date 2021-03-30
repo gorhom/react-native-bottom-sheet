@@ -1,8 +1,21 @@
 ---
 id: scrollables
 title: Scrollables
+description: Bottom Sheet scrollables.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /scrollables
-hide_table_of_contents: true
 ---
 
 This library provides a pre-integrated virtualized lists that utilize an internal functionalities with the bottom sheet container to allow smooth panning interactions. These lists I called them Scrollables and they are:
@@ -16,9 +29,9 @@ This library provides a pre-integrated virtualized lists that utilize an interna
 
 An extended component of `FlatList` from `react-native`, with bottom sheet integrations.
 
-### Props
+#### Props
 
-#### `focusHook`
+##### `focusHook`
 
 This needed when bottom sheet used with multiple scrollables to allow bottom sheet detect the current scrollable ref, especially when used with React Navigation. You will need to provide `useFocusEffect` from `@react-navigation/native`.
 
@@ -26,7 +39,7 @@ This needed when bottom sheet used with multiple scrollables to allow bottom she
 | -------- | ----------------- | -------- |
 | function | `React.useEffect` | NO       |
 
-### Example
+#### Example
 
 ```tsx
 import React, { useCallback, useRef, useMemo } from 'react';
@@ -111,9 +124,9 @@ export default App;
 
 Is an extended component of `SectionList` from `react-native`, with bottom sheet integrations.
 
-### Props
+#### Props
 
-#### `focusHook`
+##### `focusHook`
 
 This needed when bottom sheet used with multiple scrollables to allow bottom sheet detect the current scrollable ref, especially when used with React Navigation. You will need to provide `useFocusEffect` from `@react-navigation/native`.
 
@@ -121,7 +134,7 @@ This needed when bottom sheet used with multiple scrollables to allow bottom she
 | -------- | ----------------- | -------- |
 | function | `React.useEffect` | NO       |
 
-### Example
+#### Example
 
 ```tsx
 import React, { useCallback, useRef, useMemo } from 'react';
@@ -225,9 +238,9 @@ export default App;
 
 Is an extended component of `ScrollView` from `react-native`, with bottom sheet integrations.
 
-### Props
+#### Props
 
-#### `focusHook`
+##### `focusHook`
 
 This needed when bottom sheet used with multiple scrollables to allow bottom sheet detect the current scrollable ref, especially when used with React Navigation. You will need to provide `useFocusEffect` from `@react-navigation/native`.
 
@@ -235,7 +248,7 @@ This needed when bottom sheet used with multiple scrollables to allow bottom she
 | -------- | ----------------- | -------- |
 | function | `React.useEffect` | NO       |
 
-### Example
+#### Example
 
 ```tsx
 import React, { useCallback, useRef, useMemo } from 'react';
@@ -322,9 +335,9 @@ Is an extended component of `View` from `react-native`, with bottom sheet integr
 
 > This only needed when the bottom sheet used with `React Navigation`.
 
-### Props
+#### Props
 
-#### `focusHook`
+##### `focusHook`
 
 This needed when bottom sheet used with multiple scrollables to allow bottom sheet detect the current scrollable ref, especially when used with React Navigation. You will need to provide `useFocusEffect` from `@react-navigation/native`.
 
@@ -332,7 +345,7 @@ This needed when bottom sheet used with multiple scrollables to allow bottom she
 | -------- | ----------------- | -------- |
 | function | `React.useEffect` | NO       |
 
-### Example
+#### Example
 
 ```tsx
 import React, { useCallback, useRef, useMemo } from 'react';

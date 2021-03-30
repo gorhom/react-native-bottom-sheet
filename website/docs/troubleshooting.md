@@ -1,6 +1,20 @@
 ---
 id: troubleshooting
 title: Troubleshooting
+description: Bottom Sheet troubleshooting.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /troubleshooting
 ---
 
@@ -31,4 +45,16 @@ import {
   ScrollView,
   FlatList
 } from 'react-native-gesture-handler';
+```
+
+## My component gesture interaction gets conflicted with Bottom Sheet interactions ?
+
+To avoid the gesture interaction conflict between the Bottom Sheet and its content, you will need to wrap your component with `NativeViewGestureHandler` from `react-native-gesture-handler`
+
+```tsx
+import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+
+<NativeViewGestureHandler disallowInterruption={true}>
+   <AwesomeComponent />
+</NativeViewGestureHandler>
 ```

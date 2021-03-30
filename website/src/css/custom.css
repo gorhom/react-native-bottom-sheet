@@ -1,6 +1,5 @@
 :root {
   --ifm-code-font-size: 95%;
-  /* --ifm-toc-padding-left: 0px; */
 }
 
 :root[data-theme='dark'] {
@@ -17,6 +16,9 @@
   --ifm-table-border-color: #282c34;
   --ifm-table-head-background: #242526;
   --ifm-table-stripe-background: #101113;
+
+  --ifm-navbar-background-color: #101113;
+  --ifm-toc-border-color: #101113;
 }
 
 :root[data-theme='light'] {
@@ -40,27 +42,6 @@
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
-}
-
-body {
-  max-width: 1400px;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-.navbar {
-  background: var(--ifm-background-color);
-  box-shadow: none;
-}
-
-div[role='complementary'] {
-  border-right: none;
-}
-
-@media (min-width: 997px) {
-  div[role='complementary'] > div {
-    height: calc(100vh - var(--ifm-navbar-height));
-  }
 }
 
 article table {

@@ -1,8 +1,21 @@
 ---
 id: props
 title: Props
+description: Bottom Sheet configurable props.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /props
-# hide_table_of_contents: true
 ---
 
 ## Configuration
@@ -34,38 +47,6 @@ snapPoints={[200, 500]}
 snapPoints={[200, '50%']}
 snapPoints={[-1, '100%']}
 ```
-
-### `handleHeight`
-
-Handle height helps to calculate the internal container and sheet layouts. If `handleComponent` is provided, the library internally will calculate its layout, unless `handleHeight` is provided too.
-
-| type   | default | required |
-| ------ | ------- | -------- |
-| number | 24      | NO       |
-
-### `containerHeight`
-
-Container height helps to calculate the internal sheet layouts. If `containerHeight` not provided, the library internally will calculate it, however this will cause an extra re-rendering.
-
-| type   | default | required |
-| ------ | ------- | -------- |
-| number | 0       | NO       |
-
-### `topInset`
-
-Top inset to be added to the bottom sheet container, usually it comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
-
-| type   | default | required |
-| ------ | ------- | -------- |
-| number | 0       | NO       |
-
-### `bottomInset`
-
-Bottom inset to be added to the bottom sheet container.
-
-| type   | default | required |
-| ------ | ------- | -------- |
-| number | 0       | NO       |
 
 ### `overDragResistanceFactor`
 
@@ -128,6 +109,72 @@ View style to be applied at the sheet container, it also could be an `AnimatedSt
 | type                       | default   | required |
 | -------------------------- | --------- | -------- |
 | ViewStyle \| AnimatedStyle | undefined | NO       |
+
+## Layout Configuration
+
+### `handleHeight`
+
+Handle height helps to calculate the internal container and sheet layouts. If `handleComponent` is provided, the library internally will calculate its layout, unless `handleHeight` is provided too.
+
+| type   | default | required |
+| ------ | ------- | -------- |
+| number | 24      | NO       |
+
+### `containerHeight`
+
+Container height helps to calculate the internal sheet layouts. If `containerHeight` not provided, the library internally will calculate it, however this will cause an extra re-rendering.
+
+| type   | default | required |
+| ------ | ------- | -------- |
+| number | 0       | NO       |
+
+### `topInset`
+
+Top inset to be added to the bottom sheet container, usually it comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
+
+| type   | default | required |
+| ------ | ------- | -------- |
+| number | 0       | NO       |
+
+### `bottomInset`
+
+**`Available only on v2, for now.`**
+
+Bottom inset to be added to the bottom sheet container.
+
+| type   | default | required |
+| ------ | ------- | -------- |
+| number | 0       | NO       |
+
+## Keyboard Configuration
+
+### `keyboardBehavior`
+
+**`Available only on v3, for now.`**
+
+Defines the keyboard appearance behavior.
+
+- `none`: do nothing.
+- `extend`: extend the sheet to its maximum snap point.
+- `fullScreen`: extend the sheet to full screen.
+- `interactive`: offset the sheet by the size of the keyboard.
+
+| type                                                | default | required |
+| --------------------------------------------------- | ------- | -------- |
+| 'none' \| 'extend' \| 'fullScreen' \| 'interactive' | 'none'  | NO       |
+
+### `keyboardBlurBehavior`
+
+**`Available only on v3, for now.`**
+
+Defines the keyboard blur behavior.
+
+- `none`: do nothing.
+- `restore`: restore sheet position.
+
+| type                | default | required |
+| ------------------- | ------- | -------- |
+| 'none' \| 'restore' | 'none'  | NO       |
 
 ## Animation Configuration
 

@@ -1,17 +1,32 @@
 ---
 id: hooks
 title: Hooks
+description: Bottom Sheet hooks.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /hooks
-hide_table_of_contents: true
 ---
 
 ## `useBottomSheet`
 
 This hook provides all the bottom sheet public [methods](methods), to the internal sheet content or handle.
 
-> This hook works at any component in `BottomSheet`.
+> This hook works at any component inside the `BottomSheet`.
 
 ```tsx
+import React from 'react';
+import { View, Button } from 'react-native';
 import { useBottomSheet } from '@gorhom/bottom-sheet';
 
 const SheetContent = () => {
@@ -32,6 +47,7 @@ const SheetContent = () => {
 Generate animation spring configs.
 
 ```tsx
+import React from 'react';
 import BottomSheet, { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
 const SheetContent = () => {
@@ -46,6 +62,7 @@ const SheetContent = () => {
 
   return (
     <BottomSheet
+      // ... other props
       animationConfigs={animationConfigs}
     >
       {CONTENT HERE}
@@ -61,6 +78,7 @@ const SheetContent = () => {
 Generate animation timing configs.
 
 ```tsx
+import React from 'react';
 import BottomSheet, { useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
 import { Easing } from 'react-native-reanimated';
 
@@ -73,6 +91,7 @@ const SheetContent = () => {
 
   return (
     <BottomSheet
+      // ... other props
       animationConfigs={animationConfigs}
     >
       {CONTENT HERE}

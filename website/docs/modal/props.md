@@ -1,6 +1,20 @@
 ---
 id: props
 title: Props
+description: Bottom Sheet modal configurable props.
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+image: /img/bottom-sheet-preview.gif
 slug: /modal/props
 ---
 
