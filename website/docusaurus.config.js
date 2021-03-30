@@ -35,7 +35,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} <a rel="noreferrer" href="https://gorhom.dev/" target="_blank">Mo Gorhom</a>. Built with Docusaurus.`,
     },
     googleAnalytics: {
-      trackingID: 'G-3VBJNN0W64',
+      trackingID: 'UA-193461439-1',
       anonymizeIP: true,
     },
   },
@@ -55,5 +55,4 @@ module.exports = {
       },
     ],
   ],
-  plugins: ['@docusaurus/plugin-google-analytics'],
 };
