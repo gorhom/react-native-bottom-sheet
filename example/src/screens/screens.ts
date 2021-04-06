@@ -81,6 +81,11 @@ export const screens = [
         slug: 'Advanced/KeyboardHandlingExample',
         getScreen: () => require('./advanced/KeyboardHandlingExample').default,
       },
+      {
+        name: 'Shadow',
+        slug: 'Advanced/ShadowExample',
+        getScreen: () => require('./advanced/ShadowExample').default,
+      },
     ] as ShowcaseScreenType[],
   },
   {
