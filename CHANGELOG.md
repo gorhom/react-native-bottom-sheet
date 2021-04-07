@@ -1,6 +1,17 @@
 # Changelog
 
-## [v3.6.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.1...v3.6.2)
+## [v3.6.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.2...v3.6.3)
+
+#### Improvements
+
+- chore: added shadow example ([`#390`](https://github.com/gorhom/react-native-bottom-sheet/pull/390)).
+
+#### Fixes
+
+- fix: prevent sheet from being stuck on close ([`#389`](https://github.com/gorhom/react-native-bottom-sheet/pull/389)).
+- fix: prevent backdrop from blocking touchability (#391) ([d3a5c12](https://github.com/gorhom/react-native-bottom-sheet/commit/d3a5c12685326e0ba9ddb5cdb3948359223fffa6)).
+
+## [v3.6.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.1...v3.6.2) - 2021-03-30
 
 #### Fixes
 
