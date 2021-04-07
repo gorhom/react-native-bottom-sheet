@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef } from 'react';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
 import Animated, {
   interpolate,
   Extrapolate,
@@ -40,12 +40,26 @@ const BottomSheetBackdropComponent = ({
   });
   //#endregion
 
-  const containerRef = useRef<Animated.View>(null);
-
   //#region variables
+  const containerRef = useRef<Animated.View>(null);
   const pointerEvents = useMemo(() => (enableTouchThrough ? 'none' : 'auto'), [
     enableTouchThrough,
   ]);
+  //#endregion
+
+  //#region callbacks
+  const handleContainerTouchability = useCallback(
+    (shouldDisableTouchability: boolean) => {
+      if (!containerRef.current) {
+        return;
+      }
+      // @ts-ignore
+      containerRef.current.setNativeProps({
+        pointerEvents: shouldDisableTouchability ? 'none' : 'auto',
+      });
+    },
+    []
+  );
   //#endregion
 
   //#region tap gesture
@@ -79,13 +93,10 @@ const BottomSheetBackdropComponent = ({
   useAnimatedReaction(
     () => animatedIndex.value <= disappearsOnIndex,
     (shouldDisableTouchability, previous) => {
-      if (!containerRef.current || shouldDisableTouchability === previous) {
+      if (shouldDisableTouchability === previous) {
         return;
       }
-      // @ts-ignore
-      containerRef.current.setNativeProps({
-        pointerEvents: shouldDisableTouchability ? 'none' : 'auto',
-      });
+      runOnJS(handleContainerTouchability)(shouldDisableTouchability);
     },
     [disappearsOnIndex]
   );
@@ -107,7 +118,11 @@ const BottomSheetBackdropComponent = ({
       />
     </TapGestureHandler>
   ) : (
-    <Animated.View pointerEvents={pointerEvents} style={containerStyle} />
+    <Animated.View
+      ref={containerRef}
+      pointerEvents={pointerEvents}
+      style={containerStyle}
+    />
   );
 };
 
