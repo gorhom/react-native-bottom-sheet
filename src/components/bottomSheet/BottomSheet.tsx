@@ -509,28 +509,48 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             snapPoints.length - 1
           }`
         );
+
+        /**
+         * verify if sheet is closed.
+         */
+        if (animatedPosition.value === safeContainerHeight) {
+          isClosing.current = false;
+        }
+
+        /**
+         * exit method if sheet is closing.
+         */
         if (isClosing.current) {
           return;
         }
+
         const newSnapPoint = snapPoints[index];
         runOnUI(animateToPoint)(newSnapPoint, 0, {
           duration: animationDuration,
           easing: animationEasing,
         });
       },
-      [animateToPoint, snapPoints]
+      [animateToPoint, snapPoints, safeContainerHeight, animatedPosition]
     );
     const handleClose = useCallback(
       (
         animationDuration: number = DEFAULT_ANIMATION_DURATION,
         animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
       ) => {
-        if (
-          isClosing.current ||
-          animatedPosition.value === safeContainerHeight
-        ) {
+        /**
+         * verify if sheet is closed.
+         */
+        if (animatedPosition.value === safeContainerHeight) {
+          isClosing.current = false;
+        }
+
+        /**
+         * exit method if sheet is closing.
+         */
+        if (isClosing.current) {
           return;
         }
+
         isClosing.current = true;
         runOnUI(animateToPoint)(safeContainerHeight, 0, {
           duration: animationDuration,
@@ -544,32 +564,54 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animationDuration: number = DEFAULT_ANIMATION_DURATION,
         animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
       ) => {
+        /**
+         * verify if sheet is closed.
+         */
+        if (animatedPosition.value === safeContainerHeight) {
+          isClosing.current = false;
+        }
+
+        /**
+         * exit method if sheet is closing.
+         */
         if (isClosing.current) {
           return;
         }
+
         const newSnapPoint = snapPoints[snapPoints.length - 1];
         runOnUI(animateToPoint)(newSnapPoint, 0, {
           duration: animationDuration,
           easing: animationEasing,
         });
       },
-      [animateToPoint, snapPoints]
+      [animateToPoint, snapPoints, safeContainerHeight, animatedPosition]
     );
     const handleCollapse = useCallback(
       (
         animationDuration: number = DEFAULT_ANIMATION_DURATION,
         animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
       ) => {
+        /**
+         * verify if sheet is closed.
+         */
+        if (animatedPosition.value === safeContainerHeight) {
+          isClosing.current = false;
+        }
+
+        /**
+         * exit method if sheet is closing.
+         */
         if (isClosing.current) {
           return;
         }
+
         const newSnapPoint = snapPoints[0];
         runOnUI(animateToPoint)(newSnapPoint, 0, {
           duration: animationDuration,
           easing: animationEasing,
         });
       },
-      [animateToPoint, snapPoints]
+      [animateToPoint, snapPoints, safeContainerHeight, animatedPosition]
     );
 
     useImperativeHandle(ref, () => ({
