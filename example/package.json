@@ -18,8 +18,8 @@
     "faker": "^4.1.0",
     "lodash.isequal": "^4.5.0",
     "nanoid": "^3.1.20",
-    "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react": "17.0.1",
+    "react-native": "0.64.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-maps": "^0.27.1",
     "react-native-reanimated": "^1.13.3",
@@ -32,7 +32,7 @@
     "@babel/runtime": "^7.13.10",
     "@types/faker": "^4.1.12",
     "@types/react": "^17.0.0",
-    "@types/react-native": "^0.63.37",
+    "@types/react-native": "^0.64.2",
     "metro-react-native-babel-preset": "^0.64.0",
     "typescript": "^4.2.3"
   }
