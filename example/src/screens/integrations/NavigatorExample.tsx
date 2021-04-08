@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import {
   createStackNavigator,
   HeaderBackButton,
@@ -12,28 +13,24 @@ import createDummyScreen from '../DummyScreen';
 
 const Stack = createStackNavigator();
 const ScreenA = createDummyScreen({
-  title: 'FlatList Screen',
-  nextScreen: 'ScreenB',
+  nextScreen: 'ScrollView Screen',
   type: 'FlatList',
 });
 
 const ScreenB = createDummyScreen({
-  title: 'ScrollView Screen',
-  nextScreen: 'ScreenC',
+  nextScreen: 'SectionList Screen',
   type: 'ScrollView',
   count: 25,
 });
 
 const ScreenC = createDummyScreen({
-  title: 'SectionList Screen',
-  nextScreen: 'ScreenD',
+  nextScreen: 'View Screen',
   type: 'SectionList',
   count: 20,
 });
 
 const ScreenD = createDummyScreen({
-  title: 'View Screen',
-  nextScreen: 'ScreenA',
+  nextScreen: 'FlatList Screen',
   type: 'View',
   count: 5,
 });
@@ -59,16 +56,18 @@ const Navigator = () => {
 
   const screenAOptions = useMemo(() => ({ headerLeft: () => null }), []);
   return (
-    <Stack.Navigator screenOptions={screenOptions} headerMode="screen">
-      <Stack.Screen
-        name="ScreenA"
-        options={screenAOptions}
-        component={ScreenA}
-      />
-      <Stack.Screen name="ScreenB" component={ScreenB} />
-      <Stack.Screen name="ScreenC" component={ScreenC} />
-      <Stack.Screen name="ScreenD" component={ScreenD} />
-    </Stack.Navigator>
+    <NavigationContainer independent={true}>
+      <Stack.Navigator screenOptions={screenOptions} headerMode="screen">
+        <Stack.Screen
+          name="FlatList Screen"
+          options={screenAOptions}
+          component={ScreenA}
+        />
+        <Stack.Screen name="ScrollView Screen" component={ScreenB} />
+        <Stack.Screen name="SectionList Screen" component={ScreenC} />
+        <Stack.Screen name="View Screen" component={ScreenD} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
@@ -100,36 +99,12 @@ const NavigatorExample = () => {
   // renders
   return (
     <View style={styles.container}>
-      <Button
-        label="Snap To 90%"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(2)}
-      />
-      <Button
-        label="Snap To 50%"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(1)}
-      />
-      <Button
-        label="Snap To 25%"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
-      />
-      <Button
-        label="Expand"
-        style={styles.buttonContainer}
-        onPress={handleExpandPress}
-      />
-      <Button
-        label="Collapse"
-        style={styles.buttonContainer}
-        onPress={handleCollapsePress}
-      />
-      <Button
-        label="Close"
-        style={styles.buttonContainer}
-        onPress={handleClosePress}
-      />
+      <Button label="Snap To 90%" onPress={() => handleSnapPress(2)} />
+      <Button label="Snap To 50%" onPress={() => handleSnapPress(1)} />
+      <Button label="Snap To 25%" onPress={() => handleSnapPress(0)} />
+      <Button label="Expand" onPress={handleExpandPress} />
+      <Button label="Collapse" onPress={handleCollapsePress} />
+      <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -146,9 +121,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-  },
-  buttonContainer: {
-    marginBottom: 6,
   },
 });
 

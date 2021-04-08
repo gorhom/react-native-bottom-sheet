@@ -1,21 +1,38 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Handle from '../../components/handle';
+import { useShowcaseTheme } from '@gorhom/showcase-template';
 import Button from '../../components/button';
 import ContactListContainer from '../../components/contactListContainer';
+import { DefaultTheme } from '@react-navigation/native';
 
-const CustomHandleExample = () => {
+const ShadowExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const { colors } = useShowcaseTheme();
 
   // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+  // styles
+  const containerStyle = useMemo(
+    () => [
+      styles.container,
+      {
+        backgroundColor: DefaultTheme.colors.background,
+      },
+    ],
+    []
+  );
+  const sheetStyle = useMemo(
+    () => ({
+      ...styles.sheetContainer,
+      shadowColor: colors.secondaryText,
+    }),
+    [colors.secondaryText]
+  );
 
   // callbacks
-  const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapTo(index);
-  }, []);
   const handleExpandPress = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);
@@ -28,24 +45,17 @@ const CustomHandleExample = () => {
 
   // renders
   return (
-    <View style={styles.container}>
-      <Button label="Snap To 450" onPress={() => handleSnapPress(2)} />
-      <Button label="Snap To 300" onPress={() => handleSnapPress(1)} />
-      <Button label="Snap To 150" onPress={() => handleSnapPress(0)} />
+    <View style={containerStyle}>
       <Button label="Expand" onPress={handleExpandPress} />
       <Button label="Collapse" onPress={handleCollapsePress} />
       <Button label="Close" onPress={handleClosePress} />
+
       <BottomSheet
         ref={bottomSheetRef}
-        index={1}
         snapPoints={snapPoints}
-        handleComponent={Handle}
+        style={sheetStyle}
       >
-        <ContactListContainer
-          count={4}
-          type="View"
-          title="Custom Handle Example"
-        />
+        <ContactListContainer type="View" count={4} title="Shadow Example" />
       </BottomSheet>
     </View>
   );
@@ -56,6 +66,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
+  sheetContainer: {
+    backgroundColor: 'white',
+    borderTopStartRadius: 24,
+    borderTopEndRadius: 24,
+    shadowOffset: {
+      width: 0,
+      height: -12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 16,
+  },
 });
 
-export default CustomHandleExample;
+export default ShadowExample;

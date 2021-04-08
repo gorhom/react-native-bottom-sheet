@@ -1,6 +1,6 @@
 import React, {
   useCallback,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -10,6 +10,7 @@ import MapView from 'react-native-maps';
 import { interpolate, Extrapolate, max } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useHeaderHeight } from '@react-navigation/stack';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
@@ -41,13 +42,14 @@ const MapExample = () => {
   const poiDetailsModalRef = useRef<BottomSheetModal>(null);
 
   // hooks
-  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
+  const headerHeight = useHeaderHeight();
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
   //#region variables
   const data = useMemo(() => createLocationListMockData(15), []);
   const poiListSnapPoints = useMemo(
     () => [
-      bottomSafeArea,
+      bottomSafeArea === 0 ? SEARCH_HANDLE_HEIGHT / 2 : bottomSafeArea,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
       SCREEN_HEIGHT,
     ],
@@ -57,6 +59,22 @@ const MapExample = () => {
     () => [LOCATION_DETAILS_HEIGHT + bottomSafeArea, SCREEN_HEIGHT],
     [bottomSafeArea]
   );
+  const mapInitialCamera = useMemo(
+    () => ({
+      center: {
+        latitude: 52.3791,
+        longitude: 4.9003,
+      },
+      heading: 0,
+      pitch: 0,
+      zoom: 0,
+      altitude: 40000,
+    }),
+    []
+  );
+  //#endregion
+
+  //#region animated variables
   const animatedPosition = useValue<number>(0);
   const animatedModalPosition = useValue<number>(0);
   const animatedIndex = useValue<number>(0);
@@ -71,6 +89,7 @@ const MapExample = () => {
     poiListModalRef.current?.collapse();
   }, []);
   const handleCloseLocationDetails = useCallback(() => {
+    setSelectedItem(undefined);
     poiDetailsModalRef.current?.dismiss();
   }, []);
   const handlePresentLocationDetails = useCallback((item: Location) => {
@@ -103,7 +122,7 @@ const MapExample = () => {
   //#endregion
 
   //#region effects
-  useEffect(() => {
+  useLayoutEffect(() => {
     poiListModalRef.current?.present();
   }, []);
   //#endregion
@@ -136,16 +155,7 @@ const MapExample = () => {
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        initialCamera={{
-          center: {
-            latitude: 52.3791,
-            longitude: 4.9003,
-          },
-          heading: 0,
-          pitch: 0,
-          zoom: 0,
-          altitude: 40000,
-        }}
+        initialCamera={mapInitialCamera}
         zoomEnabled={false}
         style={styles.mapContainer}
         onTouchStart={handleTouchStart}
@@ -156,10 +166,11 @@ const MapExample = () => {
       />
       <BottomSheetModal
         ref={poiListModalRef}
+        key="PoiListSheet"
         name="PoiListSheet"
         index={1}
         snapPoints={poiListSnapPoints}
-        topInset={topSafeArea}
+        topInset={headerHeight}
         handleHeight={SEARCH_HANDLE_HEIGHT}
         animatedPosition={animatedPosition}
         animatedIndex={animatedIndex}
@@ -180,10 +191,11 @@ const MapExample = () => {
 
       <BottomSheetModal
         ref={poiDetailsModalRef}
+        key="PoiDetailsSheet"
         name="PoiDetailsSheet"
         index={0}
         snapPoints={poiDetailsSnapPoints}
-        topInset={topSafeArea}
+        topInset={headerHeight}
         animatedPosition={animatedModalPosition}
         handleComponent={LocationDetailsHandle}
         backgroundComponent={BlurredBackground}
