@@ -50,24 +50,11 @@ const BackdropExample = () => {
     <View style={styles.container}>
       <Button
         label={`Toggle Press Behavior: ${backdropPressBehavior}`}
-        style={styles.buttonContainer}
         onPress={handleTogglePressBehavior}
       />
-      <Button
-        label="Expand"
-        style={styles.buttonContainer}
-        onPress={handleExpandPress}
-      />
-      <Button
-        label="Collapse"
-        style={styles.buttonContainer}
-        onPress={handleCollapsePress}
-      />
-      <Button
-        label="Close"
-        style={styles.buttonContainer}
-        onPress={handleClosePress}
-      />
+      <Button label="Expand" onPress={handleExpandPress} />
+      <Button label="Collapse" onPress={handleCollapsePress} />
+      <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -83,21 +70,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-  },
-  sheetContainer: {
-    shadowColor: '#000',
-    backgroundColor: 'white',
-    shadowOffset: {
-      width: 0,
-      height: 11,
-    },
-    shadowOpacity: 0.55,
-    shadowRadius: 14.78,
-
-    elevation: 22,
-  },
-  buttonContainer: {
-    marginBottom: 6,
   },
 });
 

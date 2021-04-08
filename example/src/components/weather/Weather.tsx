@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { Extrapolate, interpolate } from 'react-native-reanimated';
-import { useAppearance } from '../../hooks';
-import Text from '../text';
+import { ShowcaseLabel, useShowcaseTheme } from '@gorhom/showcase-template';
 import { SEARCH_HANDLE_HEIGHT } from '../../components/searchHandle';
 
 interface WeatherProps {
@@ -12,13 +11,13 @@ interface WeatherProps {
 
 const Weather = ({ animatedPosition, snapPoints }: WeatherProps) => {
   // hooks
-  const { appearance } = useAppearance();
+  const { colors } = useShowcaseTheme();
 
   // styles
   const containerStyle = useMemo(
     () => ({
       ...styles.container,
-      backgroundColor: appearance === 'dark' ? '#333' : '#FCFCFC',
+      backgroundColor: colors.secondaryCard,
       transform: [
         {
           translateY: interpolate(animatedPosition, {
@@ -42,11 +41,11 @@ const Weather = ({ animatedPosition, snapPoints }: WeatherProps) => {
         },
       ],
     }),
-    [appearance, animatedPosition, snapPoints]
+    [colors.secondaryCard, animatedPosition, snapPoints]
   );
   return (
     <Animated.View style={containerStyle}>
-      <Text style={styles.label}>☁️12°</Text>
+      <ShowcaseLabel style={styles.label}>☁️12°</ShowcaseLabel>
     </Animated.View>
   );
 };

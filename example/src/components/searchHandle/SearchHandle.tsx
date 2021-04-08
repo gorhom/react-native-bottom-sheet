@@ -9,7 +9,6 @@ import {
 import { useBottomSheet } from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native-gesture-handler';
 import isEqual from 'lodash.isequal';
-import { useAppearance } from '../../hooks';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 export const SEARCH_HANDLE_HEIGHT = 69;
@@ -20,7 +19,6 @@ const BottomSheetHandleComponent = () => {
 
   // hooks
   const { snapTo } = useBottomSheet();
-  const { appearance } = useAppearance();
 
   // styles
   const indicatorStyle = useMemo(
@@ -28,12 +26,10 @@ const BottomSheetHandleComponent = () => {
       styles.indicator,
       {
         backgroundColor:
-          appearance === 'light'
-            ? 'rgba(0, 0, 0, 0.25)'
-            : 'rgba(255, 255, 255, 0.25)',
+          '' === 'light' ? 'rgba(0, 0, 0, 0.25)' : 'rgba(255, 255, 255, 0.25)',
       },
     ],
-    [appearance]
+    []
   );
 
   // callbacks

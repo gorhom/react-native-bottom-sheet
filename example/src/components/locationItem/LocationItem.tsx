@@ -1,7 +1,6 @@
 import React, { useMemo, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useAppearance } from '../../hooks';
-import Text from '../text';
+import { ShowcaseLabel, useShowcaseTheme } from '@gorhom/showcase-template';
 
 interface LocationItemProps {
   title: string;
@@ -9,18 +8,15 @@ interface LocationItemProps {
 }
 
 const LocationItemComponent = ({ title, subTitle }: LocationItemProps) => {
-  const { appearance } = useAppearance();
+  const { colors } = useShowcaseTheme();
   const separatorStyle = useMemo(
     () => [
       styles.separator,
       {
-        backgroundColor:
-          appearance === 'light'
-            ? 'rgba(0,0,0,0.125)'
-            : 'rgba(255,255,255,0.125)',
+        backgroundColor: colors.border,
       },
     ],
-    [appearance]
+    [colors.border]
   );
   // render
   return (
@@ -28,8 +24,10 @@ const LocationItemComponent = ({ title, subTitle }: LocationItemProps) => {
       <View style={styles.container}>
         <View style={styles.thumbnail} />
         <View style={styles.contentContainer}>
-          <Text style={styles.title}>{title}</Text>
-          {subTitle && <Text style={styles.subtitle}>{subTitle}</Text>}
+          <ShowcaseLabel style={styles.title}>{title}</ShowcaseLabel>
+          {subTitle && (
+            <ShowcaseLabel style={styles.subtitle}>{subTitle}</ShowcaseLabel>
+          )}
         </View>
       </View>
       <View style={separatorStyle} />

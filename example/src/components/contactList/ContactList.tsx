@@ -1,12 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import {
-  StyleSheet,
-  Text,
-  Platform,
-  View,
-  ViewStyle,
-  StyleProp,
-} from 'react-native';
+import { StyleSheet, Text, Platform, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import {
@@ -24,8 +17,7 @@ import ContactItem from '../contactItem';
 export interface ContactListProps {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
   count?: number;
-  style?: StyleProp<ViewStyle>;
-  header?: (() => JSX.Element) | null;
+  style?: ViewStyle;
   onItemPress?: () => void;
 }
 
@@ -34,7 +26,6 @@ const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
 const ContactList = ({
   type,
   count = 25,
-  header = null,
   style,
   onItemPress,
 }: ContactListProps) => {
@@ -44,13 +35,11 @@ const ContactList = ({
   // variables
   const sections = useMemo(() => createContactSectionsMockData(count), [count]);
   const data = useMemo(() => createContactListMockData(count), [count]);
-  const stickyHeaderIndices = useMemo(() => [0], []);
 
   // styles
-  const contentContainerStyle = useMemo(
+  const contentContainerStyle = useMemo<ViewStyle>(
     () => ({
       ...styles.contentContainer,
-      // @ts-ignore
       ...style,
       paddingBottom: bottomSafeArea,
     }),
@@ -109,10 +98,7 @@ const ContactList = ({
         windowSize={10}
         maxToRenderPerBatch={5}
         renderItem={renderFlatListItem}
-        {...(header && {
-          stickyHeaderIndices: stickyHeaderIndices,
-          ListHeaderComponent: header,
-        })}
+        style={styles.container}
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
       />
@@ -120,16 +106,17 @@ const ContactList = ({
   } else if (type === 'ScrollView') {
     return (
       <BottomSheetScrollView
+        style={styles.container}
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
       >
-        {header && header()}
         {data.map(renderScrollViewItem)}
       </BottomSheetScrollView>
     );
   } else if (type === 'SectionList') {
     return (
       <BottomSheetSectionList
+        style={styles.container}
         contentContainerStyle={contentContainerStyle}
         stickySectionHeadersEnabled
         initialNumToRender={5}
@@ -139,10 +126,6 @@ const ContactList = ({
         keyExtractor={keyExtractor}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionItem}
-        {...(header && {
-          stickyHeaderIndices: [0],
-          ListHeaderComponent: header,
-        })}
         focusHook={useFocusEffect}
         removeClippedSubviews={Platform.OS === 'android' && sections.length > 0}
       />
@@ -150,7 +133,6 @@ const ContactList = ({
   } else if (type === 'View') {
     return (
       <BottomSheetView style={styles.contentContainer}>
-        {header && header()}
         {data.map(renderScrollViewItem)}
       </BottomSheetView>
     );
@@ -163,13 +145,19 @@ const styles = StyleSheet.create({
   sectionHeaderContainer: {
     paddingTop: 24,
     paddingBottom: 6,
+    backgroundColor: 'white',
   },
   sectionHeaderTitle: {
     fontSize: 16,
     textTransform: 'uppercase',
   },
+  container: {
+    overflow: 'visible',
+    flex: 1,
+  },
   contentContainer: {
     paddingHorizontal: 24,
+    overflow: 'visible',
   },
 });
 

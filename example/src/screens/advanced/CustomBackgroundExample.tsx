@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CustomBackground from '../../components/customBackground';
 import Button from '../../components/button';
-import ContactList from '../../components/contactList';
+import ContactListContainer from '../../components/contactListContainer';
 
 const CustomBackgroundExample = () => {
   // hooks
@@ -29,41 +29,13 @@ const CustomBackgroundExample = () => {
   }, []);
 
   // renders
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>Custom Background Example</Text>
-      </View>
-    );
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Button
-        label="Snap To 450"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(1)}
-      />
-      <Button
-        label="Snap To 150"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
-      />
-      <Button
-        label="Expand"
-        style={styles.buttonContainer}
-        onPress={() => handleExpandPress()}
-      />
-      <Button
-        label="Collapse"
-        style={styles.buttonContainer}
-        onPress={() => handleCollapsePress()}
-      />
-      <Button
-        label="Close"
-        style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
-      />
+      <Button label="Snap To 450" onPress={() => handleSnapPress(1)} />
+      <Button label="Snap To 150" onPress={() => handleSnapPress(0)} />
+      <Button label="Expand" onPress={handleExpandPress} />
+      <Button label="Collapse" onPress={handleCollapsePress} />
+      <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -71,7 +43,12 @@ const CustomBackgroundExample = () => {
         animateOnMount={true}
         backgroundComponent={CustomBackground}
       >
-        <ContactList type="View" count={3} header={renderHeader} />
+        <ContactListContainer
+          count={3}
+          type="View"
+          title="Custom Background Example"
+          headerStyle={styles.headerContainer}
+        />
       </BottomSheet>
     </View>
   );
@@ -82,20 +59,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
-  contentContainerStyle: {
-    paddingTop: 12,
-    paddingHorizontal: 24,
-  },
-  title: {
-    fontSize: 46,
-    lineHeight: 46,
-    fontWeight: '800',
-  },
   headerContainer: {
-    paddingVertical: 24,
-  },
-  buttonContainer: {
-    marginBottom: 6,
+    backgroundColor: 'transparent',
   },
 });
 

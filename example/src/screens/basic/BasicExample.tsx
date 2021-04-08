@@ -51,19 +51,10 @@ const BasicExample = () => {
     <View style={containerStyle}>
       <Button
         label="Increase Dynamic Snap Point"
-        style={styles.buttonContainer}
         onPress={handleIncreaseDynamicSnapPoint}
       />
-      <Button
-        label="Snap To 150"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
-      />
-      <Button
-        label="Close"
-        style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
-      />
+      <Button label="Snap To 150" onPress={() => handleSnapPress(0)} />
+      <Button label="Close" onPress={() => handleClosePress()} />
       <ReText text={concat('Position from bottom: ', animatedPosition)} />
       <BottomSheet
         ref={bottomSheetRef}
@@ -174,9 +165,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     paddingVertical: 24,
     backgroundColor: 'white',
-  },
-  buttonContainer: {
-    marginBottom: 6,
   },
 });
 
