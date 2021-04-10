@@ -12,8 +12,6 @@ const CustomBackgroundExample = () => {
   // variables
   const snapPoints = useMemo(() => [150, 450], []);
 
-  // styles
-
   // callbacks
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
@@ -29,31 +27,11 @@ const CustomBackgroundExample = () => {
   }, []);
   return (
     <View style={styles.container}>
-      <Button
-        label="Snap To 450"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(1)}
-      />
-      <Button
-        label="Snap To 150"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
-      />
-      <Button
-        label="Expand"
-        style={styles.buttonContainer}
-        onPress={() => handleExpandPress()}
-      />
-      <Button
-        label="Collapse"
-        style={styles.buttonContainer}
-        onPress={() => handleCollapsePress()}
-      />
-      <Button
-        label="Close"
-        style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
-      />
+      <Button label="Snap To 450" onPress={() => handleSnapPress(1)} />
+      <Button label="Snap To 150" onPress={() => handleSnapPress(0)} />
+      <Button label="Expand" onPress={handleExpandPress} />
+      <Button label="Collapse" onPress={handleCollapsePress} />
+      <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -84,9 +62,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     backgroundColor: 'transparent',
-  },
-  buttonContainer: {
-    marginBottom: 6,
   },
 });
 

@@ -59,29 +59,11 @@ const DynamicSnapPointExample = () => {
   );
 
   // renders
-  const renderBackground = useCallback(
-    () => <View style={styles.background} />,
-    []
-  );
-
   return (
     <View style={styles.container}>
-      <Button
-        label="Present"
-        style={styles.buttonContainer}
-        onPress={handlePresentPress}
-      />
-      <Button
-        label="Dismiss"
-        style={styles.buttonContainer}
-        onPress={handleDismissPress}
-      />
-      <BottomSheetModal
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={snapPoints}
-        backgroundComponent={renderBackground}
-      >
+      <Button label="Present" onPress={handlePresentPress} />
+      <Button label="Dismiss" onPress={handleDismissPress} />
+      <BottomSheetModal ref={bottomSheetRef} index={0} snapPoints={snapPoints}>
         <BottomSheetView
           style={contentContainerStyle}
           onLayout={handleOnLayout}
@@ -92,16 +74,8 @@ const DynamicSnapPointExample = () => {
           <View style={emojiContainerStyle}>
             <Text style={styles.emoji}>😍</Text>
           </View>
-          <Button
-            label="Yes"
-            style={styles.buttonContainer}
-            onPress={handleIncreaseContentPress}
-          />
-          <Button
-            label="Maybe"
-            style={styles.buttonContainer}
-            onPress={handleDecreaseContentPress}
-          />
+          <Button label="Yes" onPress={handleIncreaseContentPress} />
+          <Button label="Maybe" onPress={handleDecreaseContentPress} />
         </BottomSheetView>
       </BottomSheetModal>
     </View>
@@ -112,13 +86,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-  },
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'white',
-  },
-  buttonContainer: {
-    marginBottom: 6,
   },
   contentContainerStyle: {
     paddingTop: 12,

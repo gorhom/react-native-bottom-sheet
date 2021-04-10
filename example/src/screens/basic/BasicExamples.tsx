@@ -86,44 +86,18 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
 
     return (
       <View style={styles.container}>
-        <Button
-          label="Snap To 90%"
-          style={styles.buttonContainer}
-          onPress={() => handleSnapPress(2)}
-        />
-        <Button
-          label="Snap To 50%"
-          style={styles.buttonContainer}
-          onPress={() => handleSnapPress(1)}
-        />
-        <Button
-          label="Snap To 25%"
-          style={styles.buttonContainer}
-          onPress={() => handleSnapPress(0)}
-        />
-        <Button
-          label="Expand"
-          style={styles.buttonContainer}
-          onPress={() => handleExpandPress()}
-        />
-        <Button
-          label="Collapse"
-          style={styles.buttonContainer}
-          onPress={() => handleCollapsePress()}
-        />
-        <Button
-          label="Close"
-          style={styles.buttonContainer}
-          onPress={() => handleClosePress()}
-        />
+        <Button label="Snap To 90%" onPress={() => handleSnapPress(2)} />
+        <Button label="Snap To 50%" onPress={() => handleSnapPress(1)} />
+        <Button label="Snap To 25%" onPress={() => handleSnapPress(0)} />
+        <Button label="Expand" onPress={handleExpandPress} />
+        <Button label="Collapse" onPress={handleCollapsePress} />
+        <Button label="Close" onPress={handleClosePress} />
         <Button
           label={enableContentPanningGestureButtonText}
-          style={styles.buttonContainer}
           onPress={handleEnableContentPanningGesturePress}
         />
         <Button
           label={enableHandlePanningGestureButtonText}
-          style={styles.buttonContainer}
           onPress={handleEnableHandlePanningGesturePress}
         />
         <BottomSheet
@@ -156,9 +130,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     paddingVertical: 24,
     backgroundColor: 'white',
-  },
-  buttonContainer: {
-    marginBottom: 0,
   },
 });
 

@@ -68,48 +68,16 @@ const StackExample = () => {
   );
   return (
     <View style={styles.container}>
-      <Button
-        label="Present Modal A"
-        style={styles.buttonContainer}
-        onPress={handlePresentAPress}
-      />
-      <Button
-        label="Dismiss Modal A"
-        style={styles.buttonContainer}
-        onPress={handleDismissAPress}
-      />
-      <Button
-        label="Present Modal B"
-        style={styles.buttonContainer}
-        onPress={handlePresentBPress}
-      />
-      <Button
-        label="Dismiss Modal B"
-        style={styles.buttonContainer}
-        onPress={handleDismissBPress}
-      />
-      <Button
-        label="Present Modal C"
-        style={styles.buttonContainer}
-        onPress={handlePresentCPress}
-      />
-      <Button
-        label="Dismiss Modal C"
-        style={styles.buttonContainer}
-        onPress={handleDismissCPress}
-      />
+      <Button label="Present Modal A" onPress={handlePresentAPress} />
+      <Button label="Dismiss Modal A" onPress={handleDismissAPress} />
+      <Button label="Present Modal B" onPress={handlePresentBPress} />
+      <Button label="Dismiss Modal B" onPress={handleDismissBPress} />
+      <Button label="Present Modal C" onPress={handlePresentCPress} />
+      <Button label="Dismiss Modal C" onPress={handleDismissCPress} />
 
-      <Button
-        label="Dismiss All Modal"
-        style={styles.buttonContainer}
-        onPress={handleDismissAllPress}
-      />
+      <Button label="Dismiss All Modal" onPress={handleDismissAllPress} />
 
-      <Button
-        label="Dismiss A By Hook"
-        style={styles.buttonContainer}
-        onPress={handleDismissByHookPress}
-      />
+      <Button label="Dismiss A By Hook" onPress={handleDismissByHookPress} />
 
       <BottomSheetModal
         name="A"
@@ -141,9 +109,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-  },
-  buttonContainer: {
-    marginBottom: 6,
   },
 });
 

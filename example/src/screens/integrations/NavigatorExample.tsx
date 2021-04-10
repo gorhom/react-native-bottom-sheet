@@ -98,36 +98,12 @@ const NavigatorExample = () => {
   // renders
   return (
     <View style={styles.container}>
-      <Button
-        label="Snap To 90%"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(2)}
-      />
-      <Button
-        label="Snap To 50%"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(1)}
-      />
-      <Button
-        label="Snap To 25%"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
-      />
-      <Button
-        label="Expand"
-        style={styles.buttonContainer}
-        onPress={() => handleExpandPress()}
-      />
-      <Button
-        label="Collapse"
-        style={styles.buttonContainer}
-        onPress={() => handleCollapsePress()}
-      />
-      <Button
-        label="Close"
-        style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
-      />
+      <Button label="Snap To 90%" onPress={() => handleSnapPress(2)} />
+      <Button label="Snap To 50%" onPress={() => handleSnapPress(1)} />
+      <Button label="Snap To 25%" onPress={() => handleSnapPress(0)} />
+      <Button label="Expand" onPress={() => handleExpandPress()} />
+      <Button label="Collapse" onPress={() => handleCollapsePress()} />
+      <Button label="Close" onPress={() => handleClosePress()} />
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -145,9 +121,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-  },
-  buttonContainer: {
-    marginBottom: 6,
   },
 });
 

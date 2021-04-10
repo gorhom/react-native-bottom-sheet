@@ -37,26 +37,10 @@ const SimpleExample = () => {
   // renders
   return (
     <View style={styles.container}>
-      <Button
-        label="Present Modal"
-        style={styles.buttonContainer}
-        onPress={handlePresentPress}
-      />
-      <Button
-        label="Dismiss Modal"
-        style={styles.buttonContainer}
-        onPress={handleDismissPress}
-      />
-      <Button
-        label="Expand"
-        style={styles.buttonContainer}
-        onPress={handleExpandPress}
-      />
-      <Button
-        label="Collapse"
-        style={styles.buttonContainer}
-        onPress={handleCollapsePress}
-      />
+      <Button label="Present Modal" onPress={handlePresentPress} />
+      <Button label="Dismiss Modal" onPress={handleDismissPress} />
+      <Button label="Expand" onPress={handleExpandPress} />
+      <Button label="Collapse" onPress={handleCollapsePress} />
       <BottomSheetModal
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -74,9 +58,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-  },
-  buttonContainer: {
-    marginBottom: 6,
   },
 });
 
