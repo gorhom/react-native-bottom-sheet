@@ -10,7 +10,6 @@ import {
   ScrollView as RNScrollView,
   ScrollViewProps as RNScrollViewProps,
 } from 'react-native';
-import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
@@ -79,7 +78,7 @@ const BottomSheetScrollViewComponent = forwardRef(
   }
 );
 
-const BottomSheetScrollView = memo(BottomSheetScrollViewComponent, isEqual);
+const BottomSheetScrollView = memo(BottomSheetScrollViewComponent);
 BottomSheetScrollView.displayName = 'BottomSheetScrollView';
 
 export default (BottomSheetScrollView as any) as typeof BottomSheetScrollViewType;

@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import isEqual from 'lodash.isequal';
 import type { BottomSheetBackdropContainerProps } from './types';
 import { styles } from './styles';
 
@@ -18,8 +17,7 @@ const BottomSheetBackdropContainerComponent = ({
 };
 
 const BottomSheetBackdropContainer = memo(
-  BottomSheetBackdropContainerComponent,
-  isEqual
+  BottomSheetBackdropContainerComponent
 );
 BottomSheetBackdropContainer.displayName = 'BottomSheetBackdropContainer';
 

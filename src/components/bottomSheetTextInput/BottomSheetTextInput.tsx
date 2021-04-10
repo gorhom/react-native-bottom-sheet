@@ -1,7 +1,6 @@
 import React, { memo, useCallback, forwardRef } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
 import { runOnUI } from 'react-native-reanimated';
-import isEqual from 'lodash.isequal';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetTextInputProps } from './types';
 
@@ -48,7 +47,7 @@ const BottomSheetTextInputComponent = forwardRef<
   );
 });
 
-const BottomSheetTextInput = memo(BottomSheetTextInputComponent, isEqual);
+const BottomSheetTextInput = memo(BottomSheetTextInputComponent);
 BottomSheetTextInput.displayName = 'BottomSheetTextInput';
 
 export default BottomSheetTextInput;

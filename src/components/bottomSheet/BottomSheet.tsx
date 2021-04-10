@@ -10,7 +10,6 @@ import React, {
   useEffect,
 } from 'react';
 import { ViewStyle } from 'react-native';
-import isEqual from 'lodash.isequal';
 import invariant from 'invariant';
 import Animated, {
   useAnimatedReaction,
@@ -988,7 +987,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
   }
 );
 
-const BottomSheet = memo(BottomSheetComponent, isEqual);
+const BottomSheet = memo(BottomSheetComponent);
 BottomSheet.displayName = 'BottomSheet';
 
 export default BottomSheet;

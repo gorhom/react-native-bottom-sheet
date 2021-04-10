@@ -1,5 +1,4 @@
 import React, { useMemo, useRef, memo } from 'react';
-import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
@@ -79,10 +78,7 @@ const BottomSheetDraggableViewComponent = ({
   );
 };
 
-const BottomSheetDraggableView = memo(
-  BottomSheetDraggableViewComponent,
-  isEqual
-);
+const BottomSheetDraggableView = memo(BottomSheetDraggableViewComponent);
 BottomSheetDraggableView.displayName = 'BottomSheetDraggableView';
 
 export default BottomSheetDraggableView;
