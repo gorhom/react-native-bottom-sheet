@@ -54,7 +54,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
         id: id,
         type,
         // @ts-ignore
-        node: scrollableRef.current!.getNode(),
+        node: scrollableRef.current,
       });
     } else {
       console.warn(`Couldn't find the scrollable node handle id!`);

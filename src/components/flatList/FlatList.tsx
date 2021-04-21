@@ -52,7 +52,7 @@ const BottomSheetFlatListComponent = forwardRef(
 
     // effects
     // @ts-ignore
-    useImperativeHandle(ref, () => scrollableRef.current!.getNode());
+    useImperativeHandle(ref, () => scrollableRef.current);
     useFocusHook(handleSettingScrollable);
 
     // render
