@@ -17,9 +17,7 @@ const BottomSheetHandleContainerComponent = ({
   onMeasureHeight,
 }: BottomSheetHandleContainerProps) => {
   //#region variables
-  const shouldRenderHandle = useMemo(() => _providedHandleComponent !== null, [
-    _providedHandleComponent,
-  ]);
+  const shouldRenderHandle = _providedHandleComponent !== null;
   //#endregion
 
   //#region callbacks
