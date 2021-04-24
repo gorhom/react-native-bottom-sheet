@@ -57,6 +57,7 @@ PODS:
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - glog (0.3.5)
+  - hermes-engine (0.7.2)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.180)
   - RCT-Folly (2020.01.13.00):
@@ -68,6 +69,11 @@ PODS:
     - boost-for-react-native
     - DoubleConversion
     - glog
+  - RCT-Folly/Futures (2020.01.13.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+    - libevent
   - RCTRequired (0.64.0)
   - RCTTypeSafety (0.64.0):
     - FBLazyVector (= 0.64.0)
@@ -123,6 +129,16 @@ PODS:
     - React-jsi (= 0.64.0)
     - React-jsiexecutor (= 0.64.0)
     - React-jsinspector (= 0.64.0)
+    - React-perflogger (= 0.64.0)
+    - Yoga
+  - React-Core/Hermes (0.64.0):
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2020.01.13.00)
+    - RCT-Folly/Futures
+    - React-cxxreact (= 0.64.0)
+    - React-jsi (= 0.64.0)
+    - React-jsiexecutor (= 0.64.0)
     - React-perflogger (= 0.64.0)
     - Yoga
   - React-Core/RCTActionSheetHeaders (0.64.0):
@@ -254,9 +270,9 @@ PODS:
   - React-jsinspector (0.64.0)
   - react-native-blur (0.8.0):
     - React
-  - react-native-maps (0.27.1):
-    - React
-  - react-native-pager-view (5.1.3):
+  - react-native-maps (0.28.0):
+    - React-Core
+  - react-native-pager-view (5.1.5):
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
@@ -357,7 +373,7 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.1.0):
+  - RNScreens (3.1.1):
     - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -387,6 +403,8 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.79.1)
   - FlipperKit/SKIOSNetworkPlugin (= 0.79.1)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - hermes-engine (~> 0.7.2)
+  - libevent (~> 2.1.12)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -394,6 +412,7 @@ DEPENDENCIES:
   - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
   - React-Core (from `../node_modules/react-native/`)
   - React-Core/DevSupport (from `../node_modules/react-native/`)
+  - React-Core/Hermes (from `../node_modules/react-native/`)
   - React-Core/RCTWebSocket (from `../node_modules/react-native/`)
   - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -433,6 +452,7 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - Flipper-RSocket
     - FlipperKit
+    - hermes-engine
     - libevent
     - OpenSSL-Universal
     - YogaKit
@@ -514,7 +534,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
   FBReactNativeSpec: c426cca9d43fd70ac19a77e504a6fd12ecb473f6
   Flipper: da2ca681187fb82c668a2c3c54b003cbd3c26859
@@ -524,7 +544,8 @@ SPEC CHECKSUMS:
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
   Flipper-RSocket: 602921fee03edacf18f5d6f3d3594ba477f456e5
   FlipperKit: 54754e226d7934ec516f99921d945a1ad69d1ba4
-  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
@@ -539,8 +560,8 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
-  react-native-pager-view: 08c5414c85f5e3bb35e57f6e72a81a567b9ee749
+  react-native-maps: 2d405b4e8cee0282e4c02bac434d81450dfea877
+  react-native-pager-view: c0c3833fbf06f3c63fb0ef8c4125bf1363b073d8
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
   React-RCTActionSheet: 3080b6e12e0e1a5b313c8c0050699b5c794a1b11
@@ -557,10 +578,10 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
-  RNScreens: 3ba2198ca3179f77f6158425fc31ba3c90a0d49f
+  RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: bf6db2a8256e6656086d03dc571818c2da36d830
+PODFILE CHECKSUM: 67fe79871f8954ecbed35a24caa6f64c3385b340
 
 COCOAPODS: 1.10.1
