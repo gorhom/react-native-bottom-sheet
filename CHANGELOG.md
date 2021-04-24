@@ -1,6 +1,13 @@
 # Changelog
 
-## [v3.6.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.2...v3.6.3)
+## [v3.6.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.3...v3.6.4)
+
+#### Improvements
+
+- refactor: remove deep equal checker ([`#395`](https://github.com/gorhom/react-native-bottom-sheet/pull/395)).
+- chore: refactored examples ([7c6d9f3](https://github.com/gorhom/react-native-bottom-sheet/commit/7c6d9f3fb601a092f0e7b4752ac608c40c47c60a)).
+
+## [v3.6.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.2...v3.6.3) - 2021-04-07
 
 #### Improvements
 
