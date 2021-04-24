@@ -10,7 +10,6 @@ import {
   SectionList as RNSectionList,
   SectionListProps as RNSectionListProps,
 } from 'react-native';
-import isEqual from 'lodash.isequal';
 import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
@@ -80,7 +79,7 @@ const BottomSheetSectionListComponent = forwardRef(
   }
 );
 
-const BottomSheetSectionList = memo(BottomSheetSectionListComponent, isEqual);
+const BottomSheetSectionList = memo(BottomSheetSectionListComponent);
 BottomSheetSectionList.displayName = 'BottomSheetSectionList';
 
 export default (BottomSheetSectionList as any) as typeof BottomSheetSectionListType;

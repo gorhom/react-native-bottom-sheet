@@ -38,9 +38,8 @@
   "dependencies": {
     "@gorhom/portal": "^1.0.4",
     "invariant": "^2.2.4",
-    "lodash.isequal": "^4.5.0",
     "nanoid": "^3.1.20",
-    "react-native-redash": "^16.0.8"
+    "react-native-redash": "^16.0.10"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -49,29 +48,28 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@release-it/conventional-changelog": "^2.0.0",
     "@types/invariant": "^2.2.34",
-    "@types/lodash.isequal": "^4.5.5",
     "@types/react": "^16.9.46",
     "@types/react-native": "^0.63.8",
     "auto-changelog": "^2.2.1",
     "copyfiles": "^2.4.1",
-    "eslint": "^7.20.0",
-    "eslint-config-prettier": "^7.2.0",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "husky": "^4.3.6",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
     "react": "~16.9.0",
     "react-native": "^0.62.2",
-    "react-native-gesture-handler": "^1.10.1",
-    "react-native-reanimated": "^2.0.0",
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-reanimated": "^2.1.0",
     "release-it": "^14.2.2",
-    "typescript": "^4.1.5"
+    "typescript": "^4.2.4"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-gesture-handler": ">=1.9.0",
-    "react-native-reanimated": ">=2.0.0-rc.2"
+    "react-native-gesture-handler": ">=1.10.1",
+    "react-native-reanimated": ">=2.1.0"
   },
   "husky": {
     "hooks": {

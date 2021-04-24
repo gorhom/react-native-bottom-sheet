@@ -11,7 +11,6 @@ import {
   TapGestureHandler,
   TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
-import isEqual from 'lodash.isequal';
 import {
   DEFAULT_OPACITY,
   DEFAULT_APPEARS_ON_INDEX,
@@ -126,7 +125,7 @@ const BottomSheetBackdropComponent = ({
   );
 };
 
-const BottomSheetBackdrop = memo(BottomSheetBackdropComponent, isEqual);
+const BottomSheetBackdrop = memo(BottomSheetBackdropComponent);
 BottomSheetBackdrop.displayName = 'BottomSheetBackdrop';
 
 export default BottomSheetBackdrop;

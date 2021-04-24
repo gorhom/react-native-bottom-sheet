@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import isEqual from 'lodash.isequal';
 import BottomSheetHandle from '../bottomSheetHandle';
 import type { BottomSheetHandleContainerProps } from './types';
 import { useBottomSheetInternal } from '../../hooks';
@@ -112,10 +111,7 @@ const BottomSheetHandleContainerComponent = ({
   //#endregion
 };
 
-const BottomSheetHandleContainer = memo(
-  BottomSheetHandleContainerComponent,
-  isEqual
-);
+const BottomSheetHandleContainer = memo(BottomSheetHandleContainerComponent);
 BottomSheetHandleContainer.displayName = 'BottomSheetHandleContainer';
 
 export default BottomSheetHandleContainer;

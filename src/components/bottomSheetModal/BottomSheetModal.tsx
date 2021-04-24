@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 import { Portal, usePortal } from '@gorhom/portal';
 import { nanoid } from 'nanoid/non-secure';
-import isEqual from 'lodash.isequal';
 import BottomSheet from '../bottomSheet';
 import { useBottomSheetModalInternal } from '../../hooks';
 import {
@@ -282,7 +281,7 @@ const BottomSheetModalComponent = forwardRef<
   ) : null;
 });
 
-const BottomSheetModal = memo(BottomSheetModalComponent, isEqual);
+const BottomSheetModal = memo(BottomSheetModalComponent);
 BottomSheetModal.displayName = 'BottomSheetModal';
 
 export default BottomSheetModal;

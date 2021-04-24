@@ -1,6 +1,5 @@
 import React, { memo, useMemo, useEffect, useCallback } from 'react';
 import { View as RNView } from 'react-native';
-import isEqual from 'lodash.isequal';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetViewProps } from './types';
 import { styles } from './styles';
@@ -43,7 +42,7 @@ const BottomSheetViewComponent = ({
   );
 };
 
-const BottomSheetView = memo(BottomSheetViewComponent, isEqual);
+const BottomSheetView = memo(BottomSheetViewComponent);
 BottomSheetView.displayName = 'BottomSheetView';
 
 export default BottomSheetView;

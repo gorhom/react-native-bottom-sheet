@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
-import isEqual from 'lodash.isequal';
 import { styles } from './styles';
 
 const BottomSheetHandleComponent = () => {
@@ -11,7 +10,7 @@ const BottomSheetHandleComponent = () => {
   );
 };
 
-const BottomSheetHandle = memo(BottomSheetHandleComponent, isEqual);
+const BottomSheetHandle = memo(BottomSheetHandleComponent);
 BottomSheetHandle.displayName = 'BottomSheetHandle';
 
 export default BottomSheetHandle;

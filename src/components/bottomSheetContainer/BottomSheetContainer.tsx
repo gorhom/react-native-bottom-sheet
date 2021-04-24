@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-import isEqual from 'lodash.isequal';
 import type { BottomSheetContainerProps } from './types';
 import { styles } from './styles';
 
@@ -48,7 +47,7 @@ const BottomSheetContainerComponent = ({
   //#endregion
 };
 
-const BottomSheetContainer = memo(BottomSheetContainerComponent, isEqual);
+const BottomSheetContainer = memo(BottomSheetContainerComponent);
 BottomSheetContainer.displayName = 'BottomSheetContainer';
 
 export default BottomSheetContainer;
