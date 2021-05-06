@@ -4,28 +4,34 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
 import SearchHandle from './components/searchHandle';
 import Button from './components/button';
 import ContactList from './components/contactList';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 const { height: windowHeight } = Dimensions.get('window');
 
 const BasicExample = () => {
   //#region state
+  const shownHeader = useRef(true);
   const [dynamicSnapPoint, setDynamicSnapPoint] = useState(300);
   //#endregion
 
   //#region hooks
+  const { setOptions } = useNavigation();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
   //#endregion
 
   //#region variables
-  const snapPoints = useMemo(() => [150, dynamicSnapPoint], [dynamicSnapPoint]);
+  const snapPoints = useMemo(() => [150, 400, '100%'], []);
   const animatedPosition = useSharedValue<number>(0);
+  const animatedContainerHeight = useSharedValue<number>(800);
   //#endregion
 
   //#region styles
@@ -83,11 +89,20 @@ const BasicExample = () => {
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapTo(index);
   }, []);
+  const handleSnapPosition = useCallback(position => {
+    bottomSheetRef.current?.snapTo(position);
+  }, []);
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
   const handleIncreaseDynamicSnapPoint = useCallback(() => {
     setDynamicSnapPoint(state => state + 50);
+  }, []);
+  const handleHideHeaderPress = useCallback(() => {
+    shownHeader.current = !shownHeader.current;
+    setOptions({
+      headerShown: shownHeader.current,
+    });
   }, []);
   //#endregion
 
@@ -98,36 +113,45 @@ const BasicExample = () => {
         label="Increase Dynamic Snap Point"
         style={styles.buttonContainer}
         onPress={handleIncreaseDynamicSnapPoint}
-      />
+      /> */}
       <Button
-        label="Snap To 150"
+        label="Snap To 0"
         style={styles.buttonContainer}
         onPress={() => handleSnapPress(0)}
-      /> */}
+      />
+      <Button
+        label="Snap To 1"
+        style={styles.buttonContainer}
+        onPress={() => handleSnapPress(1)}
+      />
+      <Button
+        label="Snap To 500px"
+        style={styles.buttonContainer}
+        onPress={() => handleSnapPosition(500)}
+      />
       <Button
         label="Close"
         style={styles.buttonContainer}
-        onPress={() => handleClosePress()}
+        onPress={handleClosePress}
+      />
+
+      <Button
+        label="Hide Header"
+        style={styles.buttonContainer}
+        onPress={handleHideHeaderPress}
       />
       <BottomSheet
         ref={bottomSheetRef}
-        index={0}
         snapPoints={snapPoints}
-        animateOnMount={true}
         animatedPosition={animatedPosition}
-        keyboardBehavior="fullScreen"
-        keyboardBlurBehavior="restore"
+        keyboardBehavior="interactive"
+        // topInset={topSafeArea}
         handleComponent={SearchHandle}
-        containerHeight={windowHeight - (StatusBar.currentHeight ?? 0)}
-        topInset={topSafeArea}
+        animateOnMount={true}
         // onChange={handleSheetChanges}
       >
-        <ContactList type="FlatList" count={20} />
-        {/* <View
-          style={{
-            height: dynamicSnapPoint,
-          }}
-        >
+        {/* <ContactList type="FlatList" count={20} /> */}
+        <View style={{}}>
           <View
             pointerEvents="none"
             style={{
@@ -140,12 +164,12 @@ const BasicExample = () => {
               backgroundColor: 'red',
             }}
           />
-        </View> */}
+        </View>
       </BottomSheet>
-      {/* <Animated.View pointerEvents="none" style={sheetLineStyle} />
+      {/* <Animated.View pointerEvents="none" style={sheetLineStyle} /> */}
       <View pointerEvents="none" style={secondSnapPointLineStyle} />
       <View pointerEvents="none" style={firstSnapPointLineStyle} />
-      <View pointerEvents="none" style={safeBottomLineStyle} /> */}
+      <View pointerEvents="none" style={safeBottomLineStyle} />
     </View>
   );
 };
@@ -153,7 +177,7 @@ const BasicExample = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#222',
+    backgroundColor: '#555',
     padding: 24,
   },
   buttonContainer: {
@@ -184,10 +208,11 @@ const styles = StyleSheet.create({
 });
 
 const Stack = createStackNavigator();
+
 export default () => (
   <NavigationContainer>
-    <Stack.Navigator headerMode="none" initialRouteName="root">
-      <Stack.Screen name="root">{() => <BasicExample />}</Stack.Screen>
+    <Stack.Navigator>
+      <Stack.Screen name="app" component={BasicExample} />
     </Stack.Navigator>
   </NavigationContainer>
 );
