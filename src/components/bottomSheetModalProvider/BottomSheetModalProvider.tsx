@@ -1,11 +1,13 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { useSharedValue } from 'react-native-reanimated';
 import { PortalProvider } from '@gorhom/portal';
 import {
   BottomSheetModalProvider,
   BottomSheetModalInternalProvider,
 } from '../../contexts';
 import BottomSheetContainer from '../bottomSheetContainer';
-import { MODAL_STACK_BEHAVIOR, WINDOW_HEIGHT } from '../../constants';
+import { MODAL_STACK_BEHAVIOR } from '../../constants';
+import { INITIAL_CONTAINER_HEIGHT } from '../bottomSheet/constants';
 import type { BottomSheetModalStackBehavior } from '../bottomSheetModal';
 import type {
   BottomSheetModalProviderProps,
@@ -15,18 +17,12 @@ import type {
 const BottomSheetModalProviderWrapper = ({
   children,
 }: BottomSheetModalProviderProps) => {
-  //#region layout state
-  const [containerHeight, setContainerHeight] = useState(WINDOW_HEIGHT);
+  //#region layout variables
+  const animatedContainerHeight = useSharedValue(INITIAL_CONTAINER_HEIGHT);
   //#endregion
 
   //#region variables
   const sheetsQueueRef = useRef<BottomSheetModalRef[]>([]);
-  //#endregion
-
-  //#region callback
-  const handleOnContainerMeasureHeight = useCallback((height: number) => {
-    setContainerHeight(height);
-  }, []);
   //#endregion
 
   //#region private methods
@@ -160,13 +156,13 @@ const BottomSheetModalProviderWrapper = ({
   );
   const internalContextVariables = useMemo(
     () => ({
-      containerHeight,
+      containerHeight: animatedContainerHeight,
       mountSheet: handleMountSheet,
       unmountSheet: handleUnmountSheet,
       willUnmountSheet: handleWillUnmountSheet,
     }),
     [
-      containerHeight,
+      animatedContainerHeight,
       handleMountSheet,
       handleUnmountSheet,
       handleWillUnmountSheet,
@@ -179,8 +175,7 @@ const BottomSheetModalProviderWrapper = ({
     <BottomSheetModalProvider value={externalContextVariables}>
       <BottomSheetModalInternalProvider value={internalContextVariables}>
         <BottomSheetContainer
-          shouldMeasureHeight={true}
-          onMeasureHeight={handleOnContainerMeasureHeight}
+          containerHeight={animatedContainerHeight}
           children={null}
         />
         <PortalProvider>{children}</PortalProvider>

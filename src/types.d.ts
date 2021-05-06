@@ -78,3 +78,7 @@ export type ScrollableRef = {
   didResize: boolean;
 };
 //#endregion
+
+//#region utils
+export type Primitive = string | number | boolean;
+//#endregion

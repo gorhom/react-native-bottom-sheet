@@ -37,3 +37,6 @@ export type { BottomSheetModalProps } from './components/bottomSheetModal';
 export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
 export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
 export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop';
+
+// logger
+export { enableLogging } from './utilities/logger';

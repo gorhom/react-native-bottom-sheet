@@ -19,7 +19,6 @@ export interface BottomSheetInternalContextType
     | 'simultaneousHandlers'
   > {
   enableContentPanningGesture: boolean;
-  snapPointsCount: number;
   animatedPosition: Animated.SharedValue<number>;
   animatedIndex: Animated.SharedValue<number>;
   animationState: Animated.SharedValue<ANIMATION_STATE>;

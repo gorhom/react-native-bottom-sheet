@@ -1,4 +1,5 @@
 import type { PanGestureHandlerProperties } from 'react-native-gesture-handler';
+import type Animated from 'react-native-reanimated';
 import type { BottomSheetProps } from '../bottomSheet';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 
@@ -7,7 +8,6 @@ export interface BottomSheetHandleContainerProps
     Pick<BottomSheetProps, 'handleComponent' | 'enableHandlePanningGesture'>,
     BottomSheetHandleProps {
   handlePanGestureHandler: any;
-  shouldMeasureHeight: boolean;
-  snapPoints: Array<number>;
-  onMeasureHeight: (height: number) => void;
+
+  handleHeight: Animated.SharedValue<number>;
 }

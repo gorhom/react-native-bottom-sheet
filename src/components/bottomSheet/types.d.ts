@@ -12,18 +12,20 @@ import type {
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
-    Partial<Pick<
-      PanGestureHandlerProps,
-      | 'activeOffsetY'
-      | 'activeOffsetX'
-      | 'failOffsetY'
-      | 'failOffsetX'
-      | 'waitFor'
-      | 'simultaneousHandlers'
-    >> {
-  // configuration
+    Partial<
+      Pick<
+        PanGestureHandlerProps,
+        | 'activeOffsetY'
+        | 'activeOffsetX'
+        | 'failOffsetY'
+        | 'failOffsetX'
+        | 'waitFor'
+        | 'simultaneousHandlers'
+      >
+    > {
+  //#region configuration
   /**
-   * Initial snap index, you also could provide `-1` to initiate bottom sheet in closed state.
+   * Initial snap point index, provide `-1` to initiate bottom sheet in closed state.
    * @type number
    * @default 0
    */
@@ -38,28 +40,6 @@ export interface BottomSheetProps
    * snapPoints={[-1, '%100']}
    */
   snapPoints: Array<string | number>;
-  /**
-   * Handle height helps to calculate the internal container and sheet layouts,
-   * if `handleComponent` is provided, the library internally will calculate its layout,
-   * unless `handleHeight` is provided.
-   * @type number
-   */
-  handleHeight?: number;
-  /**
-   * Container height helps to calculate the internal sheet layouts,
-   * if `containerHeight` not provided, the library internally will calculate it,
-   * however this will cause an extra re-rendering.
-   * @type number
-   */
-  containerHeight?: number;
-  /**
-   * Top inset value helps to calculate percentage snap points values,
-   * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or
-   * from `react-native-safe-area-context` hook `useSafeArea`.
-   * @type number
-   * @default 0
-   */
-  topInset?: number;
   /**
    * Defines how violently sheet has to stopped while over dragging.
    * @type number
@@ -96,6 +76,41 @@ export interface BottomSheetProps
    * @default false
    */
   animateOnMount?: boolean;
+  //#endregion
+
+  //#region layout
+  /**
+   * Handle height helps to calculate the internal container and sheet layouts,
+   * if `handleComponent` is provided, the library internally will calculate its layout,
+   * unless `handleHeight` is provided.
+   * @type number
+   */
+  handleHeight?: number;
+  /**
+   * Container height helps to calculate the internal sheet layouts,
+   * if `containerHeight` not provided, the library internally will calculate it,
+   * however this will cause an extra re-rendering.
+   * @type number | Animated.SharedValue<number>;
+   */
+  containerHeight?: number | Animated.SharedValue<number>;
+  /**
+   * Top inset value helps to calculate percentage snap points values,
+   * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or
+   * from `react-native-safe-area-context` hook `useSafeArea`.
+   * @type number
+   * @default 0
+   */
+  topInset?: number;
+  /**
+   * Bottom inset value helps to calculate percentage snap points values,
+   * usually comes from `react-native-safe-area-context` hook `useSafeArea`.
+   * @type number
+   * @default 0
+   */
+  bottomInset?: number;
+  //#endregion
+
+  //#region keyboard
   /**
    * Defines the keyboard appearance behavior.
    * - `none`: do nothing.
@@ -112,6 +127,7 @@ export interface BottomSheetProps
    * - `restore`: restore sheet position.
    */
   keyboardBlurBehavior?: keyof typeof KEYBOARD_BLUR_BEHAVIOR;
+  //#endregion
 
   /**
    * View style to be applied at the sheet container,
@@ -133,7 +149,7 @@ export interface BottomSheetProps
     >
   >;
 
-  // animated nodes
+  //#region animated nodes
   /**
    * Animated value to be used as a callback of the position node internally.
    * @type Animated.Value<number>
@@ -144,8 +160,9 @@ export interface BottomSheetProps
    * @type Animated.Value<number>
    */
   animatedIndex?: Animated.SharedValue<number>;
+  //#endregion
 
-  // callbacks
+  //#region callbacks
   /**
    * Callback when sheet position changed to a provided point.
    * @type (index: number) => void;
@@ -156,8 +173,9 @@ export interface BottomSheetProps
    * @type (fromIndex: number, toIndex: number) => void;
    */
   onAnimate?: (fromIndex: number, toIndex: number) => void;
+  //#endregion
 
-  // components
+  //#region components
   /**
    * Component to be placed as a sheet handle.
    * @see {BottomSheetHandleProps}
@@ -182,6 +200,7 @@ export interface BottomSheetProps
    * @type React.ReactNode[] | React.ReactNode
    */
   children: (() => React.ReactNode) | React.ReactNode[] | React.ReactNode;
+  //#endregion
 }
 
 export interface BottomSheetAnimationConfigs {
