@@ -1,20 +1,22 @@
 import React, { memo, useCallback, useMemo } from 'react';
+import type { LayoutChangeEvent } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import BottomSheetHandle from '../bottomSheetHandle';
-import type { BottomSheetHandleContainerProps } from './types';
 import { useBottomSheetInternal } from '../../hooks';
+import { print } from '../../utilities';
+import type { BottomSheetHandleContainerProps } from './types';
+import { INITIAL_HANDLE_HEIGHT } from '../bottomSheet/constants';
 
-const BottomSheetHandleContainerComponent = ({
+function BottomSheetHandleContainerComponent({
   animatedIndex,
   animatedPosition,
   simultaneousHandlers: _internalSimultaneousHandlers,
   enableHandlePanningGesture,
-  shouldMeasureHeight,
   handlePanGestureHandler,
-  onMeasureHeight,
+  handleHeight,
   handleComponent: _providedHandleComponent,
-}: BottomSheetHandleContainerProps) => {
+}: BottomSheetHandleContainerProps) {
   //#region variables
   const {
     activeOffsetX,
@@ -49,15 +51,29 @@ const BottomSheetHandleContainerComponent = ({
   //#endregion
 
   //#region callbacks
-  const handleOnLayout = useCallback(
-    ({
-      nativeEvent: {
-        layout: { height },
-      },
-    }) => {
-      onMeasureHeight(height);
-    },
-    [onMeasureHeight]
+  const getHandleContainerLayout = useMemo(
+    () =>
+      handleHeight.value === INITIAL_HANDLE_HEIGHT
+        ? function handleContainerLayout({
+            nativeEvent: {
+              layout: { height },
+            },
+          }: LayoutChangeEvent) {
+            if (height === handleHeight.value) {
+              return;
+            }
+            handleHeight.value = height;
+
+            print({
+              component: BottomSheetHandleContainer.displayName,
+              method: 'handleContainerLayout',
+              params: {
+                height,
+              },
+            });
+          }
+        : undefined,
+    [handleHeight]
   );
   //#endregion
 
@@ -79,12 +95,6 @@ const BottomSheetHandleContainerComponent = ({
     );
   }, [animatedIndex, animatedPosition, _providedHandleComponent]);
 
-  // console.log(
-  //   'BottomSheetHandleContainer',
-  //   'render',
-  //   shouldRenderHandle,
-  //   shouldMeasureHeight
-  // );
   return shouldRenderHandle ? (
     <PanGestureHandler
       enabled={enableHandlePanningGesture}
@@ -102,14 +112,14 @@ const BottomSheetHandleContainerComponent = ({
         accessibilityRole="adjustable"
         accessibilityLabel="Bottom Sheet handle"
         accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
-        onLayout={shouldMeasureHeight ? handleOnLayout : undefined}
+        onLayout={getHandleContainerLayout}
       >
         {renderHandle()}
       </Animated.View>
     </PanGestureHandler>
   ) : null;
   //#endregion
-};
+}
 
 const BottomSheetHandleContainer = memo(BottomSheetHandleContainerComponent);
 BottomSheetHandleContainer.displayName = 'BottomSheetHandleContainer';

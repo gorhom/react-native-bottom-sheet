@@ -3,26 +3,34 @@ import Animated, {
   cancelAnimation,
   makeMutable,
 } from 'react-native-reanimated';
+import type { Primitive } from '../types';
 
 export const useReactiveSharedValue = <T>(
   value: T
-): Animated.SharedValue<T> => {
-  const ref = useRef<Animated.SharedValue<T>>(null);
+): T extends Primitive ? Animated.SharedValue<T> : T => {
+  const initialValueRef = useRef<T>(null);
+  const valueRef = useRef<Animated.SharedValue<T>>(null);
 
-  if (ref.current === null) {
+  if (typeof value === 'object' && 'value' in value) {
+    // if provided value is a shared value,
+    // then we do not initialize another one.
+  } else if (valueRef.current === null) {
     // @ts-ignore
-    ref.current = makeMutable(value);
-  } else if (ref.current.value !== value) {
-    ref.current.value = value;
+    initialValueRef.current = value;
+    // @ts-ignore
+    valueRef.current = makeMutable(value);
+  } else if (initialValueRef.current !== value) {
+    valueRef.current.value = value as T;
   }
 
   useEffect(() => {
     return () => {
-      if (ref.current) {
-        cancelAnimation(ref.current);
+      if (valueRef.current) {
+        cancelAnimation(valueRef.current);
       }
     };
   }, []);
 
-  return ref.current;
+  // @ts-ignore
+  return valueRef.current ?? value;
 };

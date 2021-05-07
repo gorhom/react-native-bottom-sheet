@@ -1,29 +1,33 @@
-import { useMemo } from 'react';
-import { normalizeSnapPoints } from '../utilities';
+import Animated, { useDerivedValue } from 'react-native-reanimated';
+import { normalizeSnapPoint } from '../utilities';
+import type { BottomSheetProps } from '../components/bottomSheet';
+import {
+  INITIAL_CONTAINER_HEIGHT,
+  INITIAL_SNAP_POINT,
+} from '../components/bottomSheet/constants';
 
+/**
+ * Convert percentage snap points to pixels in screen and calculate
+ * the accurate snap points positions.
+ * @param providedSnapPoints provided snap points.
+ * @param containerHeight BottomSheetContainer height.
+ * @param topInset top inset.
+ * @returns {Animated.SharedValue<number[]>}
+ */
 export const useNormalizedSnapPoints = (
-  snapPoints: Array<number | string>,
-  topInset: number,
-  containerHeight: number = 0,
-  handleHeight: number = 0
-) =>
-  useMemo(() => {
-    const normalizedSnapPoints = normalizeSnapPoints(
-      snapPoints,
-      containerHeight,
-      topInset
-    );
-    return normalizedSnapPoints.map(normalizedSnapPoint => {
-      /**
-       * we subset handleHeight from the `normalizedSnapPoint` to make
-       * sure that sheets and its handle will be out of the screen.
-       */
-      if (normalizedSnapPoint === 0 && handleHeight !== 0) {
-        normalizedSnapPoint = normalizedSnapPoint - handleHeight;
+  providedSnapPoints: BottomSheetProps['snapPoints'],
+  containerHeight: Animated.SharedValue<number>,
+  topInset: number
+) => {
+  const normalizedSnapPoints = useDerivedValue(() =>
+    providedSnapPoints.map(snapPoint => {
+      if (containerHeight.value === INITIAL_CONTAINER_HEIGHT) {
+        return INITIAL_SNAP_POINT;
       }
-      return Math.max(
-        containerHeight - normalizedSnapPoint - handleHeight,
-        topInset
-      );
-    });
-  }, [snapPoints, topInset, containerHeight, handleHeight]);
+
+      return normalizeSnapPoint(snapPoint, containerHeight.value, topInset);
+    })
+  );
+
+  return normalizedSnapPoints;
+};
