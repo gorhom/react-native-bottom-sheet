@@ -71,6 +71,12 @@ export interface BottomSheetProps
    */
   enableFlashScrollableIndicatorOnExpand?: boolean;
   /**
+   * Enable pan down gesture to close the sheet.
+   * @type boolean
+   * @default false
+   */
+  enablePanDownToClose?: boolean;
+  /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
    * @default false
