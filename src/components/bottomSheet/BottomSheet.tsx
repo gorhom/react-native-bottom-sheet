@@ -669,12 +669,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const internalContextVariables = useMemo(
       () => ({
         enableContentPanningGesture,
+        animatedAnimationState,
+        animatedSheetState,
+        animatedScrollableState,
         animatedIndex,
         animatedPosition,
-        animationState: animatedAnimationState,
-        animatedSheetState,
-        contentPanGestureHandler,
-        scrollableState: animatedScrollableState,
         scrollableContentOffsetY,
         shouldHandleKeyboardEvents,
         simultaneousHandlers: _providedSimultaneousHandlers,
@@ -683,6 +682,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         activeOffsetY: _providedActiveOffsetY,
         failOffsetX: _providedFailOffsetX,
         failOffsetY: _providedFailOffsetY,
+        contentPanGestureHandler,
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,
       }),
@@ -1026,6 +1026,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 animatedPosition={animatedPosition}
                 handleHeight={animatedHandleHeight}
                 enableHandlePanningGesture={enableHandlePanningGesture}
+                enableOverDrag={enableOverDrag}
+                enablePanDownToClose={enablePanDownToClose}
+                overDragResistanceFactor={overDragResistanceFactor}
+                keyboardBehavior={keyboardBehavior}
                 handlePanGestureHandler={handlePanGestureHandler}
                 handleComponent={handleComponent}
               />

@@ -18,15 +18,15 @@ import {
   WINDOW_HEIGHT,
 } from '../constants';
 
-interface useInteractivePanGestureHandlerConfigs {
+export interface useInteractivePanGestureHandlerConfigs {
   type: GESTURE;
   enableOverDrag: boolean;
   enablePanDownToClose: boolean;
   overDragResistanceFactor: number;
+  keyboardBehavior: keyof typeof KEYBOARD_BEHAVIOR;
   isExtendedByKeyboard: Animated.SharedValue<boolean>;
   keyboardState: Animated.SharedValue<KEYBOARD_STATE>;
   keyboardHeight: Animated.SharedValue<number>;
-  keyboardBehavior: keyof typeof KEYBOARD_BEHAVIOR;
   animatedSnapPoints: Animated.SharedValue<number[]>;
   animatedPosition: Animated.SharedValue<number>;
   animatedContainerHeight: Animated.SharedValue<number>;
@@ -38,11 +38,6 @@ type InteractivePanGestureHandlerContextType = {
   currentPosition: number;
   keyboardState: KEYBOARD_STATE;
 };
-
-/***
- * @todo
- * try to split the gesture handler events into separate worklet methods
- */
 
 export const useInteractivePanGestureHandler = ({
   type,

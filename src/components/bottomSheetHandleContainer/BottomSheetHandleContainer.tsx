@@ -101,11 +101,11 @@ function BottomSheetHandleContainerComponent({
       waitFor={waitFor}
       simultaneousHandlers={simultaneousHandlers}
       shouldCancelWhenOutside={false}
-      onGestureEvent={handlePanGestureHandler}
       activeOffsetX={activeOffsetX}
       activeOffsetY={activeOffsetY}
       failOffsetX={failOffsetX}
       failOffsetY={failOffsetY}
+      onGestureEvent={handlePanGestureHandler}
     >
       <Animated.View
         accessible={true}
@@ -122,6 +122,6 @@ function BottomSheetHandleContainerComponent({
 }
 
 const BottomSheetHandleContainer = memo(BottomSheetHandleContainerComponent);
-BottomSheetHandleContainerComponent.displayName = 'BottomSheetHandleContainer';
+BottomSheetHandleContainer.displayName = 'BottomSheetHandleContainer';
 
-export default BottomSheetHandleContainerComponent;
+export default BottomSheetHandleContainer;
