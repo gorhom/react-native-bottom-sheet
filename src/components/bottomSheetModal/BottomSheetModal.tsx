@@ -11,11 +11,12 @@ import { Portal, usePortal } from '@gorhom/portal';
 import { nanoid } from 'nanoid/non-secure';
 import BottomSheet from '../bottomSheet';
 import { useBottomSheetModalInternal } from '../../hooks';
+import { print } from '../../utilities';
 import {
   DEFAULT_STACK_BEHAVIOR,
-  DEFAULT_DISMISS_ON_PAN_DOWN,
+  DEFAULT_ENABLE_DISMISS_ON_CLOSE,
 } from './constants';
-import type { BottomSheetModalMethods } from '../../types';
+import type { BottomSheetModalMethods, BottomSheetMethods } from '../../types';
 import type { BottomSheetModalProps } from './types';
 
 type BottomSheetModal = BottomSheetModalMethods;
@@ -23,17 +24,18 @@ type BottomSheetModal = BottomSheetModalMethods;
 const BottomSheetModalComponent = forwardRef<
   BottomSheetModal,
   BottomSheetModalProps
->((props, ref) => {
+>(function BottomSheetModal(props, ref) {
   const {
     // modal props
     name,
     stackBehavior = DEFAULT_STACK_BEHAVIOR,
-    dismissOnPanDown = DEFAULT_DISMISS_ON_PAN_DOWN,
+    enableDismissOnClose = DEFAULT_ENABLE_DISMISS_ON_CLOSE,
     onDismiss: _providedOnDismiss,
 
     // bottom sheet props
-    index: _providedIndex = 0,
-    snapPoints: _providedSnapPoints,
+    index = 0,
+    snapPoints: snapPoints,
+    enablePanDownToClose = true,
     onChange: _providedOnChange,
 
     // components
@@ -66,82 +68,68 @@ const BottomSheetModalComponent = forwardRef<
 
   //#region variables
   const key = useMemo(() => name || `bottom-sheet-modal-${nanoid()}`, [name]);
-  const index = useMemo(
-    () => (dismissOnPanDown ? _providedIndex + 1 : _providedIndex),
-    [_providedIndex, dismissOnPanDown]
-  );
-  const snapPoints = useMemo(
-    () =>
-      dismissOnPanDown ? [0, ..._providedSnapPoints] : _providedSnapPoints,
-    [_providedSnapPoints, dismissOnPanDown]
-  );
   //#endregion
 
   //#region private methods
-  const resetVariables = useCallback(() => {
+  const resetVariables = useCallback(function resetVariables() {
+    print({
+      component: BottomSheetModal.name,
+      method: resetVariables.name,
+    });
     currentIndexRef.current = -1;
     restoreIndexRef.current = -1;
     minimized.current = false;
     mounted.current = true;
     forcedDismissed.current = false;
   }, []);
-  const adjustIndex = useCallback(
-    (_index: number, internal = true) =>
-      dismissOnPanDown ? (internal ? _index - 1 : _index + 1) : _index,
-    [dismissOnPanDown]
+  const unmount = useCallback(
+    function unmount() {
+      print({
+        component: BottomSheetModal.name,
+        method: unmount.name,
+      });
+      const _mounted = mounted.current;
+
+      // reset variables
+      resetVariables();
+
+      // unmount sheet and portal
+      unmountSheet(key);
+      unmountPortal(key);
+
+      // unmount the node, if sheet is still mounted
+      if (_mounted) {
+        setMount(false);
+      }
+
+      // fire `onDismiss` callback
+      if (_providedOnDismiss) {
+        _providedOnDismiss();
+      }
+    },
+    [key, resetVariables, unmountSheet, unmountPortal, _providedOnDismiss]
   );
-  const unmount = useCallback(() => {
-    const _mounted = mounted.current;
-
-    // reset variables
-    resetVariables();
-
-    // unmount sheet and portal
-    unmountSheet(key);
-    unmountPortal(key);
-
-    // unmount the node, if sheet is still mounted
-    if (_mounted) {
-      setMount(false);
-    }
-
-    // fire `onDismiss` callback
-    if (_providedOnDismiss) {
-      _providedOnDismiss();
-    }
-  }, [key, resetVariables, unmountSheet, unmountPortal, _providedOnDismiss]);
   //#endregion
 
   //#region bottom sheet methods
-  const handleSnapTo = useCallback(
-    (_index: number, ...args) => {
-      if (minimized.current) {
-        return;
-      }
-
-      bottomSheetRef.current?.snapTo(adjustIndex(_index, false), ...args);
-    },
-    [adjustIndex]
-  );
+  const handleSnapTo = useCallback<BottomSheetMethods['snapTo']>((...args) => {
+    if (minimized.current) {
+      return;
+    }
+    bottomSheetRef.current?.snapTo(...args);
+  }, []);
   const handleExpand = useCallback((...args) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.expand(...args);
   }, []);
-  const handleCollapse = useCallback(
-    (...args) => {
-      if (minimized.current) {
-        return;
-      }
-      if (dismissOnPanDown) {
-        bottomSheetRef.current?.snapTo(1, ...args);
-      } else {
-        bottomSheetRef.current?.collapse(...args);
-      }
-    },
-    [dismissOnPanDown]
-  );
+  const handleCollapse = useCallback((...args) => {
+    if (minimized.current) {
+      return;
+    }
+    bottomSheetRef.current?.collapse(...args);
+  }, []);
   const handleClose = useCallback((...args) => {
     if (minimized.current) {
       return;
@@ -151,14 +139,30 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region bottom sheet modal methods
-  const handlePresent = useCallback(() => {
-    requestAnimationFrame(() => {
-      setMount(true);
-      mountSheet(key, ref, stackBehavior);
-    });
-  }, [key, stackBehavior, ref, mountSheet]);
+  const handlePresent = useCallback(
+    function handlePresent() {
+      requestAnimationFrame(() => {
+        setMount(true);
+        mountSheet(key, ref, stackBehavior);
+
+        print({
+          component: BottomSheetModal.name,
+          method: handlePresent.name,
+        });
+      });
+    },
+    [key, stackBehavior, ref, mountSheet]
+  );
   const handleDismiss = useCallback(
-    (...args) => {
+    function handleDismiss(...args) {
+      print({
+        component: BottomSheetModal.name,
+        method: handleDismiss.name,
+        params: {
+          currentIndexRef: currentIndexRef.current,
+          minimized: minimized.current,
+        },
+      });
       /**
        * if modal is already been dismiss, we exit the method.
        */
@@ -168,7 +172,7 @@ const BottomSheetModalComponent = forwardRef<
 
       if (
         minimized.current ||
-        (currentIndexRef.current === 0 && dismissOnPanDown)
+        (currentIndexRef.current === -1 && enablePanDownToClose)
       ) {
         unmount();
         return;
@@ -177,27 +181,45 @@ const BottomSheetModalComponent = forwardRef<
       forcedDismissed.current = true;
       bottomSheetRef.current?.close(...args);
     },
-    [willUnmountSheet, unmount, key, dismissOnPanDown]
+    [willUnmountSheet, unmount, key, enablePanDownToClose]
   );
-  const handleMinimize = useCallback(() => {
-    if (minimized.current) {
-      return;
-    }
-    minimized.current = true;
+  const handleMinimize = useCallback(
+    function handleMinimize() {
+      print({
+        component: BottomSheetModal.name,
+        method: handleMinimize.name,
+        params: {
+          minimized: minimized.current,
+        },
+      });
+      if (minimized.current) {
+        return;
+      }
+      minimized.current = true;
 
-    /**
-     * if modal got minimized before it finish its mounting
-     * animation, we set the `restoreIndexRef` to the
-     * provided index.
-     */
-    if (currentIndexRef.current === -1) {
-      restoreIndexRef.current = index;
-    } else {
-      restoreIndexRef.current = currentIndexRef.current;
-    }
-    bottomSheetRef.current?.close();
-  }, [index]);
-  const handleRestore = useCallback(() => {
+      /**
+       * if modal got minimized before it finish its mounting
+       * animation, we set the `restoreIndexRef` to the
+       * provided index.
+       */
+      if (currentIndexRef.current === -1) {
+        restoreIndexRef.current = index;
+      } else {
+        restoreIndexRef.current = currentIndexRef.current;
+      }
+      bottomSheetRef.current?.close();
+    },
+    [index]
+  );
+  const handleRestore = useCallback(function handleRestore() {
+    print({
+      component: BottomSheetModal.name,
+      method: handleRestore.name,
+      params: {
+        minimized: minimized.current,
+        forcedDismissed: forcedDismissed.current,
+      },
+    });
     if (!minimized.current || forcedDismissed.current) {
       return;
     }
@@ -207,42 +229,60 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region callbacks
-  const handlePortalOnUnmount = useCallback(() => {
-    /**
-     * if modal is already been dismiss, we exit the method.
-     */
-    if (currentIndexRef.current === -1 && minimized.current === false) {
-      return;
-    }
+  const handlePortalOnUnmount = useCallback(
+    function handlePortalOnUnmount() {
+      print({
+        component: BottomSheetModal.name,
+        method: handlePortalOnUnmount.name,
+        params: {
+          minimized: minimized.current,
+          forcedDismissed: forcedDismissed.current,
+        },
+      });
+      /**
+       * if modal is already been dismiss, we exit the method.
+       */
+      if (currentIndexRef.current === -1 && minimized.current === false) {
+        return;
+      }
 
-    mounted.current = false;
-    forcedDismissed.current = true;
+      mounted.current = false;
+      forcedDismissed.current = true;
 
-    if (minimized.current) {
-      unmount();
-      return;
-    }
-    willUnmountSheet(key);
-    bottomSheetRef.current?.close();
-  }, [key, unmount, willUnmountSheet]);
+      if (minimized.current) {
+        unmount();
+        return;
+      }
+      willUnmountSheet(key);
+      bottomSheetRef.current?.close();
+    },
+    [key, unmount, willUnmountSheet]
+  );
   const handleBottomSheetOnChange = useCallback(
-    (_index: number) => {
-      const adjustedIndex = adjustIndex(_index);
+    function handleBottomSheetOnChange(_index: number) {
+      print({
+        component: BottomSheetModal.name,
+        method: handleBottomSheetOnChange.name,
+        params: {
+          minimized: minimized.current,
+          forcedDismissed: forcedDismissed.current,
+        },
+      });
       currentIndexRef.current = _index;
 
       if (_providedOnChange) {
-        _providedOnChange(adjustedIndex);
+        _providedOnChange(_index);
       }
 
       if (minimized.current) {
         return;
       }
 
-      if (adjustedIndex === -1) {
+      if (_index === -1 && enableDismissOnClose) {
         unmount();
       }
     },
-    [adjustIndex, unmount, _providedOnChange]
+    [enableDismissOnClose, unmount, _providedOnChange]
   );
   //#endregion
 
@@ -272,6 +312,7 @@ const BottomSheetModalComponent = forwardRef<
         key={key}
         index={index}
         snapPoints={snapPoints}
+        enablePanDownToClose={enablePanDownToClose}
         animateOnMount={true}
         containerHeight={containerHeight}
         onChange={handleBottomSheetOnChange}
