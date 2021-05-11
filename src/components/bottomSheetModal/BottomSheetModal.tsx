@@ -34,7 +34,7 @@ const BottomSheetModalComponent = forwardRef<
 
     // bottom sheet props
     index = 0,
-    snapPoints: snapPoints,
+    snapPoints,
     enablePanDownToClose = true,
     onChange: _providedOnChange,
 

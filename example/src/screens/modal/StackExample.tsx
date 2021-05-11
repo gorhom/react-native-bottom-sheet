@@ -74,9 +74,7 @@ const StackExample = () => {
       <Button label="Dismiss Modal B" onPress={handleDismissBPress} />
       <Button label="Present Modal C" onPress={handlePresentCPress} />
       <Button label="Dismiss Modal C" onPress={handleDismissCPress} />
-
       <Button label="Dismiss All Modal" onPress={handleDismissAllPress} />
-
       <Button label="Dismiss A By Hook" onPress={handleDismissByHookPress} />
 
       <BottomSheetModal
@@ -98,7 +96,7 @@ const StackExample = () => {
         ref={bottomSheetModalCRef}
         index={1}
         snapPoints={snapPoints}
-        dismissOnPanDown={false}
+        enablePanDownToClose={false}
         children={renderBottomSheetContent('Modal C', handleDismissCPress)}
       />
     </View>
