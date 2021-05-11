@@ -28,11 +28,11 @@ export interface BottomSheetModalProps
   stackBehavior?: BottomSheetModalStackBehavior;
 
   /**
-   * Dismiss modal when panning down.
+   * Enable dismiss the modal when it is closed.
    * @type boolean
    * @default true
    */
-  dismissOnPanDown?: boolean;
+  enableDismissOnClose?: boolean;
 
   // callbacks
   /**

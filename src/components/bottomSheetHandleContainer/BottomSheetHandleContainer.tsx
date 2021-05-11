@@ -101,11 +101,11 @@ function BottomSheetHandleContainerComponent({
       waitFor={waitFor}
       simultaneousHandlers={simultaneousHandlers}
       shouldCancelWhenOutside={false}
-      onGestureEvent={handlePanGestureHandler}
       activeOffsetX={activeOffsetX}
       activeOffsetY={activeOffsetY}
       failOffsetX={failOffsetX}
       failOffsetY={failOffsetY}
+      onGestureEvent={handlePanGestureHandler}
     >
       <Animated.View
         accessible={true}

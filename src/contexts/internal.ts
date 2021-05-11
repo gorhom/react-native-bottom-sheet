@@ -1,5 +1,8 @@
 import { createContext, RefObject } from 'react';
-import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
+import type {
+  PanGestureHandlerGestureEvent,
+  PanGestureHandlerProps,
+} from 'react-native-gesture-handler';
 import type Animated from 'react-native-reanimated';
 import type {
   ANIMATION_STATE,
@@ -18,15 +21,22 @@ export interface BottomSheetInternalContextType
     | 'waitFor'
     | 'simultaneousHandlers'
   > {
+  // configs
   enableContentPanningGesture: boolean;
+
+  // animated states
+  animatedAnimationState: Animated.SharedValue<ANIMATION_STATE>;
+  animatedSheetState: Animated.SharedValue<SHEET_STATE>;
+  animatedScrollableState: Animated.SharedValue<SCROLLABLE_STATE>;
+
+  // animated values
   animatedPosition: Animated.SharedValue<number>;
   animatedIndex: Animated.SharedValue<number>;
-  animationState: Animated.SharedValue<ANIMATION_STATE>;
-  animatedSheetState: Animated.SharedValue<SHEET_STATE>;
-  contentPanGestureHandler: any;
-  scrollableState: Animated.SharedValue<SCROLLABLE_STATE>;
   scrollableContentOffsetY: Animated.SharedValue<number>;
   shouldHandleKeyboardEvents: Animated.SharedValue<boolean>;
+
+  // methods
+  contentPanGestureHandler: (event: PanGestureHandlerGestureEvent) => void;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
 }

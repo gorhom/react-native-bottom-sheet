@@ -64,6 +64,7 @@ import {
   INITIAL_HANDLE_HEIGHT,
   INITIAL_POSITION,
   INITIAL_SNAP_POINT,
+  DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -96,6 +97,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       enableFlashScrollableIndicatorOnExpand = DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
+      enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
       style: _providedStyle,
 
@@ -360,11 +362,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           method: handleOnChange.name,
           params: {
             index,
+            animatedCurrentIndex: animatedCurrentIndex.value,
           },
         });
-        if (index === animatedCurrentIndex.value) {
-          return;
-        }
 
         if (isClosing.current && (index === 0 || index === -1)) {
           isClosing.current = false;
@@ -487,12 +487,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     ] = useInteractivePanGestureHandler({
       type: GESTURE.CONTENT,
       enableOverDrag,
+      enablePanDownToClose,
       overDragResistanceFactor,
       keyboardState,
       keyboardHeight,
       keyboardBehavior: keyboardBehavior,
       animatedPosition,
       animatedSnapPoints,
+      animatedContainerHeight,
       isExtendedByKeyboard: isInTemporaryPosition,
       scrollableContentOffsetY,
       animateToPoint: animateToPosition,
@@ -503,12 +505,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     ] = useInteractivePanGestureHandler({
       type: GESTURE.HANDLE,
       enableOverDrag,
+      enablePanDownToClose,
       overDragResistanceFactor,
       keyboardState,
       keyboardHeight,
       keyboardBehavior,
       animatedPosition,
       animatedSnapPoints,
+      animatedContainerHeight,
       isExtendedByKeyboard: isInTemporaryPosition,
       animateToPoint: animateToPosition,
     });
@@ -665,12 +669,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const internalContextVariables = useMemo(
       () => ({
         enableContentPanningGesture,
+        animatedAnimationState,
+        animatedSheetState,
+        animatedScrollableState,
         animatedIndex,
         animatedPosition,
-        animationState: animatedAnimationState,
-        animatedSheetState,
-        contentPanGestureHandler,
-        scrollableState: animatedScrollableState,
         scrollableContentOffsetY,
         shouldHandleKeyboardEvents,
         simultaneousHandlers: _providedSimultaneousHandlers,
@@ -679,6 +682,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         activeOffsetY: _providedActiveOffsetY,
         failOffsetX: _providedFailOffsetX,
         failOffsetY: _providedFailOffsetY,
+        contentPanGestureHandler,
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,
       }),
@@ -806,9 +810,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     useAnimatedReaction(
       () => animatedSnapPoints.value,
       _animatedSnapPoints => {
-        if (!isLayoutCalculated.value || !isAnimatedOnMount.value) {
+        if (
+          !isLayoutCalculated.value ||
+          !isAnimatedOnMount.value ||
+          animatedAnimationState.value === ANIMATION_STATE.RUNNING
+        ) {
           return;
         }
+
+        runOnJS(print)({
+          component: BottomSheet.name,
+          method: 'useAnimatedReaction::OnSnapPointChange',
+          params: {
+            animatedSnapPoints: _animatedSnapPoints,
+            animatedCurrentIndex: animatedCurrentIndex.value,
+          },
+        });
 
         const nextPosition = _animatedSnapPoints[animatedCurrentIndex.value];
         animateToPosition(nextPosition);
@@ -930,6 +947,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }) => {
         if (
           _animatedIndex % 1 === 0 &&
+          _animatedIndex !== animatedCurrentIndex.value &&
           _animationState === ANIMATION_STATE.STOPPED &&
           (_contentGestureState === State.END ||
             _contentGestureState === State.UNDETERMINED) &&
@@ -1008,6 +1026,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 animatedPosition={animatedPosition}
                 handleHeight={animatedHandleHeight}
                 enableHandlePanningGesture={enableHandlePanningGesture}
+                enableOverDrag={enableOverDrag}
+                enablePanDownToClose={enablePanDownToClose}
+                overDragResistanceFactor={overDragResistanceFactor}
+                keyboardBehavior={keyboardBehavior}
                 handlePanGestureHandler={handlePanGestureHandler}
                 handleComponent={handleComponent}
               />

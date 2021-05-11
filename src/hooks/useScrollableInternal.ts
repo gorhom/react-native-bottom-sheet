@@ -25,8 +25,8 @@ export const useScrollableInternal = (type: ScrollableType) => {
 
   // hooks
   const {
-    scrollableState,
-    animationState,
+    animatedScrollableState,
+    animatedAnimationState,
     scrollableContentOffsetY: _rootScrollableContentOffsetY,
     setScrollableRef,
     removeScrollableRef,
@@ -35,13 +35,13 @@ export const useScrollableInternal = (type: ScrollableType) => {
   // variables
   const scrollableAnimatedProps = useAnimatedProps(() => ({
     decelerationRate:
-      SCROLLABLE_DECELERATION_RATE_MAPPER[scrollableState.value],
+      SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
   }));
 
   // callbacks
   const handleScrollEvent = useAnimatedScrollHandler({
     onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (scrollableState.value === SCROLLABLE_STATE.LOCKED) {
+      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
         initialScrollingPosition.value = y;
         justStartedScrolling.value = 1;
         scrollableContentOffsetY.value = 0;
@@ -58,7 +58,7 @@ export const useScrollableInternal = (type: ScrollableType) => {
         scrollTo(scrollableRef, 0, initialScrollingPosition.value, false);
         return;
       }
-      if (scrollableState.value === SCROLLABLE_STATE.LOCKED) {
+      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
@@ -66,25 +66,25 @@ export const useScrollableInternal = (type: ScrollableType) => {
       }
     },
     onEndDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (scrollableState.value === SCROLLABLE_STATE.LOCKED) {
+      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
         return;
       }
-      if (animationState.value !== ANIMATION_STATE.RUNNING) {
+      if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
         scrollableContentOffsetY.value = y;
         _rootScrollableContentOffsetY.value = y;
       }
     },
     onMomentumEnd: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (scrollableState.value === SCROLLABLE_STATE.LOCKED) {
+      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
         // @ts-ignore
         scrollTo(scrollableRef, 0, 0, false);
         scrollableContentOffsetY.value = 0;
         return;
       }
-      if (animationState.value !== ANIMATION_STATE.RUNNING) {
+      if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
         scrollableContentOffsetY.value = y;
         _rootScrollableContentOffsetY.value = y;
       }

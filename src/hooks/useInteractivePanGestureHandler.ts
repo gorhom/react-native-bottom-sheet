@@ -18,16 +18,18 @@ import {
   WINDOW_HEIGHT,
 } from '../constants';
 
-interface useInteractivePanGestureHandlerConfigs {
+export interface useInteractivePanGestureHandlerConfigs {
   type: GESTURE;
   enableOverDrag: boolean;
+  enablePanDownToClose: boolean;
   overDragResistanceFactor: number;
+  keyboardBehavior: keyof typeof KEYBOARD_BEHAVIOR;
   isExtendedByKeyboard: Animated.SharedValue<boolean>;
   keyboardState: Animated.SharedValue<KEYBOARD_STATE>;
   keyboardHeight: Animated.SharedValue<number>;
-  keyboardBehavior: keyof typeof KEYBOARD_BEHAVIOR;
   animatedSnapPoints: Animated.SharedValue<number[]>;
   animatedPosition: Animated.SharedValue<number>;
+  animatedContainerHeight: Animated.SharedValue<number>;
   scrollableContentOffsetY?: Animated.SharedValue<number>;
   animateToPoint: (point: number, velocity: number) => void;
 }
@@ -40,6 +42,7 @@ type InteractivePanGestureHandlerContextType = {
 export const useInteractivePanGestureHandler = ({
   type,
   enableOverDrag,
+  enablePanDownToClose,
   overDragResistanceFactor,
   keyboardState,
   keyboardBehavior,
@@ -47,6 +50,7 @@ export const useInteractivePanGestureHandler = ({
   isExtendedByKeyboard,
   animatedPosition,
   animatedSnapPoints,
+  animatedContainerHeight,
   scrollableContentOffsetY,
   animateToPoint,
 }: useInteractivePanGestureHandlerConfigs): [
@@ -93,6 +97,9 @@ export const useInteractivePanGestureHandler = ({
       const maxSnapPoint = isExtendedByKeyboard.value
         ? context.currentPosition
         : animatedSnapPoints.value[animatedSnapPoints.value.length - 1];
+      const minSnapPoint = enablePanDownToClose
+        ? animatedContainerHeight.value
+        : animatedSnapPoints.value[0];
 
       const negativeScrollableContentOffset =
         context.currentPosition === maxSnapPoint && scrollableContentOffsetY
@@ -101,7 +108,7 @@ export const useInteractivePanGestureHandler = ({
       const clampedPosition = clamp(
         position + negativeScrollableContentOffset,
         maxSnapPoint,
-        animatedSnapPoints.value[0]
+        minSnapPoint
       );
 
       /**
@@ -128,27 +135,22 @@ export const useInteractivePanGestureHandler = ({
           return;
         }
 
-        if (type === GESTURE.HANDLE && position > animatedSnapPoints.value[0]) {
+        if (type === GESTURE.HANDLE && position > minSnapPoint) {
           const resistedPosition =
-            animatedSnapPoints.value[0] +
-            Math.sqrt(1 + (position - animatedSnapPoints.value[0])) *
-              overDragResistanceFactor;
+            minSnapPoint +
+            Math.sqrt(1 + (position - minSnapPoint)) * overDragResistanceFactor;
           animatedPosition.value = resistedPosition;
           return;
         }
 
         if (
           type === GESTURE.CONTENT &&
-          position + negativeScrollableContentOffset >
-            animatedSnapPoints.value[0]
+          position + negativeScrollableContentOffset > minSnapPoint
         ) {
           const resistedPosition =
-            animatedSnapPoints.value[0] +
+            minSnapPoint +
             Math.sqrt(
-              1 +
-                (position +
-                  negativeScrollableContentOffset -
-                  animatedSnapPoints.value[0])
+              1 + (position + negativeScrollableContentOffset - minSnapPoint)
             ) *
               overDragResistanceFactor;
           animatedPosition.value = resistedPosition;
@@ -175,10 +177,15 @@ export const useInteractivePanGestureHandler = ({
         isExtendedByKeyboard.value = false;
       }
 
+      const snapPoints = animatedSnapPoints.value.slice();
+      if (enablePanDownToClose) {
+        snapPoints.unshift(animatedContainerHeight.value);
+      }
+
       const destinationPoint = snapPoint(
         gestureTranslationY.value + context.currentPosition,
         gestureVelocityY.value,
-        animatedSnapPoints.value
+        snapPoints
       );
 
       /**
