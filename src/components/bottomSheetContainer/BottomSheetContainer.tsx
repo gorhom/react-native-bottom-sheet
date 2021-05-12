@@ -1,7 +1,6 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 import { print } from '../../utilities';
-import { INITIAL_CONTAINER_HEIGHT } from '../bottomSheet/constants';
 import { styles } from './styles';
 import type { BottomSheetContainerProps } from './types';
 
@@ -9,6 +8,7 @@ function BottomSheetContainerComponent({
   containerHeight,
   topInset = 0,
   bottomInset = 0,
+  shouldCalculateHeight = true,
   children,
 }: BottomSheetContainerProps) {
   //#region styles
@@ -25,28 +25,24 @@ function BottomSheetContainerComponent({
   //#endregion
 
   //#region callbacks
-  const getHandleContainerLayout = useMemo(
-    () =>
-      containerHeight.value === INITIAL_CONTAINER_HEIGHT
-        ? function handleContainerLayout({
-            nativeEvent: {
-              layout: { height },
-            },
-          }: LayoutChangeEvent) {
-            if (height === containerHeight.value) {
-              return;
-            }
-            containerHeight.value = height;
-            print({
-              component: BottomSheetContainer.displayName,
-              method: 'handleContainerLayout',
-              params: {
-                height,
-              },
-            });
-          }
-        : undefined,
-
+  const handleContainerLayout = useCallback(
+    function handleContainerLayout({
+      nativeEvent: {
+        layout: { height },
+      },
+    }: LayoutChangeEvent) {
+      if (height === containerHeight.value) {
+        return;
+      }
+      containerHeight.value = height;
+      print({
+        component: BottomSheetContainer.displayName,
+        method: 'handleContainerLayout',
+        params: {
+          height,
+        },
+      });
+    },
     [containerHeight]
   );
   //#endregion
@@ -55,7 +51,7 @@ function BottomSheetContainerComponent({
   return (
     <View
       pointerEvents="box-none"
-      onLayout={getHandleContainerLayout}
+      onLayout={shouldCalculateHeight ? handleContainerLayout : undefined}
       style={containerStyle}
       children={children}
     />

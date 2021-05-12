@@ -55,7 +55,7 @@ const MapExample = () => {
     () => [
       bottomSafeArea === 0 ? SEARCH_HANDLE_HEIGHT / 2 : bottomSafeArea,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
-      SCREEN_HEIGHT,
+      '100%',
     ],
     [bottomSafeArea]
   );
@@ -180,7 +180,7 @@ const MapExample = () => {
         snapPoints={poiListSnapPoints}
         handleHeight={SEARCH_HANDLE_HEIGHT}
         topInset={headerHeight}
-        dismissOnPanDown={false}
+        enableDismissOnClose={false}
         keyboardBehavior="extend"
         animatedPosition={animatedPOIListPosition}
         animatedIndex={animatedPOIListIndex}

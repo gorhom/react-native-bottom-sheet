@@ -317,6 +317,7 @@ const BottomSheetModalComponent = forwardRef<
         containerHeight={containerHeight}
         onChange={handleBottomSheetOnChange}
         children={children}
+        $modal={true}
       />
     </Portal>
   ) : null;

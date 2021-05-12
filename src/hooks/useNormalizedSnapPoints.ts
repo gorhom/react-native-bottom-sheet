@@ -12,12 +12,16 @@ import {
  * @param providedSnapPoints provided snap points.
  * @param containerHeight BottomSheetContainer height.
  * @param topInset top inset.
+ * @param bottomInset bottom inset.
+ * @param $modal is sheet in a modal.
  * @returns {Animated.SharedValue<number[]>}
  */
 export const useNormalizedSnapPoints = (
   providedSnapPoints: BottomSheetProps['snapPoints'],
   containerHeight: Animated.SharedValue<number>,
-  topInset: number
+  topInset: number,
+  bottomInset: number,
+  $modal: boolean
 ) => {
   const normalizedSnapPoints = useDerivedValue(() =>
     providedSnapPoints.map(snapPoint => {
@@ -25,7 +29,13 @@ export const useNormalizedSnapPoints = (
         return INITIAL_SNAP_POINT;
       }
 
-      return normalizeSnapPoint(snapPoint, containerHeight.value, topInset);
+      return normalizeSnapPoint(
+        snapPoint,
+        containerHeight.value,
+        topInset,
+        bottomInset,
+        $modal
+      );
     })
   );
 

@@ -127,6 +127,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       onChange: _providedOnChange,
       onAnimate: _providedOnAnimate,
 
+      // private
+      $modal = false,
+
       // components
       handleComponent,
       backdropComponent,
@@ -136,16 +139,33 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region layout variables
-    const animatedContainerHeight = useReactiveSharedValue(
+    /**
+     * This variable is consider an internal variable,
+     * that will be used conditionally in `animatedContainerHeight`
+     */
+    const _animatedContainerHeight = useReactiveSharedValue(
       _providedContainerHeight ?? INITIAL_CONTAINER_HEIGHT
     );
+    /**
+     * This is a conditional variable, where if the `BottomSheet` is used
+     * in a modal, then it will subset vertical insets (top+bottom) from
+     * provided container height.
+     */
+    const animatedContainerHeight = useDerivedValue(() => {
+      const verticalInset = topInset + bottomInset;
+      return $modal
+        ? _animatedContainerHeight.value - verticalInset
+        : _animatedContainerHeight.value;
+    });
     const animatedHandleHeight = useReactiveSharedValue(
       _providedHandleHeight ?? INITIAL_HANDLE_HEIGHT
     );
     const animatedSnapPoints = useNormalizedSnapPoints(
       _providedSnapPoints,
       animatedContainerHeight,
-      topInset
+      topInset,
+      bottomInset,
+      $modal
     );
     const animatedLastSnapPoint = useDerivedValue(
       () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
@@ -721,7 +741,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const containerAnimatedStyle = useAnimatedStyle(() => ({
       transform: [
         {
-          translateY: Math.max(animatedPosition.value, topInset),
+          translateY: animatedPosition.value,
         },
       ],
     }));
@@ -911,7 +931,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => animatedPosition.value,
       _animatedPosition => {
         if (_providedAnimatedPosition) {
-          _providedAnimatedPosition.value = _animatedPosition;
+          _providedAnimatedPosition.value = _animatedPosition + topInset;
         }
       }
     );
@@ -990,7 +1010,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         />
         <BottomSheetContainer
           key="BottomSheetContainer"
-          containerHeight={animatedContainerHeight}
+          shouldCalculateHeight={!$modal}
+          containerHeight={_animatedContainerHeight}
           topInset={topInset}
           bottomInset={bottomInset}
         >

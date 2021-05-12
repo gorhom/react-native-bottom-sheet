@@ -4,10 +4,11 @@
 export const normalizeSnapPoint = (
   snapPoint: number | string,
   containerHeight: number,
-  topInset: number
+  topInset: number,
+  _bottomInset: number,
+  $modal: boolean
 ) => {
   'worklet';
-
   let normalizedSnapPoint = snapPoint;
 
   // percentage snap point
@@ -15,6 +16,5 @@ export const normalizeSnapPoint = (
     normalizedSnapPoint =
       (Number(normalizedSnapPoint.split('%')[0]) * containerHeight) / 100;
   }
-
-  return Math.max(topInset, containerHeight - normalizedSnapPoint);
+  return Math.max($modal ? 0 : topInset, containerHeight - normalizedSnapPoint);
 };

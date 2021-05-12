@@ -207,6 +207,14 @@ export interface BottomSheetProps
    */
   children: (() => React.ReactNode) | React.ReactNode[] | React.ReactNode;
   //#endregion
+
+  //#region private
+  /**
+   * An indicator whether if the sheet running in a modal.
+   * @type boolean
+   */
+  $modal?: boolean;
+  //#endregion
 }
 
 export interface BottomSheetAnimationConfigs {
