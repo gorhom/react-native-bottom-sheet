@@ -9,14 +9,14 @@ import {
   useAnimatedProps,
 } from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
-import type { Scrollable, ScrollableType } from '../types';
+import type { Scrollable } from '../types';
 import {
   ANIMATION_STATE,
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATE,
 } from '../constants';
 
-export const useScrollableInternal = (type: ScrollableType) => {
+export const useScrollableInternal = () => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
   const scrollableContentOffsetY = useSharedValue<number>(0);
@@ -101,7 +101,6 @@ export const useScrollableInternal = (type: ScrollableType) => {
     if (id) {
       setScrollableRef({
         id: id,
-        type,
         node: scrollableRef,
         didResize: false,
       });
@@ -118,7 +117,6 @@ export const useScrollableInternal = (type: ScrollableType) => {
     scrollableContentOffsetY,
     scrollableRef,
     setScrollableRef,
-    type,
   ]);
 
   return {
