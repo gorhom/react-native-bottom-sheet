@@ -1063,6 +1063,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               animatedPosition,
               animatedSheetHeight,
               animatedSheetState,
+              animatedScrollableState,
               animatedContainerHeight,
               animatedHandleHeight,
               isLayoutCalculated,
