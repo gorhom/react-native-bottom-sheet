@@ -54,11 +54,10 @@ export const useScrollable = () => {
   }, []);
 
   const flashScrollableIndicators = useCallback(() => {
-    let type = scrollableRef.current?.type ?? undefined;
     let node = scrollableRef.current?.node ?? undefined;
     let didResize = scrollableRef.current?.didResize ?? false;
 
-    if (!type || !node) {
+    if (!node) {
       return;
     }
 

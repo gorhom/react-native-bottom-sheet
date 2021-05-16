@@ -1,58 +1,46 @@
 import React, {
   forwardRef,
-  Ref,
-  useRef,
-  useImperativeHandle,
   useEffect,
-  memo,
+  useImperativeHandle,
+  useRef,
 } from 'react';
-import {
-  FlatList as RNFlatList,
-  FlatListProps as RNFlatListProps,
-} from 'react-native';
-import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
-import type {
-  BottomSheetFlatListProps,
-  BottomSheetFlatListType,
-} from './types';
 import { styles } from './styles';
 
-const AnimatedFlatList = Animated.createAnimatedComponent<RNFlatListProps<any>>(
-  RNFlatList
-);
-
-const BottomSheetFlatListName = 'FlatList';
-
-const BottomSheetFlatListComponent = forwardRef(
-  (props: BottomSheetFlatListProps<any>, ref: Ref<RNFlatList>) => {
+export function createBottomSheetScrollableComponent<T, P>(
+  ScrollableComponent: any
+) {
+  return forwardRef<T, P>((props, ref) => {
     // props
     const {
       focusHook: useFocusHook = useEffect,
       overScrollMode = 'never',
       ...rest
-    } = props;
+    }: any = props;
 
-    // refs
+    //#region refs
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
+    //#endregion
 
-    // hooks
+    //#region hooks
     const {
       scrollableRef,
       scrollableAnimatedProps,
       handleScrollEvent,
       handleSettingScrollable,
-    } = useScrollableInternal(BottomSheetFlatListName);
+    } = useScrollableInternal();
     const { enableContentPanningGesture } = useBottomSheetInternal();
+    //#endregion
 
-    // effects
+    //#region effects
     // @ts-ignore
     useImperativeHandle(ref, () => scrollableRef.current);
     useFocusHook(handleSettingScrollable);
+    //#endregion
 
-    // render
+    //#region render
     return (
       <BottomSheetDraggableView
         nativeGestureRef={nativeGestureRef}
@@ -63,23 +51,18 @@ const BottomSheetFlatListComponent = forwardRef(
           enabled={enableContentPanningGesture}
           shouldCancelWhenOutside={false}
         >
-          <AnimatedFlatList
+          <ScrollableComponent
             {...rest}
             // @ts-ignore
             ref={scrollableRef}
             overScrollMode={overScrollMode}
             scrollEventThrottle={16}
             onScrollBeginDrag={handleScrollEvent}
-            // @ts-ignore
             animatedProps={scrollableAnimatedProps}
           />
         </NativeViewGestureHandler>
       </BottomSheetDraggableView>
     );
-  }
-);
-
-const BottomSheetFlatList = memo(BottomSheetFlatListComponent);
-BottomSheetFlatList.displayName = 'BottomSheetFlatList';
-
-export default (BottomSheetFlatList as any) as typeof BottomSheetFlatListType;
+    //#endregion
+  });
+}
