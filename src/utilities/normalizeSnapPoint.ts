@@ -6,7 +6,7 @@ export const normalizeSnapPoint = (
   containerHeight: number,
   topInset: number,
   _bottomInset: number,
-  $modal: boolean
+  $modal: boolean = false
 ) => {
   'worklet';
   let normalizedSnapPoint = snapPoint;

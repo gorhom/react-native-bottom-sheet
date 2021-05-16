@@ -6,62 +6,73 @@ export interface BottomSheetMethods {
   /**
    * Snap to one of the provided points from `snapPoints`.
    * @param index snap point index.
-   * @param animationDuration snap animation duration.
-   * @param animationEasing snap animation easing function.
-   * @type (index: number) => void
+   * @param animationConfigs snap animation configs.
+   *
+   * @see {Animated.WithSpringConfig}
+   * @see {Animated.WithTimingConfig}
    */
-  snapTo: (
+  snapToIndex: (
     index: number,
-    animationDuration?: number,
-    animationEasing?: Animated.EasingFunction
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+  ) => void;
+  /**
+   * Snap to a position out of provided  `snapPoints`.
+   * @param position position in pixel or percentage.
+   * @param animationConfigs snap animation configs.
+   *
+   * @see {Animated.WithSpringConfig}
+   * @see {Animated.WithTimingConfig}
+   */
+  snapToPosition: (
+    position: number | string,
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
   ) => void;
   /**
    * Snap to the maximum provided point from `snapPoints`.
-   * @param animationDuration snap animation duration.
-   * @param animationEasing snap animation easing function.
-   * @type () => void
+   * @param animationConfigs snap animation configs.
+   *
+   * @see {Animated.WithSpringConfig}
+   * @see {Animated.WithTimingConfig}
    */
   expand: (
-    animationDuration?: number,
-    animationEasing?: Animated.EasingFunction
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
   ) => void;
   /**
    * Snap to the minimum provided point from `snapPoints`.
-   * @param animationDuration snap animation duration.
-   * @param animationEasing snap animation easing function.
-   * @type () => void
+   * @param animationConfigs snap animation configs.
+   *
+   * @see {Animated.WithSpringConfig}
+   * @see {Animated.WithTimingConfig}
    */
   collapse: (
-    animationDuration?: number,
-    animationEasing?: Animated.EasingFunction
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
   ) => void;
   /**
    * Close the bottom sheet.
-   * @param animationDuration snap animation duration.
-   * @param animationEasing snap animation easing function.
-   * @type () => void
+   * @param animationConfigs snap animation configs.
+   *
+   * @see {Animated.WithSpringConfig}
+   * @see {Animated.WithTimingConfig}
    */
   close: (
-    animationDuration?: number,
-    animationEasing?: Animated.EasingFunction
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
   ) => void;
 }
 
 export interface BottomSheetModalMethods extends BottomSheetMethods {
   /**
-   * Mount and present the modal.
-   * @type () => void
+   * Mount and present the bottom sheet modal to the initial snap point.
    */
   present: () => void;
   /**
-   * Close and unmount the modal.
-   * @param animationDuration snap animation duration.
-   * @param animationEasing snap animation easing function.
-   * @type () => void;
+   * Close and unmount the bottom sheet modal.
+   * @param animationConfigs snap animation configs.
+   *
+   * @see {Animated.WithSpringConfig}
+   * @see {Animated.WithTimingConfig}
    */
   dismiss: (
-    animationDuration?: number,
-    animationEasing?: Animated.EasingFunction
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
   ) => void;
 }
 //#endregion
