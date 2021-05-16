@@ -14,7 +14,7 @@ const CustomBackgroundExample = () => {
 
   // callbacks
   const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapTo(index);
+    bottomSheetRef.current?.snapToIndex(index);
   }, []);
   const handleExpandPress = useCallback(() => {
     bottomSheetRef.current?.expand();

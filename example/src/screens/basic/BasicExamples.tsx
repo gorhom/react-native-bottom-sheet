@@ -13,14 +13,10 @@ interface ExampleScreenProps {
 const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
   memo(() => {
     //#region state
-    const [
-      enableContentPanningGesture,
-      setEnableContentPanningGesture,
-    ] = useState(true);
-    const [
-      enableHandlePanningGesture,
-      setEnableHandlePanningGesture,
-    ] = useState(true);
+    const [enableContentPanningGesture, setEnableContentPanningGesture] =
+      useState(true);
+    const [enableHandlePanningGesture, setEnableHandlePanningGesture] =
+      useState(true);
     //#endregion
 
     //#region refs
@@ -65,7 +61,7 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
       []
     );
     const handleSnapPress = useCallback(index => {
-      bottomSheetRef.current?.snapTo(index);
+      bottomSheetRef.current?.snapToIndex(index);
     }, []);
     const handleExpandPress = useCallback(() => {
       bottomSheetRef.current?.expand();

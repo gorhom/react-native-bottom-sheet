@@ -53,7 +53,7 @@ const App = () => {
         loop++;
       }
 
-      bottomSheetRef.current?.snapTo(index++);
+      bottomSheetRef.current?.snapToIndex(index++);
     }, 1000);
 
     return () => {
