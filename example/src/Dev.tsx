@@ -87,10 +87,10 @@ const BasicExample = () => {
     console.log('handleSheetChanges', index);
   }, []);
   const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapTo(index);
+    bottomSheetRef.current?.snapToIndex(index);
   }, []);
   const handleSnapPosition = useCallback(position => {
-    bottomSheetRef.current?.snapTo(position);
+    bottomSheetRef.current?.snapToIndex(position);
   }, []);
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
@@ -103,7 +103,7 @@ const BasicExample = () => {
     setOptions({
       headerShown: shownHeader.current,
     });
-  }, []);
+  }, [setOptions]);
   //#endregion
 
   // renders

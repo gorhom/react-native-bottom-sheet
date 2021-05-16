@@ -15,7 +15,7 @@ export const usePressBehavior = ({
   'closeOnPress' | 'disappearsOnIndex' | 'pressBehavior'
 >) => {
   //#region hooks
-  const { snapTo, close } = useBottomSheet();
+  const { snapToIndex, close } = useBottomSheet();
   //#endregion
 
   //#region variables
@@ -35,11 +35,11 @@ export const usePressBehavior = ({
     if (syntheticPressBehavior === 'close') {
       close();
     } else if (syntheticPressBehavior === 'collapse') {
-      snapTo(disappearsOnIndex as number);
+      snapToIndex(disappearsOnIndex as number);
     } else if (typeof syntheticPressBehavior === 'number') {
-      snapTo(syntheticPressBehavior);
+      snapToIndex(syntheticPressBehavior);
     }
-  }, [close, disappearsOnIndex, syntheticPressBehavior, snapTo]);
+  }, [snapToIndex, close, disappearsOnIndex, syntheticPressBehavior]);
   //#endregion
 
   //#region effects

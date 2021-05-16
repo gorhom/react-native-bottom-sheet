@@ -83,7 +83,7 @@ const NavigatorExample = () => {
     console.log('handleSheetChange', index);
   }, []);
   const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapTo(index);
+    bottomSheetRef.current?.snapToIndex(index);
   }, []);
   const handleExpandPress = useCallback(() => {
     bottomSheetRef.current?.expand();

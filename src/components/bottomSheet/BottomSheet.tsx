@@ -48,7 +48,12 @@ import {
   SCROLLABLE_STATE,
   KEYBOARD_BLUR_BEHAVIOR,
 } from '../../constants';
-import { animate, getKeyboardAnimationConfigs, print } from '../../utilities';
+import {
+  animate,
+  getKeyboardAnimationConfigs,
+  normalizeSnapPoint,
+  print,
+} from '../../utilities';
 import {
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
@@ -514,7 +519,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedPosition,
         animatedSnapPoints,
         animatedContainerHeight,
-        isExtendedByKeyboard: isInTemporaryPosition,
+        isInTemporaryPosition,
         scrollableContentOffsetY,
         animateToPoint: animateToPosition,
       });
@@ -530,17 +535,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedPosition,
         animatedSnapPoints,
         animatedContainerHeight,
-        isExtendedByKeyboard: isInTemporaryPosition,
+        isInTemporaryPosition,
         animateToPoint: animateToPosition,
       });
     //#endregion
 
     //#region public methods
-    const handleSnapTo = useCallback(
-      function handleSnapToPoint(
+    const handleSnapToIndex = useCallback(
+      function handleSnapToIndex(
         index: number,
-        animationDuration: number = DEFAULT_ANIMATION_DURATION,
-        animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
+        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
       ) {
         const snapPoints = animatedSnapPoints.value;
         invariant(
@@ -565,22 +569,61 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         const newSnapPoint = snapPoints[index];
-        runOnUI(animateToPosition)(newSnapPoint, 0, {
-          duration: animationDuration,
-          easing: animationEasing,
-        });
+        runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
         animateToPosition,
         animatedSnapPoints,
-        animatedContainerHeight.value,
+        animatedContainerHeight,
         animatedPosition,
+      ]
+    );
+    const handleSnapToPosition = useWorkletCallback(
+      function handleSnapToPosition(
+        position: number | string,
+        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+      ) {
+        /**
+         * verify if sheet is closed.
+         */
+        if (animatedPosition.value === animatedContainerHeight.value) {
+          isClosing.current = false;
+        }
+
+        /**
+         * exit method if sheet is closing.
+         */
+        if (isClosing.current) {
+          return;
+        }
+
+        /**
+         * mark the new position as temporary.
+         */
+        isInTemporaryPosition.value = true;
+
+        /**
+         * normalized provided position.
+         */
+        const nextPosition = normalizeSnapPoint(
+          position,
+          animatedContainerHeight.value,
+          topInset,
+          bottomInset
+        );
+        animateToPosition(nextPosition, 0, animationConfigs);
+      },
+      [
+        animateToPosition,
+        animatedContainerHeight,
+        animatedPosition,
+        bottomInset,
+        topInset,
       ]
     );
     const handleClose = useCallback(
       function handleClose(
-        animationDuration: number = DEFAULT_ANIMATION_DURATION,
-        animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
+        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
       ) {
         print({
           component: BottomSheet.name,
@@ -601,17 +644,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         isClosing.current = true;
-        runOnUI(animateToPosition)(animatedContainerHeight.value, 0, {
-          duration: animationDuration,
-          easing: animationEasing,
-        });
+        runOnUI(animateToPosition)(
+          animatedContainerHeight.value,
+          0,
+          animationConfigs
+        );
       },
       [animateToPosition, animatedContainerHeight, animatedPosition]
     );
     const handleExpand = useCallback(
       function handleExpand(
-        animationDuration: number = DEFAULT_ANIMATION_DURATION,
-        animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
+        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
       ) {
         /**
          * verify if sheet is closed.
@@ -628,10 +671,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
         const snapPoints = animatedSnapPoints.value;
         const newSnapPoint = snapPoints[snapPoints.length - 1];
-        runOnUI(animateToPosition)(newSnapPoint, 0, {
-          duration: animationDuration,
-          easing: animationEasing,
-        });
+        runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
         animateToPosition,
@@ -642,8 +682,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleCollapse = useCallback(
       function handleCollapse(
-        animationDuration: number = DEFAULT_ANIMATION_DURATION,
-        animationEasing: Animated.EasingFunction = DEFAULT_ANIMATION_EASING
+        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
       ) {
         /**
          * verify if sheet is closed.
@@ -661,10 +700,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         const snapPoints = animatedSnapPoints.value;
         const newSnapPoint = snapPoints[0];
-        runOnUI(animateToPosition)(newSnapPoint, 0, {
-          duration: animationDuration,
-          easing: animationEasing,
-        });
+        runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
         animateToPosition,
@@ -675,7 +711,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
 
     useImperativeHandle(ref, () => ({
-      snapTo: handleSnapTo,
+      snapToIndex: handleSnapToIndex,
+      snapToPosition: handleSnapToPosition,
       expand: handleExpand,
       collapse: handleCollapse,
       close: handleClose,
@@ -725,12 +762,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const externalContextVariables = useMemo(
       () => ({
-        snapTo: handleSnapTo,
+        snapToIndex: handleSnapToIndex,
+        snapToPosition: handleSnapToPosition,
         expand: handleExpand,
         collapse: handleCollapse,
         close: handleClose,
       }),
-      [handleSnapTo, handleExpand, handleCollapse, handleClose]
+      [
+        handleSnapToIndex,
+        handleSnapToPosition,
+        handleExpand,
+        handleCollapse,
+        handleClose,
+      ]
     );
     //#endregion
 

@@ -48,12 +48,8 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region hooks
-  const {
-    containerHeight,
-    mountSheet,
-    unmountSheet,
-    willUnmountSheet,
-  } = useBottomSheetModalInternal();
+  const { containerHeight, mountSheet, unmountSheet, willUnmountSheet } =
+    useBottomSheetModalInternal();
   const { removePortal: unmountPortal } = usePortal();
   //#endregion
 
@@ -112,11 +108,22 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region bottom sheet methods
-  const handleSnapTo = useCallback<BottomSheetMethods['snapTo']>((...args) => {
+  const handleSnapToIndex = useCallback<BottomSheetMethods['snapToIndex']>(
+    (...args) => {
+      if (minimized.current) {
+        return;
+      }
+      bottomSheetRef.current?.snapToIndex(...args);
+    },
+    []
+  );
+  const handleSnapToPosition = useCallback<
+    BottomSheetMethods['snapToPosition']
+  >((...args) => {
     if (minimized.current) {
       return;
     }
-    bottomSheetRef.current?.snapTo(...args);
+    bottomSheetRef.current?.snapToPosition(...args);
   }, []);
   const handleExpand = useCallback((...args) => {
     if (minimized.current) {
@@ -224,7 +231,7 @@ const BottomSheetModalComponent = forwardRef<
       return;
     }
     minimized.current = false;
-    bottomSheetRef.current?.snapTo(restoreIndexRef.current);
+    bottomSheetRef.current?.snapToIndex(restoreIndexRef.current);
   }, []);
   //#endregion
 
@@ -289,7 +296,8 @@ const BottomSheetModalComponent = forwardRef<
   //#region expose methods
   useImperativeHandle(ref, () => ({
     // sheet
-    snapTo: handleSnapTo,
+    snapToIndex: handleSnapToIndex,
+    snapToPosition: handleSnapToPosition,
     expand: handleExpand,
     collapse: handleCollapse,
     close: handleClose,
