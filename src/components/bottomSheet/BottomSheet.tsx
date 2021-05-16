@@ -85,7 +85,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region extract props
     const {
       // animations configurations
-      animationDuration: _providedAnimationDuration = DEFAULT_ANIMATION_DURATION,
+      animationDuration:
+        _providedAnimationDuration = DEFAULT_ANIMATION_DURATION,
       animationEasing: _providedAnimationEasing = DEFAULT_ANIMATION_EASING,
       animationConfigs: _providedAnimationConfigs,
 
@@ -501,41 +502,37 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region gesture interaction hooks
-    const [
-      contentPanGestureHandler,
-      contentPanGestureState,
-    ] = useInteractivePanGestureHandler({
-      type: GESTURE.CONTENT,
-      enableOverDrag,
-      enablePanDownToClose,
-      overDragResistanceFactor,
-      keyboardState,
-      keyboardHeight,
-      keyboardBehavior: keyboardBehavior,
-      animatedPosition,
-      animatedSnapPoints,
-      animatedContainerHeight,
-      isExtendedByKeyboard: isInTemporaryPosition,
-      scrollableContentOffsetY,
-      animateToPoint: animateToPosition,
-    });
-    const [
-      handlePanGestureHandler,
-      handlePanGestureState,
-    ] = useInteractivePanGestureHandler({
-      type: GESTURE.HANDLE,
-      enableOverDrag,
-      enablePanDownToClose,
-      overDragResistanceFactor,
-      keyboardState,
-      keyboardHeight,
-      keyboardBehavior,
-      animatedPosition,
-      animatedSnapPoints,
-      animatedContainerHeight,
-      isExtendedByKeyboard: isInTemporaryPosition,
-      animateToPoint: animateToPosition,
-    });
+    const [contentPanGestureHandler, contentPanGestureState] =
+      useInteractivePanGestureHandler({
+        type: GESTURE.CONTENT,
+        enableOverDrag,
+        enablePanDownToClose,
+        overDragResistanceFactor,
+        keyboardState,
+        keyboardHeight,
+        keyboardBehavior: keyboardBehavior,
+        animatedPosition,
+        animatedSnapPoints,
+        animatedContainerHeight,
+        isExtendedByKeyboard: isInTemporaryPosition,
+        scrollableContentOffsetY,
+        animateToPoint: animateToPosition,
+      });
+    const [handlePanGestureHandler, handlePanGestureState] =
+      useInteractivePanGestureHandler({
+        type: GESTURE.HANDLE,
+        enableOverDrag,
+        enablePanDownToClose,
+        overDragResistanceFactor,
+        keyboardState,
+        keyboardHeight,
+        keyboardBehavior,
+        animatedPosition,
+        animatedSnapPoints,
+        animatedContainerHeight,
+        isExtendedByKeyboard: isInTemporaryPosition,
+        animateToPoint: animateToPosition,
+      });
     //#endregion
 
     //#region public methods
@@ -847,7 +844,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
 
-        const nextPosition = _animatedSnapPoints[animatedCurrentIndex.value];
+        let nextPosition;
+        if (animatedCurrentIndex.value === -1) {
+          nextPosition = animatedContainerHeight.value;
+        } else {
+          nextPosition = _animatedSnapPoints[animatedCurrentIndex.value];
+        }
         animateToPosition(nextPosition);
       }
     );
