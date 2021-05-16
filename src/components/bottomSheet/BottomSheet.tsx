@@ -519,7 +519,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedPosition,
         animatedSnapPoints,
         animatedContainerHeight,
-        isExtendedByKeyboard: isInTemporaryPosition,
+        isInTemporaryPosition,
         scrollableContentOffsetY,
         animateToPoint: animateToPosition,
       });
@@ -535,7 +535,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedPosition,
         animatedSnapPoints,
         animatedContainerHeight,
-        isExtendedByKeyboard: isInTemporaryPosition,
+        isInTemporaryPosition,
         animateToPoint: animateToPosition,
       });
     //#endregion

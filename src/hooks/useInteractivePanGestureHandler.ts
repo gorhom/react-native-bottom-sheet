@@ -24,7 +24,7 @@ export interface useInteractivePanGestureHandlerConfigs {
   enablePanDownToClose: boolean;
   overDragResistanceFactor: number;
   keyboardBehavior: keyof typeof KEYBOARD_BEHAVIOR;
-  isExtendedByKeyboard: Animated.SharedValue<boolean>;
+  isInTemporaryPosition: Animated.SharedValue<boolean>;
   keyboardState: Animated.SharedValue<KEYBOARD_STATE>;
   keyboardHeight: Animated.SharedValue<number>;
   animatedSnapPoints: Animated.SharedValue<number[]>;
@@ -35,7 +35,7 @@ export interface useInteractivePanGestureHandlerConfigs {
 }
 
 type InteractivePanGestureHandlerContextType = {
-  currentPosition: number;
+  startPosition: number;
   keyboardState: KEYBOARD_STATE;
 };
 
@@ -47,7 +47,7 @@ export const useInteractivePanGestureHandler = ({
   keyboardState,
   keyboardBehavior,
   keyboardHeight,
-  isExtendedByKeyboard,
+  isInTemporaryPosition,
   animatedPosition,
   animatedSnapPoints,
   animatedContainerHeight,
@@ -72,7 +72,7 @@ export const useInteractivePanGestureHandler = ({
       cancelAnimation(animatedPosition);
 
       // store current animated position
-      context.currentPosition = animatedPosition.value;
+      context.startPosition = animatedPosition.value;
       context.keyboardState = keyboardState.value;
 
       if (
@@ -80,7 +80,7 @@ export const useInteractivePanGestureHandler = ({
         (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive ||
           keyboardBehavior === KEYBOARD_BEHAVIOR.fullScreen)
       ) {
-        isExtendedByKeyboard.value = true;
+        isInTemporaryPosition.value = true;
       }
 
       // set variables
@@ -93,16 +93,33 @@ export const useInteractivePanGestureHandler = ({
       gestureTranslationY.value = translationY;
       gestureVelocityY.value = velocityY;
 
-      const position = context.currentPosition + translationY;
-      const maxSnapPoint = isExtendedByKeyboard.value
-        ? context.currentPosition
-        : animatedSnapPoints.value[animatedSnapPoints.value.length - 1];
+      const position = context.startPosition + translationY;
+      let maxSnapPoint =
+        animatedSnapPoints.value[animatedSnapPoints.value.length - 1];
+      /**
+       * if keyboard is shown, then we set the max point to the current
+       * position.
+       */
+      if (
+        isInTemporaryPosition.value &&
+        context.keyboardState === KEYBOARD_STATE.SHOWN
+      ) {
+        maxSnapPoint = context.startPosition;
+      }
+      /**
+       * if current position is out of provided `snapPoints` and smaller then
+       * max snap pont, then we set the max point to the current position.
+       */
+      if (isInTemporaryPosition.value && context.startPosition < maxSnapPoint) {
+        maxSnapPoint = context.startPosition;
+      }
+
       const minSnapPoint = enablePanDownToClose
         ? animatedContainerHeight.value
         : animatedSnapPoints.value[0];
 
       const negativeScrollableContentOffset =
-        context.currentPosition === maxSnapPoint && scrollableContentOffsetY
+        context.startPosition === maxSnapPoint && scrollableContentOffsetY
           ? scrollableContentOffsetY.value * -1
           : 0;
       const clampedPosition = clamp(
@@ -163,18 +180,22 @@ export const useInteractivePanGestureHandler = ({
     onEnd: ({ state }, context) => {
       gestureState.value = state;
 
+      /**
+       * if
+       */
       if (
-        isExtendedByKeyboard.value &&
-        context.currentPosition >= animatedPosition.value
+        isInTemporaryPosition.value &&
+        context.keyboardState === KEYBOARD_STATE.SHOWN &&
+        context.startPosition >= animatedPosition.value
       ) {
-        if (context.currentPosition > animatedPosition.value) {
-          animateToPoint(context.currentPosition, gestureVelocityY.value / 2);
+        if (context.startPosition > animatedPosition.value) {
+          animateToPoint(context.startPosition, gestureVelocityY.value / 2);
         }
         return;
       }
 
-      if (isExtendedByKeyboard.value) {
-        isExtendedByKeyboard.value = false;
+      if (isInTemporaryPosition.value) {
+        isInTemporaryPosition.value = false;
       }
 
       const snapPoints = animatedSnapPoints.value.slice();
@@ -183,7 +204,7 @@ export const useInteractivePanGestureHandler = ({
       }
 
       const destinationPoint = snapPoint(
-        gestureTranslationY.value + context.currentPosition,
+        gestureTranslationY.value + context.startPosition,
         gestureVelocityY.value,
         snapPoints
       );
@@ -198,7 +219,7 @@ export const useInteractivePanGestureHandler = ({
 
       if (
         (scrollableContentOffsetY ? scrollableContentOffsetY.value : 0) > 0 &&
-        context.currentPosition ===
+        context.startPosition ===
           animatedSnapPoints.value[animatedSnapPoints.value.length - 1] &&
         animatedPosition.value ===
           animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
