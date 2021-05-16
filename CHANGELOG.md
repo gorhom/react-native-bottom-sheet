@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.4...v4.0.0-alpha.0)
+## [v4.0.0-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.0...v4.0.0-alpha.1)
+
+#### Features
+
+- feat: added snap to position ([`#443`](https://github.com/gorhom/react-native-bottom-sheet/pull/443)).
+
+## [v4.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.4...v4.0.0-alpha.0) - 2021-05-16
 
 #### Features
 
