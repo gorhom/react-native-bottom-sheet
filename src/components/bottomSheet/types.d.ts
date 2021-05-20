@@ -100,6 +100,11 @@ export interface BottomSheetProps
    */
   containerHeight?: number | Animated.SharedValue<number>;
   /**
+   * Container offset helps to accurately detect container offsets.
+   * @type Animated.SharedValue<number>;
+   */
+  containerOffset: Animated.SharedValue<Insets>;
+  /**
    * Top inset value helps to calculate percentage snap points values,
    * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or
    * from `react-native-safe-area-context` hook `useSafeArea`.

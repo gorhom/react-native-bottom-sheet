@@ -19,6 +19,12 @@ const BottomSheetModalProviderWrapper = ({
 }: BottomSheetModalProviderProps) => {
   //#region layout variables
   const animatedContainerHeight = useSharedValue(INITIAL_CONTAINER_HEIGHT);
+  const animatedContainerOffset = useSharedValue({
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  });
   //#endregion
 
   //#region variables
@@ -175,6 +181,7 @@ const BottomSheetModalProviderWrapper = ({
     <BottomSheetModalProvider value={externalContextVariables}>
       <BottomSheetModalInternalProvider value={internalContextVariables}>
         <BottomSheetContainer
+          containerOffset={animatedContainerOffset}
           containerHeight={animatedContainerHeight}
           children={null}
         />

@@ -1,16 +1,29 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
+import { View } from 'react-native';
+import {
+  measure,
+  runOnJS,
+  runOnUI,
+  useAnimatedRef,
+  useWorkletCallback,
+} from 'react-native-reanimated';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../../constants';
 import { print } from '../../utilities';
 import { styles } from './styles';
 import type { BottomSheetContainerProps } from './types';
 
 function BottomSheetContainerComponent({
   containerHeight,
+  containerOffset,
   topInset = 0,
   bottomInset = 0,
   shouldCalculateHeight = true,
   children,
 }: BottomSheetContainerProps) {
+  //#region ref
+  const containerRef = useAnimatedRef<View>();
+  //#endregion
+
   //#region styles
   const containerStyle = useMemo(
     () => [
@@ -25,31 +38,42 @@ function BottomSheetContainerComponent({
   //#endregion
 
   //#region callbacks
-  const handleContainerLayout = useCallback(
-    function handleContainerLayout({
-      nativeEvent: {
-        layout: { height },
+  const measureLayout = useWorkletCallback(() => {
+    'worklet';
+    const { height, width, pageX, pageY } = measure(containerRef);
+
+    containerHeight.value = height;
+    containerOffset.value = {
+      top: pageY,
+      left: pageX,
+      right: WINDOW_WIDTH - (width + pageX),
+      bottom: WINDOW_HEIGHT - (height + pageY),
+    };
+
+    runOnJS(print)({
+      component: BottomSheetContainer.displayName,
+      method: 'handleContainerLayout',
+      params: {
+        height,
+        top: pageY,
+        left: pageX,
+        right: WINDOW_WIDTH - (width + pageX),
+        bottom: WINDOW_HEIGHT - (height + pageY),
       },
-    }: LayoutChangeEvent) {
-      if (height === containerHeight.value) {
-        return;
-      }
-      containerHeight.value = height;
-      print({
-        component: BottomSheetContainer.displayName,
-        method: 'handleContainerLayout',
-        params: {
-          height,
-        },
-      });
+    });
+  });
+  const handleContainerLayout = useCallback(
+    function handleContainerLayout() {
+      runOnUI(measureLayout)();
     },
-    [containerHeight]
+    [measureLayout]
   );
   //#endregion
 
   //#region render
   return (
     <View
+      ref={containerRef}
       pointerEvents="box-none"
       onLayout={shouldCalculateHeight ? handleContainerLayout : undefined}
       style={containerStyle}

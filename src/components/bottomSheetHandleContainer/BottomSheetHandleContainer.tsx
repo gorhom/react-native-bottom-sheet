@@ -45,9 +45,10 @@ function BottomSheetHandleContainerComponent({
     return refs;
   }, [_providedSimultaneousHandlers, _internalSimultaneousHandlers]);
 
-  const shouldRenderHandle = useMemo(() => _providedHandleComponent !== null, [
-    _providedHandleComponent,
-  ]);
+  const shouldRenderHandle = useMemo(
+    () => _providedHandleComponent !== null,
+    [_providedHandleComponent]
+  );
   //#endregion
 
   //#region callbacks

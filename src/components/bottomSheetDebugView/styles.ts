@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     right: 4,
-    top: 200,
+    top: 0,
     padding: 2,
     backgroundColor: 'rgba(0, 0,0,0.75)',
   },
