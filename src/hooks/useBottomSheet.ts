@@ -2,5 +2,11 @@ import { useContext } from 'react';
 import { BottomSheetContext } from '../contexts/external';
 
 export const useBottomSheet = () => {
-  return useContext(BottomSheetContext);
+  const context = useContext(BottomSheetContext);
+
+  if (context === null) {
+    throw "'BottomSheetContext' cannot be null!";
+  }
+
+  return context;
 };

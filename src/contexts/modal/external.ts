@@ -5,7 +5,7 @@ export interface BottomSheetModalContextType {
   dismissAll: () => void;
 }
 
-// @ts-ignore
-export const BottomSheetModalContext = createContext<BottomSheetModalContextType>();
+export const BottomSheetModalContext =
+  createContext<BottomSheetModalContextType | null>(null);
 
 export const BottomSheetModalProvider = BottomSheetModalContext.Provider;

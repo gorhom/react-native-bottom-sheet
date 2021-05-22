@@ -78,7 +78,7 @@ export const useInteractivePanGestureHandler = ({
       if (
         keyboardState.value === KEYBOARD_STATE.SHOWN &&
         (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive ||
-          keyboardBehavior === KEYBOARD_BEHAVIOR.fullScreen)
+          keyboardBehavior === KEYBOARD_BEHAVIOR.fillParent)
       ) {
         isInTemporaryPosition.value = true;
       }
@@ -181,17 +181,28 @@ export const useInteractivePanGestureHandler = ({
       gestureState.value = state;
 
       /**
-       * if
+       * if the sheet is in a temporary position and the gesture ended above
+       * the current position, then we snap back to the temporary position.
        */
       if (
         isInTemporaryPosition.value &&
-        context.keyboardState === KEYBOARD_STATE.SHOWN &&
         context.startPosition >= animatedPosition.value
       ) {
         if (context.startPosition > animatedPosition.value) {
           animateToPoint(context.startPosition, gestureVelocityY.value / 2);
         }
         return;
+      }
+
+      /**
+       * close keyboard if current position is below the recorded
+       * start position and keyboard still shown.
+       */
+      if (
+        animatedPosition.value > context.startPosition &&
+        context.keyboardState === KEYBOARD_STATE.SHOWN
+      ) {
+        runOnJS(Keyboard.dismiss)();
       }
 
       if (isInTemporaryPosition.value) {

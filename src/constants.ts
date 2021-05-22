@@ -13,7 +13,7 @@ enum SHEET_STATE {
   OPENED,
   EXTENDED,
   OVER_EXTENDED,
-  FULL_SCREEN,
+  FILL_PARENT,
 }
 
 enum SCROLLABLE_STATE {
@@ -55,7 +55,7 @@ const MODAL_STACK_BEHAVIOR = {
 const KEYBOARD_BEHAVIOR = {
   none: 'none',
   extend: 'extend',
-  fullScreen: 'fullScreen',
+  fillParent: 'fillParent',
   interactive: 'interactive',
 } as const;
 

@@ -6,16 +6,26 @@ import {
   NativeSyntheticEvent,
   TextInputChangeEventData,
 } from 'react-native';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetTextInput,
+  BottomSheetHandleProps,
+} from '@gorhom/bottom-sheet';
 import { useShowcaseTheme } from '@gorhom/showcase-template';
-import isEqual from 'lodash.isequal';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 export const SEARCH_HANDLE_HEIGHT = 69;
 
-const BottomSheetHandleComponent = () => {
+interface SearchHandleProps extends BottomSheetHandleProps {
+  initialValue?: string;
+  onChange?: (text: string) => void;
+}
+
+const SearchHandleComponent = ({
+  initialValue = '',
+  onChange,
+}: SearchHandleProps) => {
   // state
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(initialValue);
 
   // hooks
   const { colors } = useShowcaseTheme();
@@ -26,8 +36,12 @@ const BottomSheetHandleComponent = () => {
       nativeEvent: { text },
     }: NativeSyntheticEvent<TextInputChangeEventData>) => {
       setValue(text);
+
+      if (onChange) {
+        onChange(text);
+      }
     },
-    []
+    [onChange]
   );
 
   // render
@@ -46,7 +60,7 @@ const BottomSheetHandleComponent = () => {
   );
 };
 
-const BottomSheetHandle = memo(BottomSheetHandleComponent, isEqual);
+const SearchHandle = memo(SearchHandleComponent);
 
 export const styles = StyleSheet.create({
   container: {
@@ -71,4 +85,4 @@ export const styles = StyleSheet.create({
   },
 });
 
-export default BottomSheetHandle;
+export default SearchHandle;

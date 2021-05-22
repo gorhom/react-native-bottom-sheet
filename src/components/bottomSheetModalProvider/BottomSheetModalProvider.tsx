@@ -7,7 +7,10 @@ import {
 } from '../../contexts';
 import BottomSheetContainer from '../bottomSheetContainer';
 import { MODAL_STACK_BEHAVIOR } from '../../constants';
-import { INITIAL_CONTAINER_HEIGHT } from '../bottomSheet/constants';
+import {
+  INITIAL_CONTAINER_HEIGHT,
+  INITIAL_CONTAINER_OFFSET,
+} from '../bottomSheet/constants';
 import type { BottomSheetModalStackBehavior } from '../bottomSheetModal';
 import type {
   BottomSheetModalProviderProps,
@@ -19,6 +22,7 @@ const BottomSheetModalProviderWrapper = ({
 }: BottomSheetModalProviderProps) => {
   //#region layout variables
   const animatedContainerHeight = useSharedValue(INITIAL_CONTAINER_HEIGHT);
+  const animatedContainerOffset = useSharedValue(INITIAL_CONTAINER_OFFSET);
   //#endregion
 
   //#region variables
@@ -157,12 +161,14 @@ const BottomSheetModalProviderWrapper = ({
   const internalContextVariables = useMemo(
     () => ({
       containerHeight: animatedContainerHeight,
+      containerOffset: animatedContainerOffset,
       mountSheet: handleMountSheet,
       unmountSheet: handleUnmountSheet,
       willUnmountSheet: handleWillUnmountSheet,
     }),
     [
       animatedContainerHeight,
+      animatedContainerOffset,
       handleMountSheet,
       handleUnmountSheet,
       handleWillUnmountSheet,
@@ -175,6 +181,7 @@ const BottomSheetModalProviderWrapper = ({
     <BottomSheetModalProvider value={externalContextVariables}>
       <BottomSheetModalInternalProvider value={internalContextVariables}>
         <BottomSheetContainer
+          containerOffset={animatedContainerOffset}
           containerHeight={animatedContainerHeight}
           children={null}
         />

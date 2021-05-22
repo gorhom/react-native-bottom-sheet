@@ -91,4 +91,10 @@ export type ScrollableRef = {
 
 //#region utils
 export type Primitive = string | number | boolean;
+export interface Insets {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
 //#endregion
