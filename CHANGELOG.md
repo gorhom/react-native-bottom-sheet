@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.0...v4.0.0-alpha.1)
+## [v4.0.0-alpha.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.1...v4.0.0-alpha.2)
+
+#### Improvements
+
+- refactor: updated handling animated heights ([`#451`](https://github.com/gorhom/react-native-bottom-sheet/pull/451)).
+
+## [v4.0.0-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.0...v4.0.0-alpha.1) - 2021-05-16
 
 #### Features
 
