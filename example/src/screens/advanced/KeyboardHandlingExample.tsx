@@ -7,12 +7,10 @@ import ContactList from '../../components/contactList';
 
 const KeyboardHandlingExample = () => {
   // state
-  const [keyboardBehavior, setKeyboardBehavior] = useState<
-    'none' | 'extend' | 'fullScreen' | 'interactive'
-  >('none');
-  const [keyboardBlurBehavior, setKeyboardBlurBehavior] = useState<
-    'none' | 'restore'
-  >('none');
+  const [keyboardBehavior, setKeyboardBehavior] =
+    useState<'none' | 'extend' | 'fillParent' | 'interactive'>('none');
+  const [keyboardBlurBehavior, setKeyboardBlurBehavior] =
+    useState<'none' | 'restore'>('none');
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -27,8 +25,8 @@ const KeyboardHandlingExample = () => {
         case 'none':
           return 'extend';
         case 'extend':
-          return 'fullScreen';
-        case 'fullScreen':
+          return 'fillParent';
+        case 'fillParent':
           return 'interactive';
         case 'interactive':
           return 'none';

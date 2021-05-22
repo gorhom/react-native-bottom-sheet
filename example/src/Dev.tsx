@@ -1,218 +1,164 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import BottomSheet from '@gorhom/bottom-sheet';
+  createBottomTabNavigator,
+  useBottomTabBarHeight,
+} from '@react-navigation/bottom-tabs';
+import {
+  BottomSheetFlatList,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { createContactListMockData } from './utilities';
+import ContactItem from './components/contactItem';
 import SearchHandle from './components/searchHandle';
-import Button from './components/button';
-import ContactList from './components/contactList';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native';
 
-const { height: windowHeight } = Dimensions.get('window');
+const SNAP_POINTS = [150, 300];
+const DATA = createContactListMockData(30);
 
-const BasicExample = () => {
+const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
+
+const App = () => {
   //#region state
-  const shownHeader = useRef(true);
-  const [dynamicSnapPoint, setDynamicSnapPoint] = useState(300);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const [filter, setFilter] = useState('');
   //#endregion
 
   //#region hooks
-  const { setOptions } = useNavigation();
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const { top: topSafeArea, bottom: bottomSafeArea } = useSafeAreaInsets();
+  const { top: topSafeArea } = useSafeAreaInsets();
+  const bottomSafeArea = useBottomTabBarHeight();
   //#endregion
 
-  //#region variables
-  const snapPoints = useMemo(() => [150, 400, '100%'], []);
-  const animatedPosition = useSharedValue<number>(0);
-  const animatedContainerHeight = useSharedValue<number>(800);
+  //#region animated values
+  const data = useMemo(
+    () =>
+      filter === '' ? DATA : DATA.filter(item => item.name.includes(filter)),
+    [filter]
+  );
+  const animatedPosition = useSharedValue(0);
   //#endregion
 
   //#region styles
-  const containerStyle = useMemo(
-    () => ({
-      ...styles.container,
-      paddingTop: topSafeArea,
-    }),
-    [topSafeArea]
-  );
-
-  const firstSnapPointLineStyle = useMemo(
-    () => [
-      styles.line,
-      {
-        height: snapPoints[0],
-      },
-    ],
-    [snapPoints]
-  );
-
-  const secondSnapPointLineStyle = useMemo(
-    () => [
-      styles.line,
-      {
-        height: snapPoints[1],
-      },
-    ],
-    [snapPoints]
-  );
-
-  const safeBottomLineStyle = useMemo(
-    () => [
-      styles.line,
-      {
-        height: bottomSafeArea,
-      },
-    ],
-    [bottomSafeArea]
-  );
-
-  const sheetLineAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: animatedPosition.value }],
+  const positionLineAnimatedStyle = useAnimatedStyle(() => ({
+    top: animatedPosition.value,
   }));
-  const sheetLineStyle = useMemo(
-    () => [styles.sheetLine, sheetLineAnimatedStyle],
-    [sheetLineAnimatedStyle]
+  //#endregion
+
+  //#region render
+  const renderItem = useCallback(
+    ({ item, index }) => (
+      <ContactItem
+        key={`${item.name}.${index}`}
+        title={`${index}: ${item.name}`}
+        subTitle={item.jobTitle}
+      />
+    ),
+    []
   );
-  //#endregion
-
-  //#region callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-  const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapToIndex(index);
-  }, []);
-  const handleSnapPosition = useCallback(position => {
-    bottomSheetRef.current?.snapToIndex(position);
-  }, []);
-  const handleClosePress = useCallback(() => {
-    bottomSheetRef.current?.close();
-  }, []);
-  const handleIncreaseDynamicSnapPoint = useCallback(() => {
-    setDynamicSnapPoint(state => state + 50);
-  }, []);
-  const handleHideHeaderPress = useCallback(() => {
-    shownHeader.current = !shownHeader.current;
-    setOptions({
-      headerShown: shownHeader.current,
-    });
-  }, [setOptions]);
-  //#endregion
-
-  // renders
+  const renderHandle = useCallback(
+    props => (
+      <SearchHandle
+        key="search-handle"
+        initialValue={filter}
+        onChange={setFilter}
+        {...props}
+      />
+    ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   return (
-    <View style={containerStyle}>
-      {/* <Button
-        label="Increase Dynamic Snap Point"
-        style={styles.buttonContainer}
-        onPress={handleIncreaseDynamicSnapPoint}
-      /> */}
+    <View style={styles.container}>
       <Button
-        label="Snap To 0"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(0)}
+        title="Present"
+        onPress={() => bottomSheetRef.current?.present()}
       />
-      <Button
-        label="Snap To 1"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPress(1)}
-      />
-      <Button
-        label="Snap To 500px"
-        style={styles.buttonContainer}
-        onPress={() => handleSnapPosition(500)}
-      />
-      <Button
-        label="Close"
-        style={styles.buttonContainer}
-        onPress={handleClosePress}
-      />
-
-      <Button
-        label="Hide Header"
-        style={styles.buttonContainer}
-        onPress={handleHideHeaderPress}
-      />
-      <BottomSheet
+      <BottomSheetModal
         ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        animatedPosition={animatedPosition}
+        snapPoints={SNAP_POINTS}
         keyboardBehavior="interactive"
-        // topInset={topSafeArea}
-        handleComponent={SearchHandle}
-        animateOnMount={true}
-        // onChange={handleSheetChanges}
+        topInset={topSafeArea}
+        bottomInset={bottomSafeArea}
+        animatedPosition={animatedPosition}
+        enablePanDownToClose={false}
+        handleComponent={renderHandle}
       >
-        {/* <ContactList type="FlatList" count={20} /> */}
-        <View style={{}}>
-          <View
-            pointerEvents="none"
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: bottomSafeArea,
-              borderWidth: 1,
-              backgroundColor: 'red',
-            }}
-          />
-        </View>
-      </BottomSheet>
-      {/* <Animated.View pointerEvents="none" style={sheetLineStyle} /> */}
-      <View pointerEvents="none" style={secondSnapPointLineStyle} />
-      <View pointerEvents="none" style={firstSnapPointLineStyle} />
-      <View pointerEvents="none" style={safeBottomLineStyle} />
+        <BottomSheetFlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          style={styles.flatlist}
+          contentContainerStyle={styles.flatlistContainer}
+        />
+      </BottomSheetModal>
+
+      {SNAP_POINTS.map(snapPoint => (
+        <View
+          pointerEvents="none"
+          key={`line-${snapPoint}`}
+          style={[styles.line, { bottom: snapPoint }]}
+        />
+      ))}
+
+      <View
+        pointerEvents="none"
+        style={[styles.line, { top: topSafeArea, backgroundColor: 'green' }]}
+      />
+      <View
+        pointerEvents="none"
+        style={[
+          styles.line,
+          { bottom: bottomSafeArea, backgroundColor: 'green' },
+        ]}
+      />
+      <Animated.View
+        pointerEvents="none"
+        style={[
+          styles.line,
+          { backgroundColor: 'blue' },
+          positionLineAnimatedStyle,
+        ]}
+      />
     </View>
   );
+  //#endregion
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#555',
-    padding: 24,
-  },
-  buttonContainer: {
-    marginBottom: 6,
-  },
-  textInput: {
-    backgroundColor: 'red',
-    opacity: 1,
-    padding: 6,
-    margin: 6,
-    borderRadius: 24,
+    justifyContent: 'center',
   },
   line: {
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 0,
-    borderWidth: 1,
-  },
-  sheetLine: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
     height: 1,
     backgroundColor: 'red',
   },
+  flatlist: {
+    flex: 1,
+  },
+  flatlistContainer: {
+    paddingHorizontal: 24,
+  },
 });
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default () => (
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="app" component={BasicExample} />
-    </Stack.Navigator>
-  </NavigationContainer>
+  <BottomSheetModalProvider>
+    <NavigationContainer theme={DarkTheme}>
+      <Tab.Navigator>
+        <Tab.Screen name="App" component={App} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  </BottomSheetModalProvider>
 );
