@@ -78,7 +78,7 @@ export const useInteractivePanGestureHandler = ({
       if (
         keyboardState.value === KEYBOARD_STATE.SHOWN &&
         (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive ||
-          keyboardBehavior === KEYBOARD_BEHAVIOR.fullScreen)
+          keyboardBehavior === KEYBOARD_BEHAVIOR.fillParent)
       ) {
         isInTemporaryPosition.value = true;
       }

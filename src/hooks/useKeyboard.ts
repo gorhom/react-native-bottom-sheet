@@ -33,9 +33,8 @@ export const useKeyboard = () => {
     KEYBOARD_STATE.UNDETERMINED
   );
   const keyboardHeight = useSharedValue(0);
-  const keyboardAnimationEasing = useSharedValue<KeyboardEventEasing>(
-    'keyboard'
-  );
+  const keyboardAnimationEasing =
+    useSharedValue<KeyboardEventEasing>('keyboard');
   const keyboardAnimationDuration = useSharedValue(500);
   //#endregion
 
@@ -45,7 +44,6 @@ export const useKeyboard = () => {
       if (state === KEYBOARD_STATE.SHOWN && !shouldHandleKeyboardEvents.value) {
         return;
       }
-      keyboardState.value = state;
       keyboardHeight.value =
         state === KEYBOARD_STATE.SHOWN
           ? height
@@ -54,6 +52,7 @@ export const useKeyboard = () => {
           : height;
       keyboardAnimationDuration.value = duration;
       keyboardAnimationEasing.value = easing;
+      keyboardState.value = state;
     },
     []
   );

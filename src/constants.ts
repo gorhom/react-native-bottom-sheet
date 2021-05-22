@@ -55,7 +55,7 @@ const MODAL_STACK_BEHAVIOR = {
 const KEYBOARD_BEHAVIOR = {
   none: 'none',
   extend: 'extend',
-  fullScreen: 'fullScreen',
+  fillParent: 'fillParent',
   interactive: 'interactive',
 } as const;
 

@@ -41,7 +41,7 @@ export interface BottomSheetInternalContextType
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
 }
 
-// @ts-ignore
-export const BottomSheetInternalContext = createContext<BottomSheetInternalContextType>();
+export const BottomSheetInternalContext =
+  createContext<BottomSheetInternalContextType | null>(null);
 
 export const BottomSheetInternalProvider = BottomSheetInternalContext.Provider;

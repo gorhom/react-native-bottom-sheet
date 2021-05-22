@@ -48,8 +48,13 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region hooks
-  const { containerHeight, mountSheet, unmountSheet, willUnmountSheet } =
-    useBottomSheetModalInternal();
+  const {
+    containerHeight,
+    containerOffset,
+    mountSheet,
+    unmountSheet,
+    willUnmountSheet,
+  } = useBottomSheetModalInternal();
   const { removePortal: unmountPortal } = usePortal();
   //#endregion
 
@@ -323,6 +328,7 @@ const BottomSheetModalComponent = forwardRef<
         enablePanDownToClose={enablePanDownToClose}
         animateOnMount={true}
         containerHeight={containerHeight}
+        containerOffset={containerOffset}
         onChange={handleBottomSheetOnChange}
         children={children}
         $modal={true}

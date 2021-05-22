@@ -12,13 +12,24 @@ export const useReactiveSharedValue = <T>(
   const valueRef = useRef<Animated.SharedValue<T>>(null);
 
   if (typeof value === 'object' && 'value' in value) {
-    // if provided value is a shared value,
-    // then we do not initialize another one.
+    /**
+     * if provided value is a shared value,
+     * then we do not initialize another one.
+     */
   } else if (valueRef.current === null) {
     // @ts-ignore
     initialValueRef.current = value;
-    // @ts-ignore
-    valueRef.current = makeMutable(value);
+    /**
+     * if value is an object, then we need to
+     * pass a clone.
+     */
+    if (typeof value === 'object') {
+      // @ts-ignore
+      valueRef.current = makeMutable({ ...value });
+    } else {
+      // @ts-ignore
+      valueRef.current = makeMutable(value);
+    }
   } else if (initialValueRef.current !== value) {
     valueRef.current.value = value as T;
   }

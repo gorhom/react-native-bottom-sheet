@@ -1,13 +1,6 @@
-import React, { memo, useCallback, useMemo } from 'react';
-import { View } from 'react-native';
-import {
-  measure,
-  runOnJS,
-  runOnUI,
-  useAnimatedRef,
-  useWorkletCallback,
-} from 'react-native-reanimated';
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../../constants';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
+import { LayoutChangeEvent, View, StatusBar } from 'react-native';
+import { WINDOW_HEIGHT } from '../../constants';
 import { print } from '../../utilities';
 import { styles } from './styles';
 import type { BottomSheetContainerProps } from './types';
@@ -20,10 +13,7 @@ function BottomSheetContainerComponent({
   shouldCalculateHeight = true,
   children,
 }: BottomSheetContainerProps) {
-  //#region ref
-  const containerRef = useAnimatedRef<View>();
-  //#endregion
-
+  const containerRef = useRef<View>(null);
   //#region styles
   const containerStyle = useMemo(
     () => [
@@ -38,35 +28,37 @@ function BottomSheetContainerComponent({
   //#endregion
 
   //#region callbacks
-  const measureLayout = useWorkletCallback(() => {
-    'worklet';
-    const { height, width, pageX, pageY } = measure(containerRef);
-
-    containerHeight.value = height;
-    containerOffset.value = {
-      top: pageY,
-      left: pageX,
-      right: WINDOW_WIDTH - (width + pageX),
-      bottom: WINDOW_HEIGHT - (height + pageY),
-    };
-
-    runOnJS(print)({
-      component: BottomSheetContainer.displayName,
-      method: 'handleContainerLayout',
-      params: {
-        height,
-        top: pageY,
-        left: pageX,
-        right: WINDOW_WIDTH - (width + pageX),
-        bottom: WINDOW_HEIGHT - (height + pageY),
-      },
-    });
-  });
   const handleContainerLayout = useCallback(
-    function handleContainerLayout() {
-      runOnUI(measureLayout)();
+    function handleContainerLayout({
+      nativeEvent: {
+        layout: { height },
+      },
+    }: LayoutChangeEvent) {
+      if (height !== containerHeight.value) {
+        containerHeight.value = height;
+      }
+
+      containerRef.current?.measure(
+        (_x, _y, _width, _height, _pageX, pageY) => {
+          containerOffset.value = {
+            top: pageY,
+            left: 0,
+            right: 0,
+            bottom:
+              WINDOW_HEIGHT - (pageY + height + (StatusBar.currentHeight ?? 0)),
+          };
+        }
+      );
+
+      print({
+        component: BottomSheetContainer.displayName,
+        method: 'handleContainerLayout',
+        params: {
+          height,
+        },
+      });
     },
-    [measureLayout]
+    [containerHeight, containerOffset, containerRef]
   );
   //#endregion
 

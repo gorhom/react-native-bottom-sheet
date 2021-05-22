@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { ViewStyle } from 'react-native';
+import type { ViewStyle, Insets } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
@@ -103,7 +103,7 @@ export interface BottomSheetProps
    * Container offset helps to accurately detect container offsets.
    * @type Animated.SharedValue<number>;
    */
-  containerOffset: Animated.SharedValue<Insets>;
+  containerOffset?: Animated.SharedValue<Required<Insets>>;
   /**
    * Top inset value helps to calculate percentage snap points values,
    * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or
@@ -126,7 +126,7 @@ export interface BottomSheetProps
    * Defines the keyboard appearance behavior.
    * - `none`: do nothing.
    * - `extend`: extend the sheet to its maximum snap point.
-   * - `fullScreen`: extend the sheet to full screen.
+   * - `fillParent`: extend the sheet to fill parent.
    * - `interactive`: offset the sheet by the size of the keyboard.
    * @type `none` | `extend` | `interactive`
    * @default none

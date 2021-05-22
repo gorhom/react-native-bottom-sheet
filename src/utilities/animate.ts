@@ -4,8 +4,8 @@ import { ANIMATION_METHOD } from '../constants';
 export const animate = (
   point: number,
   configs: Animated.WithSpringConfig | Animated.WithTimingConfig,
-  velocity: number,
-  onComplete: () => void
+  velocity: number = 0,
+  onComplete?: () => void
 ) => {
   'worklet';
 
