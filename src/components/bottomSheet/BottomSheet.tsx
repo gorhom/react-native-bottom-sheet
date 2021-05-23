@@ -54,8 +54,6 @@ import {
   print,
 } from '../../utilities';
 import {
-  DEFAULT_ANIMATION_EASING,
-  DEFAULT_ANIMATION_DURATION,
   DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
   DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
@@ -91,9 +89,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region extract props
     const {
       // animations configurations
-      animationDuration:
-        _providedAnimationDuration = DEFAULT_ANIMATION_DURATION,
-      animationEasing: _providedAnimationEasing = DEFAULT_ANIMATION_EASING,
       animationConfigs: _providedAnimationConfigs = DEFAULT_ANIMATION_CONFIGS,
 
       // configurations
@@ -531,7 +526,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * force animation configs from parameters, if provided
          */
         if (configs !== undefined) {
-          // @ts-ignore
           animatedPosition.value = animate(
             position,
             configs,
@@ -542,7 +536,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           /**
            * use animationConfigs callback, if provided
            */
-          // @ts-ignore
           animatedPosition.value = animate(
             position,
             _providedAnimationConfigs,
@@ -550,24 +543,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             animateToPositionCompleted
           );
         } else {
-          // @ts-ignore
+          /**
+           * fallback to default animation configs
+           */
           animatedPosition.value = animate(
             position,
-            {
-              duration: _providedAnimationDuration,
-              easing: _providedAnimationEasing,
-            },
-            0,
+            DEFAULT_ANIMATION_CONFIGS,
+            velocity,
             animateToPositionCompleted
           );
         }
       },
-      [
-        handleOnAnimate,
-        _providedAnimationConfigs,
-        _providedAnimationDuration,
-        _providedAnimationEasing,
-      ]
+      [handleOnAnimate, _providedAnimationConfigs]
     );
     //#endregion
 

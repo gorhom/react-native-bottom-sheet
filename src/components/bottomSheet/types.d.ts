@@ -224,22 +224,6 @@ export interface BottomSheetProps
 
 export interface BottomSheetAnimationConfigs {
   /**
-   * Snapping animation easing function.
-   * @type Animated.EasingFunction
-   * @default Easing.out(Easing.exp)
-   * @deprecated this prop will be dropped in the next major release.
-   * @see animationConfigs
-   */
-  animationEasing?: Animated.EasingFunction;
-  /**
-   * Snapping animation duration.
-   * @type number
-   * @default 500
-   * @deprecated this prop will be dropped in the next major release.
-   * @see animationConfigs
-   */
-  animationDuration?: number;
-  /**
    * Animation configs, this could be created by:
    * - `useBottomSheetSpringConfigs`
    * - `useBottomSheetTimingConfigs`
