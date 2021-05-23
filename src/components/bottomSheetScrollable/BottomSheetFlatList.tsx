@@ -10,14 +10,14 @@ import type {
   BottomSheetFlatListProps,
 } from './types';
 
-const AnimatedFlatList = Animated.createAnimatedComponent<RNFlatListProps<any>>(
-  RNFlatList
-);
+const AnimatedFlatList =
+  Animated.createAnimatedComponent<RNFlatListProps<any>>(RNFlatList);
 
-const BottomSheetFlatListComponent = createBottomSheetScrollableComponent<
-  BottomSheetFlatListMethods,
-  BottomSheetFlatListProps<any>
->(AnimatedFlatList);
+const BottomSheetFlatListComponent =
+  createBottomSheetScrollableComponent<
+    BottomSheetFlatListMethods,
+    BottomSheetFlatListProps<any>
+  >(AnimatedFlatList);
 
 const BottomSheetFlatList = memo(BottomSheetFlatListComponent);
 BottomSheetFlatList.displayName = 'BottomSheetFlatList';

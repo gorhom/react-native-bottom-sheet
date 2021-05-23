@@ -1,6 +1,5 @@
 import React, {
   useMemo,
-  useRef,
   useCallback,
   forwardRef,
   useImperativeHandle,
@@ -54,8 +53,6 @@ import {
   print,
 } from '../../utilities';
 import {
-  DEFAULT_ANIMATION_EASING,
-  DEFAULT_ANIMATION_DURATION,
   DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
   DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
@@ -91,9 +88,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region extract props
     const {
       // animations configurations
-      animationDuration:
-        _providedAnimationDuration = DEFAULT_ANIMATION_DURATION,
-      animationEasing: _providedAnimationEasing = DEFAULT_ANIMATION_EASING,
       animationConfigs: _providedAnimationConfigs = DEFAULT_ANIMATION_CONFIGS,
 
       // configurations
@@ -234,6 +228,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isSnapPointsNormalized
       );
     });
+    const isSheetClosing = useSharedValue(false);
     const isInTemporaryPosition = useSharedValue(false);
     //#endregion
 
@@ -422,13 +417,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     });
     //#endregion
 
-    //#region variables
-    /**
-     * @TODO remove this
-     */
-    const isClosing = useRef(false);
-    //#endregion
-
     //#region private methods
     const refreshUIElements = useCallback(() => {
       const currentPositionIndex = Math.max(animatedCurrentIndex.value, 0);
@@ -457,18 +445,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
 
-        if (isClosing.current && (index === 0 || index === -1)) {
-          isClosing.current = false;
+        if (isSheetClosing.value && (index === 0 || index === -1)) {
+          isSheetClosing.value = false;
         }
 
         if (_providedOnChange) {
-          /**
-           * to avoid having -0 🤷‍♂️
-           */
-          _providedOnChange(index + 1 - 1);
+          _providedOnChange(index);
         }
       },
-      [_providedOnChange, animatedCurrentIndex]
+      [_providedOnChange, animatedCurrentIndex, isSheetClosing]
     );
     const handleOnAnimate = useCallback(
       (toPoint: number) => {
@@ -531,7 +516,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * force animation configs from parameters, if provided
          */
         if (configs !== undefined) {
-          // @ts-ignore
           animatedPosition.value = animate(
             position,
             configs,
@@ -542,7 +526,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           /**
            * use animationConfigs callback, if provided
            */
-          // @ts-ignore
           animatedPosition.value = animate(
             position,
             _providedAnimationConfigs,
@@ -550,24 +533,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             animateToPositionCompleted
           );
         } else {
-          // @ts-ignore
+          /**
+           * fallback to default animation configs
+           */
           animatedPosition.value = animate(
             position,
-            {
-              duration: _providedAnimationDuration,
-              easing: _providedAnimationEasing,
-            },
-            0,
+            DEFAULT_ANIMATION_CONFIGS,
+            velocity,
             animateToPositionCompleted
           );
         }
       },
-      [
-        handleOnAnimate,
-        _providedAnimationConfigs,
-        _providedAnimationDuration,
-        _providedAnimationEasing,
-      ]
+      [handleOnAnimate, _providedAnimationConfigs]
     );
     //#endregion
 
@@ -623,13 +600,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
-          isClosing.current = false;
+          isSheetClosing.value = false;
         }
 
         /**
          * exit method if sheet is closing.
          */
-        if (isClosing.current) {
+        if (isSheetClosing.value) {
           return;
         }
 
@@ -637,6 +614,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
+        isSheetClosing,
         animateToPosition,
         animatedSnapPoints,
         animatedContainerHeight,
@@ -652,13 +630,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
-          isClosing.current = false;
+          isSheetClosing.value = false;
         }
 
         /**
          * exit method if sheet is closing.
          */
-        if (isClosing.current) {
+        if (isSheetClosing.value) {
           return;
         }
 
@@ -679,6 +657,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animateToPosition(nextPosition, 0, animationConfigs);
       },
       [
+        isSheetClosing,
         animateToPosition,
         animatedContainerHeight,
         animatedPosition,
@@ -698,24 +677,29 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
-          isClosing.current = false;
+          isSheetClosing.value = false;
         }
 
         /**
          * exit method if sheet is closing.
          */
-        if (isClosing.current) {
+        if (isSheetClosing.value) {
           return;
         }
 
-        isClosing.current = true;
+        isSheetClosing.value = true;
         runOnUI(animateToPosition)(
           animatedContainerHeight.value,
           0,
           animationConfigs
         );
       },
-      [animateToPosition, animatedContainerHeight, animatedPosition]
+      [
+        isSheetClosing,
+        animateToPosition,
+        animatedContainerHeight,
+        animatedPosition,
+      ]
     );
     const handleExpand = useCallback(
       function handleExpand(
@@ -725,13 +709,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
-          isClosing.current = false;
+          isSheetClosing.value = false;
         }
 
         /**
          * exit method if sheet is closing.
          */
-        if (isClosing.current) {
+        if (isSheetClosing.value) {
           return;
         }
         const snapPoints = animatedSnapPoints.value;
@@ -739,6 +723,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
+        isSheetClosing,
         animateToPosition,
         animatedSnapPoints,
         animatedContainerHeight,
@@ -753,13 +738,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
-          isClosing.current = false;
+          isSheetClosing.value = false;
         }
 
         /**
          * exit method if sheet is closing.
          */
-        if (isClosing.current) {
+        if (isSheetClosing.value) {
           return;
         }
 
@@ -768,6 +753,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
+        isSheetClosing,
         animateToPosition,
         animatedSnapPoints,
         animatedContainerHeight,
