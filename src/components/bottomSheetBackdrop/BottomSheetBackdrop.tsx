@@ -11,13 +11,14 @@ import {
   TapGestureHandler,
   TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
+import { useBottomSheet } from '../../hooks';
 import {
   DEFAULT_OPACITY,
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
+  DEFAULT_PRESS_BEHAVIOR,
 } from './constants';
-import { usePressBehavior } from './usePressBehavior';
 import { styles } from './styles';
 import type { BottomSheetDefaultBackdropProps } from './types';
 
@@ -27,26 +28,31 @@ const BottomSheetBackdropComponent = ({
   appearsOnIndex = DEFAULT_APPEARS_ON_INDEX,
   disappearsOnIndex = DEFAULT_DISAPPEARS_ON_INDEX,
   enableTouchThrough = DEFAULT_ENABLE_TOUCH_THROUGH,
-  pressBehavior,
-  closeOnPress,
+  pressBehavior = DEFAULT_PRESS_BEHAVIOR,
   style,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
-  const { handleOnPress, syntheticPressBehavior } = usePressBehavior({
-    pressBehavior,
-    closeOnPress,
-    disappearsOnIndex,
-  });
+  const { snapToIndex, close } = useBottomSheet();
   //#endregion
 
   //#region variables
   const containerRef = useRef<Animated.View>(null);
-  const pointerEvents = useMemo(() => (enableTouchThrough ? 'none' : 'auto'), [
-    enableTouchThrough,
-  ]);
+  const pointerEvents = useMemo(
+    () => (enableTouchThrough ? 'none' : 'auto'),
+    [enableTouchThrough]
+  );
   //#endregion
 
   //#region callbacks
+  const handleOnPress = useCallback(() => {
+    if (pressBehavior === 'close') {
+      close();
+    } else if (pressBehavior === 'collapse') {
+      snapToIndex(disappearsOnIndex as number);
+    } else if (typeof pressBehavior === 'number') {
+      snapToIndex(pressBehavior);
+    }
+  }, [snapToIndex, close, disappearsOnIndex, pressBehavior]);
   const handleContainerTouchability = useCallback(
     (shouldDisableTouchability: boolean) => {
       if (!containerRef.current) {
@@ -62,14 +68,15 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   //#region tap gesture
-  const gestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>(
-    {
-      onFinish: () => {
-        runOnJS(handleOnPress)();
+  const gestureHandler =
+    useAnimatedGestureHandler<TapGestureHandlerGestureEvent>(
+      {
+        onFinish: () => {
+          runOnJS(handleOnPress)();
+        },
       },
-    },
-    [handleOnPress]
-  );
+      [handleOnPress]
+    );
   //#endregion
 
   //#region styles
@@ -83,7 +90,7 @@ const BottomSheetBackdropComponent = ({
     flex: 1,
   }));
   const containerStyle = useMemo(
-    () => [style, styles.container, containerAnimatedStyle],
+    () => [styles.container, style, containerAnimatedStyle],
     [style, containerAnimatedStyle]
   );
   //#endregion
@@ -101,7 +108,7 @@ const BottomSheetBackdropComponent = ({
   );
   //#endregion
 
-  return syntheticPressBehavior !== 'none' ? (
+  return pressBehavior !== 'none' ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View
         ref={containerRef}
@@ -110,9 +117,7 @@ const BottomSheetBackdropComponent = ({
         accessibilityRole="button"
         accessibilityLabel="Bottom Sheet backdrop"
         accessibilityHint={`Tap to ${
-          typeof syntheticPressBehavior === 'string'
-            ? syntheticPressBehavior
-            : 'move'
+          typeof pressBehavior === 'string' ? pressBehavior : 'move'
         } the Bottom Sheet`}
       />
     </TapGestureHandler>

@@ -43,12 +43,6 @@ export interface BottomSheetDefaultBackdropProps
    */
   enableTouchThrough?: boolean;
   /**
-   * Close sheet when user press on backdrop.
-   * @type boolean
-   * @deprecated Use pressBehavior instead.
-   */
-  closeOnPress?: boolean;
-  /**
    * What should happen when user press backdrop?
    * @type BackdropPressBehavior
    * @default 'close'
