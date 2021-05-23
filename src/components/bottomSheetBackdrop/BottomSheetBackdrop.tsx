@@ -83,7 +83,7 @@ const BottomSheetBackdropComponent = ({
     flex: 1,
   }));
   const containerStyle = useMemo(
-    () => [style, styles.container, containerAnimatedStyle],
+    () => [styles.container, style, containerAnimatedStyle],
     [style, containerAnimatedStyle]
   );
   //#endregion
