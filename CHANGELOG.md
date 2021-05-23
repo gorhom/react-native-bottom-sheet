@@ -1,6 +1,44 @@
 # Changelog
 
-## [v3.6.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.3...v3.6.4)
+## [v3.6.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.2...v3.6.5)
+
+#### Fixes
+
+- fix: allowed user to override BottomSheetBackdrop style ([`#448`](https://github.com/gorhom/react-native-bottom-sheet/pull/448)).
+
+## [v4.0.0-alpha.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.1...v4.0.0-alpha.2) - 2021-05-23
+
+#### Improvements
+
+- refactor: updated handling animated heights ([`#451`](https://github.com/gorhom/react-native-bottom-sheet/pull/451)).
+
+## [v4.0.0-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.0...v4.0.0-alpha.1) - 2021-05-16
+
+#### Features
+
+- feat: added snap to position ([`#443`](https://github.com/gorhom/react-native-bottom-sheet/pull/443)).
+
+## [v4.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.4...v4.0.0-alpha.0) - 2021-05-16
+
+#### Features
+
+- feat: added enable pan down to close ([`#437`](https://github.com/gorhom/react-native-bottom-sheet/pull/437)).
+
+#### Improvements
+
+- refactor: create one generic scrollable component ([`#442`](https://github.com/gorhom/react-native-bottom-sheet/pull/442)).
+- refactor: converted all internal state/memoized variables to reanimated shared values. ([`#430`](https://github.com/gorhom/react-native-bottom-sheet/pull/430)).
+- chore: updated dependencies ([7d2a947](https://github.com/gorhom/react-native-bottom-sheet/commit/7d2a9473a95c3e245e90932715406b62e81e6a63)).
+- chore: enable hermes on ios example ([5a6730b](https://github.com/gorhom/react-native-bottom-sheet/commit/5a6730b94730d948d98a34b9ae0bf069946c58cb)).
+- chore: patch react-native-gesture-handler for android ([26a0d64](https://github.com/gorhom/react-native-bottom-sheet/commit/26a0d64a062a441b2f96b3f04c48a039cee6684a)).
+- chore: updated react-native in example to fix  xcode 12.5 ([b5a6c65](https://github.com/gorhom/react-native-bottom-sheet/commit/b5a6c659e2fd4a8ead5857d3f22c55c47f4fd82e)).
+
+#### Fixes
+
+- fix: sheet positioning on modals ([ee573e9](https://github.com/gorhom/react-native-bottom-sheet/commit/ee573e9463836301d9736c3e5d86b2b363f9fb14)).
+- fix: prevent animatedPosition from becoming undefined ([400d7b9](https://github.com/gorhom/react-native-bottom-sheet/commit/400d7b93caa0a46f678db2978e7e5f95cc87ee99)).
+
+## [v3.6.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.3...v3.6.4) - 2021-04-24
 
 #### Improvements
 
