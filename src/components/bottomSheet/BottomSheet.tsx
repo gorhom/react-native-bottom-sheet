@@ -924,6 +924,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => animatedSnapPoints.value,
       (_animatedSnapPoints, _previousAnimatedSnapPoints) => {
         if (
+          JSON.stringify(_animatedSnapPoints) ===
+            JSON.stringify(_previousAnimatedSnapPoints) ||
           !isLayoutCalculated.value ||
           !isAnimatedOnMount.value ||
           animatedAnimationState.value === ANIMATION_STATE.RUNNING
