@@ -10,14 +10,14 @@ import type {
   BottomSheetSectionListProps,
 } from './types';
 
-const AnimatedSectionList = Animated.createAnimatedComponent<
-  RNSectionListProps<any>
->(RNSectionList);
+const AnimatedSectionList =
+  Animated.createAnimatedComponent<RNSectionListProps<any>>(RNSectionList);
 
-const BottomSheetSectionListComponent = createBottomSheetScrollableComponent<
-  BottomSheetSectionListMethods,
-  BottomSheetSectionListProps<any>
->(AnimatedSectionList);
+const BottomSheetSectionListComponent =
+  createBottomSheetScrollableComponent<
+    BottomSheetSectionListMethods,
+    BottomSheetSectionListProps<any>
+  >(AnimatedSectionList);
 
 const BottomSheetSectionList = memo(BottomSheetSectionListComponent);
 BottomSheetSectionList.displayName = 'BottomSheetSectionList';

@@ -10,14 +10,14 @@ import type {
   BottomSheetScrollViewProps,
 } from './types';
 
-const AnimatedScrollView = Animated.createAnimatedComponent<RNScrollViewProps>(
-  RNScrollView
-);
+const AnimatedScrollView =
+  Animated.createAnimatedComponent<RNScrollViewProps>(RNScrollView);
 
-const BottomSheetScrollViewComponent = createBottomSheetScrollableComponent<
-  BottomSheetScrollViewMethods,
-  BottomSheetScrollViewProps
->(AnimatedScrollView);
+const BottomSheetScrollViewComponent =
+  createBottomSheetScrollableComponent<
+    BottomSheetScrollViewMethods,
+    BottomSheetScrollViewProps
+  >(AnimatedScrollView);
 
 const BottomSheetScrollView = memo(BottomSheetScrollViewComponent);
 BottomSheetScrollView.displayName = 'BottomSheetScrollView';
