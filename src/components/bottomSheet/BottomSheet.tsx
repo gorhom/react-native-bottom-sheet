@@ -910,8 +910,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (animateOnMount) {
           animateToPosition(nextPosition);
         } else {
-          // to snap sheet to position without duration
-          animateToPosition(nextPosition, 0, { duration: 0 });
+          animatedPosition.value = nextPosition;
         }
         isAnimatedOnMount.value = true;
       }
@@ -1169,13 +1168,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               animatedIndex,
               animatedCurrentIndex,
               animatedPosition,
-              _animatedContainerHeight,
               animatedContainerHeight,
               animatedSheetHeight,
               animatedHandleHeight,
               animatedContentHeight,
               keyboardHeight,
-              WINDOW_HEIGHT,
               isLayoutCalculated,
               isInTemporaryPosition,
             }}
