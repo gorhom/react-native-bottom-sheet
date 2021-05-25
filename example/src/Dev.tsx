@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import {
   createBottomTabNavigator,
@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import {
   BottomSheetFlatList,
+  BottomSheetFooter,
   BottomSheetModal,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
@@ -14,6 +15,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
+import { RectButton } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { createContactListMockData } from './utilities';
 import ContactItem from './components/contactItem';
@@ -97,6 +99,11 @@ const App = () => {
           style={styles.flatlist}
           contentContainerStyle={styles.flatlistContainer}
         />
+        <BottomSheetFooter appearanceBehavior={['fade', 'scale']}>
+          <RectButton style={styles.footer}>
+            <Text style={styles.footerText}>this is a footer!</Text>
+          </RectButton>
+        </BottomSheetFooter>
       </BottomSheetModal>
 
       {SNAP_POINTS.map(snapPoint => (
@@ -148,6 +155,20 @@ const styles = StyleSheet.create({
   },
   flatlistContainer: {
     paddingHorizontal: 24,
+  },
+  footer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 12,
+    padding: 12,
+    marginBottom: 12,
+    borderRadius: 24,
+    backgroundColor: '#80f',
+  },
+  footerText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
   },
 });
 

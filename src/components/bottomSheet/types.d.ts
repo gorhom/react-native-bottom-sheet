@@ -33,11 +33,11 @@ export interface BottomSheetProps
   /**
    * Points for the bottom sheet to snap to. It accepts array of number, string or mix.
    * String values should be a percentage.
-   * @type Array<string | number>
    * @example
    * snapPoints={[200, 500]}
    * snapPoints={[200, '%50']}
    * snapPoints={[-1, '%100']}
+   * @type Array<string | number>
    */
   snapPoints: Array<string | number>;
   /**
@@ -124,11 +124,12 @@ export interface BottomSheetProps
   //#region keyboard
   /**
    * Defines the keyboard appearance behavior.
+   * @enum
    * - `none`: do nothing.
    * - `extend`: extend the sheet to its maximum snap point.
    * - `fillParent`: extend the sheet to fill parent.
    * - `interactive`: offset the sheet by the size of the keyboard.
-   * @type `none` | `extend` | `interactive`
+   * @type `none` | `extend` | `fillParent` | `interactive`
    * @default none
    */
   keyboardBehavior?: keyof typeof KEYBOARD_BEHAVIOR;

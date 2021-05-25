@@ -2,8 +2,10 @@ import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from 'react';
+import { useAnimatedStyle } from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
@@ -17,6 +19,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     const {
       focusHook: useFocusHook = useEffect,
       overScrollMode = 'never',
+      style,
       ...rest
     }: any = props;
 
@@ -31,7 +34,18 @@ export function createBottomSheetScrollableComponent<T, P>(
       handleScrollEvent,
       handleSettingScrollable,
     } = useScrollableInternal();
-    const { enableContentPanningGesture } = useBottomSheetInternal();
+    const { enableContentPanningGesture, animatedFooterHeight } =
+      useBottomSheetInternal();
+    //#endregion
+
+    //#region styles
+    const containerAnimatedStyle = useAnimatedStyle(() => ({
+      marginBottom: animatedFooterHeight.value,
+    }));
+    const containerStyle = useMemo(
+      () => [style, containerAnimatedStyle],
+      [style, containerAnimatedStyle]
+    );
     //#endregion
 
     //#region effects
@@ -59,6 +73,7 @@ export function createBottomSheetScrollableComponent<T, P>(
             scrollEventThrottle={16}
             onScrollBeginDrag={handleScrollEvent}
             animatedProps={scrollableAnimatedProps}
+            style={containerStyle}
           />
         </NativeViewGestureHandler>
       </BottomSheetDraggableView>
