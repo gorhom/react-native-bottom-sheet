@@ -79,7 +79,7 @@ function BottomSheetFooterComponent({
           translateY: interpolate(
             footerTranslateY,
             [5, 0],
-            [0, animatedFooterHeight.value],
+            [0, animatedFooterHeight.value + bottomInset],
             Extrapolate.CLAMP
           ),
         });
