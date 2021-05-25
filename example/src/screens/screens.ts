@@ -86,6 +86,11 @@ export const screens = [
         slug: 'Advanced/ShadowExample',
         getScreen: () => require('./advanced/ShadowExample').default,
       },
+      {
+        name: 'Footer',
+        slug: 'Advanced/FooterExample',
+        getScreen: () => require('./advanced/FooterExample').default,
+      },
     ] as ShowcaseScreenType[],
   },
   {
