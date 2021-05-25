@@ -22,6 +22,7 @@ export { default as BottomSheetDraggableView } from './components/bottomSheetDra
 export { default as BottomSheetView } from './components/view';
 export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
 export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
+export { default as BottomSheetFooter } from './components/bottomSheetFooter';
 
 import BottomSheetTouchable from './components/touchables';
 export const {

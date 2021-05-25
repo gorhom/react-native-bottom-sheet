@@ -165,6 +165,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedHandleHeight = useReactiveSharedValue(
       _providedHandleHeight ?? INITIAL_HANDLE_HEIGHT
     );
+    const animatedFooterHeight = useSharedValue(0);
     const animatedSnapPoints = useNormalizedSnapPoints(
       _providedSnapPoints,
       animatedContainerHeight,
@@ -777,8 +778,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedAnimationState,
         animatedSheetState,
         animatedScrollableState,
+        animatedKeyboardState: keyboardState,
+        animatedKeyboardHeight: keyboardHeight,
         animatedIndex,
         animatedPosition,
+        animatedContentHeight,
+        animatedHandleHeight,
+        animatedFooterHeight,
+        animatedContainerHeight,
         scrollableContentOffsetY,
         isInTemporaryPosition,
         shouldHandleKeyboardEvents,
@@ -789,13 +796,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         failOffsetX: _providedFailOffsetX,
         failOffsetY: _providedFailOffsetY,
         contentPanGestureHandler,
+        getKeyboardHeightInContainer,
         setScrollableRef: handleSettingScrollableRef,
         removeScrollableRef,
       }),
       [
         animatedIndex,
         animatedPosition,
+        animatedContentHeight,
+        getKeyboardHeightInContainer,
+        animatedFooterHeight,
+        animatedContainerHeight,
+        animatedHandleHeight,
         animatedAnimationState,
+        keyboardState,
+        keyboardHeight,
         animatedSheetState,
         contentPanGestureHandler,
         handleSettingScrollableRef,
