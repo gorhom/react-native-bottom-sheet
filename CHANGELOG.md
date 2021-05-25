@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.2...v4.0.0-alpha.3)
+## [v4.0.0-alpha.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.3...v4.0.0-alpha.4)
+
+#### Features
+
+- feat: added footer component ([`#457`](https://github.com/gorhom/react-native-bottom-sheet/pull/457)).
+
+## [v4.0.0-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.2...v4.0.0-alpha.3) - 2021-05-23
 
 #### Improvements
 
