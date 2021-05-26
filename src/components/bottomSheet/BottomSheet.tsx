@@ -254,7 +254,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return $modal
         ? keyboardHeight.value -
             Math.abs(bottomInset - animatedContainerOffset.value.bottom)
-        : keyboardHeight.value;
+        : keyboardHeight.value - animatedContainerOffset.value.bottom;
     }, [$modal, bottomInset]);
     //#endregion
 
@@ -596,18 +596,23 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             snapPoints.length - 1
           }`
         );
+        print({
+          component: BottomSheet.name,
+          method: handleSnapToIndex.name,
+          params: {
+            index,
+          },
+        });
 
         /**
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
           isSheetClosing.value = false;
-        }
-
-        /**
-         * exit method if sheet is closing.
-         */
-        if (isSheetClosing.value) {
+        } else if (isSheetClosing.value) {
+          /**
+           * exit method if sheet is closing.
+           */
           return;
         }
 
@@ -627,17 +632,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         position: number | string,
         animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
       ) {
+        print({
+          component: BottomSheet.name,
+          method: handleSnapToPosition.name,
+          params: {
+            position,
+          },
+        });
         /**
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
           isSheetClosing.value = false;
-        }
-
-        /**
-         * exit method if sheet is closing.
-         */
-        if (isSheetClosing.value) {
+        } else if (isSheetClosing.value) {
+          /**
+           * exit method if sheet is closing.
+           */
           return;
         }
 
@@ -674,17 +684,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           component: BottomSheet.name,
           method: handleClose.name,
         });
+
         /**
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
           isSheetClosing.value = false;
-        }
-
-        /**
-         * exit method if sheet is closing.
-         */
-        if (isSheetClosing.value) {
+        } else if (isSheetClosing.value) {
+          /**
+           * exit method if sheet is closing.
+           */
           return;
         }
 
@@ -706,19 +715,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       function handleExpand(
         animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
       ) {
+        print({
+          component: BottomSheet.name,
+          method: handleExpand.name,
+        });
         /**
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
           isSheetClosing.value = false;
-        }
-
-        /**
-         * exit method if sheet is closing.
-         */
-        if (isSheetClosing.value) {
+        } else if (isSheetClosing.value) {
+          /**
+           * exit method if sheet is closing.
+           */
           return;
         }
+
         const snapPoints = animatedSnapPoints.value;
         const newSnapPoint = snapPoints[snapPoints.length - 1];
         runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
@@ -735,17 +747,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       function handleCollapse(
         animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
       ) {
+        print({
+          component: BottomSheet.name,
+          method: handleCollapse.name,
+        });
         /**
          * verify if sheet is closed.
          */
         if (animatedPosition.value === animatedContainerHeight.value) {
           isSheetClosing.value = false;
-        }
-
-        /**
-         * exit method if sheet is closing.
-         */
-        if (isSheetClosing.value) {
+        } else if (isSheetClosing.value) {
+          /**
+           * exit method if sheet is closing.
+           */
           return;
         }
 
