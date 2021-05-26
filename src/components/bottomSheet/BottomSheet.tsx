@@ -912,7 +912,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        const nextPosition = animatedSnapPoints.value[_providedIndex];
+        let nextPosition;
+        if (_providedIndex === -1) {
+          nextPosition = animatedContainerHeight.value;
+        } else {
+          nextPosition = animatedSnapPoints.value[_providedIndex];
+        }
 
         /**
          * here we exit method early because the next position

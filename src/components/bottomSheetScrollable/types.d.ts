@@ -3,6 +3,7 @@ import type {
   ScrollViewProps,
   FlatListProps,
   SectionListProps,
+  SectionListScrollParams,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
