@@ -71,7 +71,7 @@ const SheetContent = () => {
 }
 ```
 
-## `useBottomSheetSpringConfigs`
+## `useBottomSheetTimingConfigs`
 
 **`Available only on v3, for now.`**
 
