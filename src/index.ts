@@ -17,6 +17,7 @@ export {
   BottomSheetScrollView,
   BottomSheetSectionList,
   BottomSheetFlatList,
+  BottomSheetVirtualizedList,
 } from './components/bottomSheetScrollable';
 export { default as BottomSheetDraggableView } from './components/bottomSheetDraggableView';
 export { default as BottomSheetView } from './components/view';
@@ -43,6 +44,7 @@ export type {
   BottomSheetFlatListMethods,
   BottomSheetScrollViewMethods,
   BottomSheetSectionListMethods,
+  BottomSheetVirtualizedListMethods,
 } from './components/bottomSheetScrollable';
 //#endregion
 

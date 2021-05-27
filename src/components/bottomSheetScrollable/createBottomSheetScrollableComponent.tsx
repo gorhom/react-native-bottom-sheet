@@ -43,7 +43,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       marginBottom: animatedFooterHeight.value,
     }));
     const containerStyle = useMemo(
-      () => [style, containerAnimatedStyle],
+      () => [...('length' in style ? style : [style]), containerAnimatedStyle],
       [style, containerAnimatedStyle]
     );
     //#endregion

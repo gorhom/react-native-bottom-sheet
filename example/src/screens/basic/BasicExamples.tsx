@@ -6,7 +6,7 @@ import Button from '../../components/button';
 
 interface ExampleScreenProps {
   title: string;
-  type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
+  type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View' | 'VirtualizedList';
   count?: number;
 }
 
@@ -132,6 +132,11 @@ const styles = StyleSheet.create({
 export const FlatListExampleScreen = createExampleScreen({
   title: 'FlatList Example',
   type: 'FlatList',
+});
+
+export const VirtualizedListExampleScreen = createExampleScreen({
+  title: 'VirtualizedList Example',
+  type: 'VirtualizedList',
 });
 
 export const ScrollViewExampleScreen = createExampleScreen({

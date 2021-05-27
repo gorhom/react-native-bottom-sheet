@@ -26,6 +26,12 @@ export const screens = [
         getScreen: () =>
           require('./basic/BasicExamples').SectionListExampleScreen,
       },
+      {
+        name: 'VirtualizedList',
+        slug: 'Basic/VirtualizedListExample',
+        getScreen: () =>
+          require('./basic/BasicExamples').VirtualizedListExampleScreen,
+      },
     ],
   },
   {

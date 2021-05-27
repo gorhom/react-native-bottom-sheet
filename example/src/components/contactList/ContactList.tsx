@@ -6,6 +6,7 @@ import {
   BottomSheetFlatList,
   BottomSheetScrollView,
   BottomSheetSectionList,
+  BottomSheetVirtualizedList,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {
@@ -15,13 +16,15 @@ import {
 import ContactItem from '../contactItem';
 
 export interface ContactListProps {
-  type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View';
+  type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View' | 'VirtualizedList';
   count?: number;
   style?: ViewStyle;
   onItemPress?: () => void;
 }
 
 const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
+const handleGetItem = (data: any[], index: number) => data[index];
+const handleGetCount = (data: any[]) => data.length;
 
 const ContactList = ({
   type,
@@ -32,9 +35,10 @@ const ContactList = ({
   // hooks
   const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
-  // variables
+  //#region variables
   const sections = useMemo(() => createContactSectionsMockData(count), [count]);
   const data = useMemo(() => createContactListMockData(count), [count]);
+  //#endregion
 
   // styles
   const contentContainerStyle = useMemo(
@@ -95,6 +99,24 @@ const ContactList = ({
         data={data}
         keyExtractor={keyExtractor}
         initialNumToRender={5}
+        bounces={true}
+        windowSize={10}
+        maxToRenderPerBatch={5}
+        renderItem={renderFlatListItem}
+        style={styles.container}
+        keyboardDismissMode="interactive"
+        contentContainerStyle={contentContainerStyle}
+        focusHook={useFocusEffect}
+      />
+    );
+  } else if (type === 'VirtualizedList') {
+    return (
+      <BottomSheetVirtualizedList
+        data={data}
+        keyExtractor={keyExtractor}
+        initialNumToRender={5}
+        getItem={handleGetItem}
+        getItemCount={handleGetCount}
         bounces={true}
         windowSize={10}
         maxToRenderPerBatch={5}

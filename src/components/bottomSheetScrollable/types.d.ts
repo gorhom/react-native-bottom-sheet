@@ -1,5 +1,6 @@
 import type { ReactNode, Ref } from 'react';
 import type {
+  VirtualizedListProps,
   ScrollViewProps,
   FlatListProps,
   SectionListProps,
@@ -208,5 +209,40 @@ export interface BottomSheetSectionListMethods {
    * Provides a handle to the underlying scroll node.
    */
   getScrollableNode(): NodeHandle | undefined;
+}
+//#endregion
+
+//#region
+export type BottomSheetVirtualizedListProps<T> = Omit<
+  Animated.AnimateProps<VirtualizedListProps<T>>,
+  'decelerationRate' | 'onScrollBeginDrag' | 'scrollEventThrottle'
+> &
+  BottomSheetScrollableProps & {
+    ref?: Ref<BottomSheetVirtualizedListMethods>;
+  };
+
+export interface BottomSheetVirtualizedListMethods {
+  scrollToEnd: (params?: { animated?: boolean }) => void;
+  scrollToIndex: (params: {
+    animated?: boolean;
+    index: number;
+    viewOffset?: number;
+    viewPosition?: number;
+  }) => void;
+  scrollToItem: (params: {
+    animated?: boolean;
+    item: ItemT;
+    viewPosition?: number;
+  }) => void;
+
+  /**
+   * Scroll to a specific content pixel offset in the list.
+   * Param `offset` expects the offset to scroll to. In case of horizontal is true, the
+   * offset is the x-value, in any other case the offset is the y-value.
+   * Param `animated` (true by default) defines whether the list should do an animation while scrolling.
+   */
+  scrollToOffset: (params: { animated?: boolean; offset: number }) => void;
+
+  recordInteraction: () => void;
 }
 //#endregion
