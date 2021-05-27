@@ -7,9 +7,12 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "postinstall": "npx patch-package"
+    "postinstall": "npx patch-package && rm -rf node_modules/@gorhom/bottom-sheet/node_modules",
+    "dev": "next",
+    "build": "next build"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "file:..",
     "@gorhom/portal": "^1.0.4",
     "@gorhom/showcase-template": "^2.0.4",
     "@react-native-community/blur": "^3.6.0",
@@ -20,24 +23,31 @@
     "@react-navigation/stack": "^5.14.4",
     "faker": "^4.1.0",
     "nanoid": "^3.1.20",
+    "next": "^10.2.3",
+    "next-transpile-modules": "^7.2.0",
+    "raf": "^3.4.1",
     "react": "17.0.1",
+    "react-dom": "17.0.1",
     "react-native": "0.64.1",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-maps": "^0.28.0",
     "react-native-pager-view": "^5.1.5",
-    "react-native-reanimated": "^2.1.0",
+    "react-native-reanimated": "^2.2.0",
     "react-native-redash": "^16.0.11",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "^3.1.1",
-    "react-native-tab-view": "^3.0.1"
+    "react-native-tab-view": "^3.0.1",
+    "react-native-web": "^0.16.3"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/runtime": "^7.13.10",
+    "@expo/next-adapter": "^2.1.75",
     "@types/faker": "^4.1.12",
     "@types/react": "^17.0.5",
     "@types/react-native": "^0.64.5",
-    "metro-react-native-babel-preset": "^0.65.2",
+    "babel-preset-expo": "^8.3.0",
+    "next-compose-plugins": "^2.2.1",
     "typescript": "^4.2.4"
   }
 }

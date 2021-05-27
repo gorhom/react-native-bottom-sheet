@@ -40,7 +40,7 @@
     "@gorhom/portal": "^1.0.4",
     "invariant": "^2.2.4",
     "nanoid": "^3.1.20",
-    "react-native-redash": "^16.0.10"
+    "react-native-redash": "^16.0.11"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
@@ -58,11 +58,11 @@
     "husky": "^4.3.8",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
-    "react": "~16.9.0",
-    "react-native": "^0.62.2",
+    "react": "17.0.1",
+    "react-native": "0.64.1",
     "react-native-builder-bob": "^0.18.1",
     "react-native-gesture-handler": "^1.10.3",
-    "react-native-reanimated": "^2.1.0",
+    "react-native-reanimated": "^2.2.0",
     "release-it": "^14.6.2",
     "typescript": "^4.2.4"
   },
@@ -70,7 +70,7 @@
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=1.10.1",
-    "react-native-reanimated": ">=2.1.0"
+    "react-native-reanimated": ">=2.2.0"
   },
   "react-native-builder-bob": {
     "source": "src",

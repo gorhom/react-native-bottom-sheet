@@ -4,6 +4,12 @@ import type {
   TouchableWithoutFeedback as RNTouchableWithoutFeedback,
 } from 'react-native';
 
+import type {
+  TouchableOpacity as RNGHTouchableOpacity,
+  TouchableHighlight as RNGHTouchableHighlight,
+  TouchableWithoutFeedback as RNGHTouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
+
 import {
   TouchableOpacity,
   TouchableHighlight,
@@ -12,8 +18,13 @@ import {
 } from './Touchables';
 
 export default {
-  TouchableOpacity: TouchableOpacity as typeof RNTouchableOpacity,
-  TouchableHighlight: TouchableHighlight as typeof RNTouchableHighlight,
-  TouchableWithoutFeedback:
-    TouchableWithoutFeedback as typeof RNTouchableWithoutFeedback,
+  TouchableOpacity: TouchableOpacity as
+    | typeof RNTouchableOpacity
+    | typeof RNGHTouchableOpacity,
+  TouchableHighlight: TouchableHighlight as
+    | typeof RNTouchableHighlight
+    | typeof RNGHTouchableHighlight,
+  TouchableWithoutFeedback: TouchableWithoutFeedback as
+    | typeof RNTouchableWithoutFeedback
+    | typeof RNGHTouchableWithoutFeedback,
 };
