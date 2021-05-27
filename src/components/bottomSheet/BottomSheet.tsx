@@ -183,6 +183,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animateOnMount ? -1 : _providedIndex
     );
     const animatedPosition = useSharedValue(INITIAL_POSITION);
+    const animatedNextPosition = useSharedValue(0);
+    const animatedNextPositionIndex = useSharedValue(0);
     //#endregion
 
     //#region conditional variables
@@ -502,6 +504,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * cancel current running animation
          */
         cancelAnimation(animatedPosition);
+
+        /**
+         * store next position
+         */
+        animatedNextPosition.value = position;
+        animatedNextPositionIndex.value =
+          animatedSnapPoints.value.indexOf(position);
 
         /**
          * set animation state to running
@@ -915,8 +924,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         let nextPosition;
         if (_providedIndex === -1) {
           nextPosition = animatedContainerHeight.value;
+          animatedNextPositionIndex.value = -1;
         } else {
           nextPosition = animatedSnapPoints.value[_providedIndex];
+          animatedNextPositionIndex.value = _providedIndex;
         }
 
         /**
@@ -944,6 +955,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (animateOnMount) {
           animateToPosition(nextPosition);
         } else {
+          animatedNextPosition.value = nextPosition;
           animatedPosition.value = nextPosition;
         }
         isAnimatedOnMount.value = true;
@@ -961,8 +973,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           JSON.stringify(_animatedSnapPoints) ===
             JSON.stringify(_previousAnimatedSnapPoints) ||
           !isLayoutCalculated.value ||
-          !isAnimatedOnMount.value ||
-          animatedAnimationState.value === ANIMATION_STATE.RUNNING
+          !isAnimatedOnMount.value
         ) {
           return;
         }
@@ -977,7 +988,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         });
 
         let nextPosition;
-        if (animatedCurrentIndex.value === -1) {
+
+        /**
+         * if snap points changed while sheet is animating, then
+         * we stop the animation and animate to the updated point.
+         */
+        if (animatedPosition.value !== animatedNextPosition.value) {
+          cancelAnimation(animatedPosition);
+          nextPosition =
+            animatedNextPositionIndex.value !== -1
+              ? _animatedSnapPoints[animatedNextPositionIndex.value]
+              : animatedNextPosition.value;
+        } else if (animatedCurrentIndex.value === -1) {
           nextPosition = animatedContainerHeight.value;
         } else {
           nextPosition = _animatedSnapPoints[animatedCurrentIndex.value];

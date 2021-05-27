@@ -13,16 +13,11 @@ import { LOCATION_DETAILS_HEIGHT } from '../locationDetails';
 interface WeatherProps {
   animatedPosition: Animated.SharedValue<number>;
   animatedIndex: Animated.SharedValue<number>;
-  snapPoints: number[];
 }
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const Weather = ({
-  animatedIndex,
-  animatedPosition,
-  snapPoints,
-}: WeatherProps) => {
+const Weather = ({ animatedIndex, animatedPosition }: WeatherProps) => {
   // hooks
   const { colors } = useShowcaseTheme();
   const { bottom: bottomSafeArea } = useSafeAreaInsets();
@@ -55,7 +50,7 @@ const Weather = ({
         },
       ],
     }),
-    [snapPoints, lockedYPosition]
+    [lockedYPosition]
   );
   const containerStyle = useMemo(
     () => [

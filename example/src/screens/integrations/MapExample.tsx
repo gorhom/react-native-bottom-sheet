@@ -53,14 +53,17 @@ const MapExample = () => {
   const data = useMemo(() => createLocationListMockData(15), []);
   const poiListSnapPoints = useMemo(
     () => [
-      bottomSafeArea === 0 ? SEARCH_HANDLE_HEIGHT / 2 : bottomSafeArea,
+      bottomSafeArea + SEARCH_HANDLE_HEIGHT,
       LOCATION_DETAILS_HEIGHT + bottomSafeArea,
       '100%',
     ],
     [bottomSafeArea]
   );
   const poiDetailsSnapPoints = useMemo(
-    () => [LOCATION_DETAILS_HEIGHT + bottomSafeArea, SCREEN_HEIGHT],
+    () => [
+      LOCATION_DETAILS_HEIGHT + bottomSafeArea + SEARCH_HANDLE_HEIGHT,
+      '100%',
+    ],
     [bottomSafeArea]
   );
   const mapInitialCamera = useMemo(
@@ -129,7 +132,7 @@ const MapExample = () => {
 
   //#region effects
   useLayoutEffect(() => {
-    poiListModalRef.current?.present();
+    requestAnimationFrame(() => poiListModalRef.current?.present());
   }, []);
   //#endregion
 
@@ -170,7 +173,6 @@ const MapExample = () => {
       <Weather
         animatedIndex={weatherAnimatedIndex}
         animatedPosition={weatherAnimatedPosition}
-        snapPoints={poiListSnapPoints}
       />
       <BottomSheetModal
         ref={poiListModalRef}
@@ -181,6 +183,7 @@ const MapExample = () => {
         handleHeight={SEARCH_HANDLE_HEIGHT}
         topInset={headerHeight}
         enableDismissOnClose={false}
+        enablePanDownToClose={false}
         keyboardBehavior="extend"
         animatedPosition={animatedPOIListPosition}
         animatedIndex={animatedPOIListIndex}

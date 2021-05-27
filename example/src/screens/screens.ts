@@ -111,6 +111,7 @@ export const screens = [
         slug: 'Integrations/MapExample',
         getScreen: () => require('./integrations/MapExample').default,
         screenOptions: {
+          headerTintColor: 'black',
           headerTransparent: true,
         },
       },
