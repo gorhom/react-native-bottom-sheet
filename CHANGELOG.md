@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.5...v4.0.0-alpha.6)
+## [v4.0.0-alpha.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.6...v4.0.0-alpha.7)
+
+#### Features
+
+- feat: allow handle to drag sheet without effecting the scrollable ([580b763](https://github.com/gorhom/react-native-bottom-sheet/commit/580b7632e656403b0797c4e969a35d30f0ec5cb3)).
+
+## [v4.0.0-alpha.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.5...v4.0.0-alpha.6) - 2021-05-28
 
 #### Fixes
 
