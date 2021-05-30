@@ -30,13 +30,14 @@ export interface useInteractivePanGestureHandlerConfigs {
   animatedSnapPoints: Animated.SharedValue<number[]>;
   animatedPosition: Animated.SharedValue<number>;
   animatedContainerHeight: Animated.SharedValue<number>;
-  scrollableContentOffsetY?: Animated.SharedValue<number>;
+  scrollableContentOffsetY: Animated.SharedValue<number>;
   animateToPoint: (point: number, velocity: number) => void;
 }
 
 type InteractivePanGestureHandlerContextType = {
   startPosition: number;
   keyboardState: KEYBOARD_STATE;
+  isScrollablePositionLocked: boolean;
 };
 
 export const useInteractivePanGestureHandler = ({
@@ -75,12 +76,11 @@ export const useInteractivePanGestureHandler = ({
       context.startPosition = animatedPosition.value;
       context.keyboardState = keyboardState.value;
 
-      if (
-        keyboardState.value === KEYBOARD_STATE.SHOWN &&
-        (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive ||
-          keyboardBehavior === KEYBOARD_BEHAVIOR.fillParent)
-      ) {
-        isInTemporaryPosition.value = true;
+      /**
+       * if scrollable scrolled
+       */
+      if (scrollableContentOffsetY.value > 0) {
+        context.isScrollablePositionLocked = true;
       }
 
       // set variables
@@ -93,43 +93,83 @@ export const useInteractivePanGestureHandler = ({
       gestureTranslationY.value = translationY;
       gestureVelocityY.value = velocityY;
 
-      const position = context.startPosition + translationY;
-      let maxSnapPoint =
+      let highestSnapPoint =
         animatedSnapPoints.value[animatedSnapPoints.value.length - 1];
       /**
-       * if keyboard is shown, then we set the max point to the current
-       * position.
+       * if keyboard is shown, then we set the highest point to the current
+       * position which includes the keyboard height.
        */
       if (
         isInTemporaryPosition.value &&
         context.keyboardState === KEYBOARD_STATE.SHOWN
       ) {
-        maxSnapPoint = context.startPosition;
+        highestSnapPoint = context.startPosition;
       }
       /**
        * if current position is out of provided `snapPoints` and smaller then
-       * max snap pont, then we set the max point to the current position.
+       * highest snap pont, then we set the highest point to the current position.
        */
-      if (isInTemporaryPosition.value && context.startPosition < maxSnapPoint) {
-        maxSnapPoint = context.startPosition;
+      if (
+        isInTemporaryPosition.value &&
+        context.startPosition < highestSnapPoint
+      ) {
+        highestSnapPoint = context.startPosition;
       }
 
-      const minSnapPoint = enablePanDownToClose
+      const lowestSnapPoint = enablePanDownToClose
         ? animatedContainerHeight.value
         : animatedSnapPoints.value[0];
 
+      /**
+       * a negative scrollable content offset to be subtracted from accumulated
+       * current position and gesture translation Y to allow user to drag the sheet,
+       * when scrollable position at the top.
+       * a negative scrollable content offset when the scrollable is not locked.
+       */
       const negativeScrollableContentOffset =
-        context.startPosition === maxSnapPoint && scrollableContentOffsetY
+        (context.startPosition === highestSnapPoint &&
+          type === GESTURE.CONTENT) ||
+        !context.isScrollablePositionLocked
           ? scrollableContentOffsetY.value * -1
           : 0;
+
+      /**
+       * an accumulated value of starting position with gesture translation y.
+       */
+      const draggedPosition = context.startPosition + translationY;
+
+      /**
+       * an accumulated value of dragged position and negative scrollable content offset,
+       * this will insure locking sheet position when user is scrolling the scrollable until,
+       * they reach to the top of the scrollable.
+       */
+      const accumulatedDraggedPosition =
+        draggedPosition + negativeScrollableContentOffset;
+
+      /**
+       * a clamped value of the accumulated dragged position, to insure keeping the dragged
+       * position between the highest and lowest snap points.
+       */
       const clampedPosition = clamp(
-        position + negativeScrollableContentOffset,
-        maxSnapPoint,
-        minSnapPoint
+        accumulatedDraggedPosition,
+        highestSnapPoint,
+        lowestSnapPoint
       );
 
       /**
-       * dismiss the keyboard when panning down
+       * if scrollable position is locked and the animated position
+       * reaches the highest point, then we unlock the scrollable position.
+       */
+      if (
+        context.isScrollablePositionLocked &&
+        type === GESTURE.CONTENT &&
+        animatedPosition.value === highestSnapPoint
+      ) {
+        context.isScrollablePositionLocked = false;
+      }
+
+      /**
+       * dismiss the keyboard when panning down over the threshold value.
        */
       if (translationY > KEYBOARD_DISMISS_THRESHOLD) {
         if (
@@ -143,31 +183,39 @@ export const useInteractivePanGestureHandler = ({
         }
       }
 
+      /**
+       * over-drag implementation.
+       */
       if (enableOverDrag) {
-        if (type === GESTURE.HANDLE && position <= maxSnapPoint) {
+        if (type === GESTURE.HANDLE && draggedPosition <= highestSnapPoint) {
           const resistedPosition =
-            maxSnapPoint -
-            Math.sqrt(1 + (maxSnapPoint - position)) * overDragResistanceFactor;
+            highestSnapPoint -
+            Math.sqrt(1 + (highestSnapPoint - draggedPosition)) *
+              overDragResistanceFactor;
           animatedPosition.value = resistedPosition;
           return;
         }
 
-        if (type === GESTURE.HANDLE && position > minSnapPoint) {
+        if (type === GESTURE.HANDLE && draggedPosition > lowestSnapPoint) {
           const resistedPosition =
-            minSnapPoint +
-            Math.sqrt(1 + (position - minSnapPoint)) * overDragResistanceFactor;
+            lowestSnapPoint +
+            Math.sqrt(1 + (draggedPosition - lowestSnapPoint)) *
+              overDragResistanceFactor;
           animatedPosition.value = resistedPosition;
           return;
         }
 
         if (
           type === GESTURE.CONTENT &&
-          position + negativeScrollableContentOffset > minSnapPoint
+          draggedPosition + negativeScrollableContentOffset > lowestSnapPoint
         ) {
           const resistedPosition =
-            minSnapPoint +
+            lowestSnapPoint +
             Math.sqrt(
-              1 + (position + negativeScrollableContentOffset - minSnapPoint)
+              1 +
+                (draggedPosition +
+                  negativeScrollableContentOffset -
+                  lowestSnapPoint)
             ) *
               overDragResistanceFactor;
           animatedPosition.value = resistedPosition;
@@ -205,15 +253,25 @@ export const useInteractivePanGestureHandler = ({
         runOnJS(Keyboard.dismiss)();
       }
 
+      /**
+       * reset isInTemporaryPosition value
+       */
       if (isInTemporaryPosition.value) {
         isInTemporaryPosition.value = false;
       }
 
+      /**
+       * clone snap points array, and insert the container height
+       * if pan down to close is enabled.
+       */
       const snapPoints = animatedSnapPoints.value.slice();
       if (enablePanDownToClose) {
         snapPoints.unshift(animatedContainerHeight.value);
       }
 
+      /**
+       * calculate the destination point, using redash.
+       */
       const destinationPoint = snapPoint(
         gestureTranslationY.value + context.startPosition,
         gestureVelocityY.value,
@@ -228,12 +286,29 @@ export const useInteractivePanGestureHandler = ({
         return;
       }
 
+      let highestSnapPoint =
+        animatedSnapPoints.value[animatedSnapPoints.value.length - 1];
+
+      /**
+       * if gesture was picked by scrollable and did not move the sheet,
+       * then exit the method to prevent snapping.
+       */
       if (
-        (scrollableContentOffsetY ? scrollableContentOffsetY.value : 0) > 0 &&
-        context.startPosition ===
-          animatedSnapPoints.value[animatedSnapPoints.value.length - 1] &&
-        animatedPosition.value ===
-          animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
+        (type === GESTURE.CONTENT ? scrollableContentOffsetY.value : 0) > 0 &&
+        context.startPosition === highestSnapPoint &&
+        animatedPosition.value === highestSnapPoint
+      ) {
+        return;
+      }
+
+      /**
+       * if gesture started by scrollable dragging the sheet than continue scrolling,
+       * then exit the method to prevent snapping.
+       */
+      if (
+        type === GESTURE.CONTENT &&
+        scrollableContentOffsetY.value > 0 &&
+        animatedPosition.value === highestSnapPoint
       ) {
         return;
       }

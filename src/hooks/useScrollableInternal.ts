@@ -14,7 +14,13 @@ import {
   ANIMATION_STATE,
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATE,
+  SHEET_STATE,
 } from '../constants';
+
+type HandleScrollEventContextType = {
+  initialContentOffsetY: number;
+  shouldLockInitialPosition: boolean;
+};
 
 export const useScrollableInternal = () => {
   // refs
@@ -23,6 +29,7 @@ export const useScrollableInternal = () => {
 
   // hooks
   const {
+    animatedSheetState,
     animatedScrollableState,
     animatedAnimationState,
     scrollableContentOffsetY: _rootScrollableContentOffsetY,
@@ -37,49 +44,81 @@ export const useScrollableInternal = () => {
   }));
 
   // callbacks
-  const handleScrollEvent = useAnimatedScrollHandler({
-    onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
-        scrollableContentOffsetY.value = 0;
-        _rootScrollableContentOffsetY.value = 0;
-        return;
-      }
-      scrollableContentOffsetY.value = y;
-      _rootScrollableContentOffsetY.value = y;
-    },
-    onScroll: () => {
-      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
-        // @ts-ignore
-        scrollTo(scrollableRef, 0, 0, false);
-        scrollableContentOffsetY.value = 0;
-        return;
-      }
-    },
-    onEndDrag: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
-        // @ts-ignore
-        scrollTo(scrollableRef, 0, 0, false);
-        scrollableContentOffsetY.value = 0;
-        return;
-      }
-      if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
+  const handleScrollEvent =
+    useAnimatedScrollHandler<HandleScrollEventContextType>({
+      onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent, context) => {
         scrollableContentOffsetY.value = y;
         _rootScrollableContentOffsetY.value = y;
-      }
-    },
-    onMomentumEnd: ({ contentOffset: { y } }: NativeScrollEvent) => {
-      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
-        // @ts-ignore
-        scrollTo(scrollableRef, 0, 0, false);
-        scrollableContentOffsetY.value = 0;
-        return;
-      }
-      if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
-        scrollableContentOffsetY.value = y;
-        _rootScrollableContentOffsetY.value = y;
-      }
-    },
-  });
+        context.initialContentOffsetY = y;
+
+        /**
+         * if sheet position not extended or fill parent and the scrollable position
+         * not at the top, then we should lock the initial scrollable position.
+         */
+        if (
+          animatedSheetState.value !== SHEET_STATE.EXTENDED &&
+          animatedSheetState.value !== SHEET_STATE.FILL_PARENT &&
+          y > 0
+        ) {
+          context.shouldLockInitialPosition = true;
+        } else {
+          context.shouldLockInitialPosition = false;
+        }
+      },
+      onScroll: (_, context) => {
+        /**
+         * if sheet position is extended or fill parent, then we reset
+         * `shouldLockInitialPosition` value to false.
+         */
+        if (
+          animatedSheetState.value === SHEET_STATE.EXTENDED ||
+          animatedSheetState.value === SHEET_STATE.FILL_PARENT
+        ) {
+          context.shouldLockInitialPosition = false;
+        }
+
+        if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
+          const lockPosition = context.shouldLockInitialPosition
+            ? context.initialContentOffsetY ?? 0
+            : 0;
+          // @ts-ignore
+          scrollTo(scrollableRef, 0, lockPosition, false);
+          scrollableContentOffsetY.value = lockPosition;
+          return;
+        }
+      },
+      onEndDrag: ({ contentOffset: { y } }: NativeScrollEvent, context) => {
+        if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
+          const lockPosition = context.shouldLockInitialPosition
+            ? context.initialContentOffsetY ?? 0
+            : 0;
+          // @ts-ignore
+          scrollTo(scrollableRef, 0, lockPosition, false);
+          scrollableContentOffsetY.value = lockPosition;
+          return;
+        }
+        if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
+          scrollableContentOffsetY.value = y;
+          _rootScrollableContentOffsetY.value = y;
+        }
+      },
+      onMomentumEnd: ({ contentOffset: { y } }: NativeScrollEvent, context) => {
+        if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
+          const lockPosition = context.shouldLockInitialPosition
+            ? context.initialContentOffsetY ?? 0
+            : 0;
+          // @ts-ignore
+          scrollTo(scrollableRef, 0, lockPosition, false);
+          scrollableContentOffsetY.value = lockPosition;
+          scrollableContentOffsetY.value = 0;
+          return;
+        }
+        if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
+          scrollableContentOffsetY.value = y;
+          _rootScrollableContentOffsetY.value = y;
+        }
+      },
+    });
   const handleSettingScrollable = useCallback(() => {
     // set current content offset
     runOnUI(() => {

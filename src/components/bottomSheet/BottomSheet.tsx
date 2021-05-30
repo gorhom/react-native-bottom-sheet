@@ -173,11 +173,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       bottomInset,
       $modal
     );
-    const animatedLastSnapPoint = useDerivedValue(
+    const animatedHighestSnapPoint = useDerivedValue(
       () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
     );
     const animatedSheetHeight = useDerivedValue(
-      () => animatedContainerHeight.value - animatedLastSnapPoint.value
+      () => animatedContainerHeight.value - animatedHighestSnapPoint.value
     );
     const animatedCurrentIndex = useReactiveSharedValue(
       animateOnMount ? -1 : _providedIndex
@@ -567,7 +567,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         overDragResistanceFactor,
         keyboardState,
         keyboardHeight,
-        keyboardBehavior: keyboardBehavior,
+        keyboardBehavior,
         animatedPosition,
         animatedSnapPoints,
         animatedContainerHeight,
@@ -588,6 +588,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedSnapPoints,
         animatedContainerHeight,
         isInTemporaryPosition,
+        scrollableContentOffsetY,
         animateToPoint: animateToPosition,
       });
     //#endregion
@@ -1218,20 +1219,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           </Animated.View>
           {/* <BottomSheetDebugView
             values={{
-              topInset,
-              bottomInset,
+              // topInset,
+              // bottomInset,
               animatedSheetState,
               animatedScrollableState,
-              keyboardState,
-              animatedIndex,
-              animatedCurrentIndex,
-              animatedPosition,
-              animatedContainerHeight,
-              animatedSheetHeight,
-              animatedHandleHeight,
-              animatedContentHeight,
-              keyboardHeight,
-              isLayoutCalculated,
+              scrollableContentOffsetY,
+              // keyboardState,
+              // animatedIndex,
+              // animatedCurrentIndex,
+              // animatedPosition,
+              // animatedContainerHeight,
+              // animatedSheetHeight,
+              // animatedHandleHeight,
+              // animatedContentHeight,
+              // keyboardHeight,
+              // isLayoutCalculated,
               isInTemporaryPosition,
             }}
           /> */}
