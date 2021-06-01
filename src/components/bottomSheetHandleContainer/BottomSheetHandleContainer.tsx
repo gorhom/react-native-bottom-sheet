@@ -44,11 +44,6 @@ function BottomSheetHandleContainerComponent({
 
     return refs;
   }, [_providedSimultaneousHandlers, _internalSimultaneousHandlers]);
-
-  const shouldRenderHandle = useMemo(
-    () => _providedHandleComponent !== null,
-    [_providedHandleComponent]
-  );
   //#endregion
 
   //#region callbacks
@@ -96,6 +91,7 @@ function BottomSheetHandleContainerComponent({
     );
   }, [animatedIndex, animatedPosition, _providedHandleComponent]);
 
+  const shouldRenderHandle = _providedHandleComponent !== null;
   return shouldRenderHandle ? (
     <PanGestureHandler
       enabled={enableHandlePanningGesture}

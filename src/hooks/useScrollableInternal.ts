@@ -109,7 +109,6 @@ export const useScrollableInternal = () => {
             : 0;
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
-          scrollableContentOffsetY.value = lockPosition;
           scrollableContentOffsetY.value = 0;
           return;
         }
