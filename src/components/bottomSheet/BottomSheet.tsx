@@ -338,6 +338,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedContentHeight = useDerivedValue(() => {
       const contentHeight =
         animatedSheetHeight.value - animatedHandleHeight.value;
+
+      /**
+       * before the container is measured, `contentHeight` value will be below zero,
+       * which will lead to freeze the scrollable on Android.
+       *
+       * @link (https://github.com/gorhom/react-native-bottom-sheet/issues/470)
+       */
+      if (contentHeight <= 0) {
+        return 0;
+      }
       const keyboardHeightInContainer = getKeyboardHeightInContainer();
 
       if (
