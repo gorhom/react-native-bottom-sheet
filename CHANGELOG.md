@@ -1,6 +1,19 @@
 # Changelog
 
-## [v4.0.0-alpha.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.6...v4.0.0-alpha.7)
+## [v4.0.0-alpha.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.7...v4.0.0-alpha.8)
+
+#### Improvements
+
+- chore: minor refactor ([`#473`](https://github.com/gorhom/react-native-bottom-sheet/pull/473)).
+- chore: minor simplifications ([`#467`](https://github.com/gorhom/react-native-bottom-sheet/pull/467)).
+
+#### Fixes
+
+- fix: updated typings for sectionlist to mirror rn core types ([`#475`](https://github.com/gorhom/react-native-bottom-sheet/pull/475)).
+- fix: prevent animated content height value from getting below zero ([d9b417f](https://github.com/gorhom/react-native-bottom-sheet/commit/d9b417f703ceb69a959b0ce59600e53d75560d1e)).
+- fix: updated BottomSheetContainer measuring on android ([d0e5227](https://github.com/gorhom/react-native-bottom-sheet/commit/d0e52270076617242010b08f73fe09ab8ede69d1)).
+
+## [v4.0.0-alpha.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.6...v4.0.0-alpha.7) - 2021-05-30
 
 #### Features
 
