@@ -170,8 +170,8 @@ export interface BottomSheetScrollViewMethods {
 //#endregion
 
 //#region SectionList
-type BottomSheetSectionListProps<T> = Omit<
-  Animated.AnimateProps<SectionListProps<T>>,
+type BottomSheetSectionListProps<ItemT, SectionT> = Omit<
+  Animated.AnimateProps<SectionListProps<ItemT, SectionT>>,
   'decelerationRate' | 'onScrollBeginDrag' | 'scrollEventThrottle'
 > &
   BottomSheetScrollableProps & {

@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import {
+  DefaultSectionT,
   SectionList as RNSectionList,
   SectionListProps as RNSectionListProps,
 } from 'react-native';
@@ -16,12 +17,12 @@ const AnimatedSectionList =
 const BottomSheetSectionListComponent =
   createBottomSheetScrollableComponent<
     BottomSheetSectionListMethods,
-    BottomSheetSectionListProps<any>
+    BottomSheetSectionListProps<any, DefaultSectionT>
   >(AnimatedSectionList);
 
 const BottomSheetSectionList = memo(BottomSheetSectionListComponent);
 BottomSheetSectionList.displayName = 'BottomSheetSectionList';
 
-export default BottomSheetSectionList as <T>(
-  props: BottomSheetSectionListProps<T>
+export default BottomSheetSectionList as <ItemT, SectionT = DefaultSectionT>(
+  props: BottomSheetSectionListProps<ItemT, SectionT>
 ) => ReturnType<typeof BottomSheetSectionList>;
