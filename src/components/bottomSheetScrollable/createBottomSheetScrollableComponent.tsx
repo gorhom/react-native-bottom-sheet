@@ -74,7 +74,7 @@ export function createBottomSheetScrollableComponent<T, P>(
             ref={scrollableRef}
             overScrollMode={overScrollMode}
             scrollEventThrottle={16}
-            onScrollBeginDrag={handleScrollEvent}
+            onScroll={handleScrollEvent}
             animatedProps={scrollableAnimatedProps}
             style={containerStyle}
           />

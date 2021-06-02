@@ -11,9 +11,8 @@ import withModalProvider from '../withModalProvider';
 
 const BackdropExample = () => {
   // state
-  const [backdropPressBehavior, setBackdropPressBehavior] = useState<
-    'none' | 'close' | 'collapse'
-  >('collapse');
+  const [backdropPressBehavior, setBackdropPressBehavior] =
+    useState<'none' | 'close' | 'collapse'>('collapse');
   // refs
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
