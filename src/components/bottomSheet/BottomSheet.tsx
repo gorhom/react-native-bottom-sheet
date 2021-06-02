@@ -45,6 +45,7 @@ import {
   SHEET_STATE,
   SCROLLABLE_STATE,
   KEYBOARD_BLUR_BEHAVIOR,
+  KEYBOARD_INPUT_MODE,
 } from '../../constants';
 import {
   animate,
@@ -68,6 +69,7 @@ import {
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   INITIAL_CONTAINER_OFFSET,
   DEFAULT_ANIMATION_CONFIGS,
+  DEFAULT_KEYBOARD_INPUT_MODE,
 } from './constants';
 import { ScrollableRef, BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -105,6 +107,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // keyboard
       keyboardBehavior = DEFAULT_KEYBOARD_BEHAVIOR,
       keyboardBlurBehavior = DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
+      android_keyboardInputMode = DEFAULT_KEYBOARD_INPUT_MODE,
 
       // layout
       handleHeight: _providedHandleHeight,
@@ -253,6 +256,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     } = useKeyboard();
     const getKeyboardHeightInContainer = useWorkletCallback(() => {
       'worklet';
+      /**
+       * if android software input mode is not `adjustPan`, than keyboard
+       * height will be 0 all the time.
+       */
+      if (android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize) {
+        return 0;
+      }
       return $modal
         ? keyboardHeight.value -
             Math.abs(bottomInset - animatedContainerOffset.value.bottom)

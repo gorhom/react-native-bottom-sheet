@@ -2,6 +2,7 @@ import Animated, { Easing } from 'react-native-reanimated';
 import {
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
+  KEYBOARD_INPUT_MODE,
   WINDOW_HEIGHT,
 } from '../../constants';
 import { exp } from '../../utilities/easingExp';
@@ -28,6 +29,7 @@ const DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE = false;
 const DEFAULT_ANIMATE_ON_MOUNT = false;
 const DEFAULT_KEYBOARD_BEHAVIOR = KEYBOARD_BEHAVIOR.none;
 const DEFAULT_KEYBOARD_BLUR_BEHAVIOR = KEYBOARD_BLUR_BEHAVIOR.none;
+const DEFAULT_KEYBOARD_INPUT_MODE = KEYBOARD_INPUT_MODE.adjustPan;
 
 // initial values
 const INITIAL_SNAP_POINT = -999;
@@ -55,6 +57,7 @@ export {
   DEFAULT_ANIMATE_ON_MOUNT,
   DEFAULT_KEYBOARD_BEHAVIOR,
   DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
+  DEFAULT_KEYBOARD_INPUT_MODE,
   // initial
   INITIAL_POSITION,
   INITIAL_CONTAINER_HEIGHT,
