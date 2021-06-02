@@ -14,9 +14,10 @@ const ContactListContainerComponent = ({
   headerStyle: _headerStyle,
   onItemPress,
 }: ContactListContainerProps) => {
-  const headerStyle = useMemo(() => [styles.headerContainer, _headerStyle], [
-    _headerStyle,
-  ]);
+  const headerStyle = useMemo(
+    () => [styles.headerContainer, _headerStyle],
+    [_headerStyle]
+  );
   return (
     <>
       <View style={headerStyle}>
