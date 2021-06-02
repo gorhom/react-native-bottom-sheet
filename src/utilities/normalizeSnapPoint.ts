@@ -16,5 +16,5 @@ export const normalizeSnapPoint = (
     normalizedSnapPoint =
       (Number(normalizedSnapPoint.split('%')[0]) * containerHeight) / 100;
   }
-  return Math.round(Math.max(0, containerHeight - normalizedSnapPoint));
+  return Math.max(0, containerHeight - normalizedSnapPoint);
 };
