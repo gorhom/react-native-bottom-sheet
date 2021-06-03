@@ -1,6 +1,16 @@
 # Changelog
 
-## [v4.0.0-alpha.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.7...v4.0.0-alpha.8)
+## [v4.0.0-alpha.9](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.8...v4.0.0-alpha.9)
+
+#### Features
+
+- feat: added keyboard input mode for android ([069c4b6](https://github.com/gorhom/react-native-bottom-sheet/commit/069c4b6742630dc5fa7d4763a5c4dc6bfec439cc)).
+
+#### Improvements
+
+- chore: export useBottomSheetInternal, added animatedPosition and animatedIndex to useBottomSheet ([fb3df59](https://github.com/gorhom/react-native-bottom-sheet/commit/fb3df595c0bf5bcc63ca29e8e2609929de63e595)).
+
+## [v4.0.0-alpha.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.7...v4.0.0-alpha.8) - 2021-06-02
 
 #### Improvements
 
