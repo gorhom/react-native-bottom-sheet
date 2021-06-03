@@ -1,14 +1,3 @@
-import type Animated from 'react-native-reanimated';
+import type { BottomSheetVariables } from '../../types';
 
-export interface BottomSheetHandleProps {
-  /**
-   * Current sheet position index.
-   * @type Animated.Value<number>
-   */
-  animatedIndex: Animated.SharedValue<number>;
-  /**
-   * Current sheet position.
-   * @type Animated.Value<number>
-   */
-  animatedPosition: Animated.SharedValue<number>;
-}
+export interface BottomSheetHandleProps extends BottomSheetVariables {}

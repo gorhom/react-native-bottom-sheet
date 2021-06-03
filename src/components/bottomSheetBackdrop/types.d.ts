@@ -1,18 +1,9 @@
 import type { ViewProps } from 'react-native';
-import type Animated from 'react-native-reanimated';
+import type { BottomSheetVariables } from '../../types';
 
-export interface BottomSheetBackdropProps extends Pick<ViewProps, 'style'> {
-  /**
-   * Current sheet position index.
-   * @type Animated.SharedValue<number>
-   */
-  animatedIndex: Animated.SharedValue<number>;
-  /**
-   * Current sheet position.
-   * @type Animated.SharedValue<number>
-   */
-  animatedPosition: Animated.SharedValue<number>;
-}
+export interface BottomSheetBackdropProps
+  extends Pick<ViewProps, 'style'>,
+    BottomSheetVariables {}
 
 export type BackdropPressBehavior = 'none' | 'close' | 'collapse' | number;
 

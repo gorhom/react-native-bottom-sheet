@@ -77,6 +77,19 @@ export interface BottomSheetModalMethods extends BottomSheetMethods {
 }
 //#endregion
 
+export interface BottomSheetVariables {
+  /**
+   * Current sheet position index.
+   * @type Animated.Value<number>
+   */
+  animatedIndex: Animated.SharedValue<number>;
+  /**
+   * Current sheet position.
+   * @type Animated.Value<number>
+   */
+  animatedPosition: Animated.SharedValue<number>;
+}
+
 //#region scrollables
 export type Scrollable = FlatList | ScrollView | SectionList;
 

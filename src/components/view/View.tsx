@@ -3,7 +3,6 @@ import { View as RNView } from 'react-native';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetViewProps } from './types';
 import { styles } from './styles';
-import { runOnUI } from 'react-native-reanimated';
 
 const BottomSheetViewComponent = ({
   style,
@@ -26,9 +25,7 @@ const BottomSheetViewComponent = ({
 
   // callback
   const handleSettingScrollable = useCallback(() => {
-    runOnUI(() => {
-      scrollableContentOffsetY.value = 0;
-    })();
+    scrollableContentOffsetY.value = 0;
   }, [scrollableContentOffsetY]);
 
   // effects

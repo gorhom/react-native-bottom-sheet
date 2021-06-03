@@ -10,6 +10,7 @@ export { useBottomSheet } from './hooks/useBottomSheet';
 export { useBottomSheetModal } from './hooks/useBottomSheetModal';
 export { useBottomSheetSpringConfigs } from './hooks/useBottomSheetSpringConfigs';
 export { useBottomSheetTimingConfigs } from './hooks/useBottomSheetTimingConfigs';
+export { useBottomSheetInternal } from './hooks/useBottomSheetInternal';
 //#endregion
 
 //#region components

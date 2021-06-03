@@ -1,4 +1,3 @@
-import type { ComponentProps } from 'react';
-import type { TextInput } from 'react-native-gesture-handler';
+import type { TextInputProps } from 'react-native';
 
-export interface BottomSheetTextInputProps extends ComponentProps<TextInput> {}
+export interface BottomSheetTextInputProps extends TextInputProps {}

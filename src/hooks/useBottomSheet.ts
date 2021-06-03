@@ -5,7 +5,7 @@ export const useBottomSheet = () => {
   const context = useContext(BottomSheetContext);
 
   if (context === null) {
-    throw "'BottomSheetContext' cannot be null!";
+    throw "'useBottomSheet' cannot be used out of the BottomSheet!";
   }
 
   return context;
