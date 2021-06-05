@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
+import { LayoutChangeEvent, StatusBar, View } from 'react-native';
 import { WINDOW_HEIGHT } from '../../constants';
 import { print } from '../../utilities';
 import { styles } from './styles';
@@ -44,7 +44,10 @@ function BottomSheetContainerComponent({
             top: pageY,
             left: 0,
             right: 0,
-            bottom: Math.max(0, WINDOW_HEIGHT - (pageY + height)),
+            bottom: Math.max(
+              0,
+              WINDOW_HEIGHT - (pageY + height + (StatusBar.currentHeight ?? 0))
+            ),
           };
         }
       );

@@ -5,6 +5,7 @@ import React, {
   useImperativeHandle,
   memo,
 } from 'react';
+import { Keyboard, Platform } from 'react-native';
 import invariant from 'invariant';
 import Animated, {
   useAnimatedReaction,
@@ -472,11 +473,25 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           isSheetClosing.value = false;
         }
 
+        if (
+          Platform.OS === 'android' &&
+          isInTemporaryPosition.value === false &&
+          keyboardState.value === KEYBOARD_STATE.SHOWN
+        ) {
+          Keyboard.dismiss();
+        }
+
         if (_providedOnChange) {
           _providedOnChange(index);
         }
       },
-      [_providedOnChange, animatedCurrentIndex, isSheetClosing]
+      [
+        animatedCurrentIndex,
+        keyboardState,
+        isInTemporaryPosition,
+        isSheetClosing,
+        _providedOnChange,
+      ]
     );
     const handleOnAnimate = useCallback(
       (toPoint: number) => {
@@ -646,10 +661,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        isInTemporaryPosition.value = false;
         const newSnapPoint = snapPoints[index];
         runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
+        isInTemporaryPosition,
         isSheetClosing,
         animateToPosition,
         animatedSnapPoints,
@@ -728,6 +745,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         isSheetClosing.value = true;
+        isInTemporaryPosition.value = false;
         runOnUI(animateToPosition)(
           animatedContainerHeight.value,
           0,
@@ -736,6 +754,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [
         isSheetClosing,
+        isInTemporaryPosition,
         animateToPosition,
         animatedContainerHeight,
         animatedPosition,
@@ -761,11 +780,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        isInTemporaryPosition.value = false;
         const snapPoints = animatedSnapPoints.value;
         const newSnapPoint = snapPoints[snapPoints.length - 1];
         runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
+        isInTemporaryPosition,
         isSheetClosing,
         animateToPosition,
         animatedSnapPoints,
@@ -793,12 +814,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        isInTemporaryPosition.value = false;
         const snapPoints = animatedSnapPoints.value;
         const newSnapPoint = snapPoints[0];
         runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
       },
       [
         isSheetClosing,
+        isInTemporaryPosition,
         animateToPosition,
         animatedSnapPoints,
         animatedContainerHeight,
