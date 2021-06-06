@@ -1,6 +1,17 @@
 # Changelog
 
-## [v4.0.0-alpha.9](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.8...v4.0.0-alpha.9)
+## [v4.0.0-alpha.10](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.9...v4.0.0-alpha.10)
+
+#### Features
+
+- feat: added pull to refresh implementaion ([016a01f](https://github.com/gorhom/react-native-bottom-sheet/commit/016a01f3705c83c9903a3e28c875e7b90424a128)).
+- feat: introduced more stable handling for dynamic snap points ([3edb2d1](https://github.com/gorhom/react-native-bottom-sheet/commit/3edb2d1f9a9a8b1ba2e04803cd12306e4353199b)).
+
+#### Fixes
+
+- fix: dismiss keyboard when sheet position change on Android ([8f34990](https://github.com/gorhom/react-native-bottom-sheet/commit/8f34990436f8cc8c1ec1c545488d77db5845166c)).
+
+## [v4.0.0-alpha.9](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) - 2021-06-03
 
 #### Features
 
