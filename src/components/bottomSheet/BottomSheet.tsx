@@ -39,7 +39,7 @@ import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import {
-  GESTURE,
+  GESTURE_SOURCE,
   ANIMATION_STATE,
   KEYBOARD_STATE,
   KEYBOARD_BEHAVIOR,
@@ -242,6 +242,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region hooks variables
     // scrollable variables
     const {
+      isScrollableRefreshable,
       scrollableContentOffsetY,
       setScrollableRef,
       removeScrollableRef,
@@ -596,7 +597,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region gesture interaction hooks
     const [contentPanGestureHandler, contentPanGestureState] =
       useInteractivePanGestureHandler({
-        type: GESTURE.CONTENT,
+        type: GESTURE_SOURCE.SCROLLABLE,
         enableOverDrag,
         enablePanDownToClose,
         overDragResistanceFactor,
@@ -607,12 +608,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedSnapPoints,
         animatedContainerHeight,
         isInTemporaryPosition,
+        isScrollableRefreshable,
         scrollableContentOffsetY,
         animateToPoint: animateToPosition,
       });
     const [handlePanGestureHandler, handlePanGestureState] =
       useInteractivePanGestureHandler({
-        type: GESTURE.HANDLE,
+        type: GESTURE_SOURCE.HANDLE,
         enableOverDrag,
         enablePanDownToClose,
         overDragResistanceFactor,
@@ -623,6 +625,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedSnapPoints,
         animatedContainerHeight,
         isInTemporaryPosition,
+        isScrollableRefreshable,
         scrollableContentOffsetY,
         animateToPoint: animateToPosition,
       });
@@ -855,6 +858,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedContainerHeight,
         scrollableContentOffsetY,
         isInTemporaryPosition,
+        isScrollableRefreshable,
         shouldHandleKeyboardEvents,
         simultaneousHandlers: _providedSimultaneousHandlers,
         waitFor: _providedWaitFor,
@@ -885,6 +889,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         shouldHandleKeyboardEvents,
         animatedScrollableState,
         scrollableContentOffsetY,
+        isScrollableRefreshable,
         isInTemporaryPosition,
         enableContentPanningGesture,
         _providedSimultaneousHandlers,
@@ -1270,6 +1275,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               // bottomInset,
               animatedSheetState,
               animatedScrollableState,
+              isScrollableRefreshable,
               scrollableContentOffsetY,
               // keyboardState,
               // animatedIndex,

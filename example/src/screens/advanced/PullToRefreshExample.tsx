@@ -1,20 +1,21 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import CustomHandle from '../../components/customHandle';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
+import HeaderHandle from '../../components/headerHandle/HeaderHandle';
 
-const CustomHandleExample = () => {
+const PullToRefreshExample = () => {
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => [150, 300, 450], []);
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
-  const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapToIndex(index);
+  const handleRefresh = useCallback(() => {
+    // eslint-disable-next-line no-console
+    console.log('handleRefresh');
   }, []);
   const handleExpandPress = useCallback(() => {
     bottomSheetRef.current?.expand();
@@ -27,24 +28,21 @@ const CustomHandleExample = () => {
   }, []);
 
   // renders
-  const renderCustomHandle = useCallback(
-    props => <CustomHandle title="Custom Handle Example" {...props} />,
+  const renderHeaderHandle = useCallback(
+    props => <HeaderHandle {...props} children="Pull To Refresh Example" />,
     []
   );
   return (
     <View style={styles.container}>
-      <Button label="Snap To 450" onPress={() => handleSnapPress(2)} />
-      <Button label="Snap To 300" onPress={() => handleSnapPress(1)} />
-      <Button label="Snap To 150" onPress={() => handleSnapPress(0)} />
       <Button label="Expand" onPress={handleExpandPress} />
       <Button label="Collapse" onPress={handleCollapsePress} />
       <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        handleComponent={renderCustomHandle}
+        handleComponent={renderHeaderHandle}
       >
-        <ContactList count={10} type="FlatList" />
+        <ContactList type="FlatList" count={15} onRefresh={handleRefresh} />
       </BottomSheet>
     </View>
   );
@@ -57,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomHandleExample;
+export default PullToRefreshExample;

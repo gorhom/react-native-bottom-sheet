@@ -2,7 +2,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
-import ContactListContainer from '../../components/contactListContainer';
+import ContactList from '../../components/contactList';
+import HeaderHandle from '../../components/headerHandle';
 import withModalProvider from '../withModalProvider';
 
 const SimpleExample = () => {
@@ -50,6 +51,10 @@ const SimpleExample = () => {
   //#endregion
 
   // renders
+  const renderHeaderHandle = useCallback(
+    props => <HeaderHandle {...props} children="Modal Example" />,
+    []
+  );
   return (
     <View style={styles.container}>
       <Button label="Present Modal" onPress={handlePresentPress} />
@@ -72,13 +77,13 @@ const SimpleExample = () => {
       <BottomSheetModal
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        animationDuration={250}
         enablePanDownToClose={enablePanDownToClose}
         enableDismissOnClose={enableDismissOnClose}
         onDismiss={handleDismiss}
         onChange={handleChange}
+        handleComponent={renderHeaderHandle}
       >
-        <ContactListContainer title="Modal FlatList" count={3} type="View" />
+        <ContactList count={4} type="View" />
       </BottomSheetModal>
     </View>
   );

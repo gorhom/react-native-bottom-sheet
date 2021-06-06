@@ -20,6 +20,7 @@ export {
   BottomSheetFlatList,
   BottomSheetVirtualizedList,
 } from './components/bottomSheetScrollable';
+export { default as BottomSheetHandle } from './components/bottomSheetHandle';
 export { default as BottomSheetDraggableView } from './components/bottomSheetDraggableView';
 export { default as BottomSheetView } from './components/view';
 export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';

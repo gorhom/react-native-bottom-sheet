@@ -6,7 +6,8 @@ import {
   BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
-import ContactListContainer from '../../components/contactListContainer';
+import ContactList from '../../components/contactList';
+import HeaderHandle from '../../components/headerHandle';
 import withModalProvider from '../withModalProvider';
 
 const BackdropExample = () => {
@@ -56,6 +57,11 @@ const BackdropExample = () => {
     ),
     [backdropPressBehavior]
   );
+
+  const renderHeaderHandle = useCallback(
+    props => <HeaderHandle {...props} children="Modal With Backdrop Example" />,
+    []
+  );
   return (
     <View style={styles.container}>
       <Button label="Present Modal" onPress={handlePresentPress} />
@@ -70,9 +76,10 @@ const BackdropExample = () => {
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         onDismiss={handleDismiss}
+        handleComponent={renderHeaderHandle}
         backdropComponent={renderBackdrop}
       >
-        <ContactListContainer title="Modal View" type="View" />
+        <ContactList type="View" count={5} />
       </BottomSheetModal>
     </View>
   );

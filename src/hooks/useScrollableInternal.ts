@@ -5,7 +5,6 @@ import {
   useAnimatedScrollHandler,
   useSharedValue,
   scrollTo,
-  runOnUI,
   useAnimatedProps,
 } from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
@@ -22,7 +21,7 @@ type HandleScrollEventContextType = {
   shouldLockInitialPosition: boolean;
 };
 
-export const useScrollableInternal = () => {
+export const useScrollableInternal = (refreshable: boolean) => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
   const scrollableContentOffsetY = useSharedValue<number>(0);
@@ -32,7 +31,8 @@ export const useScrollableInternal = () => {
     animatedSheetState,
     animatedScrollableState,
     animatedAnimationState,
-    scrollableContentOffsetY: _rootScrollableContentOffsetY,
+    scrollableContentOffsetY: rootScrollableContentOffsetY,
+    isScrollableRefreshable,
     setScrollableRef,
     removeScrollableRef,
   } = useBottomSheetInternal();
@@ -48,7 +48,7 @@ export const useScrollableInternal = () => {
     useAnimatedScrollHandler<HandleScrollEventContextType>({
       onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent, context) => {
         scrollableContentOffsetY.value = y;
-        _rootScrollableContentOffsetY.value = y;
+        rootScrollableContentOffsetY.value = y;
         context.initialContentOffsetY = y;
 
         /**
@@ -99,7 +99,7 @@ export const useScrollableInternal = () => {
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
-          _rootScrollableContentOffsetY.value = y;
+          rootScrollableContentOffsetY.value = y;
         }
       },
       onMomentumEnd: ({ contentOffset: { y } }: NativeScrollEvent, context) => {
@@ -114,15 +114,14 @@ export const useScrollableInternal = () => {
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
-          _rootScrollableContentOffsetY.value = y;
+          rootScrollableContentOffsetY.value = y;
         }
       },
     });
   const handleSettingScrollable = useCallback(() => {
     // set current content offset
-    runOnUI(() => {
-      _rootScrollableContentOffsetY.value = scrollableContentOffsetY.value;
-    })();
+    rootScrollableContentOffsetY.value = scrollableContentOffsetY.value;
+    isScrollableRefreshable.value = refreshable;
 
     // set current scrollable ref
     const id = findNodeHandle(scrollableRef.current);
@@ -140,11 +139,13 @@ export const useScrollableInternal = () => {
       removeScrollableRef(scrollableRef);
     };
   }, [
-    _rootScrollableContentOffsetY,
-    removeScrollableRef,
+    refreshable,
+    isScrollableRefreshable,
+    rootScrollableContentOffsetY,
     scrollableContentOffsetY,
     scrollableRef,
     setScrollableRef,
+    removeScrollableRef,
   ]);
 
   return {

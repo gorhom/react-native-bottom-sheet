@@ -93,6 +93,11 @@ export const screens = [
         getScreen: () => require('./advanced/ShadowExample').default,
       },
       {
+        name: 'Pull To Refresh',
+        slug: 'Advanced/PullToRefreshExample',
+        getScreen: () => require('./advanced/PullToRefreshExample').default,
+      },
+      {
         name: 'Footer',
         slug: 'Advanced/FooterExample',
         getScreen: () => require('./advanced/FooterExample').default,

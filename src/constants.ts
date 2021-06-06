@@ -2,8 +2,8 @@ import { Dimensions, Platform } from 'react-native';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 
-enum GESTURE {
-  CONTENT = 0,
+enum GESTURE_SOURCE {
+  SCROLLABLE = 0,
   HANDLE,
 }
 
@@ -71,7 +71,7 @@ const KEYBOARD_INPUT_MODE = {
 };
 
 export {
-  GESTURE,
+  GESTURE_SOURCE,
   SHEET_STATE,
   ANIMATION_STATE,
   SCROLLABLE_STATE,

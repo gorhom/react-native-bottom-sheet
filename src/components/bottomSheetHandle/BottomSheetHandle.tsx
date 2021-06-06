@@ -1,12 +1,26 @@
-import React, { memo } from 'react';
-import { View } from 'react-native';
+import React, { memo, useMemo } from 'react';
+import Animated from 'react-native-reanimated';
 import { styles } from './styles';
+import type { BottomSheetDefaultHandleProps } from './types';
 
-const BottomSheetHandleComponent = () => {
+const BottomSheetHandleComponent = ({
+  style,
+  indicatorStyle: _indicatorStyle,
+  children,
+}: BottomSheetDefaultHandleProps) => {
+  // styles
+  const containerStyle = useMemo(() => [styles.container, style], [style]);
+  const indicatorStyle = useMemo(
+    () => [styles.indicator, _indicatorStyle],
+    [_indicatorStyle]
+  );
+
+  // render
   return (
-    <View style={styles.container}>
-      <View style={styles.indicator} />
-    </View>
+    <Animated.View style={containerStyle}>
+      <Animated.View style={indicatorStyle} />
+      {children}
+    </Animated.View>
   );
 };
 

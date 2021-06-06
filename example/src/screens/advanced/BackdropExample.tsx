@@ -2,7 +2,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
-import ContactListContainer from '../../components/contactListContainer';
+import ContactList from '../../components/contactList';
+import HeaderHandle from '../../components/headerHandle';
 
 const BackdropExample = () => {
   // state
@@ -45,6 +46,10 @@ const BackdropExample = () => {
     ),
     [backdropPressBehavior]
   );
+  const renderHeaderHandle = useCallback(
+    props => <HeaderHandle {...props} children="Backdrop Example" />,
+    []
+  );
   return (
     <View style={styles.container}>
       <Button
@@ -58,8 +63,9 @@ const BackdropExample = () => {
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
+        handleComponent={renderHeaderHandle}
       >
-        <ContactListContainer type="View" count={4} title="Backdrop Example" />
+        <ContactList type="FlatList" count={10} />
       </BottomSheet>
     </View>
   );

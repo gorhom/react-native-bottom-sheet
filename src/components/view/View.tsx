@@ -8,20 +8,13 @@ const BottomSheetViewComponent = ({
   style,
   focusHook: useFocusHook = useEffect,
   children,
-  ...reset
+  ...rest
 }: BottomSheetViewProps) => {
   // hooks
   const { scrollableContentOffsetY } = useBottomSheetInternal();
 
   // styles
-  const containerStyle = useMemo(
-    () => ({
-      ...styles.container,
-      // @ts-ignore
-      ...style,
-    }),
-    [style]
-  );
+  const containerStyle = useMemo(() => [styles.container, style], [style]);
 
   // callback
   const handleSettingScrollable = useCallback(() => {
@@ -33,7 +26,7 @@ const BottomSheetViewComponent = ({
 
   //render
   return (
-    <RNView style={containerStyle} {...reset}>
+    <RNView style={containerStyle} {...rest}>
       {children}
     </RNView>
   );

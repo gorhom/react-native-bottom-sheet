@@ -2,7 +2,8 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { BottomSheetModal, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
-import ContactListContainer from '../../components/contactListContainer';
+import ContactList from '../../components/contactList';
+import HeaderHandle from '../../components/headerHandle';
 import withModalProvider from '../withModalProvider';
 
 const StackExample = () => {
@@ -56,14 +57,13 @@ const StackExample = () => {
   }, [dismiss]);
 
   // renders
+  const renderHeaderHandle = useCallback(
+    (title: string) => (props: any) =>
+      <HeaderHandle {...props} children={title} />,
+    []
+  );
   const renderBottomSheetContent = useCallback(
-    (title, onPress) => (
-      <ContactListContainer
-        title={title}
-        type="FlatList"
-        onItemPress={onPress}
-      />
-    ),
+    onPress => <ContactList type="FlatList" onItemPress={onPress} />,
     []
   );
   return (
@@ -81,14 +81,16 @@ const StackExample = () => {
         name="A"
         ref={bottomSheetModalARef}
         snapPoints={snapPoints}
-        children={renderBottomSheetContent('Modal A', handlePresentBPress)}
+        handleComponent={renderHeaderHandle('Modal A')}
+        children={renderBottomSheetContent(handlePresentBPress)}
       />
 
       <BottomSheetModal
         name="B"
         ref={bottomSheetModalBRef}
         snapPoints={snapPoints}
-        children={renderBottomSheetContent('Modal B', handlePresentCPress)}
+        handleComponent={renderHeaderHandle('Modal B')}
+        children={renderBottomSheetContent(handlePresentCPress)}
       />
 
       <BottomSheetModal
@@ -97,7 +99,8 @@ const StackExample = () => {
         index={1}
         snapPoints={snapPoints}
         enablePanDownToClose={false}
-        children={renderBottomSheetContent('Modal C', handleDismissCPress)}
+        handleComponent={renderHeaderHandle('Modal C')}
+        children={renderBottomSheetContent(handleDismissCPress)}
       />
     </View>
   );

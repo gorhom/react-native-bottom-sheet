@@ -1,9 +1,10 @@
 import type { ViewProps as RNViewProps } from 'react-native';
 import type { NativeViewGestureHandler } from 'react-native-gesture-handler';
-import type { GESTURE } from '../../constants';
+import type { GESTURE_SOURCE } from '../../constants';
 
 export type BottomSheetDraggableViewProps = RNViewProps & {
   children: React.ReactNode[] | React.ReactNode;
-  gestureType?: keyof typeof GESTURE;
+  gestureType?: GESTURE_SOURCE;
   nativeGestureRef?: Ref<NativeViewGestureHandler> | null;
+  refreshControlGestureRef?: Ref<NativeViewGestureHandler> | null;
 };

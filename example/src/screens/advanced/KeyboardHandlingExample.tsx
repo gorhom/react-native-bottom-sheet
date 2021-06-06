@@ -1,7 +1,9 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import SearchHandle from '../../components/searchHandle';
+import SearchHandle, {
+  SEARCH_HANDLE_HEIGHT,
+} from '../../components/searchHandle';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
 
@@ -16,7 +18,7 @@ const KeyboardHandlingExample = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => [100, 300], []);
+  const snapPoints = useMemo(() => [SEARCH_HANDLE_HEIGHT, 300], []);
 
   // callbacks
   const handleToggleKeyboardBehavior = useCallback(() => {

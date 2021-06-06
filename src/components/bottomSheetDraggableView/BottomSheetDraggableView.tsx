@@ -7,6 +7,7 @@ import { styles } from './styles';
 
 const BottomSheetDraggableViewComponent = ({
   nativeGestureRef,
+  refreshControlGestureRef,
   style,
   children,
   ...rest
@@ -34,6 +35,10 @@ const BottomSheetDraggableViewComponent = ({
       refs.push(nativeGestureRef);
     }
 
+    if (refreshControlGestureRef) {
+      refs.push(refreshControlGestureRef);
+    }
+
     if (_providedSimultaneousHandlers) {
       if (Array.isArray(_providedSimultaneousHandlers)) {
         refs.push(..._providedSimultaneousHandlers);
@@ -43,7 +48,11 @@ const BottomSheetDraggableViewComponent = ({
     }
 
     return refs;
-  }, [_providedSimultaneousHandlers, nativeGestureRef]);
+  }, [
+    _providedSimultaneousHandlers,
+    nativeGestureRef,
+    refreshControlGestureRef,
+  ]);
 
   // styles
   const containerStyle = useMemo(() => {

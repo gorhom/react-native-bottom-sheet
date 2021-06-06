@@ -66,7 +66,6 @@ const DynamicSnapPointExample = () => {
         index={1}
         snapPoints={snapPoints}
         animateOnMount={true}
-        animationDuration={250}
       >
         <BottomSheetView
           style={contentContainerStyle}

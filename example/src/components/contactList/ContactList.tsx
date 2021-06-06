@@ -20,6 +20,7 @@ export interface ContactListProps {
   count?: number;
   style?: ViewStyle;
   onItemPress?: () => void;
+  onRefresh?: () => void;
 }
 
 const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
@@ -29,6 +30,7 @@ const handleGetCount = (data: any[]) => data.length;
 const ContactList = ({
   type,
   count = 25,
+  onRefresh,
   style,
   onItemPress,
 }: ContactListProps) => {
@@ -97,6 +99,8 @@ const ContactList = ({
     return (
       <BottomSheetFlatList
         data={data}
+        refreshing={false}
+        onRefresh={onRefresh}
         keyExtractor={keyExtractor}
         initialNumToRender={5}
         bounces={true}
@@ -182,7 +186,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     overflow: 'visible',
   },
 });

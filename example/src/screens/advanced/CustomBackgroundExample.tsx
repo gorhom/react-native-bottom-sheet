@@ -3,7 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CustomBackground from '../../components/customBackground';
 import Button from '../../components/button';
-import ContactListContainer from '../../components/contactListContainer';
+import ContactList from '../../components/contactList';
+import HeaderHandle from '../../components/headerHandle';
 
 const CustomBackgroundExample = () => {
   // hooks
@@ -25,6 +26,12 @@ const CustomBackgroundExample = () => {
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
+
+  // render
+  const renderHeaderHandle = useCallback(
+    props => <HeaderHandle {...props} children="Custom Background Example" />,
+    []
+  );
   return (
     <View style={styles.container}>
       <Button label="Snap To 450" onPress={() => handleSnapPress(1)} />
@@ -34,17 +41,12 @@ const CustomBackgroundExample = () => {
       <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
-        index={1}
         snapPoints={snapPoints}
         animateOnMount={true}
+        handleComponent={renderHeaderHandle}
         backgroundComponent={CustomBackground}
       >
-        <ContactListContainer
-          type="View"
-          count={3}
-          title="Custom Background Example"
-          headerStyle={styles.headerContainer}
-        />
+        <ContactList type="View" count={5} />
       </BottomSheet>
     </View>
   );

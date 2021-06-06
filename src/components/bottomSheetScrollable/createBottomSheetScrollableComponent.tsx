@@ -8,8 +8,10 @@ import React, {
 import { useAnimatedStyle } from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
+import BottomSheetRefreshControl from '../bottomSheetRefreshControl';
 import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
 import { styles } from './styles';
+import { Platform } from 'react-native';
 
 export function createBottomSheetScrollableComponent<T, P>(
   ScrollableComponent: any
@@ -20,11 +22,17 @@ export function createBottomSheetScrollableComponent<T, P>(
       focusHook: useFocusHook = useEffect,
       overScrollMode = 'never',
       style,
+      // refresh control
+      refreshing,
+      onRefresh,
+      progressViewOffset,
+      refreshControl,
       ...rest
     }: any = props;
 
     //#region refs
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
+    const refreshControlGestureRef = useRef<NativeViewGestureHandler>(null);
     //#endregion
 
     //#region hooks
@@ -33,7 +41,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       scrollableAnimatedProps,
       handleScrollEvent,
       handleSettingScrollable,
-    } = useScrollableInternal();
+    } = useScrollableInternal(onRefresh !== undefined);
     const { enableContentPanningGesture, animatedFooterHeight } =
       useBottomSheetInternal();
     //#endregion
@@ -58,6 +66,59 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region render
+    if (Platform.OS === 'android') {
+      return (
+        <BottomSheetDraggableView
+          nativeGestureRef={nativeGestureRef}
+          refreshControlGestureRef={refreshControlGestureRef}
+          style={styles.container}
+        >
+          {onRefresh ? (
+            <BottomSheetRefreshControl
+              ref={refreshControlGestureRef}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              progressViewOffset={progressViewOffset}
+              style={styles.container}
+            >
+              <NativeViewGestureHandler
+                ref={nativeGestureRef}
+                enabled={enableContentPanningGesture}
+                shouldCancelWhenOutside={false}
+              >
+                <ScrollableComponent
+                  {...rest}
+                  // @ts-ignore
+                  ref={scrollableRef}
+                  overScrollMode={overScrollMode}
+                  scrollEventThrottle={16}
+                  onScroll={handleScrollEvent}
+                  animatedProps={scrollableAnimatedProps}
+                  style={containerStyle}
+                />
+              </NativeViewGestureHandler>
+            </BottomSheetRefreshControl>
+          ) : (
+            <NativeViewGestureHandler
+              ref={nativeGestureRef}
+              enabled={enableContentPanningGesture}
+              shouldCancelWhenOutside={false}
+            >
+              <ScrollableComponent
+                {...rest}
+                // @ts-ignore
+                ref={scrollableRef}
+                overScrollMode={overScrollMode}
+                scrollEventThrottle={16}
+                onScroll={handleScrollEvent}
+                animatedProps={scrollableAnimatedProps}
+                style={containerStyle}
+              />
+            </NativeViewGestureHandler>
+          )}
+        </BottomSheetDraggableView>
+      );
+    }
     return (
       <BottomSheetDraggableView
         nativeGestureRef={nativeGestureRef}
@@ -74,6 +135,10 @@ export function createBottomSheetScrollableComponent<T, P>(
             ref={scrollableRef}
             overScrollMode={overScrollMode}
             scrollEventThrottle={16}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={progressViewOffset}
+            refreshControl={refreshControl}
             onScroll={handleScrollEvent}
             animatedProps={scrollableAnimatedProps}
             style={containerStyle}

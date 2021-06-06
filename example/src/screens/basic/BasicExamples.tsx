@@ -118,15 +118,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
-  title: {
-    fontSize: 46,
-    lineHeight: 46,
-    fontWeight: '800',
-  },
-  headerContainer: {
-    paddingVertical: 24,
-    backgroundColor: 'white',
-  },
 });
 
 export const FlatListExampleScreen = createExampleScreen({

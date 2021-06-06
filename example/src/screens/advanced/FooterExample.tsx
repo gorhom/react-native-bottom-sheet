@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import BottomSheet, { BottomSheetFooter } from '@gorhom/bottom-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SearchHandle from '../../components/searchHandle';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const FooterExample = () => {
   // state

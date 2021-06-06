@@ -3,7 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useShowcaseTheme } from '@gorhom/showcase-template';
 import Button from '../../components/button';
-import ContactListContainer from '../../components/contactListContainer';
+import ContactList from '../../components/contactList';
+import HeaderHandle from '../../components/headerHandle';
 
 const ShadowExample = () => {
   // hooks
@@ -34,6 +35,10 @@ const ShadowExample = () => {
   }, []);
 
   // renders
+  const renderHeaderHandle = useCallback(
+    props => <HeaderHandle {...props} children="Shadow Example" />,
+    []
+  );
   return (
     <View style={styles.container}>
       <Button label="Expand" onPress={handleExpandPress} />
@@ -43,9 +48,11 @@ const ShadowExample = () => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
+        animateOnMount={true}
+        handleComponent={renderHeaderHandle}
         style={sheetStyle}
       >
-        <ContactListContainer type="View" count={4} title="Shadow Example" />
+        <ContactList type="View" count={3} />
       </BottomSheet>
     </View>
   );
@@ -65,7 +72,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 12,
     },
-    shadowOpacity: 0.58,
+    shadowOpacity: 0.75,
     shadowRadius: 16.0,
 
     elevation: 24,

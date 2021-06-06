@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, ViewStyle } from 'react-native';
 import { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
 import Animated, {
   Extrapolate,
@@ -10,11 +10,16 @@ import Animated, {
 import { toRad } from 'react-native-redash';
 import { transformOrigin } from '../../utilities/transformOrigin';
 
-interface HandleProps extends BottomSheetHandleProps {
+interface CustomHandleProps extends BottomSheetHandleProps {
+  title: string;
   style?: StyleProp<ViewStyle>;
 }
 
-const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
+const CustomHandle: React.FC<CustomHandleProps> = ({
+  title,
+  style,
+  animatedIndex,
+}) => {
   //#region animations
 
   const indicatorTransformOriginY = useDerivedValue(() =>
@@ -23,7 +28,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
   //#endregion
 
   //#region styles
-  const containerStyle = useMemo(() => [styles.header, style], [style]);
+  const containerStyle = useMemo(() => [styles.container, style], [style]);
   const containerAnimatedStyle = useAnimatedStyle(() => {
     const borderTopRadius = interpolate(
       animatedIndex.value,
@@ -100,23 +105,25 @@ const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
       <Animated.View
         style={[rightIndicatorStyle, rightIndicatorAnimatedStyle]}
       />
+      <Text style={styles.title}>{title}</Text>
     </Animated.View>
   );
 };
 
-export default Handle;
+export default CustomHandle;
 
 const styles = StyleSheet.create({
-  header: {
+  container: {
     alignContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    paddingVertical: 14,
+    paddingBottom: 12,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#fff',
+    borderBottomColor: 'rgba(0,0,0,0.125)',
+    zIndex: 99999,
   },
   indicator: {
+    marginTop: 10,
     position: 'absolute',
     width: 10,
     height: 4,
@@ -129,5 +136,12 @@ const styles = StyleSheet.create({
   rightIndicator: {
     borderTopEndRadius: 2,
     borderBottomEndRadius: 2,
+  },
+  title: {
+    marginTop: 26,
+    fontSize: 20,
+    lineHeight: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
