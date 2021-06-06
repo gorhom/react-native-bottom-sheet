@@ -5,7 +5,7 @@ import React, {
   useImperativeHandle,
   memo,
 } from 'react';
-import { Keyboard, Platform } from 'react-native';
+import { Keyboard, Platform, ViewStyle } from 'react-native';
 import invariant from 'invariant';
 import Animated, {
   useAnimatedReaction,
@@ -960,10 +960,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const contentMaskContainerAnimatedStyle = useAnimatedStyle(() => ({
       paddingBottom: animatedContainerHeight.value,
     }));
-    const contentMaskContainerStyle = useMemo(
-      () => [styles.contentMaskContainer, contentMaskContainerAnimatedStyle],
-      [contentMaskContainerAnimatedStyle]
-    );
+
+    const providedBackgroundColorStyle: undefined | ViewStyle = useMemo(() => {
+      if (_providedStyle?.backgroundColor) {
+        return { backgroundColor: _providedStyle.backgroundColor } as ViewStyle;
+      }
+      return undefined;
+    }, [_providedStyle]);
+
+    const contentMaskContainerStyle = useMemo(() => {
+      return [
+        styles.contentMaskContainer,
+        contentMaskContainerAnimatedStyle,
+        ...(providedBackgroundColorStyle ? [providedBackgroundColorStyle] : []),
+      ];
+    }, [contentMaskContainerAnimatedStyle, providedBackgroundColorStyle]);
     //#endregion
 
     //#region effects
@@ -1278,6 +1289,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 keyboardBehavior={keyboardBehavior}
                 handlePanGestureHandler={handlePanGestureHandler}
                 handleComponent={handleComponent}
+                style={providedBackgroundColorStyle}
               />
             </BottomSheetInternalProvider>
           </Animated.View>

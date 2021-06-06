@@ -15,6 +15,7 @@ function BottomSheetHandleContainerComponent({
   handlePanGestureHandler,
   handleHeight,
   handleComponent: _providedHandleComponent,
+  style,
 }: BottomSheetHandleContainerProps) {
   //#region variables
   const {
@@ -106,6 +107,7 @@ function BottomSheetHandleContainerComponent({
         accessibilityLabel="Bottom Sheet handle"
         accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
         onLayout={handleContainerLayout}
+        style={style}
       >
         {renderHandle()}
       </Animated.View>

@@ -3,6 +3,7 @@ import type Animated from 'react-native-reanimated';
 import type { BottomSheetProps } from '../bottomSheet';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { useInteractivePanGestureHandlerConfigs } from '../../hooks/useInteractivePanGestureHandler';
+import { ViewStyle } from 'react-native';
 
 export interface BottomSheetHandleContainerProps
   extends Pick<PanGestureHandlerProperties, 'simultaneousHandlers'>,
@@ -17,4 +18,5 @@ export interface BottomSheetHandleContainerProps
     BottomSheetHandleProps {
   handlePanGestureHandler: any;
   handleHeight: Animated.SharedValue<number>;
+  style?: ViewStyle;
 }
