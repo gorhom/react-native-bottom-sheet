@@ -1,20 +1,21 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetView,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Button from '../../components/button';
 
 const DynamicSnapPointExample = () => {
   // state
   const [count, setCount] = useState(0);
-  const [contentHeight, setContentHeight] = useState(0);
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const { animatedHandleHeight, animatedSnapPoints, contentProps } =
+    useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
   const { bottom: safeBottomArea } = useSafeAreaInsets();
-
-  // variables
-  const snapPoints = useMemo(() => [0, contentHeight], [contentHeight]);
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {
@@ -29,22 +30,12 @@ const DynamicSnapPointExample = () => {
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
-  const handleOnLayout = useCallback(
-    ({
-      nativeEvent: {
-        layout: { height },
-      },
-    }) => {
-      setContentHeight(height);
-    },
-    []
-  );
 
   // styles
   const contentContainerStyle = useMemo(
     () => ({
       ...styles.contentContainerStyle,
-      paddingBottom: safeBottomArea,
+      paddingBottom: safeBottomArea || 6,
     }),
     [safeBottomArea]
   );
@@ -63,14 +54,12 @@ const DynamicSnapPointExample = () => {
       <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
+        snapPoints={animatedSnapPoints}
+        handleHeight={animatedHandleHeight}
+        enablePanDownToClose={true}
         animateOnMount={true}
       >
-        <BottomSheetView
-          style={contentContainerStyle}
-          onLayout={handleOnLayout}
-        >
+        <BottomSheetView style={contentContainerStyle} {...contentProps}>
           <Text style={styles.message}>
             Could this sheet resize to its content height ?
           </Text>
@@ -92,6 +81,7 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingTop: 12,
+    paddingBottom: 6,
     paddingHorizontal: 24,
     backgroundColor: 'white',
   },

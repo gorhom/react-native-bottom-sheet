@@ -40,7 +40,9 @@ export interface BottomSheetProps
    * snapPoints={[-1, '%100']}
    * @type Array<string | number>
    */
-  snapPoints: Array<string | number>;
+  snapPoints:
+    | Array<string | number>
+    | Animated.SharedValue<Array<string | number>>;
   /**
    * Defines how violently sheet has to stopped while over dragging.
    * @type number
@@ -92,7 +94,7 @@ export interface BottomSheetProps
    * unless `handleHeight` is provided.
    * @type number
    */
-  handleHeight?: number;
+  handleHeight?: number | Animated.SharedValue<number>;
   /**
    * Container height helps to calculate the internal sheet layouts,
    * if `containerHeight` not provided, the library internally will calculate it,

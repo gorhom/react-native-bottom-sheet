@@ -1,36 +1,39 @@
 import React, { memo, useMemo, useEffect, useCallback } from 'react';
-import { View as RNView } from 'react-native';
+import { View } from 'react-native';
 import { useBottomSheetInternal } from '../../hooks';
-import type { BottomSheetViewProps } from './types';
 import { styles } from './styles';
+import type { BottomSheetViewProps } from './types';
 
-const BottomSheetViewComponent = ({
+function BottomSheetViewComponent({
+  shouldMeasureLayout = false,
   style,
   focusHook: useFocusHook = useEffect,
   children,
   ...rest
-}: BottomSheetViewProps) => {
+}: BottomSheetViewProps) {
   // hooks
-  const { scrollableContentOffsetY } = useBottomSheetInternal();
+  const { scrollableContentOffsetY, isContentHeightFixed } =
+    useBottomSheetInternal();
 
   // styles
   const containerStyle = useMemo(() => [styles.container, style], [style]);
 
   // callback
   const handleSettingScrollable = useCallback(() => {
+    isContentHeightFixed.value = shouldMeasureLayout;
     scrollableContentOffsetY.value = 0;
-  }, [scrollableContentOffsetY]);
+  }, [isContentHeightFixed, scrollableContentOffsetY, shouldMeasureLayout]);
 
   // effects
   useFocusHook(handleSettingScrollable);
 
   //render
   return (
-    <RNView style={containerStyle} {...rest}>
+    <View style={containerStyle} {...rest}>
       {children}
-    </RNView>
+    </View>
   );
-};
+}
 
 const BottomSheetView = memo(BottomSheetViewComponent);
 BottomSheetView.displayName = 'BottomSheetView';

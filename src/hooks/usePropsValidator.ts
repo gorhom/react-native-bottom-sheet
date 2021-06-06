@@ -8,14 +8,15 @@ export const usePropsValidator = ({
   topInset,
 }: BottomSheetProps) => {
   useMemo(() => {
+    const _snapPoints = 'value' in snapPoints ? snapPoints.value : snapPoints;
     // snap points
     invariant(
-      snapPoints,
+      _snapPoints,
       `'snapPoints' was not provided! please provide at least one snap point.`
     );
 
     invariant(
-      snapPoints.length > 0,
+      'value' in _snapPoints || _snapPoints.length > 0,
       `'snapPoints' was provided with no points! please provide at least one snap point.`
     );
 
@@ -27,10 +28,10 @@ export const usePropsValidator = ({
 
     invariant(
       typeof index === 'number'
-        ? index >= -1 && index <= snapPoints.length - 1
+        ? index >= -1 && index <= _snapPoints.length - 1
         : true,
       `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
-        snapPoints.length - 1
+        _snapPoints.length - 1
       }`
     );
 

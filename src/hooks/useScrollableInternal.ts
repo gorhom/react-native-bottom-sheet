@@ -33,6 +33,7 @@ export const useScrollableInternal = (refreshable: boolean) => {
     animatedAnimationState,
     scrollableContentOffsetY: rootScrollableContentOffsetY,
     isScrollableRefreshable,
+    isContentHeightFixed,
     setScrollableRef,
     removeScrollableRef,
   } = useBottomSheetInternal();
@@ -122,6 +123,7 @@ export const useScrollableInternal = (refreshable: boolean) => {
     // set current content offset
     rootScrollableContentOffsetY.value = scrollableContentOffsetY.value;
     isScrollableRefreshable.value = refreshable;
+    isContentHeightFixed.value = false;
 
     // set current scrollable ref
     const id = findNodeHandle(scrollableRef.current);
@@ -141,6 +143,7 @@ export const useScrollableInternal = (refreshable: boolean) => {
   }, [
     refreshable,
     isScrollableRefreshable,
+    isContentHeightFixed,
     rootScrollableContentOffsetY,
     scrollableContentOffsetY,
     scrollableRef,

@@ -24,7 +24,10 @@ export const useNormalizedSnapPoints = (
   $modal: boolean
 ) => {
   const normalizedSnapPoints = useDerivedValue(() =>
-    providedSnapPoints.map(snapPoint => {
+    ('value' in providedSnapPoints
+      ? providedSnapPoints.value
+      : providedSnapPoints
+    ).map(snapPoint => {
       if (containerHeight.value === INITIAL_CONTAINER_HEIGHT) {
         return INITIAL_SNAP_POINT;
       }

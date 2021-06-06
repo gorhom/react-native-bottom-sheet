@@ -1,6 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Button from '../../components/button';
 import withModalProvider from '../withModalProvider';
@@ -8,14 +12,12 @@ import withModalProvider from '../withModalProvider';
 const DynamicSnapPointExample = () => {
   // state
   const [count, setCount] = useState(0);
-  const [contentHeight, setContentHeight] = useState(0);
 
   // hooks
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const { animatedHandleHeight, animatedSnapPoints, contentProps } =
+    useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
   const { bottom: safeBottomArea } = useSafeAreaInsets();
-
-  // variables
-  const snapPoints = useMemo(() => [contentHeight], [contentHeight]);
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {
@@ -31,22 +33,12 @@ const DynamicSnapPointExample = () => {
   const handleDismissPress = useCallback(() => {
     bottomSheetRef.current?.dismiss();
   }, []);
-  const handleOnLayout = useCallback(
-    ({
-      nativeEvent: {
-        layout: { height },
-      },
-    }) => {
-      setContentHeight(height);
-    },
-    []
-  );
 
   // styles
   const contentContainerStyle = useMemo(
     () => ({
       ...styles.contentContainerStyle,
-      paddingBottom: safeBottomArea,
+      paddingBottom: safeBottomArea || 6,
     }),
     [safeBottomArea]
   );
@@ -63,11 +55,13 @@ const DynamicSnapPointExample = () => {
     <View style={styles.container}>
       <Button label="Present" onPress={handlePresentPress} />
       <Button label="Dismiss" onPress={handleDismissPress} />
-      <BottomSheetModal ref={bottomSheetRef} index={0} snapPoints={snapPoints}>
-        <BottomSheetView
-          style={contentContainerStyle}
-          onLayout={handleOnLayout}
-        >
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        snapPoints={animatedSnapPoints}
+        handleHeight={animatedHandleHeight}
+        enablePanDownToClose={true}
+      >
+        <BottomSheetView style={contentContainerStyle} {...contentProps}>
           <Text style={styles.message}>
             Could this sheet modal resize to its content height ?
           </Text>

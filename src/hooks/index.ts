@@ -14,3 +14,4 @@ export { useInteractivePanGestureHandler } from './useInteractivePanGestureHandl
 export { usePropsValidator } from './usePropsValidator';
 export { useNormalizedSnapPoints } from './useNormalizedSnapPoints';
 export { useReactiveSharedValue } from './useReactiveSharedValue';
+export { useBottomSheetDynamicSnapPoints } from './useBottomSheetDynamicSnapPoints';

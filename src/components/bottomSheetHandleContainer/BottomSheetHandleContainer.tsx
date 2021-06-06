@@ -6,7 +6,6 @@ import BottomSheetHandle from '../bottomSheetHandle';
 import { useBottomSheetInternal } from '../../hooks';
 import { print } from '../../utilities';
 import type { BottomSheetHandleContainerProps } from './types';
-import { INITIAL_HANDLE_HEIGHT } from '../bottomSheet/constants';
 
 function BottomSheetHandleContainerComponent({
   animatedIndex,
@@ -47,28 +46,25 @@ function BottomSheetHandleContainerComponent({
   //#endregion
 
   //#region callbacks
-  const getHandleContainerLayout = useMemo(
-    () =>
-      handleHeight.value === INITIAL_HANDLE_HEIGHT
-        ? function handleContainerLayout({
-            nativeEvent: {
-              layout: { height },
-            },
-          }: LayoutChangeEvent) {
-            if (height === handleHeight.value) {
-              return;
-            }
-            handleHeight.value = height;
+  const handleContainerLayout = useCallback(
+    function handleContainerLayout({
+      nativeEvent: {
+        layout: { height },
+      },
+    }: LayoutChangeEvent) {
+      if (height === handleHeight.value) {
+        return;
+      }
+      handleHeight.value = height;
 
-            print({
-              component: BottomSheetHandleContainer.displayName,
-              method: 'handleContainerLayout',
-              params: {
-                height,
-              },
-            });
-          }
-        : undefined,
+      print({
+        component: BottomSheetHandleContainer.displayName,
+        method: 'handleContainerLayout',
+        params: {
+          height,
+        },
+      });
+    },
     [handleHeight]
   );
   //#endregion
@@ -109,7 +105,7 @@ function BottomSheetHandleContainerComponent({
         accessibilityRole="adjustable"
         accessibilityLabel="Bottom Sheet handle"
         accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
-        onLayout={getHandleContainerLayout}
+        onLayout={handleContainerLayout}
       >
         {renderHandle()}
       </Animated.View>

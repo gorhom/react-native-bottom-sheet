@@ -192,6 +192,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region conditional variables
+    const isContentHeightFixed = useSharedValue(false);
     const isLayoutCalculated = useDerivedValue(() => {
       let isContainerHeightCalculated = false;
       //container height was provided.
@@ -209,8 +210,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       let isHandleHeightCalculated = false;
       // handle height is provided.
       if (
-        _providedHandleHeight !== null ||
-        _providedHandleHeight !== undefined
+        _providedHandleHeight !== null &&
+        _providedHandleHeight !== undefined &&
+        typeof _providedHandleHeight === 'number'
       ) {
         isHandleHeightCalculated = true;
       }
@@ -422,7 +424,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       const adjustedSnapPoints = animatedSnapPoints.value.slice().reverse();
       const adjustedSnapPointsIndexes = animatedSnapPoints.value
         .slice()
-        .map((_, index) => index)
+        .map((_: any, index: number) => index)
         .reverse();
 
       /**
@@ -858,6 +860,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedContainerHeight,
         scrollableContentOffsetY,
         isInTemporaryPosition,
+        isContentHeightFixed,
         isScrollableRefreshable,
         shouldHandleKeyboardEvents,
         simultaneousHandlers: _providedSimultaneousHandlers,
@@ -890,6 +893,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedScrollableState,
         scrollableContentOffsetY,
         isScrollableRefreshable,
+        isContentHeightFixed,
         isInTemporaryPosition,
         enableContentPanningGesture,
         _providedSimultaneousHandlers,
@@ -934,9 +938,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => [_providedStyle, styles.container, containerAnimatedStyle],
       [_providedStyle, containerAnimatedStyle]
     );
-    const contentContainerAnimatedStyle = useAnimatedStyle(() => ({
-      height: animate(animatedContentHeight.value, _providedAnimationConfigs),
-    }));
+    const contentContainerAnimatedStyle = useAnimatedStyle(() =>
+      isContentHeightFixed.value
+        ? {}
+        : {
+            height: animate(
+              animatedContentHeight.value,
+              _providedAnimationConfigs
+            ),
+          }
+    );
     const contentContainerStyle = useMemo(
       () => [styles.contentContainer, contentContainerAnimatedStyle],
       [contentContainerAnimatedStyle]
@@ -992,6 +1003,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           nextPosition === INITIAL_POSITION ||
           nextPosition === animatedContainerHeight.value
         ) {
+          isAnimatedOnMount.value = true;
           return;
         }
 
@@ -1274,20 +1286,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               // topInset,
               // bottomInset,
               animatedSheetState,
-              animatedScrollableState,
-              isScrollableRefreshable,
-              scrollableContentOffsetY,
+              // animatedScrollableState,
+              // isScrollableRefreshable,
+              // scrollableContentOffsetY,
               // keyboardState,
               // animatedIndex,
               // animatedCurrentIndex,
-              // animatedPosition,
-              // animatedContainerHeight,
-              // animatedSheetHeight,
-              // animatedHandleHeight,
-              // animatedContentHeight,
+              animatedPosition,
+              animatedContainerHeight,
+              animatedSheetHeight,
+              animatedHandleHeight,
+              animatedContentHeight,
               // keyboardHeight,
-              // isLayoutCalculated,
-              isInTemporaryPosition,
+              isLayoutCalculated,
+              // isInTemporaryPosition,
             }}
           /> */}
         </BottomSheetContainer>

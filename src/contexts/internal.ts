@@ -40,6 +40,7 @@ export interface BottomSheetInternalContextType
   animatedHandleHeight: Animated.SharedValue<number>;
   animatedKeyboardHeight: Animated.SharedValue<number>;
   isScrollableRefreshable: Animated.SharedValue<boolean>;
+  isContentHeightFixed: Animated.SharedValue<boolean>;
   scrollableContentOffsetY: Animated.SharedValue<number>;
   shouldHandleKeyboardEvents: Animated.SharedValue<boolean>;
 
