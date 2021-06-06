@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import BottomSheetBackground from '../bottomSheetBackground';
 import type { BottomSheetBackgroundContainerProps } from './types';
 import { styles } from './styles';
@@ -8,10 +8,8 @@ const BottomSheetBackgroundContainerComponent = ({
   animatedPosition,
   backgroundComponent: _providedBackgroundComponent,
 }: BottomSheetBackgroundContainerProps) => {
-  const BackgroundComponent = useMemo(
-    () => _providedBackgroundComponent || BottomSheetBackground,
-    [_providedBackgroundComponent]
-  );
+  const BackgroundComponent =
+    _providedBackgroundComponent || BottomSheetBackground;
   return _providedBackgroundComponent === null ? null : (
     <BackgroundComponent
       pointerEvents="none"
