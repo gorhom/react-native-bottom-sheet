@@ -120,7 +120,7 @@ export const useInteractivePanGestureHandler = ({
       }
 
       if (enableOverDrag) {
-        if (type === GESTURE.HANDLE && position <= maxSnapPoint) {
+        if (type === GESTURE.HANDLE || type === GESTURE.CONTENT && position <= maxSnapPoint) {
           const resistedPosition =
             maxSnapPoint -
             Math.sqrt(1 + (maxSnapPoint - position)) * overDragResistanceFactor;
