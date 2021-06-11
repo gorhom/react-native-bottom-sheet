@@ -107,6 +107,12 @@ export const screens = [
         slug: 'Advanced/FooterExample',
         getScreen: () => require('./advanced/FooterExample').default,
       },
+      {
+        name: 'Advanced custom handling',
+        slug: 'Advanced/CustomHandling',
+        getScreen: () =>
+          require('./advanced/customScrollAndDrag/CustomScrollAndDrag').default,
+      },
     ] as ShowcaseScreenType[],
   },
   {
