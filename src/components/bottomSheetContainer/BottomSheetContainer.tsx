@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { LayoutChangeEvent, StatusBar, View } from 'react-native';
+import { LayoutChangeEvent, StatusBar, View, ViewStyle } from 'react-native';
 import { WINDOW_HEIGHT } from '../../constants';
 import { print } from '../../utilities';
 import { styles } from './styles';
@@ -11,19 +11,21 @@ function BottomSheetContainerComponent({
   topInset = 0,
   bottomInset = 0,
   shouldCalculateHeight = true,
+  detached,
   children,
 }: BottomSheetContainerProps) {
   const containerRef = useRef<View>(null);
   //#region styles
-  const containerStyle = useMemo(
+  const containerStyle = useMemo<ViewStyle[]>(
     () => [
       styles.container,
       {
         top: topInset,
         bottom: bottomInset,
+        overflow: detached ? 'visible' : 'hidden',
       },
     ],
-    [topInset, bottomInset]
+    [detached, topInset, bottomInset]
   );
   //#endregion
 
