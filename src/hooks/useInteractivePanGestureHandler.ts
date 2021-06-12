@@ -30,6 +30,7 @@ export interface useInteractivePanGestureHandlerConfigs {
   animatedSnapPoints: Animated.SharedValue<number[]>;
   animatedPosition: Animated.SharedValue<number>;
   animatedContainerHeight: Animated.SharedValue<number>;
+  animatedClosedPosition: Animated.SharedValue<number>;
   scrollableContentOffsetY: Animated.SharedValue<number>;
   isScrollableRefreshable: Animated.SharedValue<boolean>;
   animateToPoint: (point: number, velocity: number) => void;
@@ -53,6 +54,7 @@ export const useInteractivePanGestureHandler = ({
   animatedPosition,
   animatedSnapPoints,
   animatedContainerHeight,
+  animatedClosedPosition,
   scrollableContentOffsetY,
   isScrollableRefreshable,
   animateToPoint,
@@ -299,7 +301,7 @@ export const useInteractivePanGestureHandler = ({
        */
       const snapPoints = animatedSnapPoints.value.slice();
       if (enablePanDownToClose) {
-        snapPoints.unshift(animatedContainerHeight.value);
+        snapPoints.unshift(animatedClosedPosition.value);
       }
 
       /**

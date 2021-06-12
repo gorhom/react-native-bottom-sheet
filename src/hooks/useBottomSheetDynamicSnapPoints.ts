@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 
 /**
@@ -40,17 +40,10 @@ export const useBottomSheetDynamicSnapPoints = (
     [animatedContentHeight]
   );
 
-  const contentProps = useMemo(
-    () => ({
-      onLayout: handleContentLayout,
-      shouldMeasureLayout: true,
-    }),
-    [handleContentLayout]
-  );
-
   return {
     animatedSnapPoints,
     animatedHandleHeight,
-    contentProps,
+    animatedContentHeight,
+    handleContentLayout,
   };
 };

@@ -154,6 +154,10 @@ const BottomSheetModalComponent = forwardRef<
   const handlePresent = useCallback(
     function handlePresent() {
       requestAnimationFrame(() => {
+        if (mount) {
+          bottomSheetRef.current?.snapToIndex(index);
+          return;
+        }
         setMount(true);
         mountSheet(key, ref, stackBehavior);
 
@@ -163,7 +167,7 @@ const BottomSheetModalComponent = forwardRef<
         });
       });
     },
-    [key, stackBehavior, ref, mountSheet]
+    [key, index, stackBehavior, mount, ref, mountSheet]
   );
   const handleDismiss = useCallback(
     function handleDismiss(...args) {
