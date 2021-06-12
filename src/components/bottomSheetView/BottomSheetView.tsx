@@ -1,35 +1,28 @@
-import React, { memo, useMemo, useEffect, useCallback } from 'react';
+import React, { memo, useEffect, useCallback } from 'react';
 import { View } from 'react-native';
 import { useBottomSheetInternal } from '../../hooks';
-import { styles } from './styles';
 import type { BottomSheetViewProps } from './types';
 
 function BottomSheetViewComponent({
-  shouldMeasureLayout = false,
   style,
   focusHook: useFocusHook = useEffect,
   children,
   ...rest
 }: BottomSheetViewProps) {
   // hooks
-  const { scrollableContentOffsetY, isContentHeightFixed } =
-    useBottomSheetInternal();
-
-  // styles
-  const containerStyle = useMemo(() => [styles.container, style], [style]);
+  const { scrollableContentOffsetY } = useBottomSheetInternal();
 
   // callback
   const handleSettingScrollable = useCallback(() => {
-    isContentHeightFixed.value = shouldMeasureLayout;
     scrollableContentOffsetY.value = 0;
-  }, [isContentHeightFixed, scrollableContentOffsetY, shouldMeasureLayout]);
+  }, [scrollableContentOffsetY]);
 
   // effects
   useFocusHook(handleSettingScrollable);
 
   //render
   return (
-    <View style={containerStyle} {...rest}>
+    <View style={style} {...rest}>
       {children}
     </View>
   );
