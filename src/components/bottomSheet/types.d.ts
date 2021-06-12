@@ -50,6 +50,12 @@ export interface BottomSheetProps
    */
   overDragResistanceFactor?: number;
   /**
+   * Defines whether the bottom sheet is attached to the bottom or no.
+   * @type boolean
+   * @default false
+   */
+  detached?: boolean;
+  /**
    * Enable content panning gesture interaction.
    * @type boolean
    * @default true
@@ -235,7 +241,6 @@ export interface BottomSheetProps
    * @type boolean
    */
   $modal?: boolean;
-  detached?: boolean;
   //#endregion
 }
 
