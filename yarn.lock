@@ -1713,14 +1713,13 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@gorhom/portal@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.4.tgz#643c7baaffee223819cdd99dad748c3d9dc6bd73"
-  integrity sha512-KalM9E6Op1TCzi00YKhczBz86EV0yYpWuRuTt5J4VS09O2gGbGAEEJwUKb/Rvr3XadtinpLjePj0tZ6lFVPp+g==
+"@gorhom/portal@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.7.tgz#e27cd40f8e2b6cb742050bcaa00fdcf94f3dfca8"
+  integrity sha512-lDZZ5/cjvg1GHrK6Swljv1EssndiVz0iXsIOpsI8FS6IDyxIDDnzbHQ6ZhLp95jDhDyE0UTUsAjL2PeI2yVKMQ==
   dependencies:
-    immer "^8.0.1"
-    lodash.isequal "^4.5.0"
-    nanoid "^3.1.20"
+    immer "^9.0.3"
+    nanoid "^3.1.23"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
@@ -5108,10 +5107,10 @@ image-size@^0.6.0:
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
   integrity sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA==
 
-immer@^8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.1.tgz#9c73db683e2b3975c424fb0572af5889877ae656"
-  integrity sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA==
+immer@^9.0.3:
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.3.tgz#146e2ba8b84d4b1b15378143c2345559915097f4"
+  integrity sha512-mONgeNSMuyjIe0lkQPa9YhdmTv8P19IeHV0biYhcXhbd5dhdB9HSK93zBpyKjp6wersSUgT5QyU0skmejUVP2A==
 
 import-cwd@3.0.0:
   version "3.0.0"
@@ -6001,11 +6000,6 @@ lodash._reinterpolate@^3.0.0:
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
   integrity sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=
 
-lodash.isequal@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
-  integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
-
 lodash.ismatch@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.ismatch/-/lodash.ismatch-4.4.0.tgz#756cb5150ca3ba6f11085a78849645f188f85f37"
@@ -6683,6 +6677,11 @@ nanoid@^3.1.20:
   version "3.1.20"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.20.tgz#badc263c6b1dcf14b71efaa85f6ab4c1d6cfc788"
   integrity sha512-a1cQNyczgKbLX9jwbS/+d7W8fX/RfgYR7lVWwWOGIPNgK2m0MWvrGF6/m4kk6U3QcFMnZf3RIhL0v2Jgh/0Uxw==
+
+nanoid@^3.1.23:
+  version "3.1.23"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
+  integrity sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
 
 nanomatch@^1.2.9:
   version "1.2.13"
