@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   BottomSheetModal,
   BottomSheetView,
+  BottomSheetFooter,
   useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
@@ -67,7 +68,8 @@ const DetachedExample = () => {
         contentHeight={animatedContentHeight}
         bottomInset={safeBottomArea + 34}
         enablePanDownToClose={true}
-        style={{ marginHorizontal: 12 }}
+        style={styles.sheetContainer}
+        backgroundComponent={null}
         handleComponent={renderHeaderHandle}
         detached={true}
       >
@@ -76,6 +78,11 @@ const DetachedExample = () => {
           onLayout={handleContentLayout}
         >
           {data.map(renderItem)}
+          <BottomSheetFooter>
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>this is a footer!</Text>
+            </View>
+          </BottomSheetFooter>
         </BottomSheetView>
       </BottomSheetModal>
     </View>
@@ -87,10 +94,38 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
+  sheetContainer: {
+    marginHorizontal: 16,
+    backgroundColor: 'white',
+    borderRadius: 16,
+    shadowColor: 'rgba(0,0,0,0.25)',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 16.0,
+
+    elevation: 24,
+  },
   contentContainerStyle: {
     paddingTop: 12,
-    paddingBottom: 6,
-    paddingHorizontal: 24,
+    paddingBottom: 12,
+    paddingHorizontal: 16,
+  },
+  footer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 12,
+    padding: 12,
+    marginBottom: 12,
+    borderRadius: 24,
+    backgroundColor: '#80f',
+  },
+  footerText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
   },
 });
 

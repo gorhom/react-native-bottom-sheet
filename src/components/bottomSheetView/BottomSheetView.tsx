@@ -1,5 +1,5 @@
-import React, { memo, useEffect, useCallback } from 'react';
-import { View } from 'react-native';
+import React, { memo, useEffect, useCallback, useMemo } from 'react';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetViewProps } from './types';
 
@@ -10,7 +10,20 @@ function BottomSheetViewComponent({
   ...rest
 }: BottomSheetViewProps) {
   // hooks
-  const { scrollableContentOffsetY } = useBottomSheetInternal();
+  const { scrollableContentOffsetY, animatedFooterHeight } =
+    useBottomSheetInternal();
+
+  // styles
+  const containerAnimatedStyle = useAnimatedStyle(
+    () => ({
+      paddingBottom: animatedFooterHeight.value,
+    }),
+    [style]
+  );
+  const containerStyle = useMemo(
+    () => [style, containerAnimatedStyle],
+    [style, containerAnimatedStyle]
+  );
 
   // callback
   const handleSettingScrollable = useCallback(() => {
@@ -22,9 +35,9 @@ function BottomSheetViewComponent({
 
   //render
   return (
-    <View style={style} {...rest}>
+    <Animated.View style={containerStyle} {...rest}>
       {children}
-    </View>
+    </Animated.View>
   );
 }
 

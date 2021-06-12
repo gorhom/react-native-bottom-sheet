@@ -113,7 +113,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // layout
       handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
-      contentHeight: _providedHeight,
+      contentHeight: _providedContentHeight,
       containerOffset: _providedContainerOffset,
       topInset = 0,
       bottomInset = 0,
@@ -950,14 +950,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [_providedStyle, containerAnimatedStyle]
     );
     const contentContainerAnimatedStyle = useAnimatedStyle(() => {
-      if (!isLayoutCalculated.value || _providedHeight) {
+      /**
+       * if content height was provided, then we skip setting
+       * calculated height.
+       */
+      if (_providedContentHeight) {
         return {};
       }
 
       return {
         height: animate(animatedContentHeight.value, _providedAnimationConfigs),
       };
-    }, [_providedHeight]);
+    }, [_providedContentHeight]);
     const contentContainerStyle = useMemo(
       () => [styles.contentContainer, contentContainerAnimatedStyle],
       [contentContainerAnimatedStyle]
