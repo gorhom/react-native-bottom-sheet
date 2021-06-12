@@ -1,6 +1,20 @@
 # Changelog
 
-## [v4.0.0-alpha.11](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.10...v4.0.0-alpha.11)
+## [v4.0.0-alpha.12](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.11...v4.0.0-alpha.12)
+
+#### Features
+
+- feat: added detached bottom sheet  ([`#487`](https://github.com/gorhom/react-native-bottom-sheet/pull/487)).
+
+#### Improvements
+
+- chore: updated portal dependency ([70d72ec](https://github.com/gorhom/react-native-bottom-sheet/commit/70d72ecff5c78c397dbfc47bbff94b52237efab8)).
+
+#### Documentations
+
+- docs: updated detached prop description ([9d4779b](https://github.com/gorhom/react-native-bottom-sheet/commit/9d4779b57f60bba7f895f7609e759e0eb0b2640a)).
+
+## [v4.0.0-alpha.11](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.10...v4.0.0-alpha.11) - 2021-06-06
 
 ## [v4.0.0-alpha.10](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.9...v4.0.0-alpha.10) - 2021-06-06
 
