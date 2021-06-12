@@ -10,11 +10,16 @@ import Button from '../../components/button';
 const DynamicSnapPointExample = () => {
   // state
   const [count, setCount] = useState(0);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { animatedHandleHeight, animatedSnapPoints, contentProps } =
-    useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   const { bottom: safeBottomArea } = useSafeAreaInsets();
 
   // callbacks
@@ -33,10 +38,10 @@ const DynamicSnapPointExample = () => {
 
   // styles
   const contentContainerStyle = useMemo(
-    () => ({
-      ...styles.contentContainerStyle,
-      paddingBottom: safeBottomArea || 6,
-    }),
+    () => [
+      styles.contentContainerStyle,
+      { paddingBottom: safeBottomArea || 6 },
+    ],
     [safeBottomArea]
   );
   const emojiContainerStyle = useMemo(
@@ -56,10 +61,14 @@ const DynamicSnapPointExample = () => {
         ref={bottomSheetRef}
         snapPoints={animatedSnapPoints}
         handleHeight={animatedHandleHeight}
+        contentHeight={animatedContentHeight}
         enablePanDownToClose={true}
         animateOnMount={true}
       >
-        <BottomSheetView style={contentContainerStyle} {...contentProps}>
+        <BottomSheetView
+          style={contentContainerStyle}
+          onLayout={handleContentLayout}
+        >
           <Text style={styles.message}>
             Could this sheet resize to its content height ?
           </Text>
@@ -83,7 +92,6 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 6,
     paddingHorizontal: 24,
-    backgroundColor: 'white',
   },
   message: {
     fontSize: 24,

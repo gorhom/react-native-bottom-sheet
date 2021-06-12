@@ -71,12 +71,13 @@ const KeyboardHandlingExample = () => {
       <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
         keyboardBehavior={keyboardBehavior}
         keyboardBlurBehavior={keyboardBlurBehavior}
         handleComponent={SearchHandle}
       >
-        <ContactList count={10} type="FlatList" />
+        <ContactList count={10} type="ScrollView" />
       </BottomSheet>
     </View>
   );

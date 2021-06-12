@@ -103,6 +103,11 @@ export interface BottomSheetProps
    */
   containerHeight?: number | Animated.SharedValue<number>;
   /**
+   * Content height helps dynamic snap points calculation.
+   * @type number | Animated.SharedValue<number>;
+   */
+  contentHeight?: number | Animated.SharedValue<number>;
+  /**
    * Container offset helps to accurately detect container offsets.
    * @type Animated.SharedValue<number>;
    */
@@ -230,6 +235,7 @@ export interface BottomSheetProps
    * @type boolean
    */
   $modal?: boolean;
+  detached?: boolean;
   //#endregion
 }
 

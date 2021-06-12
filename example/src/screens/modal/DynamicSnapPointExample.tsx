@@ -15,8 +15,12 @@ const DynamicSnapPointExample = () => {
 
   // hooks
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const { animatedHandleHeight, animatedSnapPoints, contentProps } =
-    useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
   const { bottom: safeBottomArea } = useSafeAreaInsets();
 
   // callbacks
@@ -59,9 +63,13 @@ const DynamicSnapPointExample = () => {
         ref={bottomSheetRef}
         snapPoints={animatedSnapPoints}
         handleHeight={animatedHandleHeight}
+        contentHeight={animatedContentHeight}
         enablePanDownToClose={true}
       >
-        <BottomSheetView style={contentContainerStyle} {...contentProps}>
+        <BottomSheetView
+          style={contentContainerStyle}
+          onLayout={handleContentLayout}
+        >
           <Text style={styles.message}>
             Could this sheet modal resize to its content height ?
           </Text>

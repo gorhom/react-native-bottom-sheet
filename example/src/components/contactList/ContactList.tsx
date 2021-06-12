@@ -30,9 +30,10 @@ const handleGetCount = (data: any[]) => data.length;
 const ContactList = ({
   type,
   count = 25,
-  onRefresh,
   style,
+  onRefresh,
   onItemPress,
+  ...rest
 }: ContactListProps) => {
   // hooks
   const { bottom: bottomSafeArea } = useSafeAreaInsets();
@@ -162,7 +163,7 @@ const ContactList = ({
     );
   } else if (type === 'View') {
     return (
-      <BottomSheetView style={styles.contentContainer}>
+      <BottomSheetView style={styles.contentContainer} {...rest}>
         {data.map(renderScrollViewItem)}
       </BottomSheetView>
     );

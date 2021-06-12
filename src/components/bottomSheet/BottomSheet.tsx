@@ -113,6 +113,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // layout
       handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
+      contentHeight: _providedContentHeight,
       containerOffset: _providedContainerOffset,
       topInset = 0,
       bottomInset = 0,
@@ -135,6 +136,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       // private
       $modal = false,
+      detached = false,
 
       // components
       handleComponent,
@@ -180,6 +182,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedHighestSnapPoint = useDerivedValue(
       () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
     );
+    const animatedClosedPosition = useDerivedValue(() => {
+      let closedPosition = animatedContainerHeight.value;
+
+      if ($modal) {
+        closedPosition = animatedContainerHeight.value + bottomInset;
+      }
+
+      return closedPosition;
+    }, [$modal, bottomInset]);
     const animatedSheetHeight = useDerivedValue(
       () => animatedContainerHeight.value - animatedHighestSnapPoint.value
     );
@@ -280,7 +291,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedAnimationState = useSharedValue(ANIMATION_STATE.UNDETERMINED);
     const animatedSheetState = useDerivedValue(() => {
       // closed position = position >= container height
-      if (animatedPosition.value >= animatedContainerHeight.value)
+      if (animatedPosition.value >= animatedClosedPosition.value)
         return SHEET_STATE.CLOSED;
 
       // extended position = container height - sheet height
@@ -608,6 +619,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         keyboardBehavior,
         animatedPosition,
         animatedSnapPoints,
+        animatedClosedPosition,
         animatedContainerHeight,
         isInTemporaryPosition,
         isScrollableRefreshable,
@@ -625,6 +637,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         keyboardBehavior,
         animatedPosition,
         animatedSnapPoints,
+        animatedClosedPosition,
         animatedContainerHeight,
         isInTemporaryPosition,
         isScrollableRefreshable,
@@ -740,7 +753,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * verify if sheet is closed.
          */
-        if (animatedPosition.value === animatedContainerHeight.value) {
+        if (animatedPosition.value === animatedClosedPosition.value) {
           isSheetClosing.value = false;
         } else if (isSheetClosing.value) {
           /**
@@ -751,17 +764,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         isSheetClosing.value = true;
         isInTemporaryPosition.value = false;
-        runOnUI(animateToPosition)(
-          animatedContainerHeight.value,
-          0,
-          animationConfigs
-        );
+
+        let nextPosition = animatedClosedPosition.value;
+        runOnUI(animateToPosition)(nextPosition, 0, animationConfigs);
       },
       [
         isSheetClosing,
         isInTemporaryPosition,
         animateToPosition,
-        animatedContainerHeight,
+        animatedClosedPosition,
         animatedPosition,
       ]
     );
@@ -776,7 +787,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * verify if sheet is closed.
          */
-        if (animatedPosition.value === animatedContainerHeight.value) {
+        if (animatedPosition.value === animatedClosedPosition.value) {
           isSheetClosing.value = false;
         } else if (isSheetClosing.value) {
           /**
@@ -795,7 +806,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isSheetClosing,
         animateToPosition,
         animatedSnapPoints,
-        animatedContainerHeight,
+        animatedClosedPosition,
         animatedPosition,
       ]
     );
@@ -810,7 +821,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * verify if sheet is closed.
          */
-        if (animatedPosition.value === animatedContainerHeight.value) {
+        if (animatedPosition.value === animatedClosedPosition.value) {
           isSheetClosing.value = false;
         } else if (isSheetClosing.value) {
           /**
@@ -829,7 +840,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isInTemporaryPosition,
         animateToPosition,
         animatedSnapPoints,
-        animatedContainerHeight,
+        animatedClosedPosition,
         animatedPosition,
       ]
     );
@@ -938,16 +949,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => [_providedStyle, styles.container, containerAnimatedStyle],
       [_providedStyle, containerAnimatedStyle]
     );
-    const contentContainerAnimatedStyle = useAnimatedStyle(() =>
-      isContentHeightFixed.value
-        ? {}
-        : {
-            height: animate(
-              animatedContentHeight.value,
-              _providedAnimationConfigs
-            ),
-          }
-    );
+    const contentContainerAnimatedStyle = useAnimatedStyle(() => {
+      /**
+       * if content height was provided, then we skip setting
+       * calculated height.
+       */
+      if (_providedContentHeight) {
+        return {};
+      }
+
+      return {
+        height: animate(animatedContentHeight.value, _providedAnimationConfigs),
+      };
+    }, [_providedContentHeight]);
     const contentContainerStyle = useMemo(
       () => [styles.contentContainer, contentContainerAnimatedStyle],
       [contentContainerAnimatedStyle]
@@ -957,9 +971,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * the bottom of the screen, when sheet being over dragged or
      * when the sheet is resized.
      */
-    const contentMaskContainerAnimatedStyle = useAnimatedStyle(() => ({
-      paddingBottom: animatedContainerHeight.value,
-    }));
+    const contentMaskContainerAnimatedStyle = useAnimatedStyle(() => {
+      if (detached) {
+        return {
+          overflow: 'visible',
+        };
+      }
+      return {
+        paddingBottom: animatedContainerHeight.value,
+      };
+    }, [detached]);
     const contentMaskContainerStyle = useMemo(
       () => [styles.contentMaskContainer, contentMaskContainerAnimatedStyle],
       [contentMaskContainerAnimatedStyle]
@@ -987,7 +1008,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         let nextPosition;
         if (_providedIndex === -1) {
-          nextPosition = animatedContainerHeight.value;
+          nextPosition = animatedClosedPosition.value;
           animatedNextPositionIndex.value = -1;
         } else {
           nextPosition = animatedSnapPoints.value[_providedIndex];
@@ -1001,7 +1022,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         if (
           nextPosition === INITIAL_POSITION ||
-          nextPosition === animatedContainerHeight.value
+          nextPosition === animatedClosedPosition.value
         ) {
           isAnimatedOnMount.value = true;
           return;
@@ -1065,7 +1086,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               ? _animatedSnapPoints[animatedNextPositionIndex.value]
               : animatedNextPosition.value;
         } else if (animatedCurrentIndex.value === -1) {
-          nextPosition = animatedContainerHeight.value;
+          nextPosition = animatedClosedPosition.value;
         } else {
           nextPosition = _animatedSnapPoints[animatedCurrentIndex.value];
         }
@@ -1239,6 +1260,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           containerOffset={animatedContainerOffset}
           topInset={topInset}
           bottomInset={bottomInset}
+          detached={detached}
         >
           <Animated.View
             accessible={true}
@@ -1286,20 +1308,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               // topInset,
               // bottomInset,
               animatedSheetState,
-              // animatedScrollableState,
+              animatedScrollableState,
               // isScrollableRefreshable,
               // scrollableContentOffsetY,
-              // keyboardState,
+              keyboardState,
               // animatedIndex,
               // animatedCurrentIndex,
-              animatedPosition,
+              // animatedPosition,
               animatedContainerHeight,
               animatedSheetHeight,
               animatedHandleHeight,
               animatedContentHeight,
               // keyboardHeight,
               isLayoutCalculated,
-              // isInTemporaryPosition,
+              isContentHeightFixed,
+              isInTemporaryPosition,
             }}
           /> */}
         </BottomSheetContainer>

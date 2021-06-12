@@ -1,37 +1,43 @@
-import React, { memo, useMemo, useEffect, useCallback } from 'react';
-import { View } from 'react-native';
+import React, { memo, useEffect, useCallback, useMemo } from 'react';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { useBottomSheetInternal } from '../../hooks';
-import { styles } from './styles';
 import type { BottomSheetViewProps } from './types';
 
 function BottomSheetViewComponent({
-  shouldMeasureLayout = false,
   style,
   focusHook: useFocusHook = useEffect,
   children,
   ...rest
 }: BottomSheetViewProps) {
   // hooks
-  const { scrollableContentOffsetY, isContentHeightFixed } =
+  const { scrollableContentOffsetY, animatedFooterHeight } =
     useBottomSheetInternal();
 
   // styles
-  const containerStyle = useMemo(() => [styles.container, style], [style]);
+  const containerAnimatedStyle = useAnimatedStyle(
+    () => ({
+      paddingBottom: animatedFooterHeight.value,
+    }),
+    [style]
+  );
+  const containerStyle = useMemo(
+    () => [style, containerAnimatedStyle],
+    [style, containerAnimatedStyle]
+  );
 
   // callback
   const handleSettingScrollable = useCallback(() => {
-    isContentHeightFixed.value = shouldMeasureLayout;
     scrollableContentOffsetY.value = 0;
-  }, [isContentHeightFixed, scrollableContentOffsetY, shouldMeasureLayout]);
+  }, [scrollableContentOffsetY]);
 
   // effects
   useFocusHook(handleSettingScrollable);
 
   //render
   return (
-    <View style={containerStyle} {...rest}>
+    <Animated.View style={containerStyle} {...rest}>
       {children}
-    </View>
+    </Animated.View>
   );
 }
 
