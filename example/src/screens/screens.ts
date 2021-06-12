@@ -57,6 +57,11 @@ export const screens = [
         slug: 'Modal/DynamicSnapPointExample',
         getScreen: () => require('./modal/DynamicSnapPointExample').default,
       },
+      {
+        name: 'Detached',
+        slug: 'Modal/DetachedExample',
+        getScreen: () => require('./modal/DetachedExample').default,
+      },
     ],
   },
   {
