@@ -7,12 +7,12 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "postinstall": "npx patch-package && rm -rf node_modules/@gorhom/bottom-sheet/node_modules",
+    "postinstall": "expo-yarn-workspaces postinstall && cd ../.. && patch-package",
     "dev": "next",
     "build": "next build"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "file:..",
+    "@gorhom/bottom-sheet": "4.0.0-alpha.3",
     "@gorhom/portal": "^1.0.4",
     "@gorhom/showcase-template": "^2.0.4",
     "@react-native-community/blur": "^3.6.0",
@@ -42,7 +42,7 @@
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/runtime": "^7.13.10",
-    "@expo/next-adapter": "^2.1.75",
+    "@expo/next-adapter": "^2.1.77",
     "@types/faker": "^4.1.12",
     "@types/react": "^17.0.5",
     "@types/react-native": "^0.64.5",
@@ -50,4 +50,5 @@
     "next-compose-plugins": "^2.2.1",
     "typescript": "^4.2.4"
   }
+
 }

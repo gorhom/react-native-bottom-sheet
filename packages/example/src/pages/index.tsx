@@ -35,7 +35,7 @@ const App = () => {
   );
   return (
     <View style={styles.centeredView}>
-      <Modal
+      {/* <Modal
         animationType="none"
         transparent={true}
         visible={modalVisible}
@@ -43,22 +43,22 @@ const App = () => {
           Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}
+      > */}
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={snapPoints}
+        animateOnMount={true}
+        enablePanDownToClose={true}
+        onChange={handleSheetChange}
       >
-        <BottomSheet
-          ref={sheetRef}
-          snapPoints={snapPoints}
-          animateOnMount={true}
-          enablePanDownToClose={true}
-          onChange={handleSheetChange}
-        >
-          <BottomSheetFlatList
-            data={data}
-            keyExtractor={i => i}
-            renderItem={renderItem}
-            contentContainerStyle={styles.contentContainer}
-          />
-        </BottomSheet>
-      </Modal>
+        <BottomSheetFlatList
+          data={data}
+          keyExtractor={i => i}
+          renderItem={renderItem}
+          contentContainerStyle={styles.contentContainer}
+        />
+      </BottomSheet>
+      {/* </Modal> */}
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}

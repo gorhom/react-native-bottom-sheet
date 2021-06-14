@@ -1,0 +1,36 @@
+diff --git a/node_modules/@expo/next-adapter/build/babel.js b/node_modules/@expo/next-adapter/build/babel.js
+index ab1b808..36dbe97 100644
+--- a/node_modules/@expo/next-adapter/build/babel.js
++++ b/node_modules/@expo/next-adapter/build/babel.js
+@@ -13,12 +13,16 @@ module.exports = function (api) {
+         if (missingPackages.length)
+             throw new Error(`[BABEL]: preset \`@expo/next-adapter/babel\` is missing peer dependencies: ${missingPackages.join(', ')}`);
+     }
++
+     return {
+         presets: [
+             require('babel-preset-expo'),
+             // Only use next in the browser, it'll break your native project/
+             isWeb && require('next/babel'),
+         ].filter(Boolean),
++        plugins: [
++            isWeb && "@babel/plugin-proposal-class-properties",
++        ].filter(Boolean),
+     };
+ };
+ function hasModule(name) {
+diff --git a/node_modules/@expo/next-adapter/build/withExpo.js b/node_modules/@expo/next-adapter/build/withExpo.js
+index 2e63eb4..fbea871 100644
+--- a/node_modules/@expo/next-adapter/build/withExpo.js
++++ b/node_modules/@expo/next-adapter/build/withExpo.js
+@@ -7,8 +7,8 @@ function withExpo(nextConfig = {}) {
+             // Prevent define plugin from overwriting Next.js environment.
+             process.env.EXPO_WEBPACK_DEFINE_ENVIRONMENT_AS_KEYS = 'true';
+             const expoConfig = addons_1.withUnimodules(config, {
+-                projectRoot: nextConfig.projectRoot || process.cwd(),
+-            }, { supportsFontLoading: false });
++                projectRoot: nextConfig.projectRoot || process.cwd()
++            }, { supportsFontLoading: false, webpack5: (options.config.future || {}).webpack5 });
+             // Use original public path
+             (expoConfig.output || {}).publicPath = (config.output || {}).publicPath;
+             // TODO: Bacon: use commonjs for RNW babel maybe...

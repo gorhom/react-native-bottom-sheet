@@ -1,84 +1,15 @@
 {
-  "name": "@gorhom/bottom-sheet",
-  "version": "4.0.0-alpha.4",
-  "description": "A performant interactive bottom sheet with fully configurable options 🚀",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/index.d.ts",
-  "react-native": "src/index.ts",
-  "files": [
-    "src",
-    "lib"
-  ],
-  "keywords": [
-    "react-native",
-    "ios",
-    "android",
-    "bottom-sheet",
-    "bottomsheet",
-    "reanimated",
-    "sheet"
-  ],
-  "repository": "https://github.com/gorhom/react-native-bottom-sheet",
-  "author": "Mo Gorhom (https://gorhom.dev)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/gorhom/react-native-bottom-sheet/issues"
-  },
-  "homepage": "https://gorhom.github.io/react-native-bottom-sheet",
-  "scripts": {
-    "typescript": "tsc --skipLibCheck --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "build": "bob build && yarn copy-dts && yarn delete-dts.js",
-    "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" lib/typescript",
-    "delete-dts.js": "find ./lib/commonjs -name '*.d.js*' -delete && find ./lib/module -name '*.d.js*' -delete",
-    "release": "release-it",
-    "example": "yarn --cwd example",
-    "bootstrap": "yarn install && yarn example"
-  },
-  "dependencies": {
-    "@gorhom/portal": "^1.0.4",
-    "invariant": "^2.2.4",
-    "nanoid": "^3.1.20",
-    "react-native-redash": "^16.0.11"
-  },
+  "name": "@gorhom/bottom-sheet-monorepo",
+  "private": true,
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
-    "@react-native-community/eslint-config": "^2.0.0",
-    "@release-it/conventional-changelog": "^2.0.1",
-    "@types/invariant": "^2.2.34",
-    "@types/react": "^17.0.5",
-    "@types/react-native": "^0.64.5",
-    "auto-changelog": "^2.2.1",
-    "copyfiles": "^2.4.1",
-    "eslint": "^7.26.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "husky": "^4.3.8",
-    "lint-staged": "^11.0.0",
-    "prettier": "^2.3.0",
-    "react": "17.0.1",
-    "react-native": "0.64.1",
-    "react-native-builder-bob": "^0.18.1",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-reanimated": "^2.2.0",
-    "release-it": "^14.6.2",
-    "typescript": "^4.2.4"
+    "expo-yarn-workspaces": "^1.5.1",
+    "patch-package": "^6.4.7"
   },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
-    "react-native-gesture-handler": ">=1.10.1",
-    "react-native-reanimated": ">=2.2.0"
-  },
-  "react-native-builder-bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      "commonjs",
-      "module",
-      "typescript"
-    ]
+  "workspaces": [
+    "packages/bottom-sheet",
+    "packages/example"
+  ],
+  "scripts": {
+    "dev": "cd packages/example && yarn dev"
   }
 }

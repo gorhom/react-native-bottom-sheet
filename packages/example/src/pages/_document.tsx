@@ -19,6 +19,6 @@ class Document extends NextDocument {
   }
 }
 
-Document.getInitialProps = getInitialProps;
+// Document.getInitialProps = getInitialProps;
 
 export default Document;

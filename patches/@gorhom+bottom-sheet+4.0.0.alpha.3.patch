@@ -1,0 +1,53 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.android.js.map b/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.android.js.map
+deleted file mode 100644
+index 1a8f11a..0000000
+--- a/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.android.js.map
++++ /dev/null
+@@ -1 +0,0 @@
+-{"version":3,"sources":["Touchables.android.tsx"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;AAAA","sourcesContent":["export {\n  TouchableOpacity,\n  TouchableHighlight,\n  TouchableWithoutFeedback,\n} from 'react-native-gesture-handler';\n"]}
+\ No newline at end of file
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.android.js b/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.js
+similarity index 100%
+rename from node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.android.js
+rename to node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.js
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.js.map b/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.js.map
+new file mode 100644
+index 0000000..a16bc78
+--- /dev/null
++++ b/node_modules/@gorhom/bottom-sheet/lib/commonjs/components/touchables/Touchables.js.map
+@@ -0,0 +1 @@
++{"version":3,"sources":["Touchables.tsx"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;AAAA","sourcesContent":["export {\n  TouchableOpacity,\n  TouchableHighlight,\n  TouchableWithoutFeedback,\n} from 'react-native-gesture-handler';\n"]}
+\ No newline at end of file
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.android.js.map b/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.android.js.map
+deleted file mode 100644
+index 3098e7d..0000000
+--- a/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.android.js.map
++++ /dev/null
+@@ -1 +0,0 @@
+-{"version":3,"sources":["Touchables.android.tsx"],"names":["TouchableOpacity","TouchableHighlight","TouchableWithoutFeedback"],"mappings":"AAAA,SACEA,gBADF,EAEEC,kBAFF,EAGEC,wBAHF,QAIO,8BAJP","sourcesContent":["export {\n  TouchableOpacity,\n  TouchableHighlight,\n  TouchableWithoutFeedback,\n} from 'react-native-gesture-handler';\n"]}
+\ No newline at end of file
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.android.js b/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.js
+similarity index 70%
+rename from node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.android.js
+rename to node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.js
+index fc81621..b1edc97 100644
+--- a/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.android.js
++++ b/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.js
+@@ -1,2 +1,2 @@
+ export { TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+-//# sourceMappingURL=Touchables.android.js.map
+\ No newline at end of file
++//# sourceMappingURL=Touchables.js.map
+\ No newline at end of file
+diff --git a/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.js.map b/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.js.map
+new file mode 100644
+index 0000000..ac59a11
+--- /dev/null
++++ b/node_modules/@gorhom/bottom-sheet/lib/module/components/touchables/Touchables.js.map
+@@ -0,0 +1 @@
++{"version":3,"sources":["Touchables.tsx"],"names":["TouchableOpacity","TouchableHighlight","TouchableWithoutFeedback"],"mappings":"AAAA,SACEA,gBADF,EAEEC,kBAFF,EAGEC,wBAHF,QAIO,8BAJP","sourcesContent":["export {\n  TouchableOpacity,\n  TouchableHighlight,\n  TouchableWithoutFeedback,\n} from 'react-native-gesture-handler';\n"]}
+\ No newline at end of file
+diff --git a/node_modules/@gorhom/bottom-sheet/src/components/touchables/Touchables.android.tsx b/node_modules/@gorhom/bottom-sheet/src/components/touchables/Touchables.tsx
+similarity index 100%
+rename from node_modules/@gorhom/bottom-sheet/src/components/touchables/Touchables.android.tsx
+rename to node_modules/@gorhom/bottom-sheet/src/components/touchables/Touchables.tsx
