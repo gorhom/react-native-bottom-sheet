@@ -248,7 +248,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isSnapPointsNormalized
       );
     });
-    const isSheetClosing = useSharedValue(false);
     const isInTemporaryPosition = useSharedValue(false);
     //#endregion
 
@@ -453,6 +452,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           )
         : -1;
     });
+    const isSheetClosing = useDerivedValue(
+      () =>
+        animatedNextPosition.value === animatedClosedPosition.value &&
+        animatedAnimationState.value === ANIMATION_STATE.RUNNING
+    );
     //#endregion
 
     //#region private methods
@@ -483,10 +487,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
 
-        if (isSheetClosing.value && (index === 0 || index === -1)) {
-          isSheetClosing.value = false;
-        }
-
         if (
           Platform.OS === 'android' &&
           isInTemporaryPosition.value === false &&
@@ -500,11 +500,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
       },
       [
+        _providedOnChange,
         animatedCurrentIndex,
         keyboardState,
         isInTemporaryPosition,
-        isSheetClosing,
-        _providedOnChange,
       ]
     );
     const handleOnAnimate = useCallback(
@@ -667,29 +666,35 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
 
+        const nextPosition = snapPoints[index];
+
         /**
-         * verify if sheet is closed.
+         * exit method if :
+         * - already animating to next position.
+         * - sheet is closing.
          */
-        if (animatedPosition.value === animatedContainerHeight.value) {
-          isSheetClosing.value = false;
-        } else if (isSheetClosing.value) {
-          /**
-           * exit method if sheet is closing.
-           */
+        if (
+          index === animatedNextPositionIndex.value ||
+          nextPosition === animatedNextPosition.value ||
+          isSheetClosing.value
+        ) {
           return;
         }
 
+        /**
+         * reset temporary position boolean.
+         */
         isInTemporaryPosition.value = false;
-        const newSnapPoint = snapPoints[index];
-        runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
+
+        runOnUI(animateToPosition)(nextPosition, 0, animationConfigs);
       },
       [
+        animateToPosition,
         isInTemporaryPosition,
         isSheetClosing,
-        animateToPosition,
         animatedSnapPoints,
-        animatedContainerHeight,
-        animatedPosition,
+        animatedNextPosition,
+        animatedNextPositionIndex,
       ]
     );
     const handleSnapToPosition = useWorkletCallback(
@@ -704,22 +709,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             position,
           },
         });
-        /**
-         * verify if sheet is closed.
-         */
-        if (animatedPosition.value === animatedContainerHeight.value) {
-          isSheetClosing.value = false;
-        } else if (isSheetClosing.value) {
-          /**
-           * exit method if sheet is closing.
-           */
-          return;
-        }
-
-        /**
-         * mark the new position as temporary.
-         */
-        isInTemporaryPosition.value = true;
 
         /**
          * normalized provided position.
@@ -730,15 +719,33 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           topInset,
           bottomInset
         );
-        animateToPosition(nextPosition, 0, animationConfigs);
+
+        /**
+         * exit method if :
+         * - already animating to next position.
+         * - sheet is closing.
+         */
+        if (
+          nextPosition === animatedNextPosition.value ||
+          isSheetClosing.value
+        ) {
+          return;
+        }
+
+        /**
+         * mark the new position as temporary.
+         */
+        isInTemporaryPosition.value = true;
+
+        runOnUI(animateToPosition)(nextPosition, 0, animationConfigs);
       },
       [
-        isSheetClosing,
         animateToPosition,
-        animatedContainerHeight,
-        animatedPosition,
         bottomInset,
         topInset,
+        isSheetClosing,
+        animatedContainerHeight,
+        animatedPosition,
       ]
     );
     const handleClose = useCallback(
@@ -750,30 +757,33 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           method: handleClose.name,
         });
 
+        const nextPosition = animatedClosedPosition.value;
+
         /**
-         * verify if sheet is closed.
+         * exit method if :
+         * - already animating to next position.
+         * - sheet is closing.
          */
-        if (animatedPosition.value === animatedClosedPosition.value) {
-          isSheetClosing.value = false;
-        } else if (isSheetClosing.value) {
-          /**
-           * exit method if sheet is closing.
-           */
+        if (
+          nextPosition === animatedNextPosition.value ||
+          isSheetClosing.value
+        ) {
           return;
         }
 
-        isSheetClosing.value = true;
+        /**
+         * reset temporary position boolean.
+         */
         isInTemporaryPosition.value = false;
 
-        let nextPosition = animatedClosedPosition.value;
         runOnUI(animateToPosition)(nextPosition, 0, animationConfigs);
       },
       [
+        animateToPosition,
         isSheetClosing,
         isInTemporaryPosition,
-        animateToPosition,
+        animatedNextPosition,
         animatedClosedPosition,
-        animatedPosition,
       ]
     );
     const handleExpand = useCallback(
@@ -784,30 +794,37 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           component: BottomSheet.name,
           method: handleExpand.name,
         });
+
+        const snapPoints = animatedSnapPoints.value;
+        const nextPosition = snapPoints[snapPoints.length - 1];
+
         /**
-         * verify if sheet is closed.
+         * exit method if :
+         * - already animating to next position.
+         * - sheet is closing.
          */
-        if (animatedPosition.value === animatedClosedPosition.value) {
-          isSheetClosing.value = false;
-        } else if (isSheetClosing.value) {
-          /**
-           * exit method if sheet is closing.
-           */
+        if (
+          snapPoints.length - 1 === animatedNextPositionIndex.value ||
+          nextPosition === animatedNextPosition.value ||
+          isSheetClosing.value
+        ) {
           return;
         }
 
+        /**
+         * reset temporary position boolean.
+         */
         isInTemporaryPosition.value = false;
-        const snapPoints = animatedSnapPoints.value;
-        const newSnapPoint = snapPoints[snapPoints.length - 1];
-        runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
+
+        runOnUI(animateToPosition)(nextPosition, 0, animationConfigs);
       },
       [
+        animateToPosition,
         isInTemporaryPosition,
         isSheetClosing,
-        animateToPosition,
         animatedSnapPoints,
-        animatedClosedPosition,
-        animatedPosition,
+        animatedNextPosition,
+        animatedNextPositionIndex,
       ]
     );
     const handleCollapse = useCallback(
@@ -818,30 +835,36 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           component: BottomSheet.name,
           method: handleCollapse.name,
         });
+
+        const nextPosition = animatedSnapPoints.value[0];
+
         /**
-         * verify if sheet is closed.
+         * exit method if :
+         * - already animating to next position.
+         * - sheet is closing.
          */
-        if (animatedPosition.value === animatedClosedPosition.value) {
-          isSheetClosing.value = false;
-        } else if (isSheetClosing.value) {
-          /**
-           * exit method if sheet is closing.
-           */
+        if (
+          animatedNextPositionIndex.value === 0 ||
+          nextPosition === animatedNextPosition.value ||
+          isSheetClosing.value
+        ) {
           return;
         }
 
+        /**
+         * reset temporary position boolean.
+         */
         isInTemporaryPosition.value = false;
-        const snapPoints = animatedSnapPoints.value;
-        const newSnapPoint = snapPoints[0];
-        runOnUI(animateToPosition)(newSnapPoint, 0, animationConfigs);
+
+        runOnUI(animateToPosition)(nextPosition, 0, animationConfigs);
       },
       [
+        animateToPosition,
         isSheetClosing,
         isInTemporaryPosition,
-        animateToPosition,
         animatedSnapPoints,
-        animatedClosedPosition,
-        animatedPosition,
+        animatedNextPosition,
+        animatedNextPositionIndex,
       ]
     );
 
