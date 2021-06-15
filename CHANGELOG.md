@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.12](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.11...v4.0.0-alpha.12)
+## [v4.0.0-alpha.13](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.12...v4.0.0-alpha.13)
+
+#### Fixes
+
+- fix: prevent animation to same position ([9636f84](https://github.com/gorhom/react-native-bottom-sheet/commit/9636f847d53ff99d801753254876722050cc3e13)).
+
+## [v4.0.0-alpha.12](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.11...v4.0.0-alpha.12) - 2021-06-12
 
 #### Features
 
