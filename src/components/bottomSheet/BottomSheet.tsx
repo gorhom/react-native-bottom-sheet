@@ -617,6 +617,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animatedIndex={animatedIndex}
           animatedPosition={animatedPosition}
           backdropComponent={backdropComponent}
+          bottomInset={bottomInset}
         />
         <BottomSheetContainer
           key="BottomSheetContainer"

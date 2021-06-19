@@ -12,6 +12,12 @@ export interface BottomSheetBackdropProps extends Pick<ViewProps, 'style'> {
    * @type Animated.Value<number>
    */
   animatedPosition: Animated.Node<number>;
+  /**
+   * Current sheet absolute bottom position offset of backdrop
+   * @type number
+   * @default '0'
+   */
+  bottomInset?: number;
 }
 
 export type BackdropPressBehavior = 'none' | 'close' | 'collapse' | number;

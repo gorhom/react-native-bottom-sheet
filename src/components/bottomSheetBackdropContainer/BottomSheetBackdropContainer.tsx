@@ -7,12 +7,14 @@ const BottomSheetBackdropContainerComponent = ({
   animatedIndex,
   animatedPosition,
   backdropComponent: BackdropComponent,
+  bottomInset,
 }: BottomSheetBackdropContainerProps) => {
   return BackdropComponent ? (
     <BackdropComponent
       animatedIndex={animatedIndex}
       animatedPosition={animatedPosition}
-      style={styles.container}
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={[styles.container, { bottom: bottomInset ? bottomInset : 0 }]}
     />
   ) : null;
 };
