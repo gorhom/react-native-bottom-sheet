@@ -12,7 +12,6 @@ import {
 import { clamp, snapPoint } from 'react-native-redash';
 import {
   GESTURE_SOURCE,
-  KEYBOARD_BEHAVIOR,
   KEYBOARD_DISMISS_THRESHOLD,
   KEYBOARD_STATE,
   WINDOW_HEIGHT,
@@ -23,10 +22,9 @@ export interface useInteractivePanGestureHandlerConfigs {
   enableOverDrag: boolean;
   enablePanDownToClose: boolean;
   overDragResistanceFactor: number;
-  keyboardBehavior: keyof typeof KEYBOARD_BEHAVIOR;
   isInTemporaryPosition: Animated.SharedValue<boolean>;
-  keyboardState: Animated.SharedValue<KEYBOARD_STATE>;
-  keyboardHeight: Animated.SharedValue<number>;
+  animatedKeyboardState: Animated.SharedValue<KEYBOARD_STATE>;
+  animatedKeyboardHeight: Animated.SharedValue<number>;
   animatedSnapPoints: Animated.SharedValue<number[]>;
   animatedPosition: Animated.SharedValue<number>;
   animatedContainerHeight: Animated.SharedValue<number>;
@@ -47,9 +45,8 @@ export const useInteractivePanGestureHandler = ({
   enableOverDrag,
   enablePanDownToClose,
   overDragResistanceFactor,
-  keyboardState,
-  keyboardBehavior,
-  keyboardHeight,
+  animatedKeyboardState,
+  animatedKeyboardHeight,
   isInTemporaryPosition,
   animatedPosition,
   animatedSnapPoints,
@@ -78,7 +75,7 @@ export const useInteractivePanGestureHandler = ({
 
       // store current animated position
       context.startPosition = animatedPosition.value;
-      context.keyboardState = keyboardState.value;
+      context.keyboardState = animatedKeyboardState.value;
 
       /**
        * if scrollable scrolled
@@ -92,7 +89,7 @@ export const useInteractivePanGestureHandler = ({
       gestureTranslationY.value = translationY;
       gestureVelocityY.value = velocityY;
     },
-    onActive: ({ state, translationY, velocityY, absoluteY }, context) => {
+    onActive: ({ state, translationY, velocityY }, context) => {
       gestureState.value = state;
       gestureTranslationY.value = translationY;
       gestureVelocityY.value = velocityY;
@@ -184,18 +181,19 @@ export const useInteractivePanGestureHandler = ({
       }
 
       /**
-       * dismiss the keyboard when panning down over the threshold value.
+       * dismiss the keyboard when panning down, when:
+       * - keyboard is shown.
+       * - distance is more than threshold.
+       * - scrollable content is on the top.
+       * -
        */
-      if (translationY > KEYBOARD_DISMISS_THRESHOLD) {
-        if (
-          keyboardState.value === KEYBOARD_STATE.SHOWN &&
-          (Platform.OS === 'android' ||
-            keyboardBehavior !== KEYBOARD_BEHAVIOR.interactive ||
-            (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
-              absoluteY < WINDOW_HEIGHT - keyboardHeight.value))
-        ) {
-          runOnJS(Keyboard.dismiss)();
-        }
+      if (
+        animatedKeyboardState.value === KEYBOARD_STATE.SHOWN &&
+        translationY > KEYBOARD_DISMISS_THRESHOLD &&
+        scrollableContentOffsetY.value === 0 &&
+        Platform.OS === 'android'
+      ) {
+        runOnJS(Keyboard.dismiss)();
       }
 
       /**
@@ -246,7 +244,7 @@ export const useInteractivePanGestureHandler = ({
 
       animatedPosition.value = clampedPosition;
     },
-    onEnd: ({ state }, context) => {
+    onEnd: ({ state, absoluteY }, context) => {
       gestureState.value = state;
       let highestSnapPoint =
         animatedSnapPoints.value[animatedSnapPoints.value.length - 1];
@@ -282,8 +280,11 @@ export const useInteractivePanGestureHandler = ({
        * start position and keyboard still shown.
        */
       if (
+        context.keyboardState === KEYBOARD_STATE.SHOWN &&
         animatedPosition.value > context.startPosition &&
-        context.keyboardState === KEYBOARD_STATE.SHOWN
+        (Platform.OS === 'android' ||
+          (Platform.OS === 'ios' &&
+            absoluteY < WINDOW_HEIGHT - animatedKeyboardHeight.value))
       ) {
         runOnJS(Keyboard.dismiss)();
       }

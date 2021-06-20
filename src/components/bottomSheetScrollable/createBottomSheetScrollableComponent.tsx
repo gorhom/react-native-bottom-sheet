@@ -21,6 +21,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     const {
       focusHook: useFocusHook = useEffect,
       overScrollMode = 'never',
+      keyboardDismissMode = 'interactive',
       style,
       // refresh control
       refreshing,
@@ -91,6 +92,7 @@ export function createBottomSheetScrollableComponent<T, P>(
                   // @ts-ignore
                   ref={scrollableRef}
                   overScrollMode={overScrollMode}
+                  keyboardDismissMode={keyboardDismissMode}
                   scrollEventThrottle={16}
                   onScroll={handleScrollEvent}
                   animatedProps={scrollableAnimatedProps}
