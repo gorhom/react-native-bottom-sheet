@@ -6,12 +6,13 @@ const BottomSheetBackdropContainerComponent = ({
   animatedIndex,
   animatedPosition,
   backdropComponent: BackdropComponent,
+  bottomInset
 }: BottomSheetBackdropContainerProps) => {
   return BackdropComponent ? (
     <BackdropComponent
       animatedIndex={animatedIndex}
       animatedPosition={animatedPosition}
-      style={styles.container}
+      style={[styles.container, { bottom: bottomInset ? bottomInset : 0 }]}
     />
   ) : null;
 };

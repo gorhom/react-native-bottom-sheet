@@ -88,6 +88,12 @@ export interface BottomSheetVariables {
    * @type Animated.Value<number>
    */
   animatedPosition: Animated.SharedValue<number>;
+  /**
+   * Current sheet absolute bottom position offset of backdrop.
+   * @type number
+   * @default '0'
+   */
+  bottomInset?: number;
 }
 
 //#region scrollables
