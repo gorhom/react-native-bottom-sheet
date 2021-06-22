@@ -5,15 +5,17 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
+import { Platform } from 'react-native';
 import { useAnimatedStyle } from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetRefreshControl from '../bottomSheetRefreshControl';
 import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
+import { SCROLLABLE_TYPE } from '../../constants';
 import { styles } from './styles';
-import { Platform } from 'react-native';
 
 export function createBottomSheetScrollableComponent<T, P>(
+  type: SCROLLABLE_TYPE,
   ScrollableComponent: any
 ) {
   return forwardRef<T, P>((props, ref) => {
@@ -42,7 +44,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       scrollableAnimatedProps,
       handleScrollEvent,
       handleSettingScrollable,
-    } = useScrollableInternal(onRefresh !== undefined);
+    } = useScrollableInternal(type, onRefresh !== undefined);
     const { enableContentPanningGesture, animatedFooterHeight } =
       useBottomSheetInternal();
     //#endregion
@@ -111,6 +113,7 @@ export function createBottomSheetScrollableComponent<T, P>(
                 // @ts-ignore
                 ref={scrollableRef}
                 overScrollMode={overScrollMode}
+                keyboardDismissMode={keyboardDismissMode}
                 scrollEventThrottle={16}
                 onScroll={handleScrollEvent}
                 animatedProps={scrollableAnimatedProps}
@@ -136,6 +139,7 @@ export function createBottomSheetScrollableComponent<T, P>(
             // @ts-ignore
             ref={scrollableRef}
             overScrollMode={overScrollMode}
+            keyboardDismissMode={keyboardDismissMode}
             scrollEventThrottle={16}
             refreshing={refreshing}
             onRefresh={onRefresh}

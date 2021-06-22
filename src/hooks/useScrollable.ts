@@ -1,7 +1,7 @@
 import { useCallback, RefObject, useRef } from 'react';
-import { findNodeHandle, Platform } from 'react-native';
+import { findNodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
-import { SCROLLABLE_STATE } from '../constants';
+import { SCROLLABLE_TYPE } from '../constants';
 import type { ScrollableRef, Scrollable } from '../types';
 
 export const useScrollable = () => {
@@ -10,8 +10,8 @@ export const useScrollable = () => {
   const previousScrollableRef = useRef<ScrollableRef>(null);
 
   // variables
-  const scrollableState = useSharedValue<SCROLLABLE_STATE>(
-    SCROLLABLE_STATE.LOCKED
+  const scrollableType = useSharedValue<SCROLLABLE_TYPE>(
+    SCROLLABLE_TYPE.UNDETERMINED
   );
   const scrollableContentOffsetY = useSharedValue<number>(0);
   const isScrollableRefreshable = useSharedValue<boolean>(false);
@@ -56,8 +56,6 @@ export const useScrollable = () => {
 
   const flashScrollableIndicators = useCallback(() => {
     let node = scrollableRef.current?.node ?? undefined;
-    let didResize = scrollableRef.current?.didResize ?? false;
-
     if (!node) {
       return;
     }
@@ -66,26 +64,12 @@ export const useScrollable = () => {
     if (node.current.flashScrollIndicators) {
       // @ts-ignore
       node.current.flashScrollIndicators();
-
-      /**
-       * this is a hack to resize the scroll indicator
-       * size on iOS.
-       */
-      if (Platform.OS === 'ios' && !didResize) {
-        // @ts-ignore
-        node.current.setNativeProps({
-          bottom: 0.5,
-        });
-
-        // @ts-ignore
-        scrollableRef.current.didResize = true;
-      }
     }
   }, []);
 
   return {
     scrollableRef,
-    scrollableState,
+    scrollableType,
     scrollableContentOffsetY,
     isScrollableRefreshable,
     setScrollableRef,

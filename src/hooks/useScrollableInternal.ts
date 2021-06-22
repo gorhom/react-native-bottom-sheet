@@ -13,6 +13,7 @@ import {
   ANIMATION_STATE,
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATE,
+  SCROLLABLE_TYPE,
   SHEET_STATE,
 } from '../constants';
 
@@ -21,7 +22,10 @@ type HandleScrollEventContextType = {
   shouldLockInitialPosition: boolean;
 };
 
-export const useScrollableInternal = (refreshable: boolean) => {
+export const useScrollableInternal = (
+  type: SCROLLABLE_TYPE,
+  refreshable: boolean
+) => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
   const scrollableContentOffsetY = useSharedValue<number>(0);
@@ -30,6 +34,7 @@ export const useScrollableInternal = (refreshable: boolean) => {
   const {
     animatedSheetState,
     animatedScrollableState,
+    animatedScrollableType,
     animatedAnimationState,
     scrollableContentOffsetY: rootScrollableContentOffsetY,
     isScrollableRefreshable,
@@ -42,6 +47,8 @@ export const useScrollableInternal = (refreshable: boolean) => {
   const scrollableAnimatedProps = useAnimatedProps(() => ({
     decelerationRate:
       SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
+    showsVerticalScrollIndicator:
+      animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED,
   }));
 
   // callbacks
@@ -122,6 +129,7 @@ export const useScrollableInternal = (refreshable: boolean) => {
   const handleSettingScrollable = useCallback(() => {
     // set current content offset
     rootScrollableContentOffsetY.value = scrollableContentOffsetY.value;
+    animatedScrollableType.value = type;
     isScrollableRefreshable.value = refreshable;
     isContentHeightFixed.value = false;
 
@@ -131,7 +139,6 @@ export const useScrollableInternal = (refreshable: boolean) => {
       setScrollableRef({
         id: id,
         node: scrollableRef,
-        didResize: false,
       });
     } else {
       console.warn(`Couldn't find the scrollable node handle id!`);
@@ -141,10 +148,12 @@ export const useScrollableInternal = (refreshable: boolean) => {
       removeScrollableRef(scrollableRef);
     };
   }, [
+    type,
     refreshable,
     isScrollableRefreshable,
     isContentHeightFixed,
     rootScrollableContentOffsetY,
+    animatedScrollableType,
     scrollableContentOffsetY,
     scrollableRef,
     setScrollableRef,

@@ -14,6 +14,7 @@ import {
   GESTURE_SOURCE,
   KEYBOARD_DISMISS_THRESHOLD,
   KEYBOARD_STATE,
+  SCROLLABLE_TYPE,
   WINDOW_HEIGHT,
 } from '../constants';
 
@@ -23,6 +24,7 @@ export interface useInteractivePanGestureHandlerConfigs {
   enablePanDownToClose: boolean;
   overDragResistanceFactor: number;
   isInTemporaryPosition: Animated.SharedValue<boolean>;
+  animatedScrollableType: Animated.SharedValue<SCROLLABLE_TYPE>;
   animatedKeyboardState: Animated.SharedValue<KEYBOARD_STATE>;
   animatedKeyboardHeight: Animated.SharedValue<number>;
   animatedSnapPoints: Animated.SharedValue<number[]>;
@@ -45,6 +47,7 @@ export const useInteractivePanGestureHandler = ({
   enableOverDrag,
   enablePanDownToClose,
   overDragResistanceFactor,
+  animatedScrollableType,
   animatedKeyboardState,
   animatedKeyboardHeight,
   isInTemporaryPosition,
@@ -279,13 +282,32 @@ export const useInteractivePanGestureHandler = ({
        * close keyboard if current position is below the recorded
        * start position and keyboard still shown.
        */
+      const isScrollable =
+        animatedScrollableType.value !== SCROLLABLE_TYPE.UNDETERMINED &&
+        animatedScrollableType.value !== SCROLLABLE_TYPE.VIEW;
+
+      /**
+       * if keyboard is shown and the sheet is dragged down,
+       * then we dismiss the keyboard.
+       */
       if (
         context.keyboardState === KEYBOARD_STATE.SHOWN &&
-        animatedPosition.value > context.startPosition &&
-        (Platform.OS === 'android' ||
-          (Platform.OS === 'ios' &&
-            absoluteY < WINDOW_HEIGHT - animatedKeyboardHeight.value))
+        animatedPosition.value > context.startPosition
       ) {
+        /**
+         * if the platform is ios, current content is scrollable and
+         * the end touch point is below the keyboard position then
+         * we exit the method.
+         *
+         * because the the keyboard dismiss is interactive in iOS.
+         */
+        if (
+          Platform.OS === 'ios' &&
+          isScrollable &&
+          absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
+        ) {
+          return;
+        }
         runOnJS(Keyboard.dismiss)();
       }
 
