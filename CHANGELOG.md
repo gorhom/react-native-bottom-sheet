@@ -1,6 +1,8 @@
 # Changelog
 
-## [v4.0.0-alpha.14](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.13...v4.0.0-alpha.14)
+## [v4.0.0-alpha.15](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.14...v4.0.0-alpha.15)
+
+## [v4.0.0-alpha.14](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.13...v4.0.0-alpha.14) - 2021-06-26
 
 #### Fixes
 
