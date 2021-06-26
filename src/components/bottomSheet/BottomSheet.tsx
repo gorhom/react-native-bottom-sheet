@@ -63,7 +63,6 @@ import {
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
   DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
   DEFAULT_ENABLE_OVER_DRAG,
-  DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
   DEFAULT_ANIMATE_ON_MOUNT,
   DEFAULT_KEYBOARD_BEHAVIOR,
   DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
@@ -76,7 +75,7 @@ import {
   DEFAULT_ANIMATION_CONFIGS,
   DEFAULT_KEYBOARD_INPUT_MODE,
 } from './constants';
-import type { ScrollableRef, BottomSheetMethods, Insets } from '../../types';
+import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps } from './types';
 import type {
   GestureEventContextType,
@@ -108,7 +107,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableContentPanningGesture = DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
-      enableFlashScrollableIndicatorOnExpand = DEFAULT_ENABLE_FLASH_SCROLLABLE_INDICATOR_ON_EXPAND,
       enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
       style: _providedStyle,
@@ -275,7 +273,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       isScrollableRefreshable,
       setScrollableRef,
       removeScrollableRef,
-      flashScrollableIndicators,
     } = useScrollable();
     // keyboard
     const {
@@ -542,22 +539,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [keyboardBehavior, keyboardBlurBehavior]
     );
-    const refreshUIElements = useCallback(() => {
-      const currentPositionIndex = Math.max(animatedCurrentIndex.value, 0);
-      const snapPoints = animatedSnapPoints.value;
-
-      if (
-        enableFlashScrollableIndicatorOnExpand &&
-        currentPositionIndex === snapPoints.length - 1
-      ) {
-        flashScrollableIndicators();
-      }
-    }, [
-      animatedSnapPoints,
-      animatedCurrentIndex,
-      enableFlashScrollableIndicatorOnExpand,
-      flashScrollableIndicators,
-    ]);
     const handleOnChange = useCallback(
       function handleOnChange(index: number) {
         print({
@@ -600,13 +581,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
       },
       [_providedOnAnimate, animatedSnapPoints, animatedCurrentIndex]
-    );
-    const handleSettingScrollableRef = useCallback(
-      (scrollableRef: ScrollableRef) => {
-        setScrollableRef(scrollableRef);
-        refreshUIElements();
-      },
-      [setScrollableRef, refreshUIElements]
     );
     const animateToPositionCompleted = useWorkletCallback(() => {
       animatedAnimationState.value = ANIMATION_STATE.STOPPED;
@@ -1313,7 +1287,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         failOffsetY: _providedFailOffsetY,
         contentPanGestureHandler,
         getKeyboardHeightInContainer,
-        setScrollableRef: handleSettingScrollableRef,
+        setScrollableRef,
         removeScrollableRef,
       }),
       [
@@ -1330,7 +1304,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedKeyboardHeight,
         animatedSheetState,
         contentPanGestureHandler,
-        handleSettingScrollableRef,
+        setScrollableRef,
         removeScrollableRef,
         shouldHandleKeyboardEvents,
         animatedScrollableState,
@@ -1631,7 +1605,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
           animatedCurrentIndex.value = _animatedIndex;
           runOnJS(handleOnChange)(_animatedIndex);
-          runOnJS(refreshUIElements)();
         }
       },
       [handleOnChange]

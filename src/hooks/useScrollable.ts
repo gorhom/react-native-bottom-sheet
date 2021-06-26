@@ -54,19 +54,6 @@ export const useScrollable = () => {
     }
   }, []);
 
-  const flashScrollableIndicators = useCallback(() => {
-    let node = scrollableRef.current?.node ?? undefined;
-    if (!node) {
-      return;
-    }
-
-    // @ts-ignore
-    if (node.current.flashScrollIndicators) {
-      // @ts-ignore
-      node.current.flashScrollIndicators();
-    }
-  }, []);
-
   return {
     scrollableRef,
     scrollableType,
@@ -74,6 +61,5 @@ export const useScrollable = () => {
     isScrollableRefreshable,
     setScrollableRef,
     removeScrollableRef,
-    flashScrollableIndicators,
   };
 };
