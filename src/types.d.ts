@@ -93,12 +93,9 @@ export interface BottomSheetVariables {
 //#region scrollables
 export type Scrollable = FlatList | ScrollView | SectionList;
 
-export type ScrollableType = 'FlatList' | 'ScrollView' | 'SectionList' | 'View';
-
 export type ScrollableRef = {
   id: number;
   node: React.RefObject<Scrollable>;
-  didResize: boolean;
 };
 //#endregion
 

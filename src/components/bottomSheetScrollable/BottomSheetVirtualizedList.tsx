@@ -4,6 +4,7 @@ import {
   VirtualizedListProps as RNVirtualizedListProps,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { SCROLLABLE_TYPE } from '../../constants';
 import { createBottomSheetScrollableComponent } from './createBottomSheetScrollableComponent';
 import type {
   BottomSheetVirtualizedListMethods,
@@ -19,7 +20,7 @@ const BottomSheetVirtualizedListComponent =
   createBottomSheetScrollableComponent<
     BottomSheetVirtualizedListMethods,
     BottomSheetVirtualizedListProps<any>
-  >(AnimatedVirtualizedList);
+  >(SCROLLABLE_TYPE.VIRTUALIZEDLIST, AnimatedVirtualizedList);
 
 const BottomSheetVirtualizedList = memo(BottomSheetVirtualizedListComponent);
 BottomSheetVirtualizedList.displayName = 'BottomSheetVirtualizedList';

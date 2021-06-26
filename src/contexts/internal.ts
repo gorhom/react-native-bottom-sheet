@@ -8,6 +8,7 @@ import type {
   ANIMATION_STATE,
   KEYBOARD_STATE,
   SCROLLABLE_STATE,
+  SCROLLABLE_TYPE,
   SHEET_STATE,
 } from '../constants';
 import type { Scrollable, ScrollableRef } from '../types';
@@ -39,6 +40,7 @@ export interface BottomSheetInternalContextType
   animatedFooterHeight: Animated.SharedValue<number>;
   animatedHandleHeight: Animated.SharedValue<number>;
   animatedKeyboardHeight: Animated.SharedValue<number>;
+  animatedScrollableType: Animated.SharedValue<SCROLLABLE_TYPE>;
   isScrollableRefreshable: Animated.SharedValue<boolean>;
   isContentHeightFixed: Animated.SharedValue<boolean>;
   scrollableContentOffsetY: Animated.SharedValue<number>;
