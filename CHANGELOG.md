@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.13](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.12...v4.0.0-alpha.13)
+## [v4.0.0-alpha.14](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.13...v4.0.0-alpha.14)
+
+#### Fixes
+
+- fix: refactored snap points reaction to handle keyboard state ([`#497`](https://github.com/gorhom/react-native-bottom-sheet/pull/497)).
+
+## [v4.0.0-alpha.13](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.12...v4.0.0-alpha.13) - 2021-06-15
 
 #### Fixes
 
