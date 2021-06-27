@@ -1,6 +1,16 @@
 # Changelog
 
-## [v4.0.0-alpha.15](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.14...v4.0.0-alpha.15)
+## [v4.0.0-alpha.16](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.15...v4.0.0-alpha.16)
+
+#### Features
+
+- feat: allow view scrollble to over-drag sheet ([2c2ca4e](https://github.com/gorhom/react-native-bottom-sheet/commit/2c2ca4ec17587689c2e38fcb0aad87a172251b55)).
+
+#### Fixes
+
+- fix: updated keyboard handling for Android ([2d74ab0](https://github.com/gorhom/react-native-bottom-sheet/commit/2d74ab069357f0ba430ff9f059dad0c6305eef48)).
+
+## [v4.0.0-alpha.15](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.14...v4.0.0-alpha.15) - 2021-06-26
 
 ## [v4.0.0-alpha.14](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.13...v4.0.0-alpha.14) - 2021-06-26
 
@@ -117,7 +127,7 @@
 
 - feat: added snap to position ([`#443`](https://github.com/gorhom/react-native-bottom-sheet/pull/443)).
 
-## [v4.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.5...v4.0.0-alpha.0) - 2021-05-16
+## [v4.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.6...v4.0.0-alpha.0) - 2021-05-16
 
 #### Features
 
@@ -134,6 +144,8 @@
 
 - fix: sheet positioning on modals ([ee573e9](https://github.com/gorhom/react-native-bottom-sheet/commit/ee573e9463836301d9736c3e5d86b2b363f9fb14)).
 - fix: prevent animatedPosition from becoming undefined ([400d7b9](https://github.com/gorhom/react-native-bottom-sheet/commit/400d7b93caa0a46f678db2978e7e5f95cc87ee99)).
+
+## [v3.6.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.5...v3.6.6) - 2021-06-26
 
 ## [v3.6.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v3.6.4...v3.6.5) - 2021-05-23
 
