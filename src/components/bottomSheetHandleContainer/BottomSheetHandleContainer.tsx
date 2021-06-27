@@ -101,6 +101,7 @@ function BottomSheetHandleContainerComponent({
       onGestureEvent={handlePanGestureHandler}
     >
       <Animated.View
+        key="BottomSheetHandleContainer"
         accessible={true}
         accessibilityRole="adjustable"
         accessibilityLabel="Bottom Sheet handle"

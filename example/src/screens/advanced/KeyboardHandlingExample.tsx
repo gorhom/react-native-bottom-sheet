@@ -18,7 +18,7 @@ const KeyboardHandlingExample = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => [SEARCH_HANDLE_HEIGHT + 34, 500], []);
+  const snapPoints = useMemo(() => [SEARCH_HANDLE_HEIGHT + 34, 450], []);
 
   // callbacks
   const handleToggleKeyboardBehavior = useCallback(() => {

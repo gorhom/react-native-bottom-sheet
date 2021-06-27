@@ -74,11 +74,6 @@ const KEYBOARD_BLUR_BEHAVIOR = {
 
 const KEYBOARD_DISMISS_THRESHOLD = 12.5;
 
-const KEYBOARD_INPUT_MODE = {
-  adjustPan: 'adjustPan',
-  adjustResize: 'adjustResize',
-};
-
 export {
   GESTURE_SOURCE,
   SHEET_STATE,
@@ -94,5 +89,4 @@ export {
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_DISMISS_THRESHOLD,
-  KEYBOARD_INPUT_MODE,
 };
