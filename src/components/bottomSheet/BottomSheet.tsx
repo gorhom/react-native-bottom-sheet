@@ -1037,7 +1037,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         if (enableOverDrag) {
           if (
-            type === GESTURE_SOURCE.HANDLE &&
+            (type === GESTURE_SOURCE.HANDLE ||
+              animatedScrollableType.value === SCROLLABLE_TYPE.VIEW) &&
             draggedPosition < highestSnapPoint
           ) {
             const resistedPosition =
