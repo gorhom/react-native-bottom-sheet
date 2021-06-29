@@ -8,6 +8,7 @@ import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
 import type {
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
+  KEYBOARD_INPUT_MODE,
 } from '../../constants';
 
 export interface BottomSheetProps
@@ -152,6 +153,14 @@ export interface BottomSheetProps
    * - `restore`: restore sheet position.
    */
   keyboardBlurBehavior?: keyof typeof KEYBOARD_BLUR_BEHAVIOR;
+  /**
+   * Defines keyboard input mode for Android only.
+   * @link {https://developer.android.com/guide/topics/manifest/activity-element#wsoft}
+   * @type `adjustPan` | `adjustResize`
+   * @default `adjustPan`
+   */
+  android_keyboardInputMode?: keyof typeof KEYBOARD_INPUT_MODE;
+
   //#endregion
 
   /**

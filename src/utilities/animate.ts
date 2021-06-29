@@ -5,7 +5,7 @@ export const animate = (
   point: number,
   configs: Animated.WithSpringConfig | Animated.WithTimingConfig,
   velocity: number = 0,
-  onComplete?: () => void
+  onComplete?: (isFinished: boolean) => void
 ) => {
   'worklet';
 

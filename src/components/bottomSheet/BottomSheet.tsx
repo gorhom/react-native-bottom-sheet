@@ -47,7 +47,7 @@ import {
   SHEET_STATE,
   SCROLLABLE_STATE,
   KEYBOARD_BLUR_BEHAVIOR,
-  KEYBOARD_DISMISS_THRESHOLD,
+  KEYBOARD_INPUT_MODE,
   SCROLLABLE_TYPE,
   WINDOW_HEIGHT,
 } from '../../constants';
@@ -65,6 +65,7 @@ import {
   DEFAULT_ANIMATE_ON_MOUNT,
   DEFAULT_KEYBOARD_BEHAVIOR,
   DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
+  DEFAULT_KEYBOARD_INPUT_MODE,
   INITIAL_CONTAINER_HEIGHT,
   INITIAL_HANDLE_HEIGHT,
   INITIAL_POSITION,
@@ -112,6 +113,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // keyboard
       keyboardBehavior = DEFAULT_KEYBOARD_BEHAVIOR,
       keyboardBlurBehavior = DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
+      android_keyboardInputMode = DEFAULT_KEYBOARD_INPUT_MODE,
 
       // layout
       handleHeight: _providedHandleHeight,
@@ -282,19 +284,27 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     /**
      * Returns keyboard height that in the root container.
      */
-    const getKeyboardHeightInContainer = useWorkletCallback(
-      () =>
-        $modal
-          ? Math.abs(
-              animatedKeyboardHeight.value -
-                Math.abs(bottomInset - animatedContainerOffset.value.bottom)
-            )
-          : Math.abs(
-              animatedKeyboardHeight.value -
-                animatedContainerOffset.value.bottom
-            ),
-      [$modal, bottomInset]
-    );
+    const getKeyboardHeightInContainer = useWorkletCallback(() => {
+      /**
+       * if android software input mode is not `adjustPan`, than keyboard
+       * height will be 0 all the time.
+       */
+      if (
+        Platform.OS === 'android' &&
+        android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize
+      ) {
+        return 0;
+      }
+
+      return $modal
+        ? Math.abs(
+            animatedKeyboardHeight.value -
+              Math.abs(bottomInset - animatedContainerOffset.value.bottom)
+          )
+        : Math.abs(
+            animatedKeyboardHeight.value - animatedContainerOffset.value.bottom
+          );
+    }, [$modal, bottomInset]);
     //#endregion
 
     //#region state/dynamic variables
@@ -568,11 +578,26 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [_providedOnAnimate, animatedSnapPoints, animatedCurrentIndex]
     );
-    const animateToPositionCompleted = useWorkletCallback(() => {
-      animatedAnimationState.value = ANIMATION_STATE.STOPPED;
-      animatedNextPosition.value = Number.NEGATIVE_INFINITY;
-      animatedNextPositionIndex.value = Number.NEGATIVE_INFINITY;
-    });
+    const animateToPositionCompleted = useWorkletCallback(
+      function animateToPositionCompleted(isFinished: boolean) {
+        if (!isFinished) {
+          return;
+        }
+        runOnJS(print)({
+          component: BottomSheet.name,
+          method: animateToPositionCompleted.name,
+          params: {
+            animatedCurrentIndex: animatedCurrentIndex.value,
+            animatedNextPosition: animatedNextPosition.value,
+            animatedNextPositionIndex: animatedNextPositionIndex.value,
+          },
+        });
+        animatedAnimationState.value = ANIMATION_STATE.STOPPED;
+        animatedCurrentIndex.value = animatedNextPositionIndex.value;
+        animatedNextPosition.value = Number.NEGATIVE_INFINITY;
+        animatedNextPositionIndex.value = Number.NEGATIVE_INFINITY;
+      }
+    );
     const animateToPosition = useWorkletCallback(
       function animateToPosition(
         position: number,
@@ -1003,22 +1028,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         /**
-         * dismiss the keyboard when panning down, when:
-         * - keyboard is shown.
-         * - distance is more than threshold.
-         * - scrollable content is on the top.
-         * -
-         */
-        if (
-          animatedKeyboardState.value === KEYBOARD_STATE.SHOWN &&
-          translationY > KEYBOARD_DISMISS_THRESHOLD &&
-          scrollableContentOffsetY.value === 0 &&
-          Platform.OS === 'android'
-        ) {
-          runOnJS(Keyboard.dismiss)();
-        }
-
-        /**
          * over-drag implementation.
          */
         if (enableOverDrag) {
@@ -1405,7 +1414,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animatedNextPositionIndex.value = -1;
         } else {
           nextPosition = animatedSnapPoints.value[_providedIndex];
-          animatedNextPositionIndex.value = _providedIndex;
         }
 
         /**
@@ -1434,7 +1442,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (animateOnMount) {
           animateToPosition(nextPosition);
         } else {
-          animatedNextPosition.value = nextPosition;
           animatedPosition.value = nextPosition;
         }
         isAnimatedOnMount.value = true;
@@ -1508,7 +1515,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
            * if new keyboard state is hidden and blur behavior is none, then exit the method
            */
           (_keyboardState === KEYBOARD_STATE.HIDDEN &&
-            keyboardBlurBehavior === KEYBOARD_BLUR_BEHAVIOR.none)
+            keyboardBlurBehavior === KEYBOARD_BLUR_BEHAVIOR.none) ||
+          /**
+           * if platform is android and the input mode is resize, then exit the method
+           */
+          (Platform.OS === 'android' &&
+            (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive ||
+              keyboardBehavior === KEYBOARD_BEHAVIOR.none) &&
+            android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize)
         ) {
           return;
         }
@@ -1528,7 +1542,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         const nextPosition = getNextPosition();
         animateToPosition(nextPosition, 0, animationConfigs);
       },
-      [keyboardBlurBehavior, getNextPosition]
+      [
+        keyboardBehavior,
+        keyboardBlurBehavior,
+        android_keyboardInputMode,
+        getNextPosition,
+      ]
     );
 
     /**

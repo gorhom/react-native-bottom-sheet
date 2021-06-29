@@ -72,6 +72,11 @@ const KEYBOARD_BLUR_BEHAVIOR = {
   restore: 'restore',
 } as const;
 
+const KEYBOARD_INPUT_MODE = {
+  adjustPan: 'adjustPan',
+  adjustResize: 'adjustResize',
+} as const;
+
 const KEYBOARD_DISMISS_THRESHOLD = 12.5;
 
 export {
@@ -88,5 +93,6 @@ export {
   MODAL_STACK_BEHAVIOR,
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
+  KEYBOARD_INPUT_MODE,
   KEYBOARD_DISMISS_THRESHOLD,
 };
