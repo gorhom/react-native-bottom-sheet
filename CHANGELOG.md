@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.16](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.15...v4.0.0-alpha.16)
+## [v4.0.0-alpha.17](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.16...v4.0.0-alpha.17)
+
+#### Fixes
+
+- fix: updated android keyboard handling ([f53306d](https://github.com/gorhom/react-native-bottom-sheet/commit/f53306d8d214d7dc605eb5ecb343f08f011c3ae2)).
+
+## [v4.0.0-alpha.16](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.15...v4.0.0-alpha.16) - 2021-06-27
 
 #### Features
 
