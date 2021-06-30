@@ -12,16 +12,17 @@ import withModalProvider from '../withModalProvider';
 const DynamicSnapPointExample = () => {
   // state
   const [count, setCount] = useState(0);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
 
   // hooks
+  const { bottom: safeBottomArea } = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const {
     animatedHandleHeight,
     animatedSnapPoints,
     animatedContentHeight,
     handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(['CONTENT_HEIGHT']);
-  const { bottom: safeBottomArea } = useSafeAreaInsets();
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {

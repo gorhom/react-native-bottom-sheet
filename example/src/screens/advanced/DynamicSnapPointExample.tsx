@@ -13,6 +13,7 @@ const DynamicSnapPointExample = () => {
   const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
 
   // hooks
+  const { bottom: safeBottomArea } = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const {
     animatedHandleHeight,
@@ -20,7 +21,6 @@ const DynamicSnapPointExample = () => {
     animatedContentHeight,
     handleContentLayout,
   } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
-  const { bottom: safeBottomArea } = useSafeAreaInsets();
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {

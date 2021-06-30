@@ -593,7 +593,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
         animatedAnimationState.value = ANIMATION_STATE.STOPPED;
-        animatedCurrentIndex.value = animatedNextPositionIndex.value;
         animatedNextPosition.value = Number.NEGATIVE_INFINITY;
         animatedNextPositionIndex.value = Number.NEGATIVE_INFINITY;
       }
@@ -1416,19 +1415,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           nextPosition = animatedSnapPoints.value[_providedIndex];
         }
 
-        /**
-         * here we exit method early because the next position
-         * is out of the screen, this happens when `snapPoints`
-         * still being calculated.
-         */
-        if (
-          nextPosition === INITIAL_POSITION ||
-          nextPosition === animatedClosedPosition.value
-        ) {
-          isAnimatedOnMount.value = true;
-          return;
-        }
-
         runOnJS(print)({
           component: BottomSheet.name,
           method: 'useAnimatedReaction::OnMount',
@@ -1439,13 +1425,28 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
 
+        /**
+         * here we exit method early because the next position
+         * is out of the screen, this happens when `snapPoints`
+         * still being calculated.
+         */
+        if (
+          nextPosition === INITIAL_POSITION ||
+          nextPosition === animatedClosedPosition.value
+        ) {
+          isAnimatedOnMount.value = true;
+          animatedCurrentIndex.value = _providedIndex;
+          return;
+        }
+
         if (animateOnMount) {
           animateToPosition(nextPosition);
         } else {
           animatedPosition.value = nextPosition;
         }
         isAnimatedOnMount.value = true;
-      }
+      },
+      [_providedIndex, animateOnMount]
     );
 
     /**
@@ -1470,12 +1471,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           component: BottomSheet.name,
           method: 'useAnimatedReaction::OnSnapPointChange',
           params: {
-            // animatedSnapPoints: _animatedSnapPoints,
-            // prev: _previousAnimatedSnapPoints,
+            animatedSnapPoints: _animatedSnapPoints,
+            animatedIndex: animatedIndex.value,
+            animatedCurrentIndex: animatedCurrentIndex.value,
             animatedPosition: animatedPosition.value,
             animatedNextPosition: animatedNextPosition.value,
             animatedNextPositionIndex: animatedNextPositionIndex.value,
-            animatedCurrentIndex: animatedCurrentIndex.value,
           },
         });
 
@@ -1510,6 +1511,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => animatedKeyboardState.value,
       (_keyboardState, _previousKeyboardState) => {
         if (
+          !isAnimatedOnMount.value ||
           _keyboardState === _previousKeyboardState ||
           /**
            * if new keyboard state is hidden and blur behavior is none, then exit the method
@@ -1695,10 +1697,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               animatedScrollableState,
               // isScrollableRefreshable,
               // scrollableContentOffsetY,
-              keyboardState,
-              // animatedIndex,
-              // animatedCurrentIndex,
-              // animatedPosition,
+              // keyboardState,
+              animatedIndex,
+              animatedCurrentIndex,
+              animatedPosition,
               animatedContainerHeight,
               animatedSheetHeight,
               animatedHandleHeight,

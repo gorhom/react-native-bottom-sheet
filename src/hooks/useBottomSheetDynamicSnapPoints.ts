@@ -8,9 +8,10 @@ import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
  * [0, 'CONTENT_HEIGHT', '100%']
  * @param initialSnapPoints your snap point with content height placeholder.
  * @returns {
- *  - animatedSnapPoints: to provided to `BottomSheet` or `BottomSheetModal`.
- *  - animatedHandleHeight: an animated handle height callback node.
- *  - contentProps: props to be spread at `BottomSheetView` component.
+ *  - animatedSnapPoints: an animated snap points to be set on `BottomSheet` or `BottomSheetModal`.
+ *  - animatedHandleHeight: an animated handle height callback node to be set on `BottomSheet` or `BottomSheetModal`.
+ *  - animatedContentHeight: an animated content height callback node to be set on `BottomSheet` or `BottomSheetModal`.
+ *  - handleContentLayout: a `onLayout` callback method to be set on `BottomSheetView` component.
  * }
  */
 export const useBottomSheetDynamicSnapPoints = (
@@ -26,7 +27,7 @@ export const useBottomSheetDynamicSnapPoints = (
     return initialSnapPoints.map(snapPoint =>
       snapPoint === 'CONTENT_HEIGHT' ? contentWithHandleHeight : snapPoint
     );
-  });
+  }, []);
 
   // callbacks
   const handleContentLayout = useCallback(
