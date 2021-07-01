@@ -386,6 +386,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       if (isClosing.current) {
         return;
       }
+      isClosing.current = true;
       manualSnapToPoint.setValue(snapPoints[0]);
     }, [snapPoints, manualSnapToPoint]);
     //#endregion
