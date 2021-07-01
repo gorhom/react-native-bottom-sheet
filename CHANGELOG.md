@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.17](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.16...v4.0.0-alpha.17)
+## [v4.0.0-alpha.18](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.17...v4.0.0-alpha.18)
+
+#### Fixes
+
+- fix: fixed handling dynamic snap point on mount snapping ([35b2fcb](https://github.com/gorhom/react-native-bottom-sheet/commit/35b2fcb7d4eb1a2b953280a56396459b43b8767e)).
+
+## [v4.0.0-alpha.17](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.16...v4.0.0-alpha.17) - 2021-06-29
 
 #### Fixes
 
