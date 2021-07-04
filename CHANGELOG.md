@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.18](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.17...v4.0.0-alpha.18)
+## [v4.0.0-alpha.19](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.18...v4.0.0-alpha.19)
+
+#### Fixes
+
+- fix: stablise animated index when reacting to keyboard status ([26132c1](https://github.com/gorhom/react-native-bottom-sheet/commit/26132c14871af82eda7adf63ea98ab7a9f7d95e3)).
+
+## [v4.0.0-alpha.18](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.17...v4.0.0-alpha.18) - 2021-07-01
 
 #### Fixes
 
