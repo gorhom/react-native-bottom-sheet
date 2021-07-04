@@ -10,14 +10,6 @@ import { exp } from '../../utilities/easingExp';
 // default values
 const DEFAULT_ANIMATION_EASING: Animated.EasingFunction = Easing.out(exp);
 const DEFAULT_ANIMATION_DURATION = 500;
-const DEFAULT_ANIMATION_CONFIGS: Animated.WithSpringConfig = {
-  damping: 500,
-  stiffness: 1000,
-  mass: 3,
-  overshootClamping: true,
-  restDisplacementThreshold: 10,
-  restSpeedThreshold: 10,
-};
 
 const DEFAULT_HANDLE_HEIGHT = 24;
 const DEFAULT_OVER_DRAG_RESISTANCE_FACTOR = 2.5;
@@ -45,7 +37,6 @@ const INITIAL_HANDLE_HEIGHT = -999;
 const INITIAL_POSITION = WINDOW_HEIGHT;
 
 export {
-  DEFAULT_ANIMATION_CONFIGS,
   DEFAULT_ANIMATION_EASING,
   DEFAULT_ANIMATION_DURATION,
   DEFAULT_HANDLE_HEIGHT,

@@ -1,13 +1,42 @@
-import Animated, { withSpring, withTiming } from 'react-native-reanimated';
+import { Platform } from 'react-native';
+import Animated, {
+  Easing,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { ANIMATION_METHOD } from '../constants';
 
-export const animate = (
-  point: number,
-  configs: Animated.WithSpringConfig | Animated.WithTimingConfig,
-  velocity: number = 0,
-  onComplete?: (isFinished: boolean) => void
-) => {
+interface AnimateParams {
+  point: number;
+  velocity?: number;
+  configs?: Animated.WithSpringConfig | Animated.WithTimingConfig;
+  onComplete?: (isFinished: boolean) => void;
+}
+
+export const animate = ({
+  point,
+  configs = undefined,
+  velocity = 0,
+  onComplete,
+}: AnimateParams) => {
   'worklet';
+
+  if (!configs) {
+    configs =
+      Platform.OS === 'android'
+        ? {
+            duration: 250,
+            easing: Easing.out(Easing.exp),
+          }
+        : {
+            damping: 500,
+            stiffness: 1000,
+            mass: 3,
+            overshootClamping: true,
+            restDisplacementThreshold: 10,
+            restSpeedThreshold: 10,
+          };
+  }
 
   // detect animation type
   const type =
