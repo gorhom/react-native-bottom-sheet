@@ -209,23 +209,6 @@ export const useCustomPanGestureHandlerListeners = ({
           animatedPosition.value = resistedPosition;
           return;
         }
-
-        // if (
-        //   type === GESTURE_SOURCE.SCROLLABLE &&
-        //   draggedPosition + negativeScrollableContentOffset > lowestSnapPoint
-        // ) {
-        //   const resistedPosition =
-        //     lowestSnapPoint +
-        //     Math.sqrt(
-        //       1 +
-        //         (draggedPosition +
-        //           negativeScrollableContentOffset -
-        //           lowestSnapPoint)
-        //     ) *
-        //       overDragResistanceFactor;
-        //   animatedPosition.value = resistedPosition;
-        //   return;
-        // }
       }
 
       animatedPosition.value = clampedPosition;

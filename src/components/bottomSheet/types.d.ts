@@ -236,6 +236,7 @@ export interface BottomSheetProps
   /**
    * enables custom gesture event handlers for advanced use cases
    * @see useInteractivePanGestureHandlerListeners.ts for reference implementation
+   * warning: this is an experimental feature and the hook signature can change without a major version bump
    */
   panGestureHandlerListenersHook?: (
     params: UseInteractivePanGestureHandlerListenersParams

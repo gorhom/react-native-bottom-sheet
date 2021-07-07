@@ -46,10 +46,7 @@ function getScrollMetadata({
     isDraggingDownFromTop,
     didStartAtMiddle,
     didDragBelowSecondSnapPoint,
-    // isDraggingDown,
-    // gestureTranslationY,
   };
-  // console.log(JSON.stringify(ret));
   return ret;
 }
 
@@ -60,8 +57,6 @@ export const useCustomScrollableInternal = () => {
 
   // hooks
   const {
-    // animatedPosition -- derives --> animatedSheetState (+animatedAnimationState) -- derives --> animatedScrollableState
-    // animatedSheetState,
     animatedScrollableState,
     animatedAnimationState,
     scrollableContentOffsetY: rootScrollableContentOffsetY,
@@ -71,12 +66,6 @@ export const useCustomScrollableInternal = () => {
     animatedSnapPoints,
   } = useBottomSheetInternal();
   const gestureTranslationY = useGestureTranslationY();
-
-  // // variables
-  // const scrollableAnimatedProps = useAnimatedProps(() => ({
-  //   decelerationRate:
-  //     SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
-  // }));
 
   // callbacks
   const handleScrollEvent =
@@ -202,7 +191,6 @@ export const useCustomScrollableInternal = () => {
 
   return {
     scrollableRef,
-    // scrollableAnimatedProps,
     handleScrollEvent,
     handleSettingScrollable,
   };

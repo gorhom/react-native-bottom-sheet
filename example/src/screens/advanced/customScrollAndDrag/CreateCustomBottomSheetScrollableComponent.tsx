@@ -2,7 +2,6 @@ import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
-  useMemo,
   useRef,
 } from 'react';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
@@ -11,7 +10,6 @@ import {
   BottomSheetDraggableView,
   useBottomSheetInternal,
 } from '@gorhom/bottom-sheet';
-import { useAnimatedStyle } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native';
 
 export function createCustomBottomSheetScrollableComponent<T, P>(
@@ -33,21 +31,7 @@ export function createCustomBottomSheetScrollableComponent<T, P>(
     //#region hooks
     const { scrollableRef, handleScrollEvent, handleSettingScrollable } =
       useCustomScrollableInternal();
-    const { enableContentPanningGesture, animatedFooterHeight } =
-      useBottomSheetInternal();
-    //#endregion
-
-    //#region styles
-    const containerAnimatedStyle = useAnimatedStyle(() => ({
-      marginBottom: animatedFooterHeight.value,
-    }));
-    const containerStyle = useMemo(
-      () => [
-        ...(style ? ('length' in style ? style : [style]) : []),
-        containerAnimatedStyle,
-      ],
-      [style, containerAnimatedStyle]
-    );
+    const { enableContentPanningGesture } = useBottomSheetInternal();
     //#endregion
 
     //#region effects
@@ -56,7 +40,6 @@ export function createCustomBottomSheetScrollableComponent<T, P>(
     useFocusHook(handleSettingScrollable);
     //#endregion
 
-    // here, we do not pass animatedProps that contain TODO
     return (
       <BottomSheetDraggableView
         nativeGestureRef={nativeGestureRef}
@@ -75,7 +58,7 @@ export function createCustomBottomSheetScrollableComponent<T, P>(
             scrollEventThrottle={16}
             onScroll={handleScrollEvent}
             onScrollBeginDrag={handleScrollEvent}
-            style={containerStyle}
+            style={style}
           />
         </NativeViewGestureHandler>
       </BottomSheetDraggableView>
