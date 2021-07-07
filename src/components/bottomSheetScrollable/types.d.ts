@@ -7,6 +7,7 @@ import type {
   SectionListScrollParams,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
+import { UseScrollableType } from '../../hooks/useScrollableInternal';
 
 export interface BottomSheetScrollableProps {
   /**
@@ -16,6 +17,7 @@ export interface BottomSheetScrollableProps {
    * @type (effect: EffectCallback, deps?: DependencyList) => void
    */
   focusHook?: (effect: EffectCallback, deps?: DependencyList) => void;
+  scrollEventListenersHook?: UseScrollableType;
   // contentContainerStyle?: StyleProp<
   //   Animated.AnimateStyle<StyleProp<ViewStyle>>
   // >;

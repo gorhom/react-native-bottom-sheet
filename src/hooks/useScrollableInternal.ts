@@ -1,5 +1,9 @@
-import { useCallback } from 'react';
-import { findNodeHandle, NativeScrollEvent } from 'react-native';
+import { RefObject, useCallback } from 'react';
+import {
+  findNodeHandle,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from 'react-native';
 import {
   useAnimatedRef,
   useAnimatedScrollHandler,
@@ -22,10 +26,17 @@ type HandleScrollEventContextType = {
   shouldLockInitialPosition: boolean;
 };
 
-export const useScrollableInternal = (
+export type UseScrollableType = (
   type: SCROLLABLE_TYPE,
   refreshable: boolean
 ) => {
+  scrollableRef: RefObject<Scrollable>;
+  scrollableAnimatedProps: Record<string, any>;
+  handleScrollEvent: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  handleSettingScrollable: () => void;
+};
+
+export const useScrollableInternal: UseScrollableType = (type, refreshable) => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
   const scrollableContentOffsetY = useSharedValue<number>(0);

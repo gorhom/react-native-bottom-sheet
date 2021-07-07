@@ -1,6 +1,7 @@
 import Animated, {
   runOnUI,
   scrollTo,
+  useAnimatedProps,
   useAnimatedRef,
   useAnimatedScrollHandler,
   useSharedValue,
@@ -189,9 +190,12 @@ export const useCustomScrollableInternal = () => {
     setScrollableRef,
   ]);
 
+  const scrollableAnimatedProps = useAnimatedProps(() => ({}));
+
   return {
     scrollableRef,
     handleScrollEvent,
     handleSettingScrollable,
+    scrollableAnimatedProps,
   };
 };

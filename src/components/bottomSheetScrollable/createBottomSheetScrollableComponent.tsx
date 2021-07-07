@@ -24,6 +24,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       focusHook: useFocusHook = useEffect,
       overScrollMode = 'never',
       keyboardDismissMode = 'interactive',
+      scrollEventListenersHook = useScrollableInternal,
       style,
       // refresh control
       refreshing,
@@ -44,7 +45,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       scrollableAnimatedProps,
       handleScrollEvent,
       handleSettingScrollable,
-    } = useScrollableInternal(type, onRefresh !== undefined);
+    } = scrollEventListenersHook(type, onRefresh !== undefined);
     const { enableContentPanningGesture, animatedFooterHeight } =
       useBottomSheetInternal();
     //#endregion

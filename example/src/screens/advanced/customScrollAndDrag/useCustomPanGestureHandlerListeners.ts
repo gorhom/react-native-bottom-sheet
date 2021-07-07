@@ -139,11 +139,7 @@ export const useCustomPanGestureHandlerListeners = ({
 
       /**
        * a clamped value of the accumulated dragged position, to insure keeping the dragged
-       * position between the highest and lowest snap points.
-       */
-      /**
-       * a clamped value of the accumulated dragged position, to insure keeping the dragged
-       * position between the highest and lowest snap points.
+       * position between the highest and middle snap points.
        */
       const secondHighestSnapPoint =
         animatedSnapPoints.value[animatedSnapPoints.value.length - 2];

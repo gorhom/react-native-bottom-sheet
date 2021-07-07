@@ -1,14 +1,14 @@
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import Button from '../../../components/button';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { createContactListMockData } from '../../../utilities';
 import ContactItem from '../../../components/contactItem';
-import BottomSheetCustomScrollView from './BottomSheetCustomScrollView';
 import { useCustomPanGestureHandlerListeners } from './useCustomPanGestureHandlerListeners';
 import { GestureTranslationProvider } from './GestureTranslationContext';
 import { useSharedValue } from 'react-native-reanimated';
+import { useCustomScrollableInternal } from './useCustomScrollableInternal';
 
 const count = 60;
 
@@ -61,14 +61,15 @@ const CustomScrollAndDrag = () => {
           snapPoints={snapPoints}
           panGestureHandlerListenersHook={useCustomPanGestureHandlerListeners}
         >
-          <BottomSheetCustomScrollView
+          <BottomSheetScrollView
             style={styles.container}
             bounces={true}
             focusHook={useFocusEffect}
             contentContainerStyle={styles.contentContainer}
+            scrollEventListenersHook={useCustomScrollableInternal}
           >
             {data.map(renderScrollViewItem)}
-          </BottomSheetCustomScrollView>
+          </BottomSheetScrollView>
         </BottomSheet>
       </GestureTranslationProvider>
     </View>
