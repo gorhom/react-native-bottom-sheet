@@ -17,7 +17,6 @@ import {
 import { clamp, snapPoint } from 'react-native-redash';
 import { print } from '../../utilities';
 import { Keyboard, Platform } from 'react-native';
-import { useMemo } from 'react';
 
 type SharedValue<T> = Animated.SharedValue<T>;
 
@@ -408,13 +407,9 @@ export const useInteractivePanGestureHandlerListeners = ({
     ]
   );
 
-  const listeners = useMemo(
-    () => ({
-      handleGestureStart,
-      handleGestureActive,
-      handleGestureEnd,
-    }),
-    [handleGestureStart, handleGestureActive, handleGestureEnd]
-  );
-  return listeners;
+  return {
+    handleGestureStart,
+    handleGestureActive,
+    handleGestureEnd,
+  };
 };

@@ -5,7 +5,6 @@ import {
 } from 'react-native-reanimated';
 import { clamp, snapPoint } from 'react-native-redash';
 import { Keyboard, Platform } from 'react-native';
-import { useMemo } from 'react';
 import {
   GESTURE_SOURCE,
   KEYBOARD_STATE,
@@ -375,19 +374,9 @@ export const useCustomPanGestureHandlerListeners = ({
     ]
   );
 
-  const listeners = useMemo(
-    () => ({
-      handleGestureStart,
-      handleGestureActive,
-      handleGestureEnd,
-      gestureTranslationY,
-    }),
-    [
-      handleGestureStart,
-      handleGestureActive,
-      handleGestureEnd,
-      gestureTranslationY,
-    ]
-  );
-  return listeners;
+  return {
+    handleGestureStart,
+    handleGestureActive,
+    handleGestureEnd,
+  };
 };
