@@ -1,6 +1,16 @@
 # Changelog
 
-## [v4.0.0-alpha.19](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.18...v4.0.0-alpha.19)
+## [v4.0.0-alpha.20](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.19...v4.0.0-alpha.20)
+
+#### Improvements
+
+- refactor: removed none from keyboard behavior and set interactive as default ([26d3b71](https://github.com/gorhom/react-native-bottom-sheet/commit/26d3b7187cb309ce77dd55c32d44a63316776515)).
+
+#### Fixes
+
+- fix: prevent stuck state when animation is interrupted ([01e1e87](https://github.com/gorhom/react-native-bottom-sheet/commit/01e1e8716477aa904bedbda2aa08642f8a0c3c9c)).
+
+## [v4.0.0-alpha.19](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.18...v4.0.0-alpha.19) - 2021-07-04
 
 #### Fixes
 
