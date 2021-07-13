@@ -139,12 +139,11 @@ export interface BottomSheetProps
   /**
    * Defines the keyboard appearance behavior.
    * @enum
-   * - `none`: do nothing.
+   * - `interactive`: offset the sheet by the size of the keyboard.
    * - `extend`: extend the sheet to its maximum snap point.
    * - `fillParent`: extend the sheet to fill parent.
-   * - `interactive`: offset the sheet by the size of the keyboard.
-   * @type `none` | `extend` | `fillParent` | `interactive`
-   * @default none
+   * @type `interactive` | `extend` | `fillParent`
+   * @default interactive
    */
   keyboardBehavior?: keyof typeof KEYBOARD_BEHAVIOR;
   /**

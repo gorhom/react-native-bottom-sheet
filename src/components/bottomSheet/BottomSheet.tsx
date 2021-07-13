@@ -390,8 +390,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedSheetHeight.value - animatedHandleHeight.value;
 
       if (
-        (keyboardBehavior === KEYBOARD_BEHAVIOR.none ||
-          keyboardBehavior === KEYBOARD_BEHAVIOR.extend) &&
+        keyboardBehavior === KEYBOARD_BEHAVIOR.extend &&
         animatedKeyboardState.value === KEYBOARD_STATE.SHOWN
       ) {
         contentHeight = contentHeight - keyboardHeightInContainer;
@@ -1585,8 +1584,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
            * if platform is android and the input mode is resize, then exit the method
            */
           (Platform.OS === 'android' &&
-            (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive ||
-              keyboardBehavior === KEYBOARD_BEHAVIOR.none) &&
+            keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
             android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize)
         ) {
           return;
@@ -1663,14 +1661,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _contentGestureState,
         _handleGestureState,
       }) => {
+        /**
+         * we make sure all gestures are not active.
+         */
+        const hasNoActiveGesture =
+          (_contentGestureState === State.END ||
+            _contentGestureState === State.UNDETERMINED ||
+            _contentGestureState === State.CANCELLED) &&
+          (_handleGestureState === State.END ||
+            _handleGestureState === State.UNDETERMINED ||
+            _handleGestureState === State.CANCELLED);
+
         if (
           _animatedIndex % 1 === 0 &&
           _animatedIndex !== animatedCurrentIndex.value &&
           _animationState === ANIMATION_STATE.STOPPED &&
-          (_contentGestureState === State.END ||
-            _contentGestureState === State.UNDETERMINED) &&
-          (_handleGestureState === State.END ||
-            _handleGestureState === State.UNDETERMINED)
+          hasNoActiveGesture
         ) {
           runOnJS(print)({
             component: BottomSheet.name,

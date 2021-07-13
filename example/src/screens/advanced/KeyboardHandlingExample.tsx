@@ -10,7 +10,7 @@ import ContactList from '../../components/contactList';
 const KeyboardHandlingExample = () => {
   // state
   const [keyboardBehavior, setKeyboardBehavior] =
-    useState<'none' | 'extend' | 'fillParent' | 'interactive'>('none');
+    useState<'extend' | 'fillParent' | 'interactive'>('interactive');
   const [keyboardBlurBehavior, setKeyboardBlurBehavior] =
     useState<'none' | 'restore'>('none');
 
@@ -24,14 +24,12 @@ const KeyboardHandlingExample = () => {
   const handleToggleKeyboardBehavior = useCallback(() => {
     setKeyboardBehavior(state => {
       switch (state) {
-        case 'none':
+        case 'interactive':
           return 'extend';
         case 'extend':
           return 'fillParent';
         case 'fillParent':
           return 'interactive';
-        case 'interactive':
-          return 'none';
       }
     });
   }, []);

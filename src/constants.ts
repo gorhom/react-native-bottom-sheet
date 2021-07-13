@@ -71,10 +71,9 @@ const MODAL_STACK_BEHAVIOR = {
 };
 
 const KEYBOARD_BEHAVIOR = {
-  none: 'none',
+  interactive: 'interactive',
   extend: 'extend',
   fillParent: 'fillParent',
-  interactive: 'interactive',
 } as const;
 
 const KEYBOARD_BLUR_BEHAVIOR = {
