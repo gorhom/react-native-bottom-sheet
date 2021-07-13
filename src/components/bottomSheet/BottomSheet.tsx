@@ -386,8 +386,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     // dynamic
     const animatedContentHeight = useDerivedValue(() => {
       const keyboardHeightInContainer = getKeyboardHeightInContainer();
-      let contentHeight =
-        animatedSheetHeight.value - animatedHandleHeight.value;
+      const handleHeight = Math.max(0, animatedHandleHeight.value);
+      let contentHeight = animatedSheetHeight.value - handleHeight;
 
       if (
         keyboardBehavior === KEYBOARD_BEHAVIOR.extend &&
@@ -401,11 +401,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (animatedKeyboardState.value === KEYBOARD_STATE.SHOWN) {
           contentHeight =
             animatedContainerHeight.value -
-            animatedHandleHeight.value -
+            handleHeight -
             keyboardHeightInContainer;
         } else {
-          contentHeight =
-            animatedContainerHeight.value - animatedHandleHeight.value;
+          contentHeight = animatedContainerHeight.value - handleHeight;
         }
       } else if (
         keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
@@ -422,14 +421,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             contentHeight =
               animatedContainerHeight.value -
               keyboardHeightInContainer -
-              animatedHandleHeight.value;
+              handleHeight;
           }
         } else if (
-          contentWithKeyboardHeight + animatedHandleHeight.value >
+          contentWithKeyboardHeight + handleHeight >
           animatedContainerHeight.value
         ) {
-          contentHeight =
-            animatedContainerHeight.value - animatedHandleHeight.value;
+          contentHeight = animatedContainerHeight.value - handleHeight;
         } else {
           contentHeight = contentWithKeyboardHeight;
         }
@@ -598,6 +596,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animateToPositionCompleted = useWorkletCallback(
       function animateToPositionCompleted(isFinished: boolean) {
         if (!isFinished) {
+          animatedAnimationState.value = ANIMATION_STATE.INTERRUPTED;
           return;
         }
         runOnJS(print)({
@@ -624,9 +623,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
       ) {
         if (
-          position === animatedPosition.value ||
-          position === undefined ||
-          position === animatedNextPosition.value
+          animatedAnimationState.value !== ANIMATION_STATE.INTERRUPTED &&
+          (position === animatedPosition.value ||
+            position === undefined ||
+            position === animatedNextPosition.value)
         ) {
           return;
         }
