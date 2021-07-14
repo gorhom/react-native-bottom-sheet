@@ -39,9 +39,15 @@ export const {
 //#region types
 export type { BottomSheetProps } from './components/bottomSheet';
 export type { BottomSheetModalProps } from './components/bottomSheetModal';
-export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
+export type {
+  BottomSheetHandleProps,
+  BottomSheetDefaultHandleProps,
+} from './components/bottomSheetHandle';
 export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
-export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop';
+export type {
+  BottomSheetBackdropProps,
+  BottomSheetDefaultBackdropProps,
+} from './components/bottomSheetBackdrop';
 
 export type {
   BottomSheetFlatListMethods,
