@@ -238,7 +238,7 @@ export interface BottomSheetProps
    * @see useInteractivePanGestureHandlerListeners.ts for reference implementation
    * warning: this is an experimental feature and the hook signature can change without a major version bump
    */
-  panGestureHandlerListenersHook?: (
+  usePanGestureHandlerListeners?: (
     params: UseInteractivePanGestureHandlerListenersParams
   ) => PanGestureHandlerListeners;
   /**

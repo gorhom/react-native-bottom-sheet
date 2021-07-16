@@ -59,14 +59,14 @@ const CustomScrollAndDrag = () => {
         <BottomSheet
           ref={bottomSheetRef}
           snapPoints={snapPoints}
-          panGestureHandlerListenersHook={useCustomPanGestureHandlerListeners}
+          usePanGestureHandlerListeners={useCustomPanGestureHandlerListeners}
         >
           <BottomSheetScrollView
             style={styles.container}
             bounces={true}
             focusHook={useFocusEffect}
             contentContainerStyle={styles.contentContainer}
-            scrollEventListenersHook={useCustomScrollableInternal}
+            useScrollEventListeners={useCustomScrollableInternal}
           >
             {data.map(renderScrollViewItem)}
           </BottomSheetScrollView>

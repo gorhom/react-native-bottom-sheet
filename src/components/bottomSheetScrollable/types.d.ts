@@ -17,7 +17,7 @@ export interface BottomSheetScrollableProps {
    * @type (effect: EffectCallback, deps?: DependencyList) => void
    */
   focusHook?: (effect: EffectCallback, deps?: DependencyList) => void;
-  scrollEventListenersHook?: UseScrollableType;
+  useScrollEventListeners?: UseScrollableType;
   // contentContainerStyle?: StyleProp<
   //   Animated.AnimateStyle<StyleProp<ViewStyle>>
   // >;
