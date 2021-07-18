@@ -1,5 +1,9 @@
 import { useCallback } from 'react';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
+import {
+  INITIAL_HANDLE_HEIGHT,
+  INITIAL_SNAP_POINT,
+} from '../components/bottomSheet/constants';
 
 /**
  * Provides dynamic content height calculating functionalities, by
@@ -19,8 +23,14 @@ export const useBottomSheetDynamicSnapPoints = (
 ) => {
   // variables
   const animatedContentHeight = useSharedValue(0);
-  const animatedHandleHeight = useSharedValue(0);
+  const animatedHandleHeight = useSharedValue(INITIAL_HANDLE_HEIGHT);
   const animatedSnapPoints = useDerivedValue(() => {
+    if (
+      animatedHandleHeight.value === INITIAL_HANDLE_HEIGHT ||
+      animatedContentHeight.value === 0
+    ) {
+      return [INITIAL_SNAP_POINT];
+    }
     const contentWithHandleHeight =
       animatedContentHeight.value + animatedHandleHeight.value;
 

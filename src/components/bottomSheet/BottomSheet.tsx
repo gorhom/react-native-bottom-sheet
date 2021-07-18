@@ -234,6 +234,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
       // handle component is null.
       if (handleComponent === null) {
+        animatedHandleHeight.value = 0;
         isHandleHeightCalculated = true;
       }
       // handle height did set.
@@ -593,10 +594,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [_providedOnAnimate, animatedSnapPoints, animatedCurrentIndex]
     );
+    const stopAnimation = useWorkletCallback(() => {
+      cancelAnimation(animatedPosition);
+      animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
+      animatedAnimationState.value = ANIMATION_STATE.STOPPED;
+    }, [animatedPosition, animatedAnimationState, animatedAnimationSource]);
     const animateToPositionCompleted = useWorkletCallback(
       function animateToPositionCompleted(isFinished: boolean) {
         if (!isFinished) {
-          animatedAnimationState.value = ANIMATION_STATE.INTERRUPTED;
           return;
         }
         runOnJS(print)({
@@ -623,9 +628,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
       ) {
         if (
-          animatedAnimationState.value !== ANIMATION_STATE.INTERRUPTED &&
-          (position === animatedPosition.value ||
-            position === undefined ||
+          position === animatedPosition.value ||
+          position === undefined ||
+          (animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
             position === animatedNextPosition.value)
         ) {
           return;
@@ -640,24 +645,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             velocity,
           },
         });
-        /**
-         * cancel current running animation
-         */
-        cancelAnimation(animatedPosition);
 
-        // store
-        /**
-         * store next position
-         */
-        animatedNextPosition.value = position;
-        animatedNextPositionIndex.value =
-          animatedSnapPoints.value.indexOf(position);
+        stopAnimation();
 
         /**
          * set animation state to running, and source
          */
         animatedAnimationState.value = ANIMATION_STATE.RUNNING;
         animatedAnimationSource.value = source;
+
+        /**
+         * store next position
+         */
+        animatedNextPosition.value = position;
+        animatedNextPositionIndex.value =
+          animatedSnapPoints.value.indexOf(position);
 
         /**
          * fire `onAnimate` callback
@@ -952,7 +954,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       function handleGestureStart(__, _, context: GestureEventContextType) {
         'worklet';
         // cancel current animation
-        cancelAnimation(animatedPosition);
+        stopAnimation();
 
         // store current animated position
         context.initialPosition = animatedPosition.value;
@@ -1467,7 +1469,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           component: BottomSheet.name,
           method: 'useAnimatedReaction::OnMount',
           params: {
-            _isLayoutCalculated,
+            isLayoutCalculated: _isLayoutCalculated,
             animatedSnapPoints: animatedSnapPoints.value,
             nextPosition,
           },
