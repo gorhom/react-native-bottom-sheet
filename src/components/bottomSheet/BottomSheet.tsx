@@ -4,6 +4,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   memo,
+  useEffect,
 } from 'react';
 import { Keyboard, Platform } from 'react-native';
 import invariant from 'invariant';
@@ -1695,6 +1696,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [handleOnChange]
     );
+
+    /**
+     * React to `index` prop to snap the sheet to the new position.
+     *
+     * @alias onIndexChange
+     */
+    useEffect(() => {
+      if (isAnimatedOnMount.value) {
+        handleSnapToIndex(_providedIndex);
+      }
+    }, [
+      _providedIndex,
+      animatedCurrentIndex,
+      isAnimatedOnMount,
+      handleSnapToIndex,
+    ]);
     //#endregion
 
     // render
@@ -1702,9 +1719,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       component: BottomSheet.name,
       method: 'render',
       params: {
-        topInset,
-        bottomInset,
         animatedSnapPoints: animatedSnapPoints.value,
+        animatedCurrentIndex: animatedCurrentIndex.value,
+        providedIndex: _providedIndex,
       },
     });
     return (
