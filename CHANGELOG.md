@@ -1,6 +1,16 @@
 # Changelog
 
-## [v4.0.0-alpha.20](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.19...v4.0.0-alpha.20)
+## [v4.0.0-alpha.21](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.20...v4.0.0-alpha.21)
+
+#### Features
+
+- feat: react to index prop changes ([55af54b](https://github.com/gorhom/react-native-bottom-sheet/commit/55af54bd772ff312f91891d7c88f33afa02f1efe)).
+
+#### Fixes
+
+- fix: updated detached bottom sheet handling ([603f492](https://github.com/gorhom/react-native-bottom-sheet/commit/603f49294e572716d7eaf517a2adde01681c56c6)).
+
+## [v4.0.0-alpha.20](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.19...v4.0.0-alpha.20) - 2021-07-13
 
 #### Improvements
 
