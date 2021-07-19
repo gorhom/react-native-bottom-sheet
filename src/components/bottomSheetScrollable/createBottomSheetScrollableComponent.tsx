@@ -10,7 +10,10 @@ import { useAnimatedStyle } from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetRefreshControl from '../bottomSheetRefreshControl';
-import { useScrollableInternal, useBottomSheetInternal } from '../../hooks';
+import {
+  useScrollEventHandlerDefault,
+  useBottomSheetInternal,
+} from '../../hooks';
 import { SCROLLABLE_TYPE } from '../../constants';
 import { styles } from './styles';
 
@@ -24,7 +27,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       focusHook: useFocusHook = useEffect,
       overScrollMode = 'never',
       keyboardDismissMode = 'interactive',
-      useScrollEventListeners = useScrollableInternal,
+      useScrollEventListeners = useScrollEventHandlerDefault,
       style,
       // refresh control
       refreshing,

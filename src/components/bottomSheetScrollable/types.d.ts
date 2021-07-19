@@ -7,7 +7,7 @@ import type {
   SectionListScrollParams,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import { UseScrollableType } from '../../hooks/useScrollableInternal';
+import { UseScrollableType } from '../../hooks/useScrollEventHandlerDefault';
 
 export interface BottomSheetScrollableProps {
   /**

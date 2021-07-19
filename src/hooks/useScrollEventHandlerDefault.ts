@@ -36,7 +36,10 @@ export type UseScrollableType = (
   handleSettingScrollable: () => void;
 };
 
-export const useScrollableInternal: UseScrollableType = (type, refreshable) => {
+export const useScrollEventHandlerDefault: UseScrollableType = (
+  type,
+  refreshable
+) => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
   const scrollableContentOffsetY = useSharedValue<number>(0);

@@ -54,7 +54,7 @@ export type PanGestureHandlerListeners = {
   handleGestureEnd: Listener;
 };
 
-export const useInteractivePanGestureHandlerListeners = ({
+export const usePanGestureHandlersDefault = ({
   animatedPosition,
   animatedKeyboardState,
   scrollableContentOffsetY,

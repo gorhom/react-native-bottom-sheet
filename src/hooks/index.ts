@@ -1,7 +1,7 @@
 export { useBottomSheet } from './useBottomSheet';
 export { useBottomSheetInternal } from './useBottomSheetInternal';
 export { useScrollable } from './useScrollable';
-export { useScrollableInternal } from './useScrollableInternal';
+export { useScrollEventHandlerDefault } from './useScrollEventHandlerDefault';
 
 // modal
 export { useBottomSheetModal } from './useBottomSheetModal';

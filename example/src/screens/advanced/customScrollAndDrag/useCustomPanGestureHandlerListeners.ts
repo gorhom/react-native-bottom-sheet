@@ -16,7 +16,7 @@ import {
   GestureEventType,
 } from '../../../../../src/hooks/useInteractivePanGestureHandler';
 import { useGestureTranslationY } from './GestureTranslationContext';
-import { UseInteractivePanGestureHandlerListenersParams } from '../../../../../src/components/bottomSheet/useInteractivePanGestureHandlerListeners';
+import { UseInteractivePanGestureHandlerListenersParams } from '../../../../../src/components/bottomSheet/usePanGestureHandlersDefault';
 import { print } from '../../../../../src/utilities';
 
 export const useCustomPanGestureHandlerListeners = ({

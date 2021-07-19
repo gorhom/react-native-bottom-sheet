@@ -77,8 +77,8 @@ import type { BottomSheetProps } from './types';
 import { styles } from './styles';
 import {
   AnimateToPositionType,
-  useInteractivePanGestureHandlerListeners,
-} from './useInteractivePanGestureHandlerListeners';
+  usePanGestureHandlersDefault,
+} from './usePanGestureHandlersDefault';
 
 Animated.addWhitelistedUIProps({
   decelerationRate: true,
@@ -107,7 +107,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
       style: _providedStyle,
-      usePanGestureHandlerListeners = useInteractivePanGestureHandlerListeners,
+      usePanGestureHandlerListeners = usePanGestureHandlersDefault,
 
       // keyboard
       keyboardBehavior = DEFAULT_KEYBOARD_BEHAVIOR,

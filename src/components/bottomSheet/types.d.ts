@@ -13,7 +13,7 @@ import type {
 import {
   PanGestureHandlerListeners,
   UseInteractivePanGestureHandlerListenersParams,
-} from './useInteractivePanGestureHandlerListeners';
+} from './usePanGestureHandlersDefault';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
