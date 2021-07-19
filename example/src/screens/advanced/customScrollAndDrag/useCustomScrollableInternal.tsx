@@ -1,5 +1,4 @@
 import Animated, {
-  runOnUI,
   scrollTo,
   useAnimatedProps,
   useAnimatedRef,
@@ -8,13 +7,14 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Scrollable } from '../../../../../src/types';
 import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
-import { findNodeHandle, NativeScrollEvent } from 'react-native';
+import { NativeScrollEvent } from 'react-native';
 import {
   ANIMATION_STATE,
   SCROLLABLE_STATE,
+  SCROLLABLE_TYPE,
 } from '../../../../../src/constants';
-import { useCallback } from 'react';
 import { useGestureTranslationY } from './GestureTranslationContext';
+import { useHandleSettingScrollable } from '../../../../../src/hooks/useHandleSettingScrollable';
 
 type HandleScrollEventContextType = {
   initialContentOffsetY: number;
@@ -61,8 +61,6 @@ export const useCustomScrollableInternal = () => {
     animatedScrollableState,
     animatedAnimationState,
     scrollableContentOffsetY: rootScrollableContentOffsetY,
-    setScrollableRef,
-    removeScrollableRef,
     animatedIndex,
     animatedSnapPoints,
   } = useBottomSheetInternal();
@@ -162,34 +160,12 @@ export const useCustomScrollableInternal = () => {
         }
       },
     });
-  const handleSettingScrollable = useCallback(() => {
-    // set current content offset
-    runOnUI(() => {
-      rootScrollableContentOffsetY.value = scrollableContentOffsetY.value;
-    })();
-
-    // set current scrollable ref
-    const id = findNodeHandle(scrollableRef.current);
-    if (id) {
-      setScrollableRef({
-        id: id,
-        node: scrollableRef,
-      });
-    } else {
-      console.warn(`Couldn't find the scrollable node handle id!`);
-    }
-
-    return () => {
-      removeScrollableRef(scrollableRef);
-    };
-  }, [
-    rootScrollableContentOffsetY,
-    removeScrollableRef,
-    scrollableContentOffsetY,
+  const handleSettingScrollable = useHandleSettingScrollable({
+    type: SCROLLABLE_TYPE.SCROLLVIEW,
     scrollableRef,
-    setScrollableRef,
-  ]);
-
+    scrollableContentOffsetY,
+    refreshable: false,
+  });
   const scrollableAnimatedProps = useAnimatedProps(() => ({}));
 
   return {

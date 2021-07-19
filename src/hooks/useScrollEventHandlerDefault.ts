@@ -1,9 +1,5 @@
-import { RefObject, useCallback } from 'react';
-import {
-  findNodeHandle,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-} from 'react-native';
+import { RefObject } from 'react';
+import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import {
   useAnimatedRef,
   useAnimatedScrollHandler,
@@ -20,6 +16,7 @@ import {
   SCROLLABLE_TYPE,
   SHEET_STATE,
 } from '../constants';
+import { useHandleSettingScrollable } from './useHandleSettingScrollable';
 
 type HandleScrollEventContextType = {
   initialContentOffsetY: number;
@@ -48,13 +45,8 @@ export const useScrollEventHandlerDefault: UseScrollableType = (
   const {
     animatedSheetState,
     animatedScrollableState,
-    animatedScrollableType,
     animatedAnimationState,
     scrollableContentOffsetY: rootScrollableContentOffsetY,
-    isScrollableRefreshable,
-    isContentHeightFixed,
-    setScrollableRef,
-    removeScrollableRef,
   } = useBottomSheetInternal();
 
   // variables
@@ -140,39 +132,13 @@ export const useScrollEventHandlerDefault: UseScrollableType = (
         }
       },
     });
-  const handleSettingScrollable = useCallback(() => {
-    // set current content offset
-    rootScrollableContentOffsetY.value = scrollableContentOffsetY.value;
-    animatedScrollableType.value = type;
-    isScrollableRefreshable.value = refreshable;
-    isContentHeightFixed.value = false;
 
-    // set current scrollable ref
-    const id = findNodeHandle(scrollableRef.current);
-    if (id) {
-      setScrollableRef({
-        id: id,
-        node: scrollableRef,
-      });
-    } else {
-      console.warn(`Couldn't find the scrollable node handle id!`);
-    }
-
-    return () => {
-      removeScrollableRef(scrollableRef);
-    };
-  }, [
+  const handleSettingScrollable = useHandleSettingScrollable({
     type,
-    refreshable,
-    isScrollableRefreshable,
-    isContentHeightFixed,
-    rootScrollableContentOffsetY,
-    animatedScrollableType,
-    scrollableContentOffsetY,
     scrollableRef,
-    setScrollableRef,
-    removeScrollableRef,
-  ]);
+    scrollableContentOffsetY,
+    refreshable,
+  });
 
   return {
     scrollableRef,
