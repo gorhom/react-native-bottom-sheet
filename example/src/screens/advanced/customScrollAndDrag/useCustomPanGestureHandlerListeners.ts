@@ -1,8 +1,4 @@
-import {
-  cancelAnimation,
-  runOnJS,
-  useWorkletCallback,
-} from 'react-native-reanimated';
+import { runOnJS, useWorkletCallback } from 'react-native-reanimated';
 import { clamp, snapPoint } from 'react-native-redash';
 import { Keyboard, Platform } from 'react-native';
 import {
@@ -35,6 +31,7 @@ export const useCustomPanGestureHandlerListeners = ({
   animatedKeyboardHeight,
   animatedClosedPosition,
   animateToPosition,
+  stopAnimation,
 }: UseInteractivePanGestureHandlerListenersParams) => {
   const gestureTranslationY = useGestureTranslationY();
 
@@ -46,7 +43,7 @@ export const useCustomPanGestureHandlerListeners = ({
       context: GestureEventContextType
     ) {
       // cancel current animation
-      cancelAnimation(animatedPosition);
+      stopAnimation();
 
       // store current animated position
       context.initialPosition = animatedPosition.value;
