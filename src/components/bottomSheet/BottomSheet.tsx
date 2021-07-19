@@ -965,6 +965,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedKeyboardHeight,
         animatedClosedPosition,
         animateToPosition,
+        stopAnimation,
       });
 
     const contentPanGestureHandler = useInteractivePanGestureHandler(

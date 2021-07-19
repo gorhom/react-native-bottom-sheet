@@ -1,8 +1,4 @@
-import Animated, {
-  cancelAnimation,
-  runOnJS,
-  useWorkletCallback,
-} from 'react-native-reanimated';
+import Animated, { runOnJS, useWorkletCallback } from 'react-native-reanimated';
 import {
   GestureEventContextType,
   GestureEventType,
@@ -43,6 +39,7 @@ export type UseInteractivePanGestureHandlerListenersParams = {
   animatedKeyboardHeight: SharedValue<number>;
   animatedClosedPosition: SharedValue<number>;
   animateToPosition: AnimateToPositionType;
+  stopAnimation: () => void;
 };
 
 type Listener = (
@@ -73,12 +70,13 @@ export const useInteractivePanGestureHandlerListeners = ({
   animatedKeyboardHeight,
   animatedClosedPosition,
   animateToPosition,
+  stopAnimation,
 }: UseInteractivePanGestureHandlerListenersParams): PanGestureHandlerListeners => {
   //#region gesture methods
   const handleGestureStart = useWorkletCallback(
     function handleGestureStart(__, _, context: GestureEventContextType) {
       // cancel current animation
-      cancelAnimation(animatedPosition);
+      stopAnimation();
 
       // store current animated position
       context.initialPosition = animatedPosition.value;
