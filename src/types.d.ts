@@ -50,12 +50,14 @@ export interface BottomSheetMethods {
   /**
    * Close the bottom sheet.
    * @param animationConfigs snap animation configs.
+   * @param force prevent any interruptions till sheet is closed.
    *
    * @see {Animated.WithSpringConfig}
    * @see {Animated.WithTimingConfig}
    */
   close: (
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig,
+    force?: boolean
   ) => void;
 }
 

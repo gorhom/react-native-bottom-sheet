@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.21](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.20...v4.0.0-alpha.21)
+## [v4.0.0-alpha.22](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.21...v4.0.0-alpha.22)
+
+#### Improvements
+
+- refactor: allow closing animation to be interrupted ([937f9ee](https://github.com/gorhom/react-native-bottom-sheet/commit/937f9ee91c485759c492b9dec532914ffa40375b)).
+
+## [v4.0.0-alpha.21](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.20...v4.0.0-alpha.21) - 2021-07-18
 
 #### Features
 

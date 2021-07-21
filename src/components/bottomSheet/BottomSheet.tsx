@@ -254,6 +254,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       );
     });
     const isInTemporaryPosition = useSharedValue(false);
+    const isForcedClosing = useSharedValue(false);
 
     // gesture
     const animatedContentGestureState = useSharedValue<State>(
@@ -478,11 +479,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       return currentIndex;
     }, [android_keyboardInputMode]);
-    const isSheetClosing = useDerivedValue(
-      () =>
-        animatedNextPosition.value === animatedClosedPosition.value &&
-        animatedAnimationState.value === ANIMATION_STATE.RUNNING
-    );
     //#endregion
 
     //#region private methods
@@ -595,11 +591,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const stopAnimation = useWorkletCallback(() => {
       cancelAnimation(animatedPosition);
+      isForcedClosing.value = false;
       animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
       animatedAnimationState.value = ANIMATION_STATE.STOPPED;
     }, [animatedPosition, animatedAnimationState, animatedAnimationSource]);
     const animateToPositionCompleted = useWorkletCallback(
       function animateToPositionCompleted(isFinished: boolean) {
+        isForcedClosing.value = false;
+
         if (!isFinished) {
           return;
         }
@@ -717,12 +716,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * exit method if :
          * - already animating to next position.
-         * - sheet is closing.
+         * - sheet is forced closing.
          */
         if (
           index === animatedNextPositionIndex.value ||
           nextPosition === animatedNextPosition.value ||
-          isSheetClosing.value
+          isForcedClosing.value
         ) {
           return;
         }
@@ -742,7 +741,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [
         animateToPosition,
         isInTemporaryPosition,
-        isSheetClosing,
+        isForcedClosing,
         animatedSnapPoints,
         animatedNextPosition,
         animatedNextPositionIndex,
@@ -774,11 +773,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * exit method if :
          * - already animating to next position.
-         * - sheet is closing.
+         * - sheet is forced closing.
          */
         if (
           nextPosition === animatedNextPosition.value ||
-          isSheetClosing.value
+          isForcedClosing.value
         ) {
           return;
         }
@@ -799,14 +798,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animateToPosition,
         bottomInset,
         topInset,
-        isSheetClosing,
+        isForcedClosing,
         animatedContainerHeight,
         animatedPosition,
       ]
     );
     const handleClose = useCallback(
       function handleClose(
-        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+        animationConfigs?:
+          | Animated.WithSpringConfig
+          | Animated.WithTimingConfig,
+        force?: boolean
       ) {
         print({
           component: BottomSheet.name,
@@ -818,19 +820,24 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * exit method if :
          * - already animating to next position.
-         * - sheet is closing.
+         * - sheet is forced closing.
          */
         if (
           nextPosition === animatedNextPosition.value ||
-          isSheetClosing.value
+          isForcedClosing.value
         ) {
           return;
         }
 
         /**
-         * reset temporary position boolean.
+         * reset temporary position variable.
          */
         isInTemporaryPosition.value = false;
+
+        /**
+         * set force closing variable.
+         */
+        isForcedClosing.value = force === undefined ? false : force;
 
         runOnUI(animateToPosition)(
           nextPosition,
@@ -841,7 +848,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [
         animateToPosition,
-        isSheetClosing,
+        isForcedClosing,
         isInTemporaryPosition,
         animatedNextPosition,
         animatedClosedPosition,
@@ -862,12 +869,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * exit method if :
          * - already animating to next position.
-         * - sheet is closing.
+         * - sheet is forced closing.
          */
         if (
           snapPoints.length - 1 === animatedNextPositionIndex.value ||
           nextPosition === animatedNextPosition.value ||
-          isSheetClosing.value
+          isForcedClosing.value
         ) {
           return;
         }
@@ -887,7 +894,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [
         animateToPosition,
         isInTemporaryPosition,
-        isSheetClosing,
+        isForcedClosing,
         animatedSnapPoints,
         animatedNextPosition,
         animatedNextPositionIndex,
@@ -907,12 +914,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * exit method if :
          * - already animating to next position.
-         * - sheet is closing.
+         * - sheet is forced closing.
          */
         if (
           animatedNextPositionIndex.value === 0 ||
           nextPosition === animatedNextPosition.value ||
-          isSheetClosing.value
+          isForcedClosing.value
         ) {
           return;
         }
@@ -931,7 +938,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [
         animateToPosition,
-        isSheetClosing,
+        isForcedClosing,
         isInTemporaryPosition,
         animatedSnapPoints,
         animatedNextPosition,

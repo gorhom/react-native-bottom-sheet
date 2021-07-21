@@ -169,8 +169,8 @@ const BottomSheetModalComponent = forwardRef<
     },
     [key, index, stackBehavior, mount, ref, mountSheet]
   );
-  const handleDismiss = useCallback(
-    function handleDismiss(...args) {
+  const handleDismiss = useCallback<BottomSheetModalMethods['dismiss']>(
+    function handleDismiss(animationConfigs) {
       print({
         component: BottomSheetModal.name,
         method: handleDismiss.name,
@@ -195,7 +195,7 @@ const BottomSheetModalComponent = forwardRef<
       }
       willUnmountSheet(key);
       forcedDismissed.current = true;
-      bottomSheetRef.current?.close(...args);
+      bottomSheetRef.current?.close(animationConfigs, true);
     },
     [willUnmountSheet, unmount, key, enablePanDownToClose]
   );

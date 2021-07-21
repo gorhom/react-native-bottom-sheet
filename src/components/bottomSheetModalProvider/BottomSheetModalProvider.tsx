@@ -140,12 +140,12 @@ const BottomSheetModalProviderWrapper = ({
       item => item.key === key
     );
     if (sheetToBeDismissed) {
-      sheetToBeDismissed.ref.current.dismiss(true);
+      sheetToBeDismissed.ref.current.dismiss();
     }
   }, []);
   const handleDismissAll = useCallback(() => {
     sheetsQueueRef.current.map(item => {
-      item.ref.current.dismiss(true);
+      item.ref.current.dismiss();
     });
   }, []);
   //#endregion
