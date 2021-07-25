@@ -10,7 +10,7 @@ import type {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
 } from '../../constants';
-import type { GestureEventsHandlersType } from '../../types';
+import type { GestureEventsHandlersHookType } from '../../types';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
@@ -182,6 +182,14 @@ export interface BottomSheetProps
       | 'transform'
     >
   >;
+  /**
+   * Custom hook to provide pan gesture events handler, which will allow advance and
+   * customize handling for pan gesture.
+   * @warning this is an experimental feature and the hook signature can change without
+   * a major version bump.
+   * @type GestureEventsHandlersHookType
+   */
+  gestureEventsHandlersHook?: GestureEventsHandlersHookType;
 
   //#region animated nodes
   /**
@@ -229,13 +237,6 @@ export interface BottomSheetProps
    * @type React.FC\<BottomSheetBackgroundProps\>
    */
   backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
-
-  /**
-   * enables custom gesture event handlers for advanced use cases
-   * @see useInteractivePanGestureHandlerListeners.ts for reference implementation
-   * warning: this is an experimental feature and the hook signature can change without a major version bump
-   */
-  gestureEventsHandlersHook?: GestureEventsHandlersType;
   /**
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode

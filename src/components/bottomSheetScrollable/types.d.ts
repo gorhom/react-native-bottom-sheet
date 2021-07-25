@@ -7,13 +7,14 @@ import type {
   SectionListScrollParams,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import type { ScrollEventsHandlersType } from '../../types';
+import type { ScrollEventsHandlersHookType } from '../../types';
 
 export interface BottomSheetScrollableProps {
   /**
    * This needed when bottom sheet used with multiple scrollables to allow bottom sheet
    * detect the current scrollable ref, especially when used with `React Navigation`.
    * You will need to provide `useFocusEffect` from `@react-navigation/native`.
+   *
    * @type (effect: EffectCallback, deps?: DependencyList) => void
    */
   focusHook?: (effect: EffectCallback, deps?: DependencyList) => void;
@@ -22,9 +23,11 @@ export interface BottomSheetScrollableProps {
    * Custom hook to provide scroll events handler, which will allow advance and
    * customize handling for scrollables.
    *
-   * @type ScrollEventsHandlersType
+   * @warning this is an experimental feature and the hook signature can change without
+   * a major version bump.
+   * @type ScrollEventsHandlersHookType
    */
-  scrollEventsHandlersHook?: ScrollEventsHandlersType;
+  scrollEventsHandlersHook?: ScrollEventsHandlersHookType;
 
   // contentContainerStyle?: StyleProp<
   //   Animated.AnimateStyle<StyleProp<ViewStyle>>
