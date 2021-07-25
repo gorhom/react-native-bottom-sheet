@@ -10,10 +10,7 @@ import type {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
 } from '../../constants';
-import {
-  PanGestureHandlerListeners,
-  UseInteractivePanGestureHandlerListenersParams,
-} from './usePanGestureHandlersDefault';
+import type { GestureEventsHandlersType } from '../../types';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
@@ -238,9 +235,7 @@ export interface BottomSheetProps
    * @see useInteractivePanGestureHandlerListeners.ts for reference implementation
    * warning: this is an experimental feature and the hook signature can change without a major version bump
    */
-  usePanGestureHandlerListeners?: (
-    params: UseInteractivePanGestureHandlerListenersParams
-  ) => PanGestureHandlerListeners;
+  gestureEventsHandlersHook?: GestureEventsHandlersType;
   /**
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode
@@ -266,3 +261,10 @@ export interface BottomSheetAnimationConfigs {
    */
   animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig;
 }
+
+export type AnimateToPositionType = (
+  position: number,
+  source: ANIMATION_SOURCE,
+  velocity?: number,
+  configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
+) => void;

@@ -1,28 +1,37 @@
+import React, { useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import Button from '../../../components/button';
-import React, { useCallback, useMemo, useRef } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { createContactListMockData } from '../../../utilities';
 import ContactItem from '../../../components/contactItem';
-import { useCustomPanGestureHandlerListeners } from './useCustomPanGestureHandlerListeners';
+import { createContactListMockData } from '../../../utilities';
 import { GestureTranslationProvider } from './GestureTranslationContext';
-import { useSharedValue } from 'react-native-reanimated';
-import { useCustomScrollableInternal } from './useCustomScrollableInternal';
+import { useCustomGestureEventsHandlers } from './useCustomGestureEventsHandlers';
+import { useCustomScrollEventsHandlers } from './useCustomScrollEventsHandlers';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const count = 60;
 
 const CustomScrollAndDrag = () => {
-  // hooks
+  // refs
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const gestureTranslationY = useSharedValue(0);
 
+  // hooks
   const { height } = useWindowDimensions();
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
+
   // variables
   const snapPoints = useMemo(() => [150, height * 0.7, '100%'], [height]);
   const data = useMemo(() => createContactListMockData(count), []);
+  const gestureTranslationY = useSharedValue(0);
 
-  // callbacks
+  // styles
+  const listContentContainerStyle = useMemo(
+    () => [styles.listContentContainer, { paddingBottom: bottomSafeArea }],
+    [bottomSafeArea]
+  );
+
+  //#region callbacks
   const handleSnapPress = useCallback(index => {
     bottomSheetRef.current?.snapToIndex(index);
   }, []);
@@ -35,7 +44,9 @@ const CustomScrollAndDrag = () => {
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
   }, []);
+  //#endregion
 
+  // renders
   const renderScrollViewItem = useCallback(
     (item, index) => (
       <ContactItem
@@ -59,14 +70,13 @@ const CustomScrollAndDrag = () => {
         <BottomSheet
           ref={bottomSheetRef}
           snapPoints={snapPoints}
-          usePanGestureHandlerListeners={useCustomPanGestureHandlerListeners}
+          gestureEventsHandlersHook={useCustomGestureEventsHandlers}
         >
           <BottomSheetScrollView
-            style={styles.container}
+            style={styles.listContainer}
             bounces={true}
-            focusHook={useFocusEffect}
-            contentContainerStyle={styles.contentContainer}
-            useScrollEventListeners={useCustomScrollableInternal}
+            contentContainerStyle={listContentContainerStyle}
+            scrollEventsHandlersHook={useCustomScrollEventsHandlers}
           >
             {data.map(renderScrollViewItem)}
           </BottomSheetScrollView>
@@ -81,10 +91,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
-  contentContainer: {
-    paddingHorizontal: 16,
+  listContainer: {},
+  listContentContainer: {
     overflow: 'visible',
-    paddingBottom: 40,
+    paddingHorizontal: 16,
   },
 });
 

@@ -1,28 +1,23 @@
 import Animated, {
   scrollTo,
-  useAnimatedProps,
-  useAnimatedRef,
-  useAnimatedScrollHandler,
-  useSharedValue,
+  useWorkletCallback,
 } from 'react-native-reanimated';
-import { Scrollable } from '../../../../../src/types';
-import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
-import { NativeScrollEvent } from 'react-native';
 import {
+  useBottomSheetInternal,
   ANIMATION_STATE,
   SCROLLABLE_STATE,
-  SCROLLABLE_TYPE,
-} from '../../../../../src/constants';
+  ScrollEventHandlerCallbackType,
+  ScrollEventsHandlersHookType,
+} from '@gorhom/bottom-sheet';
 import { useGestureTranslationY } from './GestureTranslationContext';
-import { useHandleSettingScrollable } from '../../../../../src/hooks/useHandleSettingScrollable';
 
-type HandleScrollEventContextType = {
+type ScrollEventContextType = {
   initialContentOffsetY: number;
   startedIndex: number;
 };
 
 type GetMetadataParams = {
-  context: HandleScrollEventContextType;
+  context: ScrollEventContextType;
   gestureTranslationY: Animated.SharedValue<number>;
   animatedSnapPoints: Animated.SharedValue<number[]>;
 };
@@ -51,11 +46,10 @@ function getScrollMetadata({
   return ret;
 }
 
-export const useCustomScrollableInternal = () => {
-  // refs
-  const scrollableRef = useAnimatedRef<Scrollable>();
-  const scrollableContentOffsetY = useSharedValue<number>(0);
-
+export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
+  scrollableRef,
+  scrollableContentOffsetY: Animated.SharedValue<number>
+) => {
   // hooks
   const {
     animatedScrollableState,
@@ -67,15 +61,19 @@ export const useCustomScrollableInternal = () => {
   const gestureTranslationY = useGestureTranslationY();
 
   // callbacks
-  const handleScrollEvent =
-    useAnimatedScrollHandler<HandleScrollEventContextType>({
-      onBeginDrag: ({ contentOffset: { y } }: NativeScrollEvent, context) => {
+  const handleOnBeginDrag: ScrollEventHandlerCallbackType<ScrollEventContextType> =
+    useWorkletCallback(
+      ({ contentOffset: { y } }, context) => {
         scrollableContentOffsetY.value = y;
         rootScrollableContentOffsetY.value = y;
         context.initialContentOffsetY = y;
         context.startedIndex = animatedIndex.value;
       },
-      onScroll: (_, context) => {
+      [animatedIndex, rootScrollableContentOffsetY, scrollableContentOffsetY]
+    );
+  const handleOnScroll: ScrollEventHandlerCallbackType<ScrollEventContextType> =
+    useWorkletCallback(
+      (_, context) => {
         const {
           didDragBelowSecondSnapPoint,
           isDraggingDownFromMiddle,
@@ -101,7 +99,17 @@ export const useCustomScrollableInternal = () => {
           return;
         }
       },
-      onEndDrag: ({ contentOffset: { y } }: NativeScrollEvent, context) => {
+      [
+        scrollableRef,
+        scrollableContentOffsetY,
+        animatedScrollableState,
+        animatedSnapPoints,
+        gestureTranslationY,
+      ]
+    );
+  const handleOnEndDrag: ScrollEventHandlerCallbackType<ScrollEventContextType> =
+    useWorkletCallback(
+      ({ contentOffset: { y } }, context) => {
         const {
           didStartAtMiddle,
           didDragBelowSecondSnapPoint,
@@ -130,7 +138,19 @@ export const useCustomScrollableInternal = () => {
           rootScrollableContentOffsetY.value = y;
         }
       },
-      onMomentumEnd: ({ contentOffset: { y } }: NativeScrollEvent, context) => {
+      [
+        animatedAnimationState,
+        animatedScrollableState,
+        animatedSnapPoints,
+        gestureTranslationY,
+        rootScrollableContentOffsetY,
+        scrollableContentOffsetY,
+        scrollableRef,
+      ]
+    );
+  const handleOnMomentumEnd: ScrollEventHandlerCallbackType<ScrollEventContextType> =
+    useWorkletCallback(
+      ({ contentOffset: { y } }, context) => {
         const {
           didStartAtMiddle,
           didDragBelowSecondSnapPoint,
@@ -159,19 +179,21 @@ export const useCustomScrollableInternal = () => {
           rootScrollableContentOffsetY.value = y;
         }
       },
-    });
-  const handleSettingScrollable = useHandleSettingScrollable({
-    type: SCROLLABLE_TYPE.SCROLLVIEW,
-    scrollableRef,
-    scrollableContentOffsetY,
-    refreshable: false,
-  });
-  const scrollableAnimatedProps = useAnimatedProps(() => ({}));
+      [
+        scrollableRef,
+        scrollableContentOffsetY,
+        animatedAnimationState,
+        animatedScrollableState,
+        animatedSnapPoints,
+        gestureTranslationY,
+        rootScrollableContentOffsetY,
+      ]
+    );
 
   return {
-    scrollableRef,
-    handleScrollEvent,
-    handleSettingScrollable,
-    scrollableAnimatedProps,
+    handleOnBeginDrag,
+    handleOnScroll,
+    handleOnEndDrag,
+    handleOnMomentumEnd,
   };
 };

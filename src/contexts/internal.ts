@@ -1,9 +1,13 @@
 import { createContext, RefObject } from 'react';
 import type {
-  PanGestureHandlerGestureEvent,
   PanGestureHandlerProps,
+  State,
 } from 'react-native-gesture-handler';
 import type Animated from 'react-native-reanimated';
+import type {
+  AnimateToPositionType,
+  BottomSheetProps,
+} from '../components/bottomSheet/types';
 import type {
   ANIMATION_STATE,
   KEYBOARD_STATE,
@@ -15,28 +19,39 @@ import type { Scrollable, ScrollableRef } from '../types';
 
 export interface BottomSheetInternalContextType
   extends Pick<
-    PanGestureHandlerProps,
-    | 'activeOffsetY'
-    | 'activeOffsetX'
-    | 'failOffsetY'
-    | 'failOffsetX'
-    | 'waitFor'
-    | 'simultaneousHandlers'
-  > {
-  // configs
-  enableContentPanningGesture: boolean;
-
+      PanGestureHandlerProps,
+      | 'activeOffsetY'
+      | 'activeOffsetX'
+      | 'failOffsetY'
+      | 'failOffsetX'
+      | 'waitFor'
+      | 'simultaneousHandlers'
+    >,
+    Required<
+      Pick<
+        BottomSheetProps,
+        | 'enableContentPanningGesture'
+        | 'enableOverDrag'
+        | 'enablePanDownToClose'
+        | 'overDragResistanceFactor'
+      >
+    > {
   // animated states
   animatedAnimationState: Animated.SharedValue<ANIMATION_STATE>;
   animatedSheetState: Animated.SharedValue<SHEET_STATE>;
   animatedScrollableState: Animated.SharedValue<SCROLLABLE_STATE>;
   animatedKeyboardState: Animated.SharedValue<KEYBOARD_STATE>;
+  animatedContentGestureState: Animated.SharedValue<State>;
+  animatedHandleGestureState: Animated.SharedValue<State>;
 
   // animated values
+  animatedSnapPoints: Animated.SharedValue<number[]>;
   animatedPosition: Animated.SharedValue<number>;
   animatedIndex: Animated.SharedValue<number>;
   animatedContainerHeight: Animated.SharedValue<number>;
   animatedContentHeight: Animated.SharedValue<number>;
+  animatedHighestSnapPoint: Animated.SharedValue<number>;
+  animatedClosedPosition: Animated.SharedValue<number>;
   animatedFooterHeight: Animated.SharedValue<number>;
   animatedHandleHeight: Animated.SharedValue<number>;
   animatedKeyboardHeight: Animated.SharedValue<number>;
@@ -46,11 +61,11 @@ export interface BottomSheetInternalContextType
   isInTemporaryPosition: Animated.SharedValue<boolean>;
   scrollableContentOffsetY: Animated.SharedValue<number>;
   shouldHandleKeyboardEvents: Animated.SharedValue<boolean>;
-  animatedSnapPoints: Animated.SharedValue<number[]>;
 
   // methods
+  stopAnimation: () => void;
+  animateToPosition: AnimateToPositionType;
   getKeyboardHeightInContainer: () => number;
-  contentPanGestureHandler: (event: PanGestureHandlerGestureEvent) => void;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
 }

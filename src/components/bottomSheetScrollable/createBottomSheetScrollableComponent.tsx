@@ -1,20 +1,19 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-} from 'react';
+import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import { Platform } from 'react-native';
-import { useAnimatedStyle } from 'react-native-reanimated';
+import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetRefreshControl from '../bottomSheetRefreshControl';
 import {
-  useScrollEventHandlerDefault,
+  useScrollHandler,
+  useScrollableSetter,
   useBottomSheetInternal,
 } from '../../hooks';
-import { SCROLLABLE_TYPE } from '../../constants';
+import {
+  SCROLLABLE_DECELERATION_RATE_MAPPER,
+  SCROLLABLE_STATE,
+  SCROLLABLE_TYPE,
+} from '../../constants';
 import { styles } from './styles';
 
 export function createBottomSheetScrollableComponent<T, P>(
@@ -24,12 +23,13 @@ export function createBottomSheetScrollableComponent<T, P>(
   return forwardRef<T, P>((props, ref) => {
     // props
     const {
-      focusHook: useFocusHook = useEffect,
+      // hooks
+      focusHook,
+      scrollEventsHandlersHook,
+      // props
       overScrollMode = 'never',
       keyboardDismissMode = 'interactive',
-      useScrollEventListeners = useScrollEventHandlerDefault,
       style,
-      // refresh control
       refreshing,
       onRefresh,
       progressViewOffset,
@@ -43,14 +43,22 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region hooks
+    const { scrollableRef, scrollableContentOffsetY, scrollHandler } =
+      useScrollHandler(scrollEventsHandlersHook);
     const {
-      scrollableRef,
-      scrollableAnimatedProps,
-      handleScrollEvent,
-      handleSettingScrollable,
-    } = useScrollEventListeners(type, onRefresh !== undefined);
-    const { enableContentPanningGesture, animatedFooterHeight } =
-      useBottomSheetInternal();
+      enableContentPanningGesture,
+      animatedFooterHeight,
+      animatedScrollableState,
+    } = useBottomSheetInternal();
+    //#endregion
+
+    //#region variables
+    const scrollableAnimatedProps = useAnimatedProps(() => ({
+      decelerationRate:
+        SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
+      showsVerticalScrollIndicator:
+        animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED,
+    }));
     //#endregion
 
     //#region styles
@@ -69,7 +77,13 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#region effects
     // @ts-ignore
     useImperativeHandle(ref, () => scrollableRef.current);
-    useFocusHook(handleSettingScrollable);
+    useScrollableSetter(
+      scrollableRef,
+      type,
+      scrollableContentOffsetY,
+      onRefresh !== undefined,
+      focusHook
+    );
     //#endregion
 
     //#region render
@@ -100,7 +114,7 @@ export function createBottomSheetScrollableComponent<T, P>(
                   overScrollMode={overScrollMode}
                   keyboardDismissMode={keyboardDismissMode}
                   scrollEventThrottle={16}
-                  onScroll={handleScrollEvent}
+                  onScroll={scrollHandler}
                   animatedProps={scrollableAnimatedProps}
                   style={containerStyle}
                 />
@@ -119,7 +133,7 @@ export function createBottomSheetScrollableComponent<T, P>(
                 overScrollMode={overScrollMode}
                 keyboardDismissMode={keyboardDismissMode}
                 scrollEventThrottle={16}
-                onScroll={handleScrollEvent}
+                onScroll={scrollHandler}
                 animatedProps={scrollableAnimatedProps}
                 style={containerStyle}
               />
@@ -149,7 +163,7 @@ export function createBottomSheetScrollableComponent<T, P>(
             onRefresh={onRefresh}
             progressViewOffset={progressViewOffset}
             refreshControl={refreshControl}
-            onScroll={handleScrollEvent}
+            onScroll={scrollHandler}
             animatedProps={scrollableAnimatedProps}
             style={containerStyle}
           />

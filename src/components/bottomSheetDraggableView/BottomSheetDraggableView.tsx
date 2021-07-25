@@ -1,7 +1,10 @@
 import React, { useMemo, useRef, memo } from 'react';
 import Animated from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import { useBottomSheetInternal } from '../../hooks';
+import {
+  useBottomSheetGestureHandlers,
+  useBottomSheetInternal,
+} from '../../hooks';
 import type { BottomSheetDraggableViewProps } from './types';
 import { styles } from './styles';
 
@@ -18,7 +21,6 @@ const BottomSheetDraggableViewComponent = ({
   // hooks
   const {
     enableContentPanningGesture,
-    contentPanGestureHandler,
     simultaneousHandlers: _providedSimultaneousHandlers,
     waitFor,
     activeOffsetX,
@@ -26,6 +28,7 @@ const BottomSheetDraggableViewComponent = ({
     failOffsetX,
     failOffsetY,
   } = useBottomSheetInternal();
+  const { contentPanGestureHandler } = useBottomSheetGestureHandlers();
 
   // variables
   const simultaneousHandlers = useMemo(() => {

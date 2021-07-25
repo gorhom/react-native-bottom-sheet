@@ -1,80 +1,41 @@
-import Animated, { runOnJS, useWorkletCallback } from 'react-native-reanimated';
+import { Keyboard, Platform } from 'react-native';
+import { runOnJS, useWorkletCallback } from 'react-native-reanimated';
+import { clamp, snapPoint } from 'react-native-redash';
 import {
-  GestureEventContextType,
-  GestureEventType,
-} from '../../hooks/useInteractivePanGestureHandler';
-import {
-  ANIMATION_SOURCE,
+  useBottomSheetInternal,
   GESTURE_SOURCE,
   KEYBOARD_STATE,
   SCROLLABLE_TYPE,
   WINDOW_HEIGHT,
-} from '../../constants';
-import { clamp, snapPoint } from 'react-native-redash';
-import { print } from '../../utilities';
-import { Keyboard, Platform } from 'react-native';
+  GestureEventHandlerCallbackType,
+} from '@gorhom/bottom-sheet';
+import { useGestureTranslationY } from './GestureTranslationContext';
 
-type SharedValue<T> = Animated.SharedValue<T>;
+export const useCustomGestureEventsHandlers = () => {
+  // hooks
+  const gestureTranslationY = useGestureTranslationY();
+  const {
+    animatedPosition,
+    animatedSnapPoints,
+    animatedKeyboardState,
+    animatedKeyboardHeight,
+    animatedContainerHeight,
+    animatedScrollableType,
+    animatedHighestSnapPoint,
+    animatedClosedPosition,
+    enableOverDrag,
+    enablePanDownToClose,
+    overDragResistanceFactor,
+    scrollableContentOffsetY,
+    isInTemporaryPosition,
+    isScrollableRefreshable,
+    animateToPosition,
+    stopAnimation,
+  } = useBottomSheetInternal();
 
-export type AnimateToPositionType = (
-  position: number,
-  source: ANIMATION_SOURCE,
-  velocity?: number,
-  configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
-) => void;
-
-export type UseInteractivePanGestureHandlerListenersParams = {
-  animatedPosition: SharedValue<number>;
-  animatedKeyboardState: SharedValue<KEYBOARD_STATE>;
-  scrollableContentOffsetY: SharedValue<number>;
-  animatedSnapPoints: SharedValue<Array<number>>;
-  isInTemporaryPosition: SharedValue<boolean>;
-  enablePanDownToClose: boolean;
-  animatedContainerHeight: SharedValue<number>;
-  isScrollableRefreshable: SharedValue<boolean>;
-  enableOverDrag: boolean;
-  animatedScrollableType: SharedValue<SCROLLABLE_TYPE>;
-  overDragResistanceFactor: number;
-  animatedHighestSnapPoint: SharedValue<number>;
-  animatedKeyboardHeight: SharedValue<number>;
-  animatedClosedPosition: SharedValue<number>;
-  animateToPosition: AnimateToPositionType;
-  stopAnimation: () => void;
-};
-
-type Listener = (
-  gestureSource: GESTURE_SOURCE,
-  gestureEventType: GestureEventType,
-  context: GestureEventContextType
-) => void;
-
-export type PanGestureHandlerListeners = {
-  handleGestureStart: Listener;
-  handleGestureActive: Listener;
-  handleGestureEnd: Listener;
-};
-
-export const usePanGestureHandlersDefault = ({
-  animatedPosition,
-  animatedKeyboardState,
-  scrollableContentOffsetY,
-  animatedSnapPoints,
-  isInTemporaryPosition,
-  enablePanDownToClose,
-  animatedContainerHeight,
-  isScrollableRefreshable,
-  enableOverDrag,
-  animatedScrollableType,
-  overDragResistanceFactor,
-  animatedHighestSnapPoint,
-  animatedKeyboardHeight,
-  animatedClosedPosition,
-  animateToPosition,
-  stopAnimation,
-}: UseInteractivePanGestureHandlerListenersParams): PanGestureHandlerListeners => {
   //#region gesture methods
-  const handleGestureStart = useWorkletCallback(
-    function handleGestureStart(__, _, context: GestureEventContextType) {
+  const handleOnStart: GestureEventHandlerCallbackType = useWorkletCallback(
+    function handleOnStart(_, { translationY }, context) {
       // cancel current animation
       stopAnimation();
 
@@ -89,15 +50,14 @@ export const usePanGestureHandlersDefault = ({
       if (scrollableContentOffsetY.value > 0) {
         context.isScrollablePositionLocked = true;
       }
+      gestureTranslationY.value = translationY;
     },
     [animatedPosition, animatedKeyboardState, scrollableContentOffsetY]
   );
-  const handleGestureActive = useWorkletCallback(
-    function handleGestureActive(
-      type: GESTURE_SOURCE,
-      { translationY }: GestureEventType,
-      context: GestureEventContextType
-    ) {
+  const handleOnActive: GestureEventHandlerCallbackType = useWorkletCallback(
+    function handleOnActive(type, { translationY }, context) {
+      gestureTranslationY.value = translationY;
+
       let highestSnapPoint =
         animatedSnapPoints.value[animatedSnapPoints.value.length - 1];
       /**
@@ -166,13 +126,30 @@ export const usePanGestureHandlersDefault = ({
 
       /**
        * a clamped value of the accumulated dragged position, to insure keeping the dragged
-       * position between the highest and lowest snap points.
+       * position between the highest and middle snap points.
        */
-      const clampedPosition = clamp(
-        accumulatedDraggedPosition,
-        highestSnapPoint,
-        lowestSnapPoint
-      );
+      const secondHighestSnapPoint =
+        animatedSnapPoints.value[animatedSnapPoints.value.length - 2];
+      const isDraggingFromBottom =
+        context.initialPosition > secondHighestSnapPoint;
+
+      const clampedPosition = (() => {
+        if (type === GESTURE_SOURCE.SCROLLABLE) {
+          const clampSource = (() => {
+            if (isDraggingFromBottom) {
+              return accumulatedDraggedPosition;
+            }
+            return Math.min(draggedPosition, secondHighestSnapPoint);
+          })();
+          return clamp(clampSource, highestSnapPoint, lowestSnapPoint);
+        } else {
+          return clamp(
+            accumulatedDraggedPosition,
+            highestSnapPoint,
+            lowestSnapPoint
+          );
+        }
+      })();
 
       /**
        * if scrollable position is locked and the animated position
@@ -214,23 +191,6 @@ export const usePanGestureHandlersDefault = ({
           animatedPosition.value = resistedPosition;
           return;
         }
-
-        if (
-          type === GESTURE_SOURCE.SCROLLABLE &&
-          draggedPosition + negativeScrollableContentOffset > lowestSnapPoint
-        ) {
-          const resistedPosition =
-            lowestSnapPoint +
-            Math.sqrt(
-              1 +
-                (draggedPosition +
-                  negativeScrollableContentOffset -
-                  lowestSnapPoint)
-            ) *
-              overDragResistanceFactor;
-          animatedPosition.value = resistedPosition;
-          return;
-        }
       }
 
       animatedPosition.value = clampedPosition;
@@ -248,30 +208,13 @@ export const usePanGestureHandlersDefault = ({
       scrollableContentOffsetY,
     ]
   );
-  const handleGestureEnd = useWorkletCallback(
-    function handleGestureEnd(
-      type: GESTURE_SOURCE,
-      { translationY, absoluteY, velocityY }: GestureEventType,
-      context: GestureEventContextType
+  const handleOnEnd: GestureEventHandlerCallbackType = useWorkletCallback(
+    function handleOnEnd(
+      type,
+      { translationY, absoluteY, velocityY },
+      context
     ) {
-      runOnJS(print)({
-        component: 'BottomSheet',
-        method: handleGestureEnd.name,
-      });
-
       const highestSnapPoint = animatedHighestSnapPoint.value;
-
-      /**
-       * if scrollable is refreshable and sheet position at the highest
-       * point, then do not interact with current gesture.
-       */
-      if (
-        type === GESTURE_SOURCE.SCROLLABLE &&
-        isScrollableRefreshable.value &&
-        animatedPosition.value === highestSnapPoint
-      ) {
-        return;
-      }
 
       /**
        * if the sheet is in a temporary position and the gesture ended above
@@ -282,11 +225,7 @@ export const usePanGestureHandlersDefault = ({
         context.initialPosition >= animatedPosition.value
       ) {
         if (context.initialPosition > animatedPosition.value) {
-          animateToPosition(
-            context.initialPosition,
-            velocityY / 2,
-            ANIMATION_SOURCE.GESTURE
-          );
+          animateToPosition(context.initialPosition, velocityY / 2);
         }
         return;
       }
@@ -344,11 +283,23 @@ export const usePanGestureHandlersDefault = ({
       /**
        * calculate the destination point, using redash.
        */
-      const destinationPoint = snapPoint(
-        translationY + context.initialPosition,
-        velocityY,
-        snapPoints
-      );
+      const isDraggingDown = translationY > 0;
+
+      const destinationPoint = (() => {
+        const endingSnapPoint = snapPoint(
+          translationY + context.initialPosition,
+          velocityY,
+          snapPoints
+        );
+        if (type === GESTURE_SOURCE.HANDLE) {
+          return endingSnapPoint;
+        }
+        const secondHighestSnapPoint =
+          animatedSnapPoints.value[animatedSnapPoints.value.length - 2];
+        return isDraggingDown
+          ? Math.min(secondHighestSnapPoint, endingSnapPoint)
+          : endingSnapPoint;
+      })();
 
       /**
        * if destination point is the same as the current position,
@@ -384,11 +335,7 @@ export const usePanGestureHandlersDefault = ({
         return;
       }
 
-      animateToPosition(
-        destinationPoint,
-        velocityY / 2,
-        ANIMATION_SOURCE.GESTURE
-      );
+      animateToPosition(destinationPoint, velocityY / 2);
     },
     [
       enablePanDownToClose,
@@ -406,8 +353,8 @@ export const usePanGestureHandlersDefault = ({
   );
 
   return {
-    handleGestureStart,
-    handleGestureActive,
-    handleGestureEnd,
+    handleOnStart,
+    handleOnActive,
+    handleOnEnd,
   };
 };
