@@ -12,7 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const count = 60;
 
-const CustomScrollAndDrag = () => {
+const CustomGestureHandling = () => {
   // refs
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomScrollAndDrag;
+export default CustomGestureHandling;

@@ -16,7 +16,6 @@ const App = () => {
   return (
     <ShowcaseApp
       name="Bottom Sheet"
-      initialScreen="Advanced/CustomHandling"
       description={description}
       version={version}
       author={author}
