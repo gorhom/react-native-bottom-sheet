@@ -32,10 +32,10 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       animatedScrollableType,
       animatedHighestSnapPoint,
       animatedClosedPosition,
+      animatedScrollableContentOffsetY,
       enableOverDrag,
       enablePanDownToClose,
       overDragResistanceFactor,
-      scrollableContentOffsetY,
       isInTemporaryPosition,
       isScrollableRefreshable,
       animateToPosition,
@@ -58,7 +58,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
            * if the scrollable content is scrolled, then
            * we lock the position.
            */
-          if (scrollableContentOffsetY.value > 0) {
+          if (animatedScrollableContentOffsetY.value > 0) {
             context.isScrollablePositionLocked = true;
           }
         },
@@ -66,7 +66,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           stopAnimation,
           animatedPosition,
           animatedKeyboardState,
-          scrollableContentOffsetY,
+          animatedScrollableContentOffsetY,
         ]
       );
     const handleOnActive: GestureEventHandlerCallbackType<GestureEventContextType> =
@@ -122,7 +122,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             (context.initialPosition === highestSnapPoint &&
               source === GESTURE_SOURCE.SCROLLABLE) ||
             !context.isScrollablePositionLocked
-              ? scrollableContentOffsetY.value * -1
+              ? animatedScrollableContentOffsetY.value * -1
               : 0;
 
           /**
@@ -221,7 +221,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           animatedSnapPoints,
           animatedPosition,
           animatedScrollableType,
-          scrollableContentOffsetY,
+          animatedScrollableContentOffsetY,
         ]
       );
     const handleOnEnd: GestureEventHandlerCallbackType<GestureEventContextType> =
@@ -336,7 +336,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
            */
           if (
             (source === GESTURE_SOURCE.SCROLLABLE
-              ? scrollableContentOffsetY.value
+              ? animatedScrollableContentOffsetY.value
               : 0) > 0 &&
             context.initialPosition === highestSnapPoint &&
             animatedPosition.value === highestSnapPoint
@@ -350,7 +350,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
            */
           if (
             source === GESTURE_SOURCE.SCROLLABLE &&
-            scrollableContentOffsetY.value > 0 &&
+            animatedScrollableContentOffsetY.value > 0 &&
             animatedPosition.value === highestSnapPoint
           ) {
             return;
@@ -372,7 +372,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           animatedPosition,
           animatedScrollableType,
           animatedSnapPoints,
-          scrollableContentOffsetY,
+          animatedScrollableContentOffsetY,
           animateToPosition,
         ]
       );

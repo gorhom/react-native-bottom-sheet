@@ -15,9 +15,9 @@ export const useScrollableSetter = (
   // hooks
   const {
     animatedScrollableType,
+    animatedScrollableContentOffsetY: rootScrollableContentOffsetY,
     isContentHeightFixed,
     isScrollableRefreshable,
-    scrollableContentOffsetY: rootScrollableContentOffsetY,
     setScrollableRef,
     removeScrollableRef,
   } = useBottomSheetInternal();

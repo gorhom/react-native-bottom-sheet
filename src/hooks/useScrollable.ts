@@ -1,7 +1,7 @@
 import { useCallback, RefObject, useRef } from 'react';
 import { findNodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
-import { SCROLLABLE_TYPE } from '../constants';
+import { SCROLLABLE_STATE, SCROLLABLE_TYPE } from '../constants';
 import type { ScrollableRef, Scrollable } from '../types';
 
 export const useScrollable = () => {
@@ -10,10 +10,13 @@ export const useScrollable = () => {
   const previousScrollableRef = useRef<ScrollableRef>(null);
 
   // variables
-  const scrollableType = useSharedValue<SCROLLABLE_TYPE>(
+  const animatedScrollableType = useSharedValue<SCROLLABLE_TYPE>(
     SCROLLABLE_TYPE.UNDETERMINED
   );
-  const scrollableContentOffsetY = useSharedValue<number>(0);
+  const animatedScrollableContentOffsetY = useSharedValue<number>(0);
+  const animatedScrollableOverrideState = useSharedValue<SCROLLABLE_STATE>(
+    SCROLLABLE_STATE.UNDETERMINED
+  );
   const isScrollableRefreshable = useSharedValue<boolean>(false);
 
   // callbacks
@@ -56,8 +59,9 @@ export const useScrollable = () => {
 
   return {
     scrollableRef,
-    scrollableType,
-    scrollableContentOffsetY,
+    animatedScrollableType,
+    animatedScrollableContentOffsetY,
+    animatedScrollableOverrideState,
     isScrollableRefreshable,
     setScrollableRef,
     removeScrollableRef,

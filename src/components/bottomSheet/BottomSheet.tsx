@@ -265,8 +265,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region hooks variables
     // scrollable variables
     const {
-      scrollableType: animatedScrollableType,
-      scrollableContentOffsetY,
+      animatedScrollableType,
+      animatedScrollableContentOffsetY,
+      animatedScrollableOverrideState,
       isScrollableRefreshable,
       setScrollableRef,
       removeScrollableRef,
@@ -353,6 +354,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return SHEET_STATE.OPENED;
     }, [keyboardBehavior]);
     const animatedScrollableState = useDerivedValue(() => {
+      /**
+       * if scrollable override state is set, then we just return its value.
+       */
+      if (
+        animatedScrollableOverrideState.value !== SCROLLABLE_STATE.UNDETERMINED
+      ) {
+        return animatedScrollableOverrideState.value;
+      }
       /**
        * if sheet state is fill parent, then unlock scrolling
        */
@@ -955,42 +964,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }));
     //#endregion
 
-    // const { handleGestureStart, handleGestureActive, handleGestureEnd } =
-    //   usePanGestureHandlerListeners({
-    //     animatedPosition,
-    //     animatedKeyboardState,
-    //     scrollableContentOffsetY,
-    //     animatedSnapPoints,
-    //     isInTemporaryPosition,
-    //     enablePanDownToClose,
-    //     animatedContainerHeight,
-    //     isScrollableRefreshable,
-    //     enableOverDrag,
-    //     animatedScrollableType,
-    //     overDragResistanceFactor,
-    //     animatedHighestSnapPoint,
-    //     animatedKeyboardHeight,
-    //     animatedClosedPosition,
-    //     animateToPosition,
-    //     stopAnimation,
-    //   });
-
-    // const contentPanGestureHandler = useInteractivePanGestureHandler(
-    //   GESTURE_SOURCE.SCROLLABLE,
-    //   animatedContentGestureState,
-    //   handleGestureStart,
-    //   handleGestureActive,
-    //   handleGestureEnd
-    // );
-    // const handlePanGestureHandler = useInteractivePanGestureHandler(
-    //   GESTURE_SOURCE.HANDLE,
-    //   animatedHandleGestureState,
-    //   handleGestureStart,
-    //   handleGestureActive,
-    //   handleGestureEnd
-    // );
-    //#endregion
-
     //#region contexts variables
     const internalContextVariables = useMemo(
       () => ({
@@ -1001,6 +974,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedAnimationState,
         animatedSheetState,
         animatedScrollableState,
+        animatedScrollableOverrideState,
         animatedContentGestureState,
         animatedHandleGestureState,
         animatedKeyboardState,
@@ -1015,7 +989,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedContainerHeight,
         animatedSnapPoints,
         animatedHighestSnapPoint,
-        scrollableContentOffsetY,
+        animatedScrollableContentOffsetY,
         isInTemporaryPosition,
         isContentHeightFixed,
         isScrollableRefreshable,
@@ -1049,9 +1023,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedSheetState,
         animatedHighestSnapPoint,
         animatedScrollableState,
+        animatedScrollableOverrideState,
         animatedSnapPoints,
         shouldHandleKeyboardEvents,
-        scrollableContentOffsetY,
+        animatedScrollableContentOffsetY,
         isScrollableRefreshable,
         isContentHeightFixed,
         isInTemporaryPosition,
@@ -1497,20 +1472,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   // bottomInset,
                   animatedSheetState,
                   animatedScrollableState,
+                  animatedScrollableOverrideState,
                   // isScrollableRefreshable,
-                  // scrollableContentOffsetY,
+                  // animatedScrollableContentOffsetY,
                   // keyboardState,
-                  animatedIndex,
-                  animatedCurrentIndex,
-                  animatedPosition,
-                  animatedContainerHeight,
-                  animatedSheetHeight,
-                  animatedHandleHeight,
-                  animatedContentHeight,
-                  // keyboardHeight,
-                  isLayoutCalculated,
-                  isContentHeightFixed,
-                  isInTemporaryPosition,
+                  // animatedIndex,
+                  // animatedCurrentIndex,
+                  // animatedPosition,
+                  // animatedContainerHeight,
+                  // animatedSheetHeight,
+                  // animatedHandleHeight,
+                  // animatedContentHeight,
+                  // // keyboardHeight,
+                  // isLayoutCalculated,
+                  // isContentHeightFixed,
+                  // isInTemporaryPosition,
                 }}
               /> */}
             </BottomSheetContainer>

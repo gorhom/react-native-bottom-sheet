@@ -20,7 +20,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     animatedSheetState,
     animatedScrollableState,
     animatedAnimationState,
-    scrollableContentOffsetY: rootScrollableContentOffsetY,
+    animatedScrollableContentOffsetY: rootScrollableContentOffsetY,
   } = useBottomSheetInternal();
 
   //#region callbacks

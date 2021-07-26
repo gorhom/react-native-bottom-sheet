@@ -54,7 +54,8 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
   const {
     animatedScrollableState,
     animatedAnimationState,
-    scrollableContentOffsetY: rootScrollableContentOffsetY,
+    animatedScrollableContentOffsetY: rootScrollableContentOffsetY,
+    animatedScrollableOverrideState,
     animatedIndex,
     animatedSnapPoints,
   } = useBottomSheetInternal();
@@ -84,6 +85,15 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
           gestureTranslationY,
         });
 
+        /**
+         * override scrollable state.
+         */
+        if (isDraggingDownFromMiddle) {
+          animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNLOCKED;
+        } else {
+          animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNDETERMINED;
+        }
+
         if (
           isDraggingDownFromMiddle ||
           (isDraggingDownFromTop && didDragBelowSecondSnapPoint)
@@ -96,8 +106,11 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = lockPosition;
+          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.LOCKED;
           return;
         }
+
+        // animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNLOCKED;
       },
       [
         scrollableRef,
@@ -131,11 +144,13 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = lockPosition;
+          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.LOCKED;
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
+          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNLOCKED;
         }
       },
       [
@@ -172,11 +187,13 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = 0;
+          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.LOCKED;
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
+          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNLOCKED;
         }
       },
       [

@@ -23,10 +23,10 @@ export const useCustomGestureEventsHandlers = () => {
     animatedScrollableType,
     animatedHighestSnapPoint,
     animatedClosedPosition,
+    animatedScrollableContentOffsetY,
     enableOverDrag,
     enablePanDownToClose,
     overDragResistanceFactor,
-    scrollableContentOffsetY,
     isInTemporaryPosition,
     isScrollableRefreshable,
     animateToPosition,
@@ -47,12 +47,12 @@ export const useCustomGestureEventsHandlers = () => {
        * if the scrollable content is scrolled, then
        * we lock the position.
        */
-      if (scrollableContentOffsetY.value > 0) {
+      if (animatedScrollableContentOffsetY.value > 0) {
         context.isScrollablePositionLocked = true;
       }
       gestureTranslationY.value = translationY;
     },
-    [animatedPosition, animatedKeyboardState, scrollableContentOffsetY]
+    [animatedPosition, animatedKeyboardState, animatedScrollableContentOffsetY]
   );
   const handleOnActive: GestureEventHandlerCallbackType = useWorkletCallback(
     function handleOnActive(type, { translationY }, context) {
@@ -108,7 +108,7 @@ export const useCustomGestureEventsHandlers = () => {
         (context.initialPosition === highestSnapPoint &&
           type === GESTURE_SOURCE.SCROLLABLE) ||
         !context.isScrollablePositionLocked
-          ? scrollableContentOffsetY.value * -1
+          ? animatedScrollableContentOffsetY.value * -1
           : 0;
 
       /**
@@ -205,7 +205,7 @@ export const useCustomGestureEventsHandlers = () => {
       animatedSnapPoints,
       isInTemporaryPosition,
       isScrollableRefreshable,
-      scrollableContentOffsetY,
+      animatedScrollableContentOffsetY,
     ]
   );
   const handleOnEnd: GestureEventHandlerCallbackType = useWorkletCallback(
@@ -315,7 +315,7 @@ export const useCustomGestureEventsHandlers = () => {
        */
       if (
         (type === GESTURE_SOURCE.SCROLLABLE
-          ? scrollableContentOffsetY.value
+          ? animatedScrollableContentOffsetY.value
           : 0) > 0 &&
         context.initialPosition === highestSnapPoint &&
         animatedPosition.value === highestSnapPoint
@@ -329,7 +329,7 @@ export const useCustomGestureEventsHandlers = () => {
        */
       if (
         type === GESTURE_SOURCE.SCROLLABLE &&
-        scrollableContentOffsetY.value > 0 &&
+        animatedScrollableContentOffsetY.value > 0 &&
         animatedPosition.value === highestSnapPoint
       ) {
         return;
@@ -346,7 +346,7 @@ export const useCustomGestureEventsHandlers = () => {
       animatedPosition,
       animatedScrollableType,
       animatedSnapPoints,
-      scrollableContentOffsetY,
+      animatedScrollableContentOffsetY,
       isInTemporaryPosition,
       isScrollableRefreshable,
     ]

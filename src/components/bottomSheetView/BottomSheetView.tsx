@@ -13,7 +13,7 @@ function BottomSheetViewComponent({
 }: BottomSheetViewProps) {
   // hooks
   const {
-    scrollableContentOffsetY,
+    animatedScrollableContentOffsetY,
     animatedScrollableType,
     animatedFooterHeight,
   } = useBottomSheetInternal();
@@ -40,9 +40,9 @@ function BottomSheetViewComponent({
 
   // callback
   const handleSettingScrollable = useCallback(() => {
-    scrollableContentOffsetY.value = 0;
+    animatedScrollableContentOffsetY.value = 0;
     animatedScrollableType.value = SCROLLABLE_TYPE.VIEW;
-  }, [scrollableContentOffsetY, animatedScrollableType]);
+  }, [animatedScrollableContentOffsetY, animatedScrollableType]);
 
   // effects
   useFocusHook(handleSettingScrollable);
