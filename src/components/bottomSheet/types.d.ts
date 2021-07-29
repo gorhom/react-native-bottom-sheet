@@ -82,7 +82,7 @@ export interface BottomSheetProps
   /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
-   * @default false
+   * @default true
    */
   animateOnMount?: boolean;
   //#endregion
