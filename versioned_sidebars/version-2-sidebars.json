@@ -1,0 +1,97 @@
+{
+  "version-2/packages": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Bottom Sheet",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-2/getting-started"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/usage"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/props"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/methods"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/hooks"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/scrollables"
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "Guides",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-2/guides/custom-handle"
+            },
+            {
+              "type": "doc",
+              "id": "version-2/guides/custom-backdrop"
+            },
+            {
+              "type": "doc",
+              "id": "version-2/guides/custom-background"
+            },
+            {
+              "type": "doc",
+              "id": "version-2/guides/adding-shadow"
+            },
+            {
+              "type": "doc",
+              "id": "version-2/guides/react-navigation-integration"
+            }
+          ]
+        },
+        {
+          "type": "doc",
+          "id": "version-2/troubleshooting"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/faq"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Bottom Sheet Modal",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-2/modal/getting-started"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/modal/usage"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/modal/props"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/modal/methods"
+        },
+        {
+          "type": "doc",
+          "id": "version-2/modal/hooks"
+        }
+      ]
+    }
+  ]
+}

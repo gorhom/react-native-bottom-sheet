@@ -1,0 +1,16 @@
+{
+  "react-native-tools": {
+    "projectRoot": "./example"
+  },
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true
+  },
+  "eslint.packageManager": "yarn",
+  "editor.formatOnSave": true
+}
