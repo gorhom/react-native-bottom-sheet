@@ -18,10 +18,7 @@ image: /img/bottom-sheet-preview.gif
 slug: /methods
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-These methods are accessible using the bottom sheet reference.
+These methods are accessible using the bottom sheet reference or the hook `useBottomSheet` or `useBottomSheetModal`.
 
 ```tsx
 import React, { useRef } from 'react';
@@ -43,47 +40,61 @@ const App = () => {
 
 ```
 
-### `snapTo`
+### `snapToIndex`
 
-Animate the sheet to one of the provided point from `snapPoints`.
+Snap to one of the provided points from `snapPoints`.
 
 ```ts
-type snapTo = (
+type snapToIndex = (
+  // snap point index.
   index: number,
-  animationDuration?: number,
-  animationEasing?: Animated.EasingFunction
+  // snap animation configs
+  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+) => void;
+```
+
+### `snapToPosition`
+
+Snap to a position out of provided `snapPoints`.
+
+```ts
+type snapToPosition = (
+  // position in pixel or percentage.
+  position: number,
+  // snap animation configs
+  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
 ) => void;
 ```
 
 ### `expand`
 
-Animate the sheet to the maximum provided point from `snapPoints`.
+Snap to the maximum provided point from `snapPoints`.
 
 ```ts
 type expand = (
-  animationDuration?: number,
-  animationEasing?: Animated.EasingFunction
+  // snap animation configs
+  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
 ) => void;
 ```
 
 ### `collapse`
 
-Animate the sheet to the minimum provided point from `snapPoints`.
+Snap to the minimum provided point from `snapPoints`.
 
 ```ts
 type collapse = (
-  animationDuration?: number,
-  animationEasing?: Animated.EasingFunction
+  // snap animation configs
+  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
 ) => void;
 ```
 
 ### `close`
 
-Close the sheet.
+Close the bottom sheet.
 
 ```ts
 type close = (
-  animationDuration?: number,
-  animationEasing?: Animated.EasingFunction
+  // snap animation configs
+  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
 ) => void;
 ```

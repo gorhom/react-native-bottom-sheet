@@ -1,72 +1,72 @@
 module.exports = {
-  title: 'React Native Bottom Sheet',
+  title: "React Native Bottom Sheet",
   tagline:
-    'A performant interactive bottom sheet with fully configurable options 🚀',
-  url: 'https://gorhom.github.io',
-  baseUrl: '/react-native-bottom-sheet/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  organizationName: 'gorhom',
-  projectName: 'react-native-bottom-sheet',
-  favicon: 'img/favicon.ico',
+    "A performant interactive bottom sheet with fully configurable options 🚀",
+  url: "https://gorhom.github.io",
+  baseUrl: "/react-native-bottom-sheet/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  organizationName: "gorhom",
+  projectName: "react-native-bottom-sheet",
+  favicon: "img/favicon.ico",
   themeConfig: {
-    image: 'img/icon.png',
+    image: "img/icon.png",
     navbar: {
-      title: 'Bottom Sheet',
+      title: "Bottom Sheet",
       hideOnScroll: false,
       items: [
         {
-          to: 'modal/',
-          activeBasePath: 'modal',
-          label: 'Bottom Sheet Modal',
-          position: 'left',
+          to: "modal/",
+          activeBasePath: "modal",
+          label: "Bottom Sheet Modal",
+          position: "left",
         },
         {
-          href: 'https://github.com/gorhom/react-native-bottom-sheet',
-          label: 'GitHub',
-          position: 'right',
+          href: "https://github.com/gorhom/react-native-bottom-sheet",
+          label: "GitHub",
+          position: "right",
         },
         {
-          type: 'docsVersionDropdown',
-          position: 'right',
+          type: "docsVersionDropdown",
+          position: "right",
           dropdownActiveClassDisabled: true,
-          docsPluginId: 'default',
+          docsPluginId: "default",
         },
       ],
     },
     prism: {
-      theme: require('prism-react-renderer/themes/dracula'),
+      theme: require("prism-react-renderer/themes/dracula"),
     },
     footer: {
       copyright: `Copyright © ${new Date().getFullYear()} <a rel="noreferrer" href="https://gorhom.dev/" target="_blank">Mo Gorhom</a>. Built with Docusaurus.`,
     },
     googleAnalytics: {
-      trackingID: 'UA-193461439-1',
+      trackingID: "UA-193461439-1",
       anonymizeIP: true,
     },
   },
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          routeBasePath: '/',
+          sidebarPath: require.resolve("./sidebars.js"),
+          routeBasePath: "/",
           editUrl:
-            'https://github.com/gorhom/react-native-bottom-sheet/edit/master/website/',
-          lastVersion: 'current',
+            "https://github.com/gorhom/react-native-bottom-sheet/edit/website/",
+          lastVersion: "current",
           versions: {
             current: {
-              label: 'v4',
+              label: "v4",
             },
             2: {
-              label: 'v2',
-              path: 'v2',
+              label: "v2",
+              path: "v2",
             },
           },
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       },
     ],

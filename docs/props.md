@@ -56,6 +56,14 @@ Defines how violently sheet has to stopped while over dragging.
 | ------ | ------- | -------- |
 | number | 2.5     | NO       |
 
+### `detached`
+
+Defines whether the bottom sheet is attached to the bottom or no.
+
+| type    | default | required |
+| ------- | ------- | -------- |
+| boolean | false   | NO       |
+
 ### `enableContentPanningGesture`
 
 Enable content panning gesture interaction.
@@ -80,13 +88,13 @@ Enable over drag for the sheet.
 | ------- | ------- | -------- |
 | boolean | true    | NO       |
 
-### `enableFlashScrollableIndicatorOnExpand`
+### `enablePanDownToClose`
 
-Enable flash the scrollable indicator when the sheet is expanded.
+Enable pan down gesture to close the sheet.
 
 | type    | default | required |
 | ------- | ------- | -------- |
-| boolean | true    | NO       |
+| boolean | false   | NO       |
 
 ### `animateOnMount`
 
@@ -94,7 +102,7 @@ This will initially mount the sheet closed and when it's mounted and calculated 
 
 | type    | default | required |
 | ------- | ------- | -------- |
-| boolean | false   | NO       |
+| boolean | true    | NO       |
 
 ### `style`
 
@@ -122,6 +130,22 @@ Container height helps to calculate the internal sheet layouts. If `containerHei
 | ------ | ------- | -------- |
 | number | 0       | NO       |
 
+### `contentHeight`
+
+Content height helps dynamic snap points calculation.
+
+| type                                    | default   | required |
+| --------------------------------------- | --------- | -------- |
+| number \| Animated.SharedValue<number\> | undefined | NO       |
+
+### `containerOffset`
+
+Container offset helps to accurately detect container offsets.
+
+| type                          | default   | required |
+| ----------------------------- | --------- | -------- |
+| Animated.SharedValue<Insets\> | undefined | NO       |
+
 ### `topInset`
 
 Top inset to be added to the bottom sheet container, usually it comes from `@react-navigation/stack` hook `useHeaderHeight` or from `react-native-safe-area-context` hook `useSafeArea`.
@@ -144,14 +168,13 @@ Bottom inset to be added to the bottom sheet container.
 
 Defines the keyboard appearance behavior.
 
-- `none`: do nothing.
 - `extend`: extend the sheet to its maximum snap point.
 - `fullScreen`: extend the sheet to full screen.
 - `interactive`: offset the sheet by the size of the keyboard.
 
-| type                                                | default | required |
-| --------------------------------------------------- | ------- | -------- |
-| 'none' \| 'extend' \| 'fullScreen' \| 'interactive' | 'none'  | NO       |
+| type                                      | default       | required |
+| ----------------------------------------- | ------------- | -------- |
+| 'extend' \| 'fullScreen' \| 'interactive' | 'interactive' | NO       |
 
 ### `keyboardBlurBehavior`
 
@@ -163,6 +186,14 @@ Defines the keyboard blur behavior.
 | type                | default | required |
 | ------------------- | ------- | -------- |
 | 'none' \| 'restore' | 'none'  | NO       |
+
+### `android_keyboardInputMode`
+
+Defines keyboard input mode for `Android` only, [learn more](https://developer.android.com/guide/topics/manifest/activity-element#wsoft).
+
+| type                          | default     | required |
+| ----------------------------- | ----------- | -------- |
+| 'adjustPan' \| 'adjustResize' | 'adjustPan' | NO       |
 
 ## Animation Configuration
 
@@ -184,22 +215,6 @@ type animationConfigs = (
 | type     | default   | required |
 | -------- | --------- | -------- |
 | function | undefined | NO       |
-
-### `animationDuration`
-
-Snapping animation duration.
-
-| type   | default | required |
-| ------ | ------- | -------- |
-| number | 500     | NO       |
-
-### `animationEasing`
-
-Snapping animation easing function.
-
-| type             | default | required |
-| ---------------- | ------- | -------- |
-| `EasingFunction` | @TODO   | NO       |
 
 ## Gesture Configuration
 
@@ -257,17 +272,17 @@ Snapping animation easing function.
 
 Animated value to be used as a callback for the index node internally.
 
-| type                   | default | required |
-| ---------------------- | ------- | -------- |
-| AnimatedValue<number\> | null    | NO       |
+| type                          | default | required |
+| ----------------------------- | ------- | -------- |
+| Animated.SharedValue<number\> | null    | NO       |
 
 ### `animatedPosition`
 
 Animated value to be used as a callback for the position node internally.
 
-| type                   | default | required |
-| ---------------------- | ------- | -------- |
-| AnimatedValue<number\> | null    | NO       |
+| type                          | default | required |
+| ----------------------------- | ------- | -------- |
+| Animated.SharedValue<number\> | null    | NO       |
 
 ## Callbacks
 
