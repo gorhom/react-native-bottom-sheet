@@ -88,7 +88,7 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
         /**
          * override scrollable state.
          */
-        if (isDraggingDownFromMiddle) {
+        if (isDraggingDownFromMiddle || isDraggingDownFromTop) {
           animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNLOCKED;
         } else {
           animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNDETERMINED;
