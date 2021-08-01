@@ -1,7 +1,11 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
+import BottomSheet, {
+  BottomSheetScrollView,
+  SCROLLABLE_STATE,
+  useBottomSheetInternal,
+} from '@gorhom/bottom-sheet';
 import Button from '../../../components/button';
 import ContactItem from '../../../components/contactItem';
 import { createContactListMockData } from '../../../utilities';
@@ -18,18 +22,10 @@ const CustomGestureHandling = () => {
 
   // hooks
   const { height } = useWindowDimensions();
-  const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
   // variables
   const snapPoints = useMemo(() => [150, height * 0.7, '100%'], [height]);
-  const data = useMemo(() => createContactListMockData(count), []);
   const gestureTranslationY = useSharedValue(0);
-
-  // styles
-  const listContentContainerStyle = useMemo(
-    () => [styles.listContentContainer, { paddingBottom: bottomSafeArea }],
-    [bottomSafeArea]
-  );
 
   //#region callbacks
   const handleSnapPress = useCallback(index => {
@@ -46,18 +42,6 @@ const CustomGestureHandling = () => {
   }, []);
   //#endregion
 
-  // renders
-  const renderScrollViewItem = useCallback(
-    (item, index) => (
-      <ContactItem
-        key={`${item.name}.${index}`}
-        title={`${index}: ${item.name}`}
-        subTitle={item.jobTitle}
-      />
-    ),
-    []
-  );
-
   return (
     <View style={styles.container}>
       <Button label="Snap To top point" onPress={() => handleSnapPress(2)} />
@@ -72,17 +56,50 @@ const CustomGestureHandling = () => {
           snapPoints={snapPoints}
           gestureEventsHandlersHook={useCustomGestureEventsHandlers}
         >
-          <BottomSheetScrollView
-            style={styles.listContainer}
-            bounces={true}
-            contentContainerStyle={listContentContainerStyle}
-            scrollEventsHandlersHook={useCustomScrollEventsHandlers}
-          >
-            {data.map(renderScrollViewItem)}
-          </BottomSheetScrollView>
+          <BottomSheetContent />
         </BottomSheet>
       </GestureTranslationProvider>
     </View>
+  );
+};
+
+const BottomSheetContent = () => {
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
+  const data = useMemo(() => createContactListMockData(count), []);
+
+  const listContentContainerStyle = useMemo(
+    () => [styles.listContentContainer, { paddingBottom: bottomSafeArea }],
+    [bottomSafeArea]
+  );
+
+  const renderScrollViewItem = useCallback(
+    (item, index) => (
+      <ContactItem
+        key={`${item.name}.${index}`}
+        title={`${index}: ${item.name}`}
+        subTitle={item.jobTitle}
+      />
+    ),
+    []
+  );
+
+  const { animatedScrollableState } = useBottomSheetInternal();
+
+  const scrollableAnimatedProps = useAnimatedProps(() => ({
+    showsVerticalScrollIndicator:
+      animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED,
+  }));
+
+  return (
+    <BottomSheetScrollView
+      style={styles.listContainer}
+      bounces={true}
+      contentContainerStyle={listContentContainerStyle}
+      scrollEventsHandlersHook={useCustomScrollEventsHandlers}
+      animatedProps={scrollableAnimatedProps}
+    >
+      {data.map(renderScrollViewItem)}
+    </BottomSheetScrollView>
   );
 };
 

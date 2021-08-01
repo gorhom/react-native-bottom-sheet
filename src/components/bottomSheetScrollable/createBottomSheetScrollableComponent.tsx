@@ -97,13 +97,13 @@ export function createBottomSheetScrollableComponent<T, P>(
           <ScrollableComponent
             // @ts-ignore
             ref={scrollableRef}
+            scrollEventThrottle={16}
+            animatedProps={scrollableAnimatedProps}
+            {...rest}
             overScrollMode={overScrollMode}
             keyboardDismissMode={keyboardDismissMode}
-            scrollEventThrottle={16}
             onScroll={scrollHandler}
-            animatedProps={scrollableAnimatedProps}
             style={containerStyle}
-            {...rest}
           />
         </NativeViewGestureHandler>
       );
@@ -140,18 +140,18 @@ export function createBottomSheetScrollableComponent<T, P>(
           shouldCancelWhenOutside={false}
         >
           <ScrollableComponent
-            {...rest}
             // @ts-ignore
             ref={scrollableRef}
+            scrollEventThrottle={16}
+            animatedProps={scrollableAnimatedProps}
+            {...rest}
             overScrollMode={overScrollMode}
             keyboardDismissMode={keyboardDismissMode}
-            scrollEventThrottle={16}
             refreshing={refreshing}
             onRefresh={onRefresh}
             progressViewOffset={progressViewOffset}
             refreshControl={refreshControl}
             onScroll={scrollHandler}
-            animatedProps={scrollableAnimatedProps}
             style={containerStyle}
           />
         </NativeViewGestureHandler>
