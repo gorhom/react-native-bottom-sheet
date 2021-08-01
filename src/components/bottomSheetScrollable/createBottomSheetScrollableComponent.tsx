@@ -95,11 +95,10 @@ export function createBottomSheetScrollableComponent<T, P>(
           shouldCancelWhenOutside={false}
         >
           <ScrollableComponent
-            // @ts-ignore
-            ref={scrollableRef}
             scrollEventThrottle={16}
             animatedProps={scrollableAnimatedProps}
             {...rest}
+            ref={scrollableRef}
             overScrollMode={overScrollMode}
             keyboardDismissMode={keyboardDismissMode}
             onScroll={scrollHandler}
@@ -140,11 +139,10 @@ export function createBottomSheetScrollableComponent<T, P>(
           shouldCancelWhenOutside={false}
         >
           <ScrollableComponent
-            // @ts-ignore
-            ref={scrollableRef}
             scrollEventThrottle={16}
             animatedProps={scrollableAnimatedProps}
             {...rest}
+            ref={scrollableRef}
             overScrollMode={overScrollMode}
             keyboardDismissMode={keyboardDismissMode}
             refreshing={refreshing}
