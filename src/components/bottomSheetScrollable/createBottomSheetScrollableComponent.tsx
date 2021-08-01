@@ -88,6 +88,25 @@ export function createBottomSheetScrollableComponent<T, P>(
 
     //#region render
     if (Platform.OS === 'android') {
+      const scrollableContent = (
+        <NativeViewGestureHandler
+          ref={nativeGestureRef}
+          enabled={enableContentPanningGesture}
+          shouldCancelWhenOutside={false}
+        >
+          <ScrollableComponent
+            // @ts-ignore
+            ref={scrollableRef}
+            overScrollMode={overScrollMode}
+            keyboardDismissMode={keyboardDismissMode}
+            scrollEventThrottle={16}
+            onScroll={scrollHandler}
+            animatedProps={scrollableAnimatedProps}
+            style={containerStyle}
+            {...rest}
+          />
+        </NativeViewGestureHandler>
+      );
       return (
         <BottomSheetDraggableView
           nativeGestureRef={nativeGestureRef}
@@ -102,42 +121,10 @@ export function createBottomSheetScrollableComponent<T, P>(
               progressViewOffset={progressViewOffset}
               style={styles.container}
             >
-              <NativeViewGestureHandler
-                ref={nativeGestureRef}
-                enabled={enableContentPanningGesture}
-                shouldCancelWhenOutside={false}
-              >
-                <ScrollableComponent
-                  {...rest}
-                  // @ts-ignore
-                  ref={scrollableRef}
-                  overScrollMode={overScrollMode}
-                  keyboardDismissMode={keyboardDismissMode}
-                  scrollEventThrottle={16}
-                  onScroll={scrollHandler}
-                  animatedProps={scrollableAnimatedProps}
-                  style={containerStyle}
-                />
-              </NativeViewGestureHandler>
+              {scrollableContent}
             </BottomSheetRefreshControl>
           ) : (
-            <NativeViewGestureHandler
-              ref={nativeGestureRef}
-              enabled={enableContentPanningGesture}
-              shouldCancelWhenOutside={false}
-            >
-              <ScrollableComponent
-                {...rest}
-                // @ts-ignore
-                ref={scrollableRef}
-                overScrollMode={overScrollMode}
-                keyboardDismissMode={keyboardDismissMode}
-                scrollEventThrottle={16}
-                onScroll={scrollHandler}
-                animatedProps={scrollableAnimatedProps}
-                style={containerStyle}
-              />
-            </NativeViewGestureHandler>
+            scrollableContent
           )}
         </BottomSheetDraggableView>
       );
