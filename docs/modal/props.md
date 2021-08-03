@@ -43,9 +43,9 @@ Defines the stack behavior when modal mounts.
 | ------------------- | --------- | -------- |
 | 'push' \| 'replace' | 'replace' | NO       |
 
-### `dismissOnPanDown`
+### `enableDismissOnClose`
 
-Dismiss modal when panning down.
+Dismiss the modal when it is closed
 
 | type    | default | required |
 | ------- | ------- | -------- |

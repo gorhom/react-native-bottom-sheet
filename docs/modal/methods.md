@@ -18,7 +18,6 @@ image: /img/bottom-sheet-preview.gif
 slug: /modal/methods
 ---
 
-
 **Bottom Sheet Modal** inherits all [**Bottom Sheet** methods](../methods) and also it introduces its own methods.
 
 These methods are accessible using the bottom sheet modal reference:
@@ -29,9 +28,7 @@ import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 const App = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
   const handlePresentPress = () => bottomSheetModalRef.current.present()
-
   return (
     <>
       <Button title="Present Sheet" onPress={handlePresentPress} />
