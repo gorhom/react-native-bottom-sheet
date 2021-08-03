@@ -18,9 +18,6 @@ image: /img/bottom-sheet-preview.gif
 slug: /custom-handle
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 To override the default handle, you will need to pass the prop `handleComponent` to the `BottomSheet` component.
 
 When you provide your own handle component, it will receive these animated props `animatedIndex` & `animatedPosition` that indicates the position and the index of the sheet.
@@ -29,12 +26,12 @@ You can extend your custom handle props interface with the provided `BottomSheet
 
 ### Example
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import { Video } from '@site/components/video';
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import { Video } from "@site/components/video";
 
 <Video
   title="React Native Bottom Sheet Custom Handle"
-  url={useBaseUrl('video/bottom-sheet-custom-handle-preview.mp4')}
+  url={useBaseUrl("video/bottom-sheet-custom-handle-preview.mp4")}
 />
 
 Here is an example of a custom handle component, but first you will need to install `Redash`:
@@ -45,165 +42,21 @@ Here is an example of a custom handle component, but first you will need to inst
 yarn add react-native-redash
 ```
 
-<Tabs
-  defaultValue="v3"
-  values={[
-    { label: 'v2', value: 'v2', },
-    { label: 'v3', value: 'v3', },
-  ]
-}>
-<TabItem value="v2">
-
 ```tsx
-import React, { useMemo } from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
-import { transformOrigin, toRad } from 'react-native-redash';
-
-interface HandleProps extends BottomSheetHandleProps {}
-
-const Handle: React.FC<HandleProps> = ({ animatedIndex }) => {
-  //#region animations
-  const borderTopRadius = useMemo(
-    () =>
-      interpolate(animatedIndex, {
-        inputRange: [1, 2],
-        outputRange: [20, 0],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    [animatedIndex]
-  );
-  const indicatorTransformOriginY = useMemo(
-    () =>
-      interpolate(animatedIndex, {
-        inputRange: [0, 1, 2],
-        outputRange: [-1, 0, 1],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    [animatedIndex]
-  );
-  const leftIndicatorRotate = useMemo(
-    () =>
-      interpolate(animatedIndex, {
-        inputRange: [0, 1, 2],
-        outputRange: [toRad(-30), 0, toRad(30)],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    [animatedIndex]
-  );
-  const rightIndicatorRotate = interpolate(animatedIndex, {
-    inputRange: [0, 1, 2],
-    outputRange: [toRad(30), 0, toRad(-30)],
-    extrapolate: Extrapolate.CLAMP,
-  });
-  //#endregion
-
-  //#region styles
-  const containerStyle = useMemo(
-    () => [
-      styles.header,
-      {
-        borderTopLeftRadius: borderTopRadius,
-        borderTopRightRadius: borderTopRadius,
-      },
-    ],
-    [borderTopRadius]
-  );
-  const leftIndicatorStyle = useMemo(
-    () => ({
-      ...styles.indicator,
-      ...styles.leftIndicator,
-      transform: transformOrigin(
-        { x: 0, y: indicatorTransformOriginY },
-        {
-          rotate: leftIndicatorRotate,
-          translateX: -5,
-        }
-      ),
-    }),
-    [indicatorTransformOriginY, leftIndicatorRotate]
-  );
-  const rightIndicatorStyle = useMemo(
-    () => ({
-      ...styles.indicator,
-      ...styles.rightIndicator,
-      transform: transformOrigin(
-        { x: 0, y: indicatorTransformOriginY },
-        {
-          rotate: rightIndicatorRotate,
-          translateX: 5,
-        }
-      ),
-    }),
-    [indicatorTransformOriginY, rightIndicatorRotate]
-  );
-  //#endregion
-
-  // render
-  return (
-    <Animated.View style={containerStyle}>
-      <Animated.View style={leftIndicatorStyle} />
-      <Animated.View style={rightIndicatorStyle} />
-    </Animated.View>
-  );
-};
-
-export default Handle;
-
-const styles = StyleSheet.create({
-  header: {
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    paddingVertical: 14,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: -20,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#fff',
-  },
-  indicator: {
-    position: 'absolute',
-    width: 10,
-    height: 4,
-    backgroundColor: '#999',
-  },
-  leftIndicator: {
-    borderTopStartRadius: 2,
-    borderBottomStartRadius: 2,
-  },
-  rightIndicator: {
-    borderTopEndRadius: 2,
-    borderBottomEndRadius: 2,
-  },
-});
-```
-
-</TabItem>
-<TabItem value="v3">
-
-```tsx
-import React, { useMemo } from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
+import React, { useMemo } from "react";
+import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import { BottomSheetHandleProps } from "@gorhom/bottom-sheet";
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
-} from 'react-native-reanimated';
-import { toRad } from 'react-native-redash';
+} from "react-native-reanimated";
+import { toRad } from "react-native-redash";
 
 // @ts-ignore
 export const transformOrigin = ({ x, y }, ...transformations) => {
-  'worklet';
+  "worklet";
   return [
     { translateX: x },
     { translateY: y },
@@ -310,19 +163,19 @@ export default Handle;
 
 const styles = StyleSheet.create({
   header: {
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: '#fff',
+    borderBottomColor: "#fff",
   },
   indicator: {
-    position: 'absolute',
+    position: "absolute",
     width: 10,
     height: 4,
-    backgroundColor: '#999',
+    backgroundColor: "#999",
   },
   leftIndicator: {
     borderTopStartRadius: 2,
@@ -334,6 +187,3 @@ const styles = StyleSheet.create({
   },
 });
 ```
-
-</TabItem>
-</Tabs>

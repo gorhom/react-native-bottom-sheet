@@ -201,8 +201,8 @@ Defines keyboard input mode for `Android` only, [learn more](https://developer.a
 
 Animation configs, this could be created by:
 
-- `useBottomSheetSpringConfigs`
-- `useBottomSheetTimingConfigs`
+- [`useBottomSheetSpringConfigs`](./hooks#usebottomsheetspringconfigs)
+- [`useBottomSheetTimingConfigs`](./hooks#usebottomsheettimingconfigs)
 
 ```ts
 type animationConfigs = (

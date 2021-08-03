@@ -18,9 +18,6 @@ image: /img/bottom-sheet-preview.gif
 slug: /custom-backdrop
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 To add a backdrop to your sheet you will need to pass the prop `backdropComponent` to the `BottomSheet` component.
 
 When you provide your own backdrop component, it will receive these animated props `animatedIndex` & `animatedPosition` that indicates the position and the index of the sheet.
@@ -29,71 +26,24 @@ You can extend your custom backdrop props interface with the provided `BottomShe
 
 ### Example
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import { Video } from '@site/components/video';
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import { Video } from "@site/components/video";
 
 <Video
   title="React Native Bottom Sheet Custom Backdrop"
-  url={useBaseUrl('video/bottom-sheet-custom-backdrop-preview.mp4')}
+  url={useBaseUrl("video/bottom-sheet-custom-backdrop-preview.mp4")}
 />
 
 Here is an example of a custom backdrop component:
 
-<Tabs
-  defaultValue="v3"
-  values={[
-    { label: 'v2', value: 'v2', },
-    { label: 'v3', value: 'v3', },
-  ]
-}>
-<TabItem value="v2">
-
 ```tsx
-import React, { useMemo } from 'react';
-import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
-import Animated, { Extrapolate, interpolate } from 'react-native-reanimated';
-
-const CustomBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
-  // animated variables
-  const animatedOpacity = useMemo(
-    () =>
-      interpolate(animatedIndex, {
-        inputRange: [0, 1],
-        outputRange: [0, 1],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    [animatedIndex]
-  );
-
-  // styles
-  const containerStyle = useMemo(
-    () => [
-      style,
-      {
-        backgroundColor: '#a8b5eb',
-        opacity: animatedOpacity,
-      },
-    ],
-    [style, animatedOpacity]
-  );
-
-  return <Animated.View style={containerStyle} />;
-};
-
-export default CustomBackdrop;
-```
-
-</TabItem>
-<TabItem value="v3">
-
-```tsx
-import React, { useMemo } from 'react';
-import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
+import React, { useMemo } from "react";
+import { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
-} from 'react-native-reanimated';
+} from "react-native-reanimated";
 
 const CustomBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
   // animated variables
@@ -111,7 +61,7 @@ const CustomBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
     () => [
       style,
       {
-        backgroundColor: '#a8b5eb',
+        backgroundColor: "#a8b5eb",
       },
       containerAnimatedStyle,
     ],
@@ -123,6 +73,3 @@ const CustomBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
 
 export default CustomBackdrop;
 ```
-
-</TabItem>
-</Tabs>
