@@ -742,8 +742,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -798,8 +798,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -850,8 +850,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -895,8 +895,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -940,8 +940,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -1291,8 +1291,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         const nextPosition = getNextPosition();
         animateToPosition(
           nextPosition,
-          0,
           ANIMATION_SOURCE.KEYBOARD,
+          0,
           animationConfigs
         );
       },
