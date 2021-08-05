@@ -5,10 +5,13 @@ import Animated, {
   block,
   call,
   cond,
+  diff,
   eq,
   Extrapolate,
+  lessThan,
   neq,
   not,
+  proc,
   set,
   useCode,
 } from 'react-native-reanimated';
@@ -30,6 +33,15 @@ const {
   interpolateNode: interpolateV2,
 } = require('react-native-reanimated');
 const interpolate = interpolateV2 || interpolateV1;
+const interpolateOpacity = proc(
+  (animatedIndex, disappearsOnIndex, appearsOnIndex, opacity) => {
+    return interpolate(animatedIndex, {
+      inputRange: [disappearsOnIndex, appearsOnIndex],
+      outputRange: [0, opacity],
+      extrapolate: Extrapolate.CLAMP,
+    });
+  }
+);
 
 const AnimatedTouchableWithoutFeedback = Animated.createAnimatedComponent(
   TouchableWithoutFeedback
@@ -64,15 +76,40 @@ const BottomSheetBackdropComponent = ({
   const isTouchable = useReactiveValue(
     syntheticPressBehavior !== 'none' ? 1 : 0
   );
-  const animatedOpacity = useMemo(
-    () =>
-      interpolate(animatedIndex, {
-        inputRange: [disappearsOnIndex, appearsOnIndex],
-        outputRange: [0, opacity],
-        extrapolate: Extrapolate.CLAMP,
-      }),
-    [animatedIndex, opacity, appearsOnIndex, disappearsOnIndex]
-  );
+  const gotToMaxIndex = useReactiveValue(0);
+  const animatedOpacity = useMemo(() => {
+    return block([
+      cond([eq(animatedIndex, appearsOnIndex)], [set(gotToMaxIndex, 1)]),
+      cond(
+        [eq(gotToMaxIndex, 1)],
+        cond(
+          [lessThan(diff(animatedIndex), 0)],
+          [
+            set(gotToMaxIndex, 0),
+            interpolateOpacity(
+              animatedIndex,
+              disappearsOnIndex,
+              appearsOnIndex,
+              opacity
+            ),
+          ],
+          opacity
+        ),
+        interpolateOpacity(
+          animatedIndex,
+          disappearsOnIndex,
+          appearsOnIndex,
+          opacity
+        )
+      ),
+    ]);
+  }, [
+    animatedIndex,
+    gotToMaxIndex,
+    disappearsOnIndex,
+    appearsOnIndex,
+    opacity,
+  ]);
   //#endregion
 
   //#region styles
