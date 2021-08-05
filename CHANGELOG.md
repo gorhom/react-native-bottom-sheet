@@ -1,6 +1,70 @@
 # Changelog
 
-## [v4.0.0-alpha.22](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.21...v4.0.0-alpha.22)
+## [v4.0.0-alpha.23](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.22...v4.0.0-alpha.23)
+
+#### Features
+
+- feat: allow custom pan gesture and scroll handler customisation  (#525) (by @vonovak)
+
+* feat: allow custom gesture handling
+
+* chore: self-review
+
+* chore: remove usememos
+
+* feat: add scrollEventListenersHook param
+
+* refactor: rename props for hooks
+
+* chore: rebase on alpha21
+
+* refactor: rename hooks (review points 4, 5)
+
+* refactor: introduce useHandleSettingScrollable (review point 6)
+
+* fix: do not get stuck in transition
+
+* refactor: added gesture handler internal context
+
+* refactor: renamed example to CustomGestureHandling
+
+* refactor: updated new props types
+
+* refactor: allow to override scrollable state
+
+* fix: scrolling momentum not right when scrolling from top
+
+* Revert "fix: scrolling momentum not right when scrolling from top"
+
+This reverts commit c23910c70fa8beb395dd6c7c15487bf0950bdea1.
+
+* chore: extract duplicated segment into const
+
+* feat: allow overriding animatedProps
+
+* refactor: make ref handling more explicit
+
+* refactor: make scrollEventThrottle prop non-overridable
+
+* chore: updated custom gesture example
+
+* fix: updated animateToPosition params order
+
+* chore: updated new props description
+
+Co-authored-by: Mo Gorhom &lt;gorhom@me.com&gt; ([4c32da7](https://github.com/gorhom/react-native-bottom-sheet/commit/4c32da7c0bb7e902883f009f10909286ad65042c)).
+
+#### Improvements
+
+- chore: remove unnecessary useMemos ([`#515`](https://github.com/gorhom/react-native-bottom-sheet/pull/515)).
+- chore: removed enableFlashScrollableIndicatorOnExpand prop ([e447da4](https://github.com/gorhom/react-native-bottom-sheet/commit/e447da49a79f09456603cf57b5839c42f390f9b5)).
+- refactor: updated animateOnMount default value to true ([6293fe4](https://github.com/gorhom/react-native-bottom-sheet/commit/6293fe452f54c3f5d2ac332642b4c369bc768c92)).
+
+#### Fixes
+
+- fix: allow user to override showsVerticalScrollIndicator value on scrollables ([11cdc34](https://github.com/gorhom/react-native-bottom-sheet/commit/11cdc344e029200435280389b291441c1c363e97)).
+
+## [v4.0.0-alpha.22](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.21...v4.0.0-alpha.22) - 2021-07-20
 
 #### Improvements
 
