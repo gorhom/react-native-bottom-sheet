@@ -3,6 +3,7 @@ export {
   BottomSheetInternalContext,
   BottomSheetInternalProvider,
 } from './internal';
+export { BottomSheetGestureHandlersContext } from './gesture';
 export {
   BottomSheetModalContext,
   BottomSheetModalProvider,

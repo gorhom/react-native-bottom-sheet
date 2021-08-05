@@ -1,5 +1,16 @@
-import type { FlatList, ScrollView, SectionList } from 'react-native';
+import type React from 'react';
+import type {
+  FlatList,
+  ScrollView,
+  SectionList,
+  NativeScrollEvent,
+} from 'react-native';
+import type {
+  GestureEventPayload,
+  PanGestureHandlerEventPayload,
+} from 'react-native-gesture-handler';
 import type Animated from 'react-native-reanimated';
+import type { GESTURE_SOURCE } from './constants';
 
 //#region Methods
 export interface BottomSheetMethods {
@@ -60,7 +71,6 @@ export interface BottomSheetMethods {
     force?: boolean
   ) => void;
 }
-
 export interface BottomSheetModalMethods extends BottomSheetMethods {
   /**
    * Mount and present the bottom sheet modal to the initial snap point.
@@ -94,7 +104,6 @@ export interface BottomSheetVariables {
 
 //#region scrollables
 export type Scrollable = FlatList | ScrollView | SectionList;
-
 export type ScrollableRef = {
   id: number;
   node: React.RefObject<Scrollable>;
@@ -109,4 +118,37 @@ export interface Insets {
   left: number;
   right: number;
 }
+//#endregion
+
+//#region hooks
+export type GestureEventPayloadType = GestureEventPayload &
+  PanGestureHandlerEventPayload;
+
+type GestureEventHandlerCallbackType<C = any> = (
+  source: GESTURE_SOURCE,
+  payload: GestureEventPayloadType,
+  context: C
+) => void;
+
+export type GestureEventsHandlersHookType = () => {
+  handleOnStart: GestureEventHandlerCallbackType;
+  handleOnActive: GestureEventHandlerCallbackType;
+  handleOnEnd: GestureEventHandlerCallbackType;
+};
+
+type ScrollEventHandlerCallbackType<C = any> = (
+  payload: NativeScrollEvent,
+  context: C
+) => void;
+
+export type ScrollEventsHandlersHookType = (
+  ref: React.RefObject<Scrollable>,
+  contentOffsetY: Animated.SharedValue<number>
+) => {
+  handleOnScroll?: ScrollEventHandlerCallbackType;
+  handleOnBeginDrag?: ScrollEventHandlerCallbackType;
+  handleOnEndDrag?: ScrollEventHandlerCallbackType;
+  handleOnMomentumBegin?: ScrollEventHandlerCallbackType;
+  handleOnMomentumEnd?: ScrollEventHandlerCallbackType;
+};
 //#endregion

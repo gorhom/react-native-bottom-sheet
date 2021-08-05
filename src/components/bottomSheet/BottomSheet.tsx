@@ -6,7 +6,7 @@ import React, {
   memo,
   useEffect,
 } from 'react';
-import { Keyboard, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import invariant from 'invariant';
 import Animated, {
   useAnimatedReaction,
@@ -21,9 +21,7 @@ import Animated, {
   useWorkletCallback,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
-import { clamp, snapPoint } from 'react-native-redash';
 import {
-  useInteractivePanGestureHandler,
   useScrollable,
   usePropsValidator,
   useReactiveSharedValue,
@@ -35,13 +33,13 @@ import {
   BottomSheetProvider,
 } from '../../contexts';
 import BottomSheetContainer from '../bottomSheetContainer';
+import BottomSheetGestureHandlersProvider from '../bottomSheetGestureHandlersProvider';
 import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import {
-  GESTURE_SOURCE,
   ANIMATION_STATE,
   KEYBOARD_STATE,
   KEYBOARD_BEHAVIOR,
@@ -49,8 +47,6 @@ import {
   SCROLLABLE_STATE,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
-  SCROLLABLE_TYPE,
-  WINDOW_HEIGHT,
   ANIMATION_SOURCE,
 } from '../../constants';
 import {
@@ -76,11 +72,7 @@ import {
   INITIAL_CONTAINER_OFFSET,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
-import type { BottomSheetProps } from './types';
-import type {
-  GestureEventContextType,
-  GestureEventType,
-} from '../../hooks/useInteractivePanGestureHandler';
+import type { BottomSheetProps, AnimateToPositionType } from './types';
 import { styles } from './styles';
 
 Animated.addWhitelistedUIProps({
@@ -110,6 +102,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
       style: _providedStyle,
+
+      // hooks
+      gestureEventsHandlersHook,
 
       // keyboard
       keyboardBehavior = DEFAULT_KEYBOARD_BEHAVIOR,
@@ -270,8 +265,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region hooks variables
     // scrollable variables
     const {
-      scrollableType: animatedScrollableType,
-      scrollableContentOffsetY,
+      animatedScrollableType,
+      animatedScrollableContentOffsetY,
+      animatedScrollableOverrideState,
       isScrollableRefreshable,
       setScrollableRef,
       removeScrollableRef,
@@ -358,6 +354,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return SHEET_STATE.OPENED;
     }, [keyboardBehavior]);
     const animatedScrollableState = useDerivedValue(() => {
+      /**
+       * if scrollable override state is set, then we just return its value.
+       */
+      if (
+        animatedScrollableOverrideState.value !== SCROLLABLE_STATE.UNDETERMINED
+      ) {
+        return animatedScrollableOverrideState.value;
+      }
       /**
        * if sheet state is fill parent, then unlock scrolling
        */
@@ -591,6 +595,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [_providedOnAnimate, animatedSnapPoints, animatedCurrentIndex]
     );
+    //#endregion
+
+    //#region animation
     const stopAnimation = useWorkletCallback(() => {
       cancelAnimation(animatedPosition);
       isForcedClosing.value = false;
@@ -620,11 +627,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedNextPositionIndex.value = Number.NEGATIVE_INFINITY;
       }
     );
-    const animateToPosition = useWorkletCallback(
+    const animateToPosition: AnimateToPositionType = useWorkletCallback(
       function animateToPosition(
         position: number,
-        velocity: number = 0,
         source: ANIMATION_SOURCE,
+        velocity: number = 0,
         configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
       ) {
         if (
@@ -735,8 +742,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -791,8 +798,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -843,8 +850,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -888,8 +895,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -933,8 +940,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         runOnUI(animateToPosition)(
           nextPosition,
-          0,
           ANIMATION_SOURCE.USER,
+          0,
           animationConfigs
         );
       },
@@ -957,374 +964,32 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }));
     //#endregion
 
-    //#region gesture methods
-    const handleGestureStart = useWorkletCallback(
-      function handleGestureStart(__, _, context: GestureEventContextType) {
-        'worklet';
-        // cancel current animation
-        stopAnimation();
-
-        // store current animated position
-        context.initialPosition = animatedPosition.value;
-        context.initialKeyboardState = animatedKeyboardState.value;
-
-        /**
-         * if the scrollable content is scrolled, then
-         * we lock the position.
-         */
-        if (scrollableContentOffsetY.value > 0) {
-          context.isScrollablePositionLocked = true;
-        }
-      },
-      [animatedPosition, animatedKeyboardState, scrollableContentOffsetY]
-    );
-    const handleGestureActive = useWorkletCallback(
-      function handleGestureActive(
-        type: GESTURE_SOURCE,
-        { translationY }: GestureEventType,
-        context: GestureEventContextType
-      ) {
-        'worklet';
-        let highestSnapPoint =
-          animatedSnapPoints.value[animatedSnapPoints.value.length - 1];
-        /**
-         * if keyboard is shown, then we set the highest point to the current
-         * position which includes the keyboard height.
-         */
-        if (
-          isInTemporaryPosition.value &&
-          context.initialKeyboardState === KEYBOARD_STATE.SHOWN
-        ) {
-          highestSnapPoint = context.initialPosition;
-        }
-
-        /**
-         * if current position is out of provided `snapPoints` and smaller then
-         * highest snap pont, then we set the highest point to the current position.
-         */
-        if (
-          isInTemporaryPosition.value &&
-          context.initialPosition < highestSnapPoint
-        ) {
-          highestSnapPoint = context.initialPosition;
-        }
-
-        const lowestSnapPoint = enablePanDownToClose
-          ? animatedContainerHeight.value
-          : animatedSnapPoints.value[0];
-
-        /**
-         * if scrollable is refreshable and sheet position at the highest
-         * point, then do not interact with current gesture.
-         */
-        if (
-          type === GESTURE_SOURCE.SCROLLABLE &&
-          isScrollableRefreshable.value &&
-          animatedPosition.value === highestSnapPoint
-        ) {
-          return;
-        }
-
-        /**
-         * a negative scrollable content offset to be subtracted from accumulated
-         * current position and gesture translation Y to allow user to drag the sheet,
-         * when scrollable position at the top.
-         * a negative scrollable content offset when the scrollable is not locked.
-         */
-        const negativeScrollableContentOffset =
-          (context.initialPosition === highestSnapPoint &&
-            type === GESTURE_SOURCE.SCROLLABLE) ||
-          !context.isScrollablePositionLocked
-            ? scrollableContentOffsetY.value * -1
-            : 0;
-
-        /**
-         * an accumulated value of starting position with gesture translation y.
-         */
-        const draggedPosition = context.initialPosition + translationY;
-
-        /**
-         * an accumulated value of dragged position and negative scrollable content offset,
-         * this will insure locking sheet position when user is scrolling the scrollable until,
-         * they reach to the top of the scrollable.
-         */
-        const accumulatedDraggedPosition =
-          draggedPosition + negativeScrollableContentOffset;
-
-        /**
-         * a clamped value of the accumulated dragged position, to insure keeping the dragged
-         * position between the highest and lowest snap points.
-         */
-        const clampedPosition = clamp(
-          accumulatedDraggedPosition,
-          highestSnapPoint,
-          lowestSnapPoint
-        );
-
-        /**
-         * if scrollable position is locked and the animated position
-         * reaches the highest point, then we unlock the scrollable position.
-         */
-        if (
-          context.isScrollablePositionLocked &&
-          type === GESTURE_SOURCE.SCROLLABLE &&
-          animatedPosition.value === highestSnapPoint
-        ) {
-          context.isScrollablePositionLocked = false;
-        }
-
-        /**
-         * over-drag implementation.
-         */
-        if (enableOverDrag) {
-          if (
-            (type === GESTURE_SOURCE.HANDLE ||
-              animatedScrollableType.value === SCROLLABLE_TYPE.VIEW) &&
-            draggedPosition < highestSnapPoint
-          ) {
-            const resistedPosition =
-              highestSnapPoint -
-              Math.sqrt(1 + (highestSnapPoint - draggedPosition)) *
-                overDragResistanceFactor;
-            animatedPosition.value = resistedPosition;
-            return;
-          }
-
-          if (
-            type === GESTURE_SOURCE.HANDLE &&
-            draggedPosition > lowestSnapPoint
-          ) {
-            const resistedPosition =
-              lowestSnapPoint +
-              Math.sqrt(1 + (draggedPosition - lowestSnapPoint)) *
-                overDragResistanceFactor;
-            animatedPosition.value = resistedPosition;
-            return;
-          }
-
-          if (
-            type === GESTURE_SOURCE.SCROLLABLE &&
-            draggedPosition + negativeScrollableContentOffset > lowestSnapPoint
-          ) {
-            const resistedPosition =
-              lowestSnapPoint +
-              Math.sqrt(
-                1 +
-                  (draggedPosition +
-                    negativeScrollableContentOffset -
-                    lowestSnapPoint)
-              ) *
-                overDragResistanceFactor;
-            animatedPosition.value = resistedPosition;
-            return;
-          }
-        }
-
-        animatedPosition.value = clampedPosition;
-      },
-      [
-        enableOverDrag,
-        enablePanDownToClose,
-        overDragResistanceFactor,
-        animatedContainerHeight,
-        animatedKeyboardState,
-        animatedPosition,
-        animatedSnapPoints,
-        isInTemporaryPosition,
-        isScrollableRefreshable,
-        scrollableContentOffsetY,
-      ]
-    );
-    const handleGestureEnd = useCallback(
-      function handleGestureEnd(
-        type: GESTURE_SOURCE,
-        { translationY, absoluteY, velocityY }: GestureEventType,
-        context: GestureEventContextType
-      ) {
-        'worklet';
-        runOnJS(print)({
-          component: BottomSheet.name,
-          method: handleGestureEnd.name,
-        });
-
-        const highestSnapPoint = animatedHighestSnapPoint.value;
-
-        /**
-         * if scrollable is refreshable and sheet position at the highest
-         * point, then do not interact with current gesture.
-         */
-        if (
-          type === GESTURE_SOURCE.SCROLLABLE &&
-          isScrollableRefreshable.value &&
-          animatedPosition.value === highestSnapPoint
-        ) {
-          return;
-        }
-
-        /**
-         * if the sheet is in a temporary position and the gesture ended above
-         * the current position, then we snap back to the temporary position.
-         */
-        if (
-          isInTemporaryPosition.value &&
-          context.initialPosition >= animatedPosition.value
-        ) {
-          if (context.initialPosition > animatedPosition.value) {
-            animateToPosition(
-              context.initialPosition,
-              velocityY / 2,
-              ANIMATION_SOURCE.GESTURE
-            );
-          }
-          return;
-        }
-
-        /**
-         * close keyboard if current position is below the recorded
-         * start position and keyboard still shown.
-         */
-        const isScrollable =
-          animatedScrollableType.value !== SCROLLABLE_TYPE.UNDETERMINED &&
-          animatedScrollableType.value !== SCROLLABLE_TYPE.VIEW;
-
-        /**
-         * if keyboard is shown and the sheet is dragged down,
-         * then we dismiss the keyboard.
-         */
-        if (
-          context.initialKeyboardState === KEYBOARD_STATE.SHOWN &&
-          animatedPosition.value > context.initialPosition
-        ) {
-          /**
-           * if the platform is ios, current content is scrollable and
-           * the end touch point is below the keyboard position then
-           * we exit the method.
-           *
-           * because the the keyboard dismiss is interactive in iOS.
-           */
-          if (
-            !(
-              Platform.OS === 'ios' &&
-              isScrollable &&
-              absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
-            )
-          ) {
-            runOnJS(Keyboard.dismiss)();
-          }
-        }
-
-        /**
-         * reset isInTemporaryPosition value
-         */
-        if (isInTemporaryPosition.value) {
-          isInTemporaryPosition.value = false;
-        }
-
-        /**
-         * clone snap points array, and insert the container height
-         * if pan down to close is enabled.
-         */
-        const snapPoints = animatedSnapPoints.value.slice();
-        if (enablePanDownToClose) {
-          snapPoints.unshift(animatedClosedPosition.value);
-        }
-
-        /**
-         * calculate the destination point, using redash.
-         */
-        const destinationPoint = snapPoint(
-          translationY + context.initialPosition,
-          velocityY,
-          snapPoints
-        );
-
-        /**
-         * if destination point is the same as the current position,
-         * then no need to perform animation.
-         */
-        if (destinationPoint === animatedPosition.value) {
-          return;
-        }
-
-        /**
-         * if gesture was picked by scrollable and did not move the sheet,
-         * then exit the method to prevent snapping.
-         */
-        if (
-          (type === GESTURE_SOURCE.SCROLLABLE
-            ? scrollableContentOffsetY.value
-            : 0) > 0 &&
-          context.initialPosition === highestSnapPoint &&
-          animatedPosition.value === highestSnapPoint
-        ) {
-          return;
-        }
-
-        /**
-         * if gesture started by scrollable dragging the sheet than continue scrolling,
-         * then exit the method to prevent snapping.
-         */
-        if (
-          type === GESTURE_SOURCE.SCROLLABLE &&
-          scrollableContentOffsetY.value > 0 &&
-          animatedPosition.value === highestSnapPoint
-        ) {
-          return;
-        }
-
-        animateToPosition(
-          destinationPoint,
-          velocityY / 2,
-          ANIMATION_SOURCE.GESTURE
-        );
-      },
-      [
-        enablePanDownToClose,
-        animateToPosition,
-        animatedClosedPosition,
-        animatedHighestSnapPoint,
-        animatedKeyboardHeight,
-        animatedPosition,
-        animatedScrollableType,
-        animatedSnapPoints,
-        scrollableContentOffsetY,
-        isInTemporaryPosition,
-        isScrollableRefreshable,
-      ]
-    );
-    const contentPanGestureHandler = useInteractivePanGestureHandler(
-      GESTURE_SOURCE.SCROLLABLE,
-      animatedContentGestureState,
-      handleGestureStart,
-      handleGestureActive,
-      handleGestureEnd
-    );
-    const handlePanGestureHandler = useInteractivePanGestureHandler(
-      GESTURE_SOURCE.HANDLE,
-      animatedHandleGestureState,
-      handleGestureStart,
-      handleGestureActive,
-      handleGestureEnd
-    );
-    //#endregion
-
     //#region contexts variables
     const internalContextVariables = useMemo(
       () => ({
         enableContentPanningGesture,
+        overDragResistanceFactor,
+        enableOverDrag,
+        enablePanDownToClose,
         animatedAnimationState,
         animatedSheetState,
         animatedScrollableState,
+        animatedScrollableOverrideState,
+        animatedContentGestureState,
+        animatedHandleGestureState,
         animatedKeyboardState,
         animatedScrollableType,
         animatedIndex,
         animatedPosition,
         animatedContentHeight,
+        animatedClosedPosition,
         animatedHandleHeight,
         animatedFooterHeight,
         animatedKeyboardHeight,
         animatedContainerHeight,
-        scrollableContentOffsetY,
+        animatedSnapPoints,
+        animatedHighestSnapPoint,
+        animatedScrollableContentOffsetY,
         isInTemporaryPosition,
         isContentHeightFixed,
         isScrollableRefreshable,
@@ -1335,8 +1000,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         activeOffsetY: _providedActiveOffsetY,
         failOffsetX: _providedFailOffsetX,
         failOffsetY: _providedFailOffsetY,
+        animateToPosition,
+        stopAnimation,
         getKeyboardHeightInContainer,
-        contentPanGestureHandler,
         setScrollableRef,
         removeScrollableRef,
       }),
@@ -1345,6 +1011,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedPosition,
         animatedContentHeight,
         animatedScrollableType,
+        animatedContentGestureState,
+        animatedHandleGestureState,
+        animatedClosedPosition,
         animatedFooterHeight,
         animatedContainerHeight,
         animatedHandleHeight,
@@ -1352,13 +1021,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedKeyboardState,
         animatedKeyboardHeight,
         animatedSheetState,
-        shouldHandleKeyboardEvents,
+        animatedHighestSnapPoint,
         animatedScrollableState,
-        scrollableContentOffsetY,
+        animatedScrollableOverrideState,
+        animatedSnapPoints,
+        shouldHandleKeyboardEvents,
+        animatedScrollableContentOffsetY,
         isScrollableRefreshable,
         isContentHeightFixed,
         isInTemporaryPosition,
         enableContentPanningGesture,
+        overDragResistanceFactor,
+        enableOverDrag,
+        enablePanDownToClose,
         _providedSimultaneousHandlers,
         _providedWaitFor,
         _providedActiveOffsetX,
@@ -1366,9 +1041,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedFailOffsetX,
         _providedFailOffsetY,
         getKeyboardHeightInContainer,
-        contentPanGestureHandler,
         setScrollableRef,
         removeScrollableRef,
+        animateToPosition,
+        stopAnimation,
       ]
     );
     const externalContextVariables = useMemo(
@@ -1498,7 +1174,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         if (animateOnMount) {
-          animateToPosition(nextPosition, 0, ANIMATION_SOURCE.MOUNT);
+          animateToPosition(nextPosition, ANIMATION_SOURCE.MOUNT);
         } else {
           animatedPosition.value = nextPosition;
         }
@@ -1570,7 +1246,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             };
           }
         }
-        animateToPosition(nextPosition, 0, animationSource, animationConfig);
+        animateToPosition(nextPosition, animationSource, 0, animationConfig);
       }
     );
 
@@ -1615,8 +1291,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         const nextPosition = getNextPosition();
         animateToPosition(
           nextPosition,
-          0,
           ANIMATION_SOURCE.KEYBOARD,
+          0,
           animationConfigs
         );
       },
@@ -1733,85 +1409,89 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     });
     return (
       <BottomSheetProvider value={externalContextVariables}>
-        <BottomSheetBackdropContainer
-          key="BottomSheetBackdropContainer"
-          animatedIndex={animatedIndex}
-          animatedPosition={animatedPosition}
-          backdropComponent={backdropComponent}
-        />
-        <BottomSheetContainer
-          key="BottomSheetContainer"
-          shouldCalculateHeight={!$modal}
-          containerHeight={_animatedContainerHeight}
-          containerOffset={animatedContainerOffset}
-          topInset={topInset}
-          bottomInset={bottomInset}
-          detached={detached}
-        >
-          <Animated.View
-            accessible={true}
-            accessibilityRole="adjustable"
-            accessibilityLabel="Bottom Sheet"
-            style={containerStyle}
+        <BottomSheetInternalProvider value={internalContextVariables}>
+          <BottomSheetGestureHandlersProvider
+            gestureEventsHandlersHook={gestureEventsHandlersHook}
           >
-            <BottomSheetInternalProvider value={internalContextVariables}>
-              <BottomSheetBackgroundContainer
-                key="BottomSheetBackgroundContainer"
-                animatedIndex={animatedIndex}
-                animatedPosition={animatedPosition}
-                backgroundComponent={backgroundComponent}
-              />
+            <BottomSheetBackdropContainer
+              key="BottomSheetBackdropContainer"
+              animatedIndex={animatedIndex}
+              animatedPosition={animatedPosition}
+              backdropComponent={backdropComponent}
+            />
+            <BottomSheetContainer
+              key="BottomSheetContainer"
+              shouldCalculateHeight={!$modal}
+              containerHeight={_animatedContainerHeight}
+              containerOffset={animatedContainerOffset}
+              topInset={topInset}
+              bottomInset={bottomInset}
+              detached={detached}
+            >
               <Animated.View
-                pointerEvents="box-none"
-                style={contentMaskContainerStyle}
+                accessible={true}
+                accessibilityRole="adjustable"
+                accessibilityLabel="Bottom Sheet"
+                style={containerStyle}
               >
-                <BottomSheetDraggableView
-                  key="BottomSheetRootDraggableView"
-                  style={contentContainerStyle}
+                <BottomSheetBackgroundContainer
+                  key="BottomSheetBackgroundContainer"
+                  animatedIndex={animatedIndex}
+                  animatedPosition={animatedPosition}
+                  backgroundComponent={backgroundComponent}
+                />
+                <Animated.View
+                  pointerEvents="box-none"
+                  style={contentMaskContainerStyle}
                 >
-                  {typeof children === 'function'
-                    ? (children as Function)()
-                    : children}
-                </BottomSheetDraggableView>
+                  <BottomSheetDraggableView
+                    key="BottomSheetRootDraggableView"
+                    style={contentContainerStyle}
+                  >
+                    {typeof children === 'function'
+                      ? (children as Function)()
+                      : children}
+                  </BottomSheetDraggableView>
+                </Animated.View>
+                <BottomSheetHandleContainer
+                  key="BottomSheetHandleContainer"
+                  animatedIndex={animatedIndex}
+                  animatedPosition={animatedPosition}
+                  handleHeight={animatedHandleHeight}
+                  enableHandlePanningGesture={enableHandlePanningGesture}
+                  enableOverDrag={enableOverDrag}
+                  enablePanDownToClose={enablePanDownToClose}
+                  overDragResistanceFactor={overDragResistanceFactor}
+                  keyboardBehavior={keyboardBehavior}
+                  handleComponent={handleComponent}
+                />
               </Animated.View>
-              <BottomSheetHandleContainer
-                key="BottomSheetHandleContainer"
-                animatedIndex={animatedIndex}
-                animatedPosition={animatedPosition}
-                handleHeight={animatedHandleHeight}
-                enableHandlePanningGesture={enableHandlePanningGesture}
-                enableOverDrag={enableOverDrag}
-                enablePanDownToClose={enablePanDownToClose}
-                overDragResistanceFactor={overDragResistanceFactor}
-                keyboardBehavior={keyboardBehavior}
-                handlePanGestureHandler={handlePanGestureHandler}
-                handleComponent={handleComponent}
-              />
-            </BottomSheetInternalProvider>
-          </Animated.View>
-          {/* <BottomSheetDebugView
-            values={{
-              // topInset,
-              // bottomInset,
-              animatedSheetState,
-              animatedScrollableState,
-              // isScrollableRefreshable,
-              // scrollableContentOffsetY,
-              // keyboardState,
-              animatedIndex,
-              animatedCurrentIndex,
-              animatedPosition,
-              animatedContainerHeight,
-              animatedSheetHeight,
-              animatedHandleHeight,
-              animatedContentHeight,
-              // keyboardHeight,
-              isLayoutCalculated,
-              isContentHeightFixed,
-              isInTemporaryPosition,
-            }}
-          /> */}
-        </BottomSheetContainer>
+              {/* <BottomSheetDebugView
+                values={{
+                  // topInset,
+                  // bottomInset,
+                  animatedSheetState,
+                  animatedScrollableState,
+                  animatedScrollableOverrideState,
+                  // isScrollableRefreshable,
+                  // animatedScrollableContentOffsetY,
+                  // keyboardState,
+                  // animatedIndex,
+                  // animatedCurrentIndex,
+                  // animatedPosition,
+                  // animatedContainerHeight,
+                  // animatedSheetHeight,
+                  // animatedHandleHeight,
+                  // animatedContentHeight,
+                  // // keyboardHeight,
+                  // isLayoutCalculated,
+                  // isContentHeightFixed,
+                  // isInTemporaryPosition,
+                }}
+              /> */}
+            </BottomSheetContainer>
+          </BottomSheetGestureHandlersProvider>
+        </BottomSheetInternalProvider>
       </BottomSheetProvider>
     );
   }

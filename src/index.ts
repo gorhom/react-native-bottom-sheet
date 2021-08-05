@@ -28,6 +28,7 @@ export { default as BottomSheetTextInput } from './components/bottomSheetTextInp
 export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 export { default as BottomSheetFooter } from './components/bottomSheetFooter';
 
+// touchables
 import BottomSheetTouchable from './components/touchables';
 export const {
   TouchableHighlight,
@@ -49,7 +50,16 @@ export type {
   BottomSheetSectionListMethods,
   BottomSheetVirtualizedListMethods,
 } from './components/bottomSheetScrollable';
+
+export type {
+  ScrollEventsHandlersHookType,
+  GestureEventsHandlersHookType,
+  ScrollEventHandlerCallbackType,
+  GestureEventHandlerCallbackType,
+} from './types';
 //#endregion
 
-// logger
+//#region utilities
+export * from './constants';
 export { enableLogging } from './utilities/logger';
+//#endregion

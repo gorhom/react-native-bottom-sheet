@@ -107,6 +107,13 @@ export const screens = [
         slug: 'Advanced/FooterExample',
         getScreen: () => require('./advanced/FooterExample').default,
       },
+      {
+        name: 'Custom Gesture Handling',
+        slug: 'Advanced/CustomGestureHandling',
+        getScreen: () =>
+          require('./advanced/customGestureHandling/CustomGestureHandling')
+            .default,
+      },
     ] as ShowcaseScreenType[],
   },
   {

@@ -3,7 +3,10 @@ import type { LayoutChangeEvent } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import BottomSheetHandle from '../bottomSheetHandle';
-import { useBottomSheetInternal } from '../../hooks';
+import {
+  useBottomSheetGestureHandlers,
+  useBottomSheetInternal,
+} from '../../hooks';
 import { print } from '../../utilities';
 import type { BottomSheetHandleContainerProps } from './types';
 
@@ -12,11 +15,10 @@ function BottomSheetHandleContainerComponent({
   animatedPosition,
   simultaneousHandlers: _internalSimultaneousHandlers,
   enableHandlePanningGesture,
-  handlePanGestureHandler,
   handleHeight,
   handleComponent: _providedHandleComponent,
 }: BottomSheetHandleContainerProps) {
-  //#region variables
+  //#region hooks
   const {
     activeOffsetX,
     activeOffsetY,
@@ -25,7 +27,10 @@ function BottomSheetHandleContainerComponent({
     waitFor,
     simultaneousHandlers: _providedSimultaneousHandlers,
   } = useBottomSheetInternal();
+  const { handlePanGestureHandler } = useBottomSheetGestureHandlers();
+  //#endregion
 
+  //#region variables
   const simultaneousHandlers = useMemo<any>(() => {
     const refs = [];
 
