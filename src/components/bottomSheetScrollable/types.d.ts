@@ -16,6 +16,7 @@ export interface BottomSheetScrollableProps {
    * You will need to provide `useFocusEffect` from `@react-navigation/native`.
    *
    * @type (effect: EffectCallback, deps?: DependencyList) => void
+   * @default useEffect
    */
   focusHook?: (effect: EffectCallback, deps?: DependencyList) => void;
 
@@ -23,15 +24,11 @@ export interface BottomSheetScrollableProps {
    * Custom hook to provide scroll events handler, which will allow advance and
    * customize handling for scrollables.
    *
-   * @warning this is an experimental feature and the hook signature can change without
-   * a major version bump.
+   * @warning this is an experimental feature and the hook signature can change without a major version bump.
    * @type ScrollEventsHandlersHookType
+   * @default useScrollEventsHandlersDefault
    */
   scrollEventsHandlersHook?: ScrollEventsHandlersHookType;
-
-  // contentContainerStyle?: StyleProp<
-  //   Animated.AnimateStyle<StyleProp<ViewStyle>>
-  // >;
 }
 
 export type ScrollableProps<T> =

@@ -185,9 +185,9 @@ export interface BottomSheetProps
   /**
    * Custom hook to provide pan gesture events handler, which will allow advance and
    * customize handling for pan gesture.
-   * @warning this is an experimental feature and the hook signature can change without
-   * a major version bump.
+   * @warning this is an experimental feature and the hook signature can change without a major version bump.
    * @type GestureEventsHandlersHookType
+   * @default useGestureEventsHandlersDefault
    */
   gestureEventsHandlersHook?: GestureEventsHandlersHookType;
 
