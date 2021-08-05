@@ -37,10 +37,7 @@ const BottomSheetBackdropComponent = ({
 
   //#region variables
   const containerRef = useRef<Animated.View>(null);
-  const pointerEvents = useMemo(
-    () => (enableTouchThrough ? 'none' : 'auto'),
-    [enableTouchThrough]
-  );
+  const pointerEvents = enableTouchThrough ? 'none' : 'auto';
   //#endregion
 
   //#region callbacks
