@@ -106,11 +106,8 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = lockPosition;
-          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.LOCKED;
           return;
         }
-
-        // animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNLOCKED;
       },
       [
         scrollableRef,
@@ -144,13 +141,11 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = lockPosition;
-          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.LOCKED;
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
-          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNLOCKED;
         }
       },
       [
@@ -187,13 +182,11 @@ export const useCustomScrollEventsHandlers: ScrollEventsHandlersHookType = (
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = 0;
-          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.LOCKED;
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
-          // animatedScrollableOverrideState.value = SCROLLABLE_STATE.UNLOCKED;
         }
       },
       [

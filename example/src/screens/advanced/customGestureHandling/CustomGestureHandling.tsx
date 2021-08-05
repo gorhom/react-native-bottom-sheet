@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import BottomSheet, {
   BottomSheetScrollView,
@@ -20,11 +20,8 @@ const CustomGestureHandling = () => {
   // refs
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  // hooks
-  const { height } = useWindowDimensions();
-
   // variables
-  const snapPoints = useMemo(() => [150, height * 0.7, '100%'], [height]);
+  const snapPoints = useMemo(() => ['25%', '75%', '100%'], []);
   const gestureTranslationY = useSharedValue(0);
 
   //#region callbacks
@@ -44,9 +41,9 @@ const CustomGestureHandling = () => {
 
   return (
     <View style={styles.container}>
-      <Button label="Snap To top point" onPress={() => handleSnapPress(2)} />
-      <Button label="Snap To mid-point" onPress={() => handleSnapPress(1)} />
-      <Button label="Snap To 150" onPress={() => handleSnapPress(0)} />
+      <Button label="Snap To 100%" onPress={() => handleSnapPress(2)} />
+      <Button label="Snap To 75%" onPress={() => handleSnapPress(1)} />
+      <Button label="Snap To 25%" onPress={() => handleSnapPress(0)} />
       <Button label="Expand" onPress={handleExpandPress} />
       <Button label="Collapse" onPress={handleCollapsePress} />
       <Button label="Close" onPress={handleClosePress} />
