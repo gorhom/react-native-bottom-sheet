@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.23](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.22...v4.0.0-alpha.23)
+## [v4.0.0-alpha.24](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.23...v4.0.0-alpha.24)
+
+#### Fixes
+
+- fix: prevent animatedIndex from flickering caused by content resizing ([7fef5d0](https://github.com/gorhom/react-native-bottom-sheet/commit/7fef5d03c0edef5945dc0bd825ce9081b90e7402)).
+
+## [v4.0.0-alpha.23](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.22...v4.0.0-alpha.23) - 2021-08-05
 
 #### Features
 
