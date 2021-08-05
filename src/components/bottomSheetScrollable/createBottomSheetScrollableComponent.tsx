@@ -29,6 +29,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       // props
       overScrollMode = 'never',
       keyboardDismissMode = 'interactive',
+      showsVerticalScrollIndicator = true,
       style,
       refreshing,
       onRefresh,
@@ -53,12 +54,16 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region variables
-    const scrollableAnimatedProps = useAnimatedProps(() => ({
-      decelerationRate:
-        SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
-      showsVerticalScrollIndicator:
-        animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED,
-    }));
+    const scrollableAnimatedProps = useAnimatedProps(
+      () => ({
+        decelerationRate:
+          SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
+        showsVerticalScrollIndicator: showsVerticalScrollIndicator
+          ? animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED
+          : showsVerticalScrollIndicator,
+      }),
+      [showsVerticalScrollIndicator]
+    );
     //#endregion
 
     //#region styles
