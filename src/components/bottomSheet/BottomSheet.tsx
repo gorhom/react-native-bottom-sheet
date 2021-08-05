@@ -483,6 +483,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         return Math.max(animatedCurrentIndex.value, currentIndex);
       }
 
+      /**
+       * if the sheet is currently running an animation by snap point change - usually caused
+       * by dynamic content height -, then we return the next position index.
+       */
+      if (
+        animatedAnimationSource.value === ANIMATION_SOURCE.SNAP_POINT_CHANGE &&
+        animatedAnimationState.value === ANIMATION_STATE.RUNNING
+      ) {
+        return animatedNextPositionIndex.value;
+      }
+
       return currentIndex;
     }, [android_keyboardInputMode]);
     //#endregion
