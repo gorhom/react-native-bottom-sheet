@@ -1,6 +1,5 @@
 import React, { memo, useCallback, forwardRef } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
-import { runOnUI } from 'react-native-reanimated';
 import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetTextInputProps } from './types';
 
@@ -15,9 +14,7 @@ const BottomSheetTextInputComponent = forwardRef<
   //#region callbacks
   const handleOnFocus = useCallback(
     args => {
-      runOnUI(() => {
-        shouldHandleKeyboardEvents.value = true;
-      })();
+      shouldHandleKeyboardEvents.value = true;
       if (onFocus) {
         onFocus(args);
       }
@@ -26,9 +23,7 @@ const BottomSheetTextInputComponent = forwardRef<
   );
   const handleOnBlur = useCallback(
     args => {
-      runOnUI(() => {
-        shouldHandleKeyboardEvents.value = false;
-      })();
+      shouldHandleKeyboardEvents.value = false;
       if (onBlur) {
         onBlur(args);
       }
