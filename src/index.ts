@@ -15,9 +15,6 @@ export const {
   TouchableWithoutFeedback,
 } = BottomSheetTouchable;
 
-// text input
-export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
-
 // backdrop
 export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 

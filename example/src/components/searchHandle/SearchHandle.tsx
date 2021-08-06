@@ -2,11 +2,11 @@ import React, { memo, useState, useCallback } from 'react';
 import {
   View,
   StyleSheet,
+  TextInput,
   Dimensions,
   NativeSyntheticEvent,
   TextInputChangeEventData,
 } from 'react-native';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useShowcaseTheme } from '@gorhom/showcase-template';
 import isEqual from 'lodash.isequal';
 
@@ -34,7 +34,7 @@ const BottomSheetHandleComponent = () => {
   return (
     <View style={styles.container}>
       <View style={styles.indicator} />
-      <BottomSheetTextInput
+      <TextInput
         style={styles.input}
         value={value}
         textContentType="location"

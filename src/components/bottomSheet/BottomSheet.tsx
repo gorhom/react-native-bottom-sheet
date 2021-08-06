@@ -199,7 +199,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       height: keyboardHeight,
       animationDuration: keyboardAnimationDuration,
       animationEasing: keyboardAnimationEasing,
-      shouldHandleKeyboardEvents,
     } = useKeyboard();
 
     // normalize snap points
@@ -633,7 +632,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         contentPanGestureHandler,
         scrollableState,
         scrollableContentOffsetY,
-        shouldHandleKeyboardEvents,
         simultaneousHandlers: _providedSimultaneousHandlers,
         waitFor: _providedWaitFor,
         activeOffsetX: _providedActiveOffsetX,
@@ -652,7 +650,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         contentPanGestureHandler,
         handleSettingScrollableRef,
         removeScrollableRef,
-        shouldHandleKeyboardEvents,
         scrollableState,
         scrollableContentOffsetY,
         enableContentPanningGesture,

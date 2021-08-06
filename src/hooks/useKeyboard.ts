@@ -28,7 +28,6 @@ const KEYBOARD_EVENT_MAPPER = {
 
 export const useKeyboard = () => {
   //#region variables
-  const shouldHandleKeyboardEvents = useSharedValue(false);
   const keyboardState = useSharedValue<KEYBOARD_STATE>(
     KEYBOARD_STATE.UNDETERMINED
   );
@@ -42,9 +41,6 @@ export const useKeyboard = () => {
   //#region worklets
   const handleKeyboardEvent = useWorkletCallback(
     (state, height, duration, easing) => {
-      if (state === KEYBOARD_STATE.SHOWN && !shouldHandleKeyboardEvents.value) {
-        return;
-      }
       keyboardState.value = state;
       keyboardHeight.value =
         state === KEYBOARD_STATE.SHOWN
@@ -107,6 +103,5 @@ export const useKeyboard = () => {
     height: keyboardHeight,
     animationEasing: keyboardAnimationEasing,
     animationDuration: keyboardAnimationDuration,
-    shouldHandleKeyboardEvents,
   };
 };
