@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.24](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.23...v4.0.0-alpha.24)
+## [v4.0.0-alpha.25](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.24...v4.0.0-alpha.25)
+
+#### Fixes
+
+- fix: fixed the multiline issue on BottomSheetTextInput #411 ([e21d676](https://github.com/gorhom/react-native-bottom-sheet/commit/e21d6762a929c6eaaf64e95d8af2934cc8b3a703)).
+
+## [v4.0.0-alpha.24](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.23...v4.0.0-alpha.24) - 2021-08-05
 
 #### Fixes
 
