@@ -1,6 +1,6 @@
 # React Native Bottom Sheet
 
-[![Reanimated v1 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/master?label=Reanimated%20v1&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![Reanimated v2 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/v3?label=Reanimated%20v2&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/npm/l/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/badge/types-included-blue?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/)
+[![Reanimated v2 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/master?label=Reanimated%20v2&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![Reanimated v1 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/v2?label=Reanimated%20v1&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/npm/l/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/badge/types-included-blue?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/)
 
 A performant interactive bottom sheet with fully configurable options 🚀
 
@@ -10,8 +10,9 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 ## Features
 
-- 🌟 Modal presentation view, [Bottom Sheet Modal](https://gorhom.github.io/react-native-bottom-sheet/modal).
+- Modal presentation view, [Bottom Sheet Modal](https://gorhom.github.io/react-native-bottom-sheet/modal).
 - Smooth interactions & snapping animations.
+- Seamless keyboard handling.
 - Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions.
 - Support `React Navigation` Integration.
 - Compatible with `Reanimated` v1 & v2.
@@ -26,17 +27,15 @@ Check out [the documentation website](https://gorhom.github.io/react-native-bott
 
 ## Versioning
 
-This library been written in 2 versions of `Reanimated`, and kept both implementation in 2 separate branches:
+This library been written in 2 versions of `Reanimated`, and kept both implementation in 3 separate branches:
 
-### Version 2
+- **`v2`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v2) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v2/CHANGELOG.md) : written with `Reanimated v1` & compatible with `Reanimated v2`.
 
-This version is written with `Reanimated v1` & compatible with `Reanimated v2`, this version is located at [`master` branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) and its [changelog here](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md).
+- **`v3`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v3) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v3/CHANGELOG.md) : written with `Reanimated v2`, soon to be deprecated in-favour of `v4`.
 
-### Version 3
+- **`v4 (alpha)`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md) : written with `Reanimated v2`.
 
-This version is written with `Reanimated v2` and **CAN NOT RUN** with `Reanimated v1`, this version is located at [`v3` branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v3) and its [changelog here](https://github.com/gorhom/react-native-bottom-sheet/blob/v3/CHANGELOG.md).
-
-All new features will be added to `Reanimated v2` version, however I will keep maintaining `Reanimated v1` version until further notice.
+> I highly recommend all `v3` users to upgrade to `v4` which provides more stability and all latest features.
 
 ## Author
 
