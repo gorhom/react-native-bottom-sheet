@@ -6,34 +6,35 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start"
+    "start": "react-native start",
+    "postinstall": "npx patch-package"
   },
   "dependencies": {
-    "@gorhom/portal": "^1.0.4",
+    "@gorhom/portal": "^1.0.7",
     "@gorhom/showcase-template": "^2.0.4",
     "@react-native-community/blur": "^3.6.0",
-    "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/masked-view": "0.1.11",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "faker": "^4.1.0",
     "lodash.isequal": "^4.5.0",
     "nanoid": "^3.1.20",
     "react": "17.0.1",
-    "react-native": "0.64.0",
+    "react-native": "0.64.1",
     "react-native-gesture-handler": "^1.10.3",
-    "react-native-maps": "^0.27.1",
+    "react-native-maps": "^0.28.0",
     "react-native-reanimated": "^1.13.3",
     "react-native-redash": "^14.2.4",
-    "react-native-safe-area-context": "^3.2.0",
-    "react-native-screens": "^2.18.1"
+    "react-native-safe-area-context": "^3.3.0",
+    "react-native-screens": "^3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/runtime": "^7.13.10",
     "@types/faker": "^4.1.12",
-    "@types/react": "^17.0.0",
-    "@types/react-native": "^0.64.2",
-    "metro-react-native-babel-preset": "^0.64.0",
+    "@types/react": "^17.0.5",
+    "@types/react-native": "^0.64.5",
+    "metro-react-native-babel-preset": "^0.65.2",
     "typescript": "^4.2.3"
   }
 }
