@@ -47,7 +47,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: '/',
           editUrl:
-            'https://github.com/gorhom/react-native-bottom-sheet/edit/master/website/',
+            'https://github.com/gorhom/react-native-bottom-sheet/edit/v2/website/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
