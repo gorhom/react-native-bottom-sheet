@@ -1,6 +1,6 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-platform :ios, '10.0'
+platform :ios, '12.0'
 
 target 'BottomSheetExample' do
   config = use_native_modules!
@@ -13,11 +13,18 @@ target 'BottomSheetExample' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
-  use_flipper!({ 'Flipper' => '0.79.1', 'Flipper-Folly' => '2.5.3' })
+  use_flipper!({ 'Flipper' => '0.95.0', 'Flipper-Folly' => '2.6.7', 'Flipper-DoubleConversion' => '3.1.7' })
+
   post_install do |installer|
-    flipper_post_install(installer)
-    installer.pods_project.build_configurations.each do |config|
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.1'
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = 'arm64'
+      end
     end
+
+    react_native_post_install(installer)
   end
+
 end

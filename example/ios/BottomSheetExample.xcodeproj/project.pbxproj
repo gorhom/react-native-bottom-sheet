@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D1336C0461A88D01186E375 /* libPods-BottomSheetExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCEA90A70F4BEAD7E9FA28B2 /* libPods-BottomSheetExample.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		20F357B024636CDF00C146DC /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F357AF24636CDF00C146DC /* File.swift */; };
+		6D1206136BF78CF6B1D1FCE9 /* libPods-BottomSheetExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C02B12F88BE7D4AA3191C8E9 /* libPods-BottomSheetExample.a */; };
+		F8427FEE26BEE78300406C04 /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8427FED26BEE78300406C04 /* BottomSheet.swift */; };
 		F8F7E4D724EC753E006046E8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8F7E4D624EC753E006046E8 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -23,12 +23,12 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		20F357AE24636CDF00C146DC /* BottomSheetExample-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BottomSheetExample-Bridging-Header.h"; sourceTree = "<group>"; };
-		20F357AF24636CDF00C146DC /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		4D7192F03A36A017E887435B /* Pods-BottomSheetExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BottomSheetExample.release.xcconfig"; path = "Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample.release.xcconfig"; sourceTree = "<group>"; };
-		871719007ECC5EAD276C345C /* Pods-BottomSheetExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BottomSheetExample.debug.xcconfig"; path = "Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample.debug.xcconfig"; sourceTree = "<group>"; };
-		BCEA90A70F4BEAD7E9FA28B2 /* libPods-BottomSheetExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BottomSheetExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21456B3BF29B7C1412D4CAC1 /* Pods-BottomSheetExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BottomSheetExample.release.xcconfig"; path = "Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample.release.xcconfig"; sourceTree = "<group>"; };
+		C02B12F88BE7D4AA3191C8E9 /* libPods-BottomSheetExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BottomSheetExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C28C9F6E50EA4E2896459EF7 /* Pods-BottomSheetExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BottomSheetExample.debug.xcconfig"; path = "Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F8427FEC26BEE78300406C04 /* BottomSheetExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BottomSheetExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		F8427FED26BEE78300406C04 /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
 		F8F7E4D624EC753E006046E8 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D1336C0461A88D01186E375 /* libPods-BottomSheetExample.a in Frameworks */,
+				6D1206136BF78CF6B1D1FCE9 /* libPods-BottomSheetExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,8 +47,6 @@
 		13B07FAE1A68108700A75B9A /* BottomSheetExample */ = {
 			isa = PBXGroup;
 			children = (
-				20F357AF24636CDF00C146DC /* File.swift */,
-				20F357AE24636CDF00C146DC /* BottomSheetExample-Bridging-Header.h */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -56,6 +54,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				F8F7E4D624EC753E006046E8 /* LaunchScreen.storyboard */,
+				F8427FED26BEE78300406C04 /* BottomSheet.swift */,
+				F8427FEC26BEE78300406C04 /* BottomSheetExample-Bridging-Header.h */,
 			);
 			path = BottomSheetExample;
 			sourceTree = "<group>";
@@ -63,8 +63,8 @@
 		1CFFDEF7170271C97B8B7E5A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				871719007ECC5EAD276C345C /* Pods-BottomSheetExample.debug.xcconfig */,
-				4D7192F03A36A017E887435B /* Pods-BottomSheetExample.release.xcconfig */,
+				C28C9F6E50EA4E2896459EF7 /* Pods-BottomSheetExample.debug.xcconfig */,
+				21456B3BF29B7C1412D4CAC1 /* Pods-BottomSheetExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -73,7 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				BCEA90A70F4BEAD7E9FA28B2 /* libPods-BottomSheetExample.a */,
+				C02B12F88BE7D4AA3191C8E9 /* libPods-BottomSheetExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -114,14 +114,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "BottomSheetExample" */;
 			buildPhases = (
-				CCCC07BCAFDEF1FCADC0D0C9 /* [CP] Check Pods Manifest.lock */,
+				4A752C0B776A5BEE51F83BAD /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				13D3F01C5A08EB5AC4FE64E8 /* [CP] Copy Pods Resources */,
-				FD6EBF913D413B6F8500A597 /* [CP] Embed Pods Frameworks */,
+				040DF47B5B6416554D8B462F /* [CP] Embed Pods Frameworks */,
+				33FDE09C2FE1A12CF1A4F979 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -143,16 +143,15 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 4P8A237MEX;
-						LastSwiftMigration = 1110;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "BottomSheetExample" */;
 			compatibilityVersion = "Xcode 12.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -193,7 +192,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh index.ts\n";
 		};
-		13D3F01C5A08EB5AC4FE64E8 /* [CP] Copy Pods Resources */ = {
+		040DF47B5B6416554D8B462F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		33FDE09C2FE1A12CF1A4F979 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -210,7 +226,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CCCC07BCAFDEF1FCADC0D0C9 /* [CP] Check Pods Manifest.lock */ = {
+		4A752C0B776A5BEE51F83BAD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -251,23 +267,6 @@
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		FD6EBF913D413B6F8500A597 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BottomSheetExample/Pods-BottomSheetExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -276,7 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				20F357B024636CDF00C146DC /* File.swift in Sources */,
+				F8427FEE26BEE78300406C04 /* BottomSheet.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,7 +285,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 871719007ECC5EAD276C345C /* Pods-BottomSheetExample.debug.xcconfig */;
+			baseConfigurationReference = C28C9F6E50EA4E2896459EF7 /* Pods-BottomSheetExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -299,6 +298,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -307,6 +310,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.gorhom.bottom-sheet";
 				PRODUCT_NAME = BottomSheetExample;
 				SWIFT_OBJC_BRIDGING_HEADER = "BottomSheetExample/BottomSheetExample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -315,7 +319,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D7192F03A36A017E887435B /* Pods-BottomSheetExample.release.xcconfig */;
+			baseConfigurationReference = 21456B3BF29B7C1412D4CAC1 /* Pods-BottomSheetExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -326,6 +330,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -373,6 +381,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -388,16 +397,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
-					"\"$(inherited)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -436,6 +441,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -444,16 +450,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
-					"\"$(inherited)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
