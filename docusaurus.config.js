@@ -57,10 +57,10 @@ module.exports = {
           lastVersion: "current",
           versions: {
             current: {
-              label: "v4",
+              label: "v4 (Reanimated v2)",
             },
             2: {
-              label: "v2",
+              label: "v2 (Reanimated v1)",
               path: "v2",
             },
           },
