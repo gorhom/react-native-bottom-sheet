@@ -20,7 +20,7 @@ Current sheet position index.
 
 | type                          | default | required |
 | ----------------------------- | ------- | -------- |
-| Animated.SharedValue<\number> | 0       | YES      |
+| Animated.SharedValue<number\> | 0       | YES      |
 
 ### `animatedPosition`
 
@@ -28,7 +28,7 @@ Current sheet position.
 
 | type                          | default | required |
 | ----------------------------- | ------- | -------- |
-| Animated.SharedValue<\number> | 0       | YES      |
+| Animated.SharedValue<number\> | 0       | YES      |
 
 ### `opacity`
 
