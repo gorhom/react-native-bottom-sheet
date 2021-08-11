@@ -1,4 +1,9 @@
-import type { FlatList, ScrollView, SectionList } from 'react-native';
+import type {
+  AccessibilityProps,
+  FlatList,
+  ScrollView,
+  SectionList,
+} from 'react-native';
 
 //#region Methods
 export interface BottomSheetMethods {
@@ -49,3 +54,10 @@ export type ScrollableRef = {
   type: ScrollableType;
 };
 //#endregion
+
+export interface NullableAccessibilityProps extends AccessibilityProps {
+  accessible?: AccessibilityProps['accessible'] | null;
+  accessibilityLabel?: AccessibilityProps['accessibilityLabel'] | null;
+  accessibilityHint?: AccessibilityProps['accessibilityHint'] | null;
+  accessibilityRole?: AccessibilityProps['accessibilityRole'] | null;
+}
