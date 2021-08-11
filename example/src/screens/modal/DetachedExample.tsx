@@ -56,6 +56,16 @@ const DetachedExample = () => {
     ),
     []
   );
+  const renderFooter = useCallback(
+    props => (
+      <BottomSheetFooter {...props}>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>this is a footer!</Text>
+        </View>
+      </BottomSheetFooter>
+    ),
+    []
+  );
   return (
     <View style={styles.container}>
       <Button label="Present" onPress={handlePresentPress} />
@@ -70,6 +80,7 @@ const DetachedExample = () => {
         enablePanDownToClose={true}
         style={styles.sheetContainer}
         backgroundComponent={null}
+        footerComponent={renderFooter}
         handleComponent={renderHeaderHandle}
         detached={true}
       >
@@ -78,11 +89,6 @@ const DetachedExample = () => {
           onLayout={handleContentLayout}
         >
           {data.map(renderItem)}
-          <BottomSheetFooter>
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>this is a footer!</Text>
-            </View>
-          </BottomSheetFooter>
         </BottomSheetView>
       </BottomSheetModal>
     </View>

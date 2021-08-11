@@ -1,38 +1,19 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import BottomSheet, { BottomSheetFooter } from '@gorhom/bottom-sheet';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import SearchHandle from '../../components/searchHandle';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { View, StyleSheet } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
+import customFooter from '../../components/customFooter';
+import searchHandle from '../../components/searchHandle';
 
 const FooterExample = () => {
-  // state
-  const [fadeBehavior, setFadeBehavior] = useState<'none' | 'fade'>('none');
-  const [slideBehavior, setSlideBehavior] = useState<'none' | 'slide'>('none');
-  const [scaleBehavior, setScaleBehavior] = useState<'none' | 'scale'>('none');
-
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { bottom: bottomSafeArea } = useSafeAreaInsets();
 
   // variables
-  const snapPoints = useMemo(() => [80, 250], []);
-  const appearanceBehavior = useMemo(
-    () => [fadeBehavior, slideBehavior, scaleBehavior],
-    [fadeBehavior, slideBehavior, scaleBehavior]
-  );
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
-  const handleFadeBehavior = useCallback(() => {
-    setFadeBehavior(state => (state === 'none' ? 'fade' : 'none'));
-  }, []);
-  const handleScaleBehavior = useCallback(() => {
-    setScaleBehavior(state => (state === 'none' ? 'scale' : 'none'));
-  }, []);
-  const handleSlideBehavior = useCallback(() => {
-    setSlideBehavior(state => (state === 'none' ? 'slide' : 'none'));
-  }, []);
   const handleExpandPress = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);
@@ -46,18 +27,6 @@ const FooterExample = () => {
   // renders
   return (
     <View style={styles.container}>
-      <Button
-        label={`Toggle Fade Behavior: ${fadeBehavior}`}
-        onPress={handleFadeBehavior}
-      />
-      <Button
-        label={`Toggle Scale Behavior: ${scaleBehavior}`}
-        onPress={handleScaleBehavior}
-      />
-      <Button
-        label={`Toggle Slide Behavior: ${slideBehavior}`}
-        onPress={handleSlideBehavior}
-      />
       <Button label="Expand" onPress={handleExpandPress} />
       <Button label="Collapse" onPress={handleCollapsePress} />
       <Button label="Close" onPress={handleClosePress} />
@@ -66,17 +35,15 @@ const FooterExample = () => {
         snapPoints={snapPoints}
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
-        handleComponent={SearchHandle}
+        enablePanDownToClose={true}
+        handleComponent={searchHandle}
+        footerComponent={customFooter}
       >
-        <ContactList count={10} type="FlatList" />
-        <BottomSheetFooter
-          bottomInset={bottomSafeArea}
-          appearanceBehavior={appearanceBehavior}
-        >
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>this is a footer!</Text>
-          </View>
-        </BottomSheetFooter>
+        <ContactList
+          count={10}
+          type="FlatList"
+          enableFooterMarginAdjustment={false}
+        />
       </BottomSheet>
     </View>
   );
@@ -88,13 +55,22 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   footer: {
+    alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 12,
-    padding: 12,
-    marginBottom: 12,
-    borderRadius: 24,
+    marginHorizontal: 24,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: '#80f',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 8.0,
+
+    elevation: 24,
   },
   footerText: {
     fontSize: 16,

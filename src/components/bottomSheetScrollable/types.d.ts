@@ -1,15 +1,33 @@
-import type { ReactNode, Ref } from 'react';
 import type {
+  DependencyList,
+  EffectCallback,
+  ReactNode,
+  Ref,
+  RefObject,
+} from 'react';
+import type {
+  ScrollView,
   VirtualizedListProps,
   ScrollViewProps,
   FlatListProps,
   SectionListProps,
   SectionListScrollParams,
+  View,
+  ScrollViewComponent,
+  NodeHandle,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { ScrollEventsHandlersHookType } from '../../types';
 
 export interface BottomSheetScrollableProps {
+  /**
+   * Adjust the scrollable bottom margin to avoid the animated footer.
+   *
+   * @type boolean
+   * @default false
+   */
+  enableFooterMarginAdjustment?: boolean;
+
   /**
    * This needed when bottom sheet used with multiple scrollables to allow bottom sheet
    * detect the current scrollable ref, especially when used with `React Navigation`.
@@ -69,7 +87,7 @@ export interface BottomSheetFlatListMethods {
    */
   scrollToItem: (params: {
     animated?: boolean | null;
-    item: ItemT;
+    item: any;
     viewPosition?: number;
   }) => void;
 
@@ -96,14 +114,14 @@ export interface BottomSheetFlatListMethods {
   /**
    * Provides a handle to the underlying scroll responder.
    */
-  getScrollResponder: () => JSX.Element | null | undefined;
+  getScrollResponder: () => ReactNode | null | undefined;
 
   /**
    * Provides a reference to the underlying host component
    */
   getNativeScrollRef: () =>
-    | React.RefObject<View>
-    | React.RefObject<ScrollViewComponent>
+    | RefObject<View>
+    | RefObject<ScrollViewComponent>
     | null
     | undefined;
 
@@ -157,7 +175,7 @@ export interface BottomSheetScrollViewMethods {
    * implement this method so that they can be composed while providing access
    * to the underlying scroll responder's methods.
    */
-  getScrollResponder(): JSX.Element;
+  getScrollResponder(): ReactNode;
 
   getScrollableNode(): any;
 
@@ -241,7 +259,7 @@ export interface BottomSheetVirtualizedListMethods {
   }) => void;
   scrollToItem: (params: {
     animated?: boolean;
-    item: ItemT;
+    item: any;
     viewPosition?: number;
   }) => void;
 

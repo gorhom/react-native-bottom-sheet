@@ -1,35 +1,36 @@
 import type { ReactNode } from 'react';
-import type { APPEARANCE_BEHAVIOR } from './constants';
+import { ViewStyle } from 'react-native';
+import type Animated from 'react-native-reanimated';
 
 export interface BottomSheetFooterProps {
   /**
-   * Appearance behavior when sheet is below starts to cut off footer,
-   * you can combine many behaviors together.
-   * @example
-   * appearanceBehavior = {['fade' | 'slide']}
-   * appearanceBehavior = {'fade'}
-   * @enum
-   * - `none`: do nothing.
-   * - `fade`: fade in and out.
-   * - `scale`: scale up and down.
-   * - `slide`: slide up and down.
-   * @type `none` | `fade` | `scale` | `slide` | Array<`none` | `fade` | `scale` | `slide`>
-   * @default none
+   * Calculated footer animated position.
+   *
+   * @type Animated.SharedValue<number>
    */
-  appearanceBehavior?:
-    | keyof typeof APPEARANCE_BEHAVIOR
-    | Array<keyof typeof APPEARANCE_BEHAVIOR>;
+  animatedFooterPosition: Animated.SharedValue<number>;
+}
 
+export interface BottomSheetDefaultFooterProps extends BottomSheetFooterProps {
   /**
    * Bottom inset to be added below the footer, usually comes
    * from `react-native-safe-area-context` hook `useSafeArea`.
+   *
    * @type number
    * @default 0
    */
   bottomInset?: number;
 
   /**
+   * Container style.
+   *
+   * @type ViewStyle
+   */
+  style?: ViewStyle;
+
+  /**
    * Component to be placed in the footer.
+   *
    * @type {ReactNode | ReactNode[]}
    */
   children?: ReactNode | ReactNode[];

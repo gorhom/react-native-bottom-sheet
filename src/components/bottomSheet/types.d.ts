@@ -5,7 +5,9 @@ import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
+import type { BottomSheetFooterProps } from '../bottomSheetFooter';
 import type {
+  ANIMATION_SOURCE,
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
@@ -231,6 +233,12 @@ export interface BottomSheetProps
    * @type React.FC\<BottomSheetBackgroundProps\>
    */
   backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
+  /**
+   * Component to be placed as a footer.
+   * @see {BottomSheetFooterProps}
+   * @type React.FC\<BottomSheetFooterProps\>
+   */
+  footerComponent?: React.FC<BottomSheetFooterProps>;
   /**
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode

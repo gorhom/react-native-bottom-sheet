@@ -43,6 +43,7 @@ export type { BottomSheetModalProps } from './components/bottomSheetModal';
 export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
 export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
 export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop';
+export type { BottomSheetFooterProps } from './components/bottomSheetFooter';
 
 export type {
   BottomSheetFlatListMethods,

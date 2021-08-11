@@ -27,6 +27,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       focusHook,
       scrollEventsHandlersHook,
       // props
+      enableFooterMarginAdjustment = false,
       overScrollMode = 'never',
       keyboardDismissMode = 'interactive',
       showsVerticalScrollIndicator = true,
@@ -67,16 +68,22 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region styles
-    const containerAnimatedStyle = useAnimatedStyle(() => ({
-      marginBottom: animatedFooterHeight.value,
-    }));
-    const containerStyle = useMemo(
-      () => [
-        ...(style ? ('length' in style ? style : [style]) : []),
-        containerAnimatedStyle,
-      ],
-      [style, containerAnimatedStyle]
+    const containerAnimatedStyle = useAnimatedStyle(
+      () => ({
+        marginBottom: enableFooterMarginAdjustment
+          ? animatedFooterHeight.value
+          : 0,
+      }),
+      [enableFooterMarginAdjustment]
     );
+    const containerStyle = useMemo(() => {
+      return enableFooterMarginAdjustment
+        ? [
+            ...(style ? ('length' in style ? style : [style]) : []),
+            containerAnimatedStyle,
+          ]
+        : style;
+    }, [enableFooterMarginAdjustment, style, containerAnimatedStyle]);
     //#endregion
 
     //#region effects

@@ -37,6 +37,7 @@ import BottomSheetGestureHandlersProvider from '../bottomSheetGestureHandlersPro
 import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
+import BottomSheetFooterContainer from '../bottomSheetFooterContainer/BottomSheetFooterContainer';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import {
@@ -143,6 +144,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       handleComponent,
       backdropComponent,
       backgroundComponent,
+      footerComponent,
       children,
     } = props;
     //#endregion
@@ -1462,6 +1464,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                     {typeof children === 'function'
                       ? (children as Function)()
                       : children}
+
+                    {footerComponent && (
+                      <BottomSheetFooterContainer
+                        footerComponent={footerComponent}
+                      />
+                    )}
                   </BottomSheetDraggableView>
                 </Animated.View>
                 <BottomSheetHandleContainer

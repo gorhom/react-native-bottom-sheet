@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, ComponentProps } from 'react';
 import { StyleSheet, Text, Platform, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -15,7 +15,11 @@ import {
 } from '../../utilities';
 import ContactItem from '../contactItem';
 
-export interface ContactListProps {
+export interface ContactListProps
+  extends Pick<
+    ComponentProps<typeof BottomSheetFlatList>,
+    'enableFooterMarginAdjustment'
+  > {
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View' | 'VirtualizedList';
   count?: number;
   style?: ViewStyle;
@@ -99,6 +103,7 @@ const ContactList = ({
   if (type === 'FlatList') {
     return (
       <BottomSheetFlatList
+        {...rest}
         data={data}
         refreshing={false}
         onRefresh={onRefresh}
@@ -117,6 +122,7 @@ const ContactList = ({
   } else if (type === 'VirtualizedList') {
     return (
       <BottomSheetVirtualizedList
+        {...rest}
         data={data}
         keyExtractor={keyExtractor}
         initialNumToRender={5}
@@ -135,6 +141,7 @@ const ContactList = ({
   } else if (type === 'ScrollView') {
     return (
       <BottomSheetScrollView
+        {...rest}
         style={styles.container}
         contentContainerStyle={contentContainerStyle}
         bounces={true}
@@ -146,6 +153,7 @@ const ContactList = ({
   } else if (type === 'SectionList') {
     return (
       <BottomSheetSectionList
+        {...rest}
         style={styles.container}
         contentContainerStyle={contentContainerStyle}
         stickySectionHeadersEnabled

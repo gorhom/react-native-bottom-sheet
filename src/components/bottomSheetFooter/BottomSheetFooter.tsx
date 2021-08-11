@@ -1,96 +1,44 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, StyleSheet } from 'react-native';
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
+import { LayoutChangeEvent } from 'react-native';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { KEYBOARD_STATE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
-import { APPEARANCE_BEHAVIOR } from './constants';
-import type { BottomSheetFooterProps } from './types';
+import type { BottomSheetDefaultFooterProps } from './types';
+import { styles } from './styles';
 
 function BottomSheetFooterComponent({
-  children,
-  appearanceBehavior = APPEARANCE_BEHAVIOR.fade,
+  animatedFooterPosition,
   bottomInset = 0,
-}: BottomSheetFooterProps) {
+  style,
+  children,
+}: BottomSheetDefaultFooterProps) {
   //#region hooks
-  const {
-    animatedContainerHeight,
-    animatedHandleHeight,
-    animatedFooterHeight,
-    animatedPosition,
-    animatedKeyboardState,
-    getKeyboardHeightInContainer,
-  } = useBottomSheetInternal();
+  const { animatedFooterHeight, animatedKeyboardState } =
+    useBottomSheetInternal();
   //#endregion
 
   //#region styles
   const containerAnimatedStyle = useAnimatedStyle(() => {
-    const keyboardHeight = getKeyboardHeightInContainer();
-    let footerTranslateY = Math.max(
-      0,
-      animatedContainerHeight.value - animatedPosition.value
-    );
+    let footerTranslateY = animatedFooterPosition.value;
 
-    if (animatedKeyboardState.value === KEYBOARD_STATE.SHOWN) {
-      footerTranslateY = footerTranslateY - keyboardHeight;
-    } else {
+    /**
+     * Offset the bottom inset only when keyboard is not shown
+     */
+    if (animatedKeyboardState.value !== KEYBOARD_STATE.SHOWN) {
       footerTranslateY = footerTranslateY - bottomInset;
     }
 
-    footerTranslateY =
-      footerTranslateY -
-      animatedFooterHeight.value -
-      animatedHandleHeight.value;
-
-    const style: any = {
+    return {
       transform: [
         {
-          translateY: footerTranslateY,
+          translateY: Math.max(0, footerTranslateY),
         },
       ],
     };
-
-    // merge appearance behavior styles
-    (typeof appearanceBehavior === 'string'
-      ? [appearanceBehavior]
-      : appearanceBehavior
-    ).map(behavior => {
-      if (behavior === APPEARANCE_BEHAVIOR.fade) {
-        style.opacity = interpolate(
-          footerTranslateY,
-          [5, 0],
-          [1, 0],
-          Extrapolate.CLAMP
-        );
-      } else if (behavior === APPEARANCE_BEHAVIOR.scale) {
-        style.transform.push({
-          scale: interpolate(
-            footerTranslateY,
-            [5, 0],
-            [1, 0],
-            Extrapolate.CLAMP
-          ),
-        });
-      } else if (behavior === APPEARANCE_BEHAVIOR.slide) {
-        style.transform.push({
-          translateY: interpolate(
-            footerTranslateY,
-            [5, 0],
-            [0, animatedFooterHeight.value + bottomInset],
-            Extrapolate.CLAMP
-          ),
-        });
-      }
-    });
-
-    return style;
-  }, [appearanceBehavior, bottomInset]);
+  }, [bottomInset, animatedKeyboardState, animatedFooterPosition]);
   const containerStyle = useMemo(
-    () => [styles.container, containerAnimatedStyle],
-    [containerAnimatedStyle]
+    () => [styles.container, style, containerAnimatedStyle],
+    [style, containerAnimatedStyle]
   );
   //#endregion
 
@@ -108,21 +56,15 @@ function BottomSheetFooterComponent({
   //#endregion
 
   return children !== null ? (
-    <Animated.View onLayout={handleContainerLayout} style={containerStyle}>
+    <Animated.View
+      pointerEvents="box-none"
+      onLayout={handleContainerLayout}
+      style={containerStyle}
+    >
       {typeof children === 'function' ? children() : children}
     </Animated.View>
   ) : null;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 9999,
-  },
-});
 
 const BottomSheetFooter = memo(BottomSheetFooterComponent);
 BottomSheetFooter.displayName = 'BottomSheetFooter';
