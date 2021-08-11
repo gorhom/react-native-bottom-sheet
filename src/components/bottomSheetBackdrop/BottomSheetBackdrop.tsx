@@ -19,6 +19,10 @@ import {
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
+  DEFAULT_ACCESSIBLE,
+  DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_HINT,
 } from './constants';
 import { WINDOW_HEIGHT } from '../../constants';
 import { usePressBehavior } from './usePressBehavior';
@@ -44,6 +48,11 @@ const BottomSheetBackdropComponent = ({
   pressBehavior,
   closeOnPress,
   style,
+  accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
+  accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+  accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
+  accessibilityHint: _providedAccessiblityHint = DEFAULT_ACCESSIBILITY_HINT,
+  ...rest
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { handleOnPress, syntheticPressBehavior } = usePressBehavior({
@@ -137,12 +146,13 @@ const BottomSheetBackdropComponent = ({
 
   return syntheticPressBehavior !== 'none' ? (
     <AnimatedTouchableWithoutFeedback
-      accessible={true}
-      accessibilityRole="button"
-      accessibilityLabel="Bottom Sheet backdrop"
-      accessibilityHint="Tap to close the Bottom Sheet"
+      accessible={_providedAccessible ?? undefined}
+      accessibilityRole={_providedAccessibilityRole ?? undefined}
+      accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+      accessibilityHint={_providedAccessiblityHint ?? undefined}
       onPress={handleOnPress}
       style={buttonStyle}
+      {...rest}
     >
       <Animated.View key="backdrop" ref={containerRef} style={containerStyle} />
     </AnimatedTouchableWithoutFeedback>

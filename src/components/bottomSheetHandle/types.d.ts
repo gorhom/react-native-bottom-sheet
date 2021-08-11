@@ -1,4 +1,5 @@
 import type Animated from 'react-native-reanimated';
+import { NullableAccessibilityProps } from '../../types';
 
 export interface BottomSheetHandleProps {
   /**
@@ -12,3 +13,7 @@ export interface BottomSheetHandleProps {
    */
   animatedPosition: Animated.Node<number>;
 }
+
+export interface BottomSheetDefaultHandleProps
+  extends Omit<BottomSheetHandleProps, 'animatedIndex' | 'animatedPosition'>,
+    NullableAccessibilityProps {}

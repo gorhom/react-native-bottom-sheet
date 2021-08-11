@@ -1,5 +1,6 @@
 import type { ViewProps } from 'react-native';
 import type Animated from 'react-native-reanimated';
+import { NullableAccessibilityProps } from '../../types';
 
 export interface BottomSheetBackdropProps extends Pick<ViewProps, 'style'> {
   /**
@@ -17,7 +18,8 @@ export interface BottomSheetBackdropProps extends Pick<ViewProps, 'style'> {
 export type BackdropPressBehavior = 'none' | 'close' | 'collapse' | number;
 
 export interface BottomSheetDefaultBackdropProps
-  extends BottomSheetBackdropProps {
+  extends BottomSheetBackdropProps,
+    NullableAccessibilityProps {
   /**
    * Backdrop opacity.
    * @type number
