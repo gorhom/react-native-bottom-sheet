@@ -202,12 +202,20 @@ export interface BottomSheetProps
 
   //#region callbacks
   /**
-   * Callback when sheet position changed to a provided point.
+   * Callback when the sheet position changed to a provided point.
+   *
    * @type (index: number) => void;
    */
   onChange?: (index: number) => void;
   /**
+   * Callback when the sheet close.
+   *
+   * @type () => void;
+   */
+  onClose?: () => void;
+  /**
    * Callback when the sheet about to animate to a new position.
+   *
    * @type (fromIndex: number, toIndex: number) => void;
    */
   onAnimate?: (fromIndex: number, toIndex: number) => void;

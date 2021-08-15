@@ -36,6 +36,8 @@ const BottomSheetModalComponent = forwardRef<
     index = 0,
     snapPoints,
     enablePanDownToClose = true,
+
+    // callbacks
     onChange: _providedOnChange,
 
     // components
@@ -289,16 +291,29 @@ const BottomSheetModalComponent = forwardRef<
       if (_providedOnChange) {
         _providedOnChange(_index);
       }
+    },
+    [_providedOnChange]
+  );
+  const handleBottomSheetOnClose = useCallback(
+    function handleBottomSheetOnClose() {
+      print({
+        component: BottomSheetModal.name,
+        method: handleBottomSheetOnClose.name,
+        params: {
+          minimized: minimized.current,
+          forcedDismissed: forcedDismissed.current,
+        },
+      });
 
       if (minimized.current) {
         return;
       }
 
-      if (_index === -1 && enableDismissOnClose) {
+      if (enableDismissOnClose) {
         unmount();
       }
     },
-    [enableDismissOnClose, unmount, _providedOnChange]
+    [enableDismissOnClose, unmount]
   );
   //#endregion
 
@@ -334,6 +349,7 @@ const BottomSheetModalComponent = forwardRef<
         containerHeight={containerHeight}
         containerOffset={containerOffset}
         onChange={handleBottomSheetOnChange}
+        onClose={handleBottomSheetOnClose}
         children={children}
         $modal={true}
       />

@@ -134,6 +134,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       // callbacks
       onChange: _providedOnChange,
+      onClose: _providedOnClose,
       onAnimate: _providedOnAnimate,
 
       // private
@@ -1361,7 +1362,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _handleGestureState,
       }) => {
         /**
-         * we make sure all gestures are not active.
+         * exit the method if animation state is not stopped.
+         */
+        if (_animationState !== ANIMATION_STATE.STOPPED) {
+          return;
+        }
+
+        /**
+         * exit the method if animated index value
+         * has fraction, e.g. 1.99, 0.52
+         */
+        if (_animatedIndex % 1 !== 0) {
+          return;
+        }
+
+        /**
+         * exit the method if there any active gesture.
          */
         const hasNoActiveGesture =
           (_contentGestureState === State.END ||
@@ -1370,13 +1386,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           (_handleGestureState === State.END ||
             _handleGestureState === State.UNDETERMINED ||
             _handleGestureState === State.CANCELLED);
+        if (!hasNoActiveGesture) {
+          return;
+        }
 
-        if (
-          _animatedIndex % 1 === 0 &&
-          _animatedIndex !== animatedCurrentIndex.value &&
-          _animationState === ANIMATION_STATE.STOPPED &&
-          hasNoActiveGesture
-        ) {
+        /**
+         * if the index is not equal to the current index,
+         * than the sheet position had changed and we trigger
+         * the `onChange` callback.
+         */
+        if (_animatedIndex !== animatedCurrentIndex.value) {
           runOnJS(print)({
             component: BottomSheet.name,
             method: 'useAnimatedReaction::OnChange',
@@ -1389,8 +1408,23 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animatedCurrentIndex.value = _animatedIndex;
           runOnJS(handleOnChange)(_animatedIndex);
         }
+
+        /**
+         * if index is `-1` than we fire the `onClose` callback.
+         */
+        if (_animatedIndex === -1 && _providedOnClose) {
+          runOnJS(print)({
+            component: BottomSheet.name,
+            method: 'useAnimatedReaction::onClose',
+            params: {
+              animatedCurrentIndex: animatedCurrentIndex.value,
+              animatedIndex: _animatedIndex,
+            },
+          });
+          runOnJS(_providedOnClose)();
+        }
       },
-      [handleOnChange]
+      [handleOnChange, _providedOnClose]
     );
 
     /**
