@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.0-alpha.26](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.25...v4.0.0-alpha.26)
+## [v4.0.0-alpha.27](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.26...v4.0.0-alpha.27)
+
+#### Improvements
+
+- refactor: rename Touchables.android to Touchables, to allow web usage ([a95e34f](https://github.com/gorhom/react-native-bottom-sheet/commit/a95e34fc2d0af0aaecf514ebbd0e8dee9df55fb0)).
+
+## [v4.0.0-alpha.26](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.25...v4.0.0-alpha.26) - 2021-08-15
 
 #### Features
 
