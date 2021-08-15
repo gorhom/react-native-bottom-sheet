@@ -12,8 +12,8 @@ import {
 } from './Touchables';
 
 export default {
-  TouchableOpacity: TouchableOpacity as typeof RNTouchableOpacity,
-  TouchableHighlight: TouchableHighlight as typeof RNTouchableHighlight,
+  TouchableOpacity: TouchableOpacity as any as typeof RNTouchableOpacity,
+  TouchableHighlight: TouchableHighlight as any as typeof RNTouchableHighlight,
   TouchableWithoutFeedback:
-    TouchableWithoutFeedback as typeof RNTouchableWithoutFeedback,
+    TouchableWithoutFeedback as any as typeof RNTouchableWithoutFeedback,
 };
