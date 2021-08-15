@@ -6,8 +6,9 @@ import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetViewProps } from './types';
 
 function BottomSheetViewComponent({
-  style,
   focusHook: useFocusHook = useEffect,
+  enableFooterMarginAdjustment = false,
+  style,
   children,
   ...rest
 }: BottomSheetViewProps) {
@@ -29,9 +30,11 @@ function BottomSheetViewComponent({
   }, [style]);
   const containerAnimatedStyle = useAnimatedStyle(
     () => ({
-      paddingBottom: animatedFooterHeight.value + containerStylePaddingBottom,
+      paddingBottom: enableFooterMarginAdjustment
+        ? animatedFooterHeight.value + containerStylePaddingBottom
+        : containerStylePaddingBottom,
     }),
-    [containerStylePaddingBottom]
+    [containerStylePaddingBottom, enableFooterMarginAdjustment]
   );
   const containerStyle = useMemo(
     () => [style, containerAnimatedStyle],

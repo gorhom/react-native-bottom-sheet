@@ -86,6 +86,7 @@ const DetachedExample = () => {
       >
         <BottomSheetView
           style={styles.contentContainerStyle}
+          enableFooterMarginAdjustment={true}
           onLayout={handleContentLayout}
         >
           {data.map(renderItem)}

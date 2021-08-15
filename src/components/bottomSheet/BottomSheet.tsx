@@ -189,12 +189,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedClosedPosition = useDerivedValue(() => {
       let closedPosition = animatedContainerHeight.value;
 
-      if ($modal) {
+      if ($modal || detached) {
         closedPosition = animatedContainerHeight.value + bottomInset;
       }
 
       return closedPosition;
-    }, [$modal, bottomInset]);
+    }, [$modal, detached, bottomInset]);
     const animatedSheetHeight = useDerivedValue(
       () => animatedContainerHeight.value - animatedHighestSnapPoint.value
     );

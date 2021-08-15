@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
-import customFooter from '../../components/customFooter';
+import CustomFooter from '../../components/customFooter';
 import searchHandle from '../../components/searchHandle';
 
 const FooterExample = () => {
@@ -37,7 +37,7 @@ const FooterExample = () => {
         keyboardBlurBehavior="restore"
         enablePanDownToClose={true}
         handleComponent={searchHandle}
-        footerComponent={customFooter}
+        footerComponent={CustomFooter}
       >
         <ContactList
           count={10}
