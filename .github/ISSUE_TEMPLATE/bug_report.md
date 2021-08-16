@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
+title: '[v4] | [v2] Issue title'
 labels: bug
 assignees: ''
 
@@ -26,7 +26,7 @@ assignees: ''
 
 | Library                         | Version |
 | ------------------------------- | ------- |
-| @gorhom/bottom-sheet         | x.x.x   |
+| @gorhom/bottom-sheet            | x.x.x   |
 | react-native                    | x.x.x   |
 | react-native-reanimated         | x.x.x   |
 | react-native-gesture-handler    | x.x.x   |
@@ -52,5 +52,6 @@ Describe what you expected to happen:
 ## Reproducible sample code
 
 <!--
- Please add minimal runnable repro as explained above so that the bug can be tested in isolation.
+
+ Please use the Bottom Sheet issue snack template https://snack.expo.io/@gorhom/bottom-sheet-v4-reproducible-issue-template or provide a minimal runnable repro as explained above so that the bug can be tested in isolation. or use
 -->
