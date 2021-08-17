@@ -1,6 +1,18 @@
 # Changelog
 
-## [v4.0.0-alpha.27](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.26...v4.0.0-alpha.27)
+## [v4.0.0-alpha.28](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.27...v4.0.0-alpha.28)
+
+#### Improvements
+
+- chore: updated github workflow and templates ([db68fac](https://github.com/gorhom/react-native-bottom-sheet/commit/db68fac9eb4ac117e7c89dd74352391a77f0a3ec)).
+- chore: updated auto-close action version ([991d214](https://github.com/gorhom/react-native-bottom-sheet/commit/991d2141a4f026068737abc098f9b0d2b6968a5f)).
+
+#### Fixes
+
+- fix: provide dynamic initial snap points while layout is calculating  ([`#584`](https://github.com/gorhom/react-native-bottom-sheet/pull/584)).
+- fix: prevent snap points lower than 0 ([95ea72a](https://github.com/gorhom/react-native-bottom-sheet/commit/95ea72a459f96d40ad583c5579cc72f0e128e5dd)).
+
+## [v4.0.0-alpha.27](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.26...v4.0.0-alpha.27) - 2021-08-15
 
 #### Improvements
 
