@@ -114,8 +114,7 @@ const BottomSheetBackdropComponent = ({
           [
             set(isTouchable, 0),
             call([], () => {
-              // @ts-ignore
-              containerRef.current.setNativeProps({
+              containerRef.current?.setNativeProps({
                 pointerEvents: 'none',
               });
             }),
