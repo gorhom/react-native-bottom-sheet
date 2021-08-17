@@ -29,7 +29,7 @@ export const useBottomSheetDynamicSnapPoints = (
       animatedHandleHeight.value === INITIAL_HANDLE_HEIGHT ||
       animatedContentHeight.value === 0
     ) {
-      return initialSnapPoints.map(_ => INITIAL_SNAP_POINT);
+      return initialSnapPoints.map(() => INITIAL_SNAP_POINT);
     }
     const contentWithHandleHeight =
       animatedContentHeight.value + animatedHandleHeight.value;
