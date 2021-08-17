@@ -1,26 +1,46 @@
 import { useMemo } from 'react';
 import invariant from 'invariant';
+import { INITIAL_SNAP_POINT } from '../components/bottomSheet/constants';
 import type { BottomSheetProps } from '../components/bottomSheet';
+
+/**
+ * @todo
+ * replace this with `prop-types`.
+ */
 
 export const usePropsValidator = ({
   index,
   snapPoints,
   topInset,
+  bottomInset,
 }: BottomSheetProps) => {
   useMemo(() => {
+    //#region snap points
     const _snapPoints = 'value' in snapPoints ? snapPoints.value : snapPoints;
-    // snap points
     invariant(
       _snapPoints,
       `'snapPoints' was not provided! please provide at least one snap point.`
     );
 
+    _snapPoints.map(snapPoint => {
+      const _snapPoint =
+        typeof snapPoint === 'number'
+          ? snapPoint
+          : parseInt(snapPoint.replace('%', ''), 10);
+
+      invariant(
+        _snapPoint > 0 || _snapPoint === INITIAL_SNAP_POINT,
+        `Snap point '${snapPoint}' is invalid. if you want to allow user to close the sheet, Please use 'enablePanDownToClose' prop.`
+      );
+    });
+
     invariant(
       'value' in _snapPoints || _snapPoints.length > 0,
       `'snapPoints' was provided with no points! please provide at least one snap point.`
     );
+    //#endregion
 
-    // index
+    //#region index
     invariant(
       typeof index === 'number' || typeof index === 'undefined',
       `'index' was provided but with wrong type ! expected type is a number.`
@@ -34,14 +54,19 @@ export const usePropsValidator = ({
         _snapPoints.length - 1
       }`
     );
+    //#endregion
 
-    // topInset
+    //#region insets
     invariant(
       typeof topInset === 'number' || typeof topInset === 'undefined',
       `'topInset' was provided but with wrong type ! expected type is a number.`
     );
+    invariant(
+      typeof bottomInset === 'number' || typeof bottomInset === 'undefined',
+      `'bottomInset' was provided but with wrong type ! expected type is a number.`
+    );
+    //#endregion
 
     // animations
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [index, snapPoints, topInset, bottomInset]);
 };

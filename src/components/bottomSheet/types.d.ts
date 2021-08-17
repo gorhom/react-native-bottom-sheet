@@ -40,7 +40,7 @@ export interface BottomSheetProps
    * @example
    * snapPoints={[200, 500]}
    * snapPoints={[200, '%50']}
-   * snapPoints={[-1, '%100']}
+   * snapPoints={['%100']}
    * @type Array<string | number>
    */
   snapPoints:
