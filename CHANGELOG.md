@@ -1,6 +1,16 @@
 # Changelog
 
-## [v4.0.0-alpha.28](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.27...v4.0.0-alpha.28)
+## [v4.0.0-alpha.29](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.28...v4.0.0-alpha.29)
+
+#### Features
+
+- feat: added backgroundStyle, handleStyle & handleIndicatorStyle to bottom sheet ([2211765](https://github.com/gorhom/react-native-bottom-sheet/commit/221176546fd59ed0c9d79fe7f0350eda24dd8550)).
+
+#### Fixes
+
+- fix: prevent keyboard change to snap sheet while user is interacting ([dd632b0](https://github.com/gorhom/react-native-bottom-sheet/commit/dd632b04651d37ab6a8a2aba2be13d9633e677e4)).
+
+## [v4.0.0-alpha.28](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.27...v4.0.0-alpha.28) - 2021-08-17
 
 #### Improvements
 
