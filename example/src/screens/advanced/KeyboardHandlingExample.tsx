@@ -9,10 +9,12 @@ import ContactList from '../../components/contactList';
 
 const KeyboardHandlingExample = () => {
   // state
-  const [keyboardBehavior, setKeyboardBehavior] =
-    useState<'extend' | 'fillParent' | 'interactive'>('interactive');
-  const [keyboardBlurBehavior, setKeyboardBlurBehavior] =
-    useState<'none' | 'restore'>('none');
+  const [keyboardBehavior, setKeyboardBehavior] = useState<
+    'extend' | 'fillParent' | 'interactive'
+  >('interactive');
+  const [keyboardBlurBehavior, setKeyboardBlurBehavior] = useState<
+    'none' | 'restore'
+  >('none');
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
