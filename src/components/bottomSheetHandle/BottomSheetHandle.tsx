@@ -1,4 +1,5 @@
 import React, { memo, useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { styles } from './styles';
 import type { BottomSheetDefaultHandleProps } from './types';
@@ -9,9 +10,12 @@ const BottomSheetHandleComponent = ({
   children,
 }: BottomSheetDefaultHandleProps) => {
   // styles
-  const containerStyle = useMemo(() => [styles.container, style], [style]);
+  const containerStyle = useMemo(
+    () => StyleSheet.flatten([styles.container, style]),
+    [style]
+  );
   const indicatorStyle = useMemo(
-    () => [styles.indicator, _indicatorStyle],
+    () => StyleSheet.flatten([styles.indicator, _indicatorStyle]),
     [_indicatorStyle]
   );
 

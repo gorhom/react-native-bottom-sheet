@@ -102,7 +102,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
+
+      // styles
       style: _providedStyle,
+      backgroundStyle: _providedBackgroundStyle,
+      handleStyle: _providedHandleStyle,
+      handleIndicatorStyle: _providedHandleIndicatorStyle,
 
       // hooks
       gestureEventsHandlersHook,
@@ -1502,6 +1507,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   animatedIndex={animatedIndex}
                   animatedPosition={animatedPosition}
                   backgroundComponent={backgroundComponent}
+                  backgroundStyle={_providedBackgroundStyle}
                 />
                 <Animated.View
                   pointerEvents="box-none"
@@ -1533,6 +1539,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   overDragResistanceFactor={overDragResistanceFactor}
                   keyboardBehavior={keyboardBehavior}
                   handleComponent={handleComponent}
+                  handleStyle={_providedHandleStyle}
+                  handleIndicatorStyle={_providedHandleIndicatorStyle}
                 />
               </Animated.View>
               {/* <BottomSheetDebugView

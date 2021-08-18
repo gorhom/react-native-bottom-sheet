@@ -78,6 +78,11 @@ export const screens = [
         getScreen: () => require('./advanced/CustomBackgroundExample').default,
       },
       {
+        name: 'Custom Theme',
+        slug: 'Advanced/CustomThemeExample',
+        getScreen: () => require('./advanced/CustomThemeExample').default,
+      },
+      {
         name: 'Backdrop',
         slug: 'Advanced/BackdropExample',
         getScreen: () => require('./advanced/BackdropExample').default,
@@ -98,14 +103,14 @@ export const screens = [
         getScreen: () => require('./advanced/ShadowExample').default,
       },
       {
-        name: 'Pull To Refresh',
-        slug: 'Advanced/PullToRefreshExample',
-        getScreen: () => require('./advanced/PullToRefreshExample').default,
-      },
-      {
         name: 'Footer',
         slug: 'Advanced/FooterExample',
         getScreen: () => require('./advanced/FooterExample').default,
+      },
+      {
+        name: 'Pull To Refresh',
+        slug: 'Advanced/PullToRefreshExample',
+        getScreen: () => require('./advanced/PullToRefreshExample').default,
       },
       {
         name: 'Custom Gesture Handling',

@@ -6,7 +6,13 @@ import type { useInteractivePanGestureHandlerConfigs } from '../../hooks/useGest
 
 export interface BottomSheetHandleContainerProps
   extends Pick<PanGestureHandlerProperties, 'simultaneousHandlers'>,
-    Pick<BottomSheetProps, 'handleComponent' | 'enableHandlePanningGesture'>,
+    Pick<
+      BottomSheetProps,
+      | 'handleComponent'
+      | 'enableHandlePanningGesture'
+      | 'handleIndicatorStyle'
+      | 'handleStyle'
+    >,
     Pick<
       useInteractivePanGestureHandlerConfigs,
       | 'enableOverDrag'

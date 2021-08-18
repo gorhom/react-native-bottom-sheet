@@ -7,7 +7,7 @@ const BottomSheetBackgroundComponent = ({
   pointerEvents,
   style,
 }: BottomSheetBackgroundProps) => (
-  <View pointerEvents={pointerEvents} style={[style, styles.container]} />
+  <View pointerEvents={pointerEvents} style={[styles.container, style]} />
 );
 
 const BottomSheetBackground = memo(BottomSheetBackgroundComponent);

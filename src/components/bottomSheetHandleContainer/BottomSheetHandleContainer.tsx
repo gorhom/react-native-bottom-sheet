@@ -17,6 +17,8 @@ function BottomSheetHandleContainerComponent({
   enableHandlePanningGesture,
   handleHeight,
   handleComponent: _providedHandleComponent,
+  handleStyle: _providedHandleStyle,
+  handleIndicatorStyle: _providedIndicatorStyle,
 }: BottomSheetHandleContainerProps) {
   //#region hooks
   const {
@@ -75,25 +77,11 @@ function BottomSheetHandleContainerComponent({
   //#endregion
 
   //#region renders
-  const renderHandle = useCallback(() => {
-    if (_providedHandleComponent === null) {
-      return null;
-    }
-    const HandleComponent =
-      _providedHandleComponent === undefined
-        ? BottomSheetHandle
-        : _providedHandleComponent;
-
-    return (
-      <HandleComponent
-        animatedIndex={animatedIndex}
-        animatedPosition={animatedPosition}
-      />
-    );
-  }, [animatedIndex, animatedPosition, _providedHandleComponent]);
-
-  const shouldRenderHandle = _providedHandleComponent !== null;
-  return shouldRenderHandle ? (
+  const HandleComponent =
+    _providedHandleComponent === undefined
+      ? BottomSheetHandle
+      : _providedHandleComponent;
+  return HandleComponent !== null ? (
     <PanGestureHandler
       enabled={enableHandlePanningGesture}
       waitFor={waitFor}
@@ -113,7 +101,12 @@ function BottomSheetHandleContainerComponent({
         accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
         onLayout={handleContainerLayout}
       >
-        {renderHandle()}
+        <HandleComponent
+          animatedIndex={animatedIndex}
+          animatedPosition={animatedPosition}
+          style={_providedHandleStyle}
+          indicatorStyle={_providedIndicatorStyle}
+        />
       </Animated.View>
     </PanGestureHandler>
   ) : null;
