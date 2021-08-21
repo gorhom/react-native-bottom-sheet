@@ -1,10 +1,5 @@
-import { Platform } from 'react-native';
-import Animated, {
-  Easing,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
-import { ANIMATION_METHOD } from '../constants';
+import Animated, { withSpring, withTiming } from 'react-native-reanimated';
+import { ANIMATION_CONFIGS, ANIMATION_METHOD } from '../constants';
 
 interface AnimateParams {
   point: number;
@@ -22,20 +17,7 @@ export const animate = ({
   'worklet';
 
   if (!configs) {
-    configs =
-      Platform.OS === 'android'
-        ? {
-            duration: 250,
-            easing: Easing.out(Easing.exp),
-          }
-        : {
-            damping: 500,
-            stiffness: 1000,
-            mass: 3,
-            overshootClamping: true,
-            restDisplacementThreshold: 10,
-            restSpeedThreshold: 10,
-          };
+    configs = ANIMATION_CONFIGS;
   }
 
   // detect animation type

@@ -1,16 +1,11 @@
-import Animated, { Easing } from 'react-native-reanimated';
 import {
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
   WINDOW_HEIGHT,
 } from '../../constants';
-import { exp } from '../../utilities/easingExp';
 
 // default values
-const DEFAULT_ANIMATION_EASING: Animated.EasingFunction = Easing.out(exp);
-const DEFAULT_ANIMATION_DURATION = 500;
-
 const DEFAULT_HANDLE_HEIGHT = 24;
 const DEFAULT_OVER_DRAG_RESISTANCE_FACTOR = 2.5;
 const DEFAULT_ENABLE_CONTENT_PANNING_GESTURE = true;
@@ -37,8 +32,6 @@ const INITIAL_HANDLE_HEIGHT = -999;
 const INITIAL_POSITION = WINDOW_HEIGHT;
 
 export {
-  DEFAULT_ANIMATION_EASING,
-  DEFAULT_ANIMATION_DURATION,
   DEFAULT_HANDLE_HEIGHT,
   DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
