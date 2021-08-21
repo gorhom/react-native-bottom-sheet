@@ -67,8 +67,17 @@ export interface BottomSheetMethods {
    * @see {Animated.WithTimingConfig}
    */
   close: (
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig,
-    force?: boolean
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+  ) => void;
+  /**
+   * Force close the bottom sheet, this prevent any interruptions till the sheet is closed.
+   * @param animationConfigs snap animation configs.
+   *
+   * @see {Animated.WithSpringConfig}
+   * @see {Animated.WithTimingConfig}
+   */
+  forceClose: (
+    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
   ) => void;
 }
 export interface BottomSheetModalMethods extends BottomSheetMethods {

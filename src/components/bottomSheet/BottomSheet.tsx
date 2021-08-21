@@ -833,10 +833,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleClose = useCallback(
       function handleClose(
-        animationConfigs?:
-          | Animated.WithSpringConfig
-          | Animated.WithTimingConfig,
-        force?: boolean
+        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
       ) {
         print({
           component: BottomSheet.name,
@@ -862,10 +859,53 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = false;
 
+        runOnUI(animateToPosition)(
+          nextPosition,
+          ANIMATION_SOURCE.USER,
+          0,
+          animationConfigs
+        );
+      },
+      [
+        animateToPosition,
+        isForcedClosing,
+        isInTemporaryPosition,
+        animatedNextPosition,
+        animatedClosedPosition,
+      ]
+    );
+    const handleForceClose = useCallback(
+      function handleForceClose(
+        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+      ) {
+        print({
+          component: BottomSheet.name,
+          method: handleForceClose.name,
+        });
+
+        const nextPosition = animatedClosedPosition.value;
+
+        /**
+         * exit method if :
+         * - already animating to next position.
+         * - sheet is forced closing.
+         */
+        if (
+          nextPosition === animatedNextPosition.value ||
+          isForcedClosing.value
+        ) {
+          return;
+        }
+
+        /**
+         * reset temporary position variable.
+         */
+        isInTemporaryPosition.value = false;
+
         /**
          * set force closing variable.
          */
-        isForcedClosing.value = force === undefined ? false : force;
+        isForcedClosing.value = true;
 
         runOnUI(animateToPosition)(
           nextPosition,
@@ -980,6 +1020,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       expand: handleExpand,
       collapse: handleCollapse,
       close: handleClose,
+      forceClose: handleForceClose,
     }));
     //#endregion
 
@@ -1075,6 +1116,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         expand: handleExpand,
         collapse: handleCollapse,
         close: handleClose,
+        forceClose: handleForceClose,
       }),
       [
         animatedIndex,
@@ -1084,6 +1126,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         handleExpand,
         handleCollapse,
         handleClose,
+        handleForceClose,
       ]
     );
     //#endregion

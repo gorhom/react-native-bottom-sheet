@@ -150,6 +150,12 @@ const BottomSheetModalComponent = forwardRef<
     }
     bottomSheetRef.current?.close(...args);
   }, []);
+  const handleForceClose = useCallback((...args) => {
+    if (minimized.current) {
+      return;
+    }
+    bottomSheetRef.current?.forceClose(...args);
+  }, []);
   //#endregion
 
   //#region bottom sheet modal methods
@@ -197,7 +203,7 @@ const BottomSheetModalComponent = forwardRef<
       }
       willUnmountSheet(key);
       forcedDismissed.current = true;
-      bottomSheetRef.current?.close(animationConfigs, true);
+      bottomSheetRef.current?.forceClose(animationConfigs);
     },
     [willUnmountSheet, unmount, key, enablePanDownToClose]
   );
@@ -325,8 +331,9 @@ const BottomSheetModalComponent = forwardRef<
     expand: handleExpand,
     collapse: handleCollapse,
     close: handleClose,
-    dismiss: handleDismiss,
+    forceClose: handleForceClose,
     // modal methods
+    dismiss: handleDismiss,
     present: handlePresent,
     // internal
     minimize: handleMinimize,
