@@ -1,6 +1,18 @@
 # Changelog
 
-## [v4.0.0-alpha.29](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.28...v4.0.0-alpha.29)
+## [v4.0.0-alpha.30](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.29...v4.0.0-alpha.30)
+
+#### Improvements
+
+- refactor: added forceClose and remove force param from close method ([3dd5796](https://github.com/gorhom/react-native-bottom-sheet/commit/3dd5796eb722e4e579de7b2439d224a5e0238b55)).
+- refactor: clean up animation configs variables #572 ([8e002e1](https://github.com/gorhom/react-native-bottom-sheet/commit/8e002e1c20c019951bbf444fceacefc0cf0e86c2)).
+- chore: delete debug view from builds ([7ead04e](https://github.com/gorhom/react-native-bottom-sheet/commit/7ead04edc1a77cf820adcdadecc912b7791ab14c)).
+
+#### Fixes
+
+- fix: prevent the sheet from snapping while layout being calculated ([445a964](https://github.com/gorhom/react-native-bottom-sheet/commit/445a9645366af04931f4464d1befb1bc8e1dbbed)).
+
+## [v4.0.0-alpha.29](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.28...v4.0.0-alpha.29) - 2021-08-18
 
 #### Features
 
