@@ -743,10 +743,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         /**
          * exit method if :
+         * - layout is not calculated.
          * - already animating to next position.
          * - sheet is forced closing.
          */
         if (
+          !isLayoutCalculated.value ||
           index === animatedNextPositionIndex.value ||
           nextPosition === animatedNextPosition.value ||
           isForcedClosing.value
@@ -768,6 +770,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [
         animateToPosition,
+        isLayoutCalculated,
         isInTemporaryPosition,
         isForcedClosing,
         animatedSnapPoints,
@@ -800,10 +803,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         /**
          * exit method if :
+         * - layout is not calculated.
          * - already animating to next position.
          * - sheet is forced closing.
          */
         if (
+          !isLayoutCalculated ||
           nextPosition === animatedNextPosition.value ||
           isForcedClosing.value
         ) {
@@ -826,6 +831,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animateToPosition,
         bottomInset,
         topInset,
+        isLayoutCalculated,
         isForcedClosing,
         animatedContainerHeight,
         animatedPosition,
@@ -844,10 +850,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         /**
          * exit method if :
+         * - layout is not calculated.
          * - already animating to next position.
          * - sheet is forced closing.
          */
         if (
+          !isLayoutCalculated.value ||
           nextPosition === animatedNextPosition.value ||
           isForcedClosing.value
         ) {
@@ -869,6 +877,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [
         animateToPosition,
         isForcedClosing,
+        isLayoutCalculated,
         isInTemporaryPosition,
         animatedNextPosition,
         animatedClosedPosition,
@@ -936,10 +945,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         /**
          * exit method if :
+         * - layout is not calculated.
          * - already animating to next position.
          * - sheet is forced closing.
          */
         if (
+          !isLayoutCalculated.value ||
           snapPoints.length - 1 === animatedNextPositionIndex.value ||
           nextPosition === animatedNextPosition.value ||
           isForcedClosing.value
@@ -962,6 +973,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [
         animateToPosition,
         isInTemporaryPosition,
+        isLayoutCalculated,
         isForcedClosing,
         animatedSnapPoints,
         animatedNextPosition,
@@ -981,10 +993,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         /**
          * exit method if :
+         * - layout is not calculated.
          * - already animating to next position.
          * - sheet is forced closing.
          */
         if (
+          !isLayoutCalculated ||
           animatedNextPositionIndex.value === 0 ||
           nextPosition === animatedNextPosition.value ||
           isForcedClosing.value
@@ -1007,6 +1021,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [
         animateToPosition,
         isForcedClosing,
+        isLayoutCalculated,
         isInTemporaryPosition,
         animatedSnapPoints,
         animatedNextPosition,
