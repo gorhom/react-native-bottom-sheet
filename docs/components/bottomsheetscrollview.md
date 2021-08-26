@@ -31,9 +31,9 @@ These props will be ignored if they were passed, because of the internal integra
 ## Example
 
 ```tsx
-import React, { useCallback, useRef, useMemo } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import React, { useCallback, useRef, useMemo } from "react";
+import { StyleSheet, View, Text, Button } from "react-native";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 const App = () => {
   // hooks
@@ -47,14 +47,14 @@ const App = () => {
         .map((_, index) => `index-${index}`),
     []
   );
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
   // callbacks
-  const handleSheetChange = useCallback(index => {
-    console.log('handleSheetChange', index);
+  const handleSheetChange = useCallback((index) => {
+    console.log("handleSheetChange", index);
   }, []);
-  const handleSnapPress = useCallback(index => {
-    sheetRef.current?.snapTo(index);
+  const handleSnapPress = useCallback((index) => {
+    sheetRef.current?.snapToIndex(index);
   }, []);
   const handleClosePress = useCallback(() => {
     sheetRef.current?.close();
@@ -62,7 +62,7 @@ const App = () => {
 
   // render
   const renderItem = useCallback(
-    item => (
+    (item) => (
       <View key={item} style={styles.itemContainer}>
         <Text>{item}</Text>
       </View>
@@ -95,12 +95,12 @@ const styles = StyleSheet.create({
     paddingTop: 200,
   },
   contentContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   itemContainer: {
     padding: 6,
     margin: 6,
-    backgroundColor: '#eee',
+    backgroundColor: "#eee",
   },
 });
 

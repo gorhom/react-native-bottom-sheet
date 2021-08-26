@@ -23,23 +23,23 @@ This needed when bottom sheet used with multiple scrollables to allow bottom she
 ## Example
 
 ```tsx
-import React, { useCallback, useRef, useMemo } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import React, { useCallback, useRef, useMemo } from "react";
+import { StyleSheet, View, Text, Button } from "react-native";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 const App = () => {
   // hooks
   const sheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
   // callbacks
-  const handleSheetChange = useCallback(index => {
-    console.log('handleSheetChange', index);
+  const handleSheetChange = useCallback((index) => {
+    console.log("handleSheetChange", index);
   }, []);
-  const handleSnapPress = useCallback(index => {
-    sheetRef.current?.snapTo(index);
+  const handleSnapPress = useCallback((index) => {
+    sheetRef.current?.snapToIndex(index);
   }, []);
   const handleClosePress = useCallback(() => {
     sheetRef.current?.close();
