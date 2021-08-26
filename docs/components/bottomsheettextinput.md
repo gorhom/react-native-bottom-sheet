@@ -6,7 +6,7 @@ image: /img/bottom-sheet-preview.gif
 slug: /components/bottomsheettextinput
 ---
 
-// TODO
+A pre-integrated `TextInput` that communicate with internal functionalities to allow Keyboard handling to work.
 
 ## Props
 
