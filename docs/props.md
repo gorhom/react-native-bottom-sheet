@@ -104,6 +104,8 @@ This will initially mount the sheet closed and when it's mounted and calculated 
 | ------- | ------- | -------- |
 | boolean | true    | NO       |
 
+## Styles
+
 ### `style`
 
 View style to be applied at the sheet container, it also could be an `AnimatedStyle`. This is helpful to add shadow to the sheet.
@@ -111,6 +113,30 @@ View style to be applied at the sheet container, it also could be an `AnimatedSt
 | type                       | default   | required |
 | -------------------------- | --------- | -------- |
 | ViewStyle \| AnimatedStyle | undefined | NO       |
+
+### `backgroundStyle`
+
+View style to be applied to the background component.
+
+| type      | default   | required |
+| --------- | --------- | -------- |
+| ViewStyle | undefined | NO       |
+
+### `handleStyle`
+
+View style to be applied to the handle component.
+
+| type      | default   | required |
+| --------- | --------- | -------- |
+| ViewStyle | undefined | NO       |
+
+### `handleIndicatorStyle`
+
+View style to be applied to the handle indicator component.
+
+| type      | default   | required |
+| --------- | --------- | -------- |
+| ViewStyle | undefined | NO       |
 
 ## Layout Configuration
 
@@ -266,6 +292,16 @@ type animationConfigs = (
 | -------- | --------- | -------- |
 | number[] | undefined | NO       |
 
+### `gestureEventsHandlersHook`
+
+Custom hook to provide pan gesture events handler, which will allow advance and customize handling for pan gesture.
+
+| type                          | default                         | required |
+| ----------------------------- | ------------------------------- | -------- |
+| GestureEventsHandlersHookType | useGestureEventsHandlersDefault | NO       |
+
+> warning: this is an experimental feature and the hook signature can change without a major version bump.
+
 ## Animated Nodes
 
 ### `animatedIndex`
@@ -335,6 +371,14 @@ Component to be placed as a sheet background.
 | type                                   | default                 | required |
 | -------------------------------------- | ----------------------- | -------- |
 | `React.FC<BottomSheetBackgroundProps>` | `BottomSheetBackground` | NO       |
+
+### `footerComponent`
+
+Component to be placed as a sheet footer.
+
+| type                               | default   | required |
+| ---------------------------------- | --------- | -------- |
+| `React.FC<BottomSheetFooterProps>` | undefined | NO       |
 
 ### `children`
 
