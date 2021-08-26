@@ -1,7 +1,4 @@
 {
-  "react-native-tools": {
-    "projectRoot": "./example"
-  },
   "editor.tabSize": 2,
   "files.exclude": {
     "**/node_modules": true,
