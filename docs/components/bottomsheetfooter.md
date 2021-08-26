@@ -6,22 +6,17 @@ image: /img/bottom-sheet-preview.gif
 slug: /components/bottomsheetfooter
 ---
 
-// TODO
+A pre-built component that sticks to the bottom of the BottomSheet and can be modify to fit your own custom interaction.
 
 ## Props
 
-### `appearanceBehavior`
+### `animatedFooterPosition`
 
-Appearance behavior when the bottom sheet starts to push the footer of the screen. You can combine many behaviors together.
+Calculated footer animated position.
 
-- `none`: do nothing.
-- `fade`: fade in and out.
-- `scale`: scale up and down.
-- `slide`: slide up and down.
-
-| type                                   | default | required |
-| -------------------------------------- | ------- | -------- |
-| 'none' \| 'fade' \| 'scale' \| 'slide' | 'none'  | NO       |
+| type                          | default | required |
+| ----------------------------- | ------- | -------- |
+| Animated.SharedValue<number\> | 0       | NO       |
 
 ### `bottomInset`
 
@@ -35,9 +30,9 @@ Bottom inset to be added below the footer.
 
 Component to be placed in the footer.
 
-| type                     | default | required |
-| ------------------------ | ------- | -------- |
-| ReactNode \| ReactNode[] | 0       | NO       |
+| type                     | default   | required |
+| ------------------------ | --------- | -------- |
+| ReactNode \| ReactNode[] | undefined | NO       |
 
 ## Example
 
@@ -53,31 +48,28 @@ const App = () => {
   // variables
   const snapPoints = useMemo(() => ['25%', '50%'], []);
 
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-
   // renders
+  const renderFooter = useCallback(
+    props => (
+      <BottomSheetFooter {...props} bottomInset={24}>
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>Footer</Text>
+        </View>
+      </BottomSheetFooter>
+    ),
+    []
+  );
   return (
     <View style={styles.container}>
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}
+        footerComponent={renderFooter}
       >
         <View style={styles.contentContainer}>
           <Text>Awesome 🎉</Text>
         </View>
-        <BottomSheetFooter
-          bottomInset={bottomSafeArea}
-          appearanceBehavior={appearanceBehavior}
-        >
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>this is a footer!</Text>
-          </View>
-        </BottomSheetFooter>
       </BottomSheet>
     </View>
   );
@@ -93,19 +85,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  footer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 12,
+  footerContainer: {
     padding: 12,
-    marginBottom: 12,
-    borderRadius: 24,
+    margin: 12,
+    borderRadius: 12,
     backgroundColor: '#80f',
   },
   footerText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: '800',
   },
 });
 
