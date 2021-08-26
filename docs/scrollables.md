@@ -23,4 +23,5 @@ This library provides a pre-integrated virtualized lists that utilize an interna
 - [BottomSheetFlatList](/components/bottomsheetflatlist)
 - [BottomSheetSectionList](/components/bottomsheetsectionlist)
 - [BottomSheetScrollView](/components/bottomsheetscrollview)
+- [BottomSheetVirtualizedList](/components/bottomsheetvirtualizedlist)
 - [BottomSheetView](/components/bottomsheetview)
