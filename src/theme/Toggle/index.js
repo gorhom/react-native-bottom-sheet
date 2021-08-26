@@ -1,21 +1,27 @@
-import React, { useCallback } from 'react';
-import clsx from 'clsx';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import styles from './styles.module.css';
+import React, { useCallback } from "react";
+import clsx from "clsx";
+import useThemeContext from "@theme/hooks/useThemeContext";
+import useIsBrowser from "@docusaurus/useIsBrowser";
+import styles from "./styles.module.css";
 
 // Adapted from: https://codepen.io/aaroniker/pen/KGpXZo and https://github.com/narative/gatsby-theme-novela/blob/714b6209c5bd61b220370e8a7ad84c0b1407946a/%40narative/gatsby-theme-novela/src/components/Navigation/Navigation.Header.tsx
 
 export default function (props) {
   // props
-  const { checked, 'aria-label': ariaLabel, onChange } = props;
+  const { "aria-label": ariaLabel } = props;
 
   // hooks
-  const { isClient } = useDocusaurusContext();
+  const isBrowser = useIsBrowser();
+  const { isDarkTheme, setDarkTheme, setLightTheme } = useThemeContext();
 
   // callbacks
   const handleToggleClick = useCallback(() => {
-    onChange({ target: { checked: !checked } });
-  }, [checked, onChange]);
+    if (isDarkTheme) {
+      setLightTheme();
+    } else {
+      setDarkTheme();
+    }
+  }, [isDarkTheme, setDarkTheme, setLightTheme]);
 
   //render
   return (
@@ -25,9 +31,9 @@ export default function (props) {
       title={ariaLabel}
       className={styles.toggleButton}
       onClick={handleToggleClick}
-      disabled={!isClient}
+      disabled={!isBrowser}
     >
-      <div className={clsx(styles.toggleIcon, 'toggleIcon')} />
+      <div className={clsx(styles.toggleIcon, "toggleIcon")} />
     </button>
   );
 }
