@@ -98,3 +98,14 @@ type close = (
   animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
 ) => void;
 ```
+
+### `forceClose`
+
+Force close the bottom sheet, this prevent any interruptions till the sheet is closed.
+
+```ts
+type forceClose = (
+  // snap animation configs
+  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+) => void;
+```
