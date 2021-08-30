@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { ViewStyle, Insets } from 'react-native';
+import type { ViewStyle, Insets, StyleProp } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
@@ -165,17 +165,19 @@ export interface BottomSheetProps
    * @type Animated.AnimateStyle<ViewStyle>
    * @default undefined
    */
-  style?: Animated.AnimateStyle<
-    Omit<
-      ViewStyle,
-      | 'flexDirection'
-      | 'position'
-      | 'top'
-      | 'left'
-      | 'bottom'
-      | 'right'
-      | 'opacity'
-      | 'transform'
+  style?: StyleProp<
+    Animated.AnimateStyle<
+      Omit<
+        ViewStyle,
+        | 'flexDirection'
+        | 'position'
+        | 'top'
+        | 'left'
+        | 'bottom'
+        | 'right'
+        | 'opacity'
+        | 'transform'
+      >
     >
   >;
   /**
@@ -184,9 +186,8 @@ export interface BottomSheetProps
    * @type ViewStyle
    * @default undefined
    */
-  backgroundStyle?: Omit<
-    ViewStyle,
-    'position' | 'top' | 'left' | 'bottom' | 'right'
+  backgroundStyle?: StyleProp<
+    Omit<ViewStyle, 'position' | 'top' | 'left' | 'bottom' | 'right'>
   >;
   /**
    * View style to be applied to the handle component.
@@ -194,14 +195,14 @@ export interface BottomSheetProps
    * @type ViewStyle
    * @default undefined
    */
-  handleStyle?: ViewStyle;
+  handleStyle?: StyleProp<ViewStyle>;
   /**
    * View style to be applied to the handle indicator component.
    *
    * @type ViewStyle
    * @default undefined
    */
-  handleIndicatorStyle?: ViewStyle;
+  handleIndicatorStyle?: StyleProp<ViewStyle>;
   /**
    * Custom hook to provide pan gesture events handler, which will allow advance and
    * customize handling for pan gesture.
