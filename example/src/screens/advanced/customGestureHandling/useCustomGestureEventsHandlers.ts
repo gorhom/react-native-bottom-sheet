@@ -8,6 +8,7 @@ import {
   SCROLLABLE_TYPE,
   WINDOW_HEIGHT,
   GestureEventHandlerCallbackType,
+  ANIMATION_SOURCE,
 } from '@gorhom/bottom-sheet';
 import { useGestureTranslationY } from './GestureTranslationContext';
 
@@ -210,12 +211,13 @@ export const useCustomGestureEventsHandlers = () => {
   );
   const handleOnEnd: GestureEventHandlerCallbackType = useWorkletCallback(
     function handleOnEnd(
-      type,
+      source,
       { translationY, absoluteY, velocityY },
       context
     ) {
       const highestSnapPoint = animatedHighestSnapPoint.value;
-
+      const isSheetAtHighestSnapPoint =
+        animatedPosition.value === highestSnapPoint;
       /**
        * if the sheet is in a temporary position and the gesture ended above
        * the current position, then we snap back to the temporary position.
@@ -225,7 +227,11 @@ export const useCustomGestureEventsHandlers = () => {
         context.initialPosition >= animatedPosition.value
       ) {
         if (context.initialPosition > animatedPosition.value) {
-          animateToPosition(context.initialPosition, velocityY / 2);
+          animateToPosition(
+            context.initialPosition,
+            ANIMATION_SOURCE.GESTURE,
+            velocityY / 2
+          );
         }
         return;
       }
@@ -291,7 +297,7 @@ export const useCustomGestureEventsHandlers = () => {
           velocityY,
           snapPoints
         );
-        if (type === GESTURE_SOURCE.HANDLE) {
+        if (source === GESTURE_SOURCE.HANDLE) {
           return endingSnapPoint;
         }
         const secondHighestSnapPoint =
@@ -309,33 +315,21 @@ export const useCustomGestureEventsHandlers = () => {
         return;
       }
 
+      const wasGestureHandledByScrollView =
+        source === GESTURE_SOURCE.SCROLLABLE &&
+        animatedScrollableContentOffsetY.value > 0;
       /**
-       * if gesture was picked by scrollable and did not move the sheet,
-       * then exit the method to prevent snapping.
+       * prevents snapping from top to middle / bottom with repeated interrupted scrolls
        */
-      if (
-        (type === GESTURE_SOURCE.SCROLLABLE
-          ? animatedScrollableContentOffsetY.value
-          : 0) > 0 &&
-        context.initialPosition === highestSnapPoint &&
-        animatedPosition.value === highestSnapPoint
-      ) {
+      if (wasGestureHandledByScrollView && isSheetAtHighestSnapPoint) {
         return;
       }
 
-      /**
-       * if gesture started by scrollable dragging the sheet than continue scrolling,
-       * then exit the method to prevent snapping.
-       */
-      if (
-        type === GESTURE_SOURCE.SCROLLABLE &&
-        animatedScrollableContentOffsetY.value > 0 &&
-        animatedPosition.value === highestSnapPoint
-      ) {
-        return;
-      }
-
-      animateToPosition(destinationPoint, velocityY / 2);
+      animateToPosition(
+        destinationPoint,
+        ANIMATION_SOURCE.GESTURE,
+        velocityY / 2
+      );
     },
     [
       enablePanDownToClose,
