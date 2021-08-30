@@ -54,7 +54,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://react-native-training.eu"><img src="https://avatars.githubusercontent.com/u/1566403?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vojtech Novak</b></sub></a><br /><a href="https://github.com/gorhom/react-native-bottom-sheet/commits?author=vonovak" title="Code">💻</a></td>
+    <td align="center"><a href="https://react-native-training.eu"><img src="https://avatars.githubusercontent.com/u/1566403?v=4?s=76" width="76px;" alt=""/><br /><sub><b>Vojtech Novak</b></sub></a><br /><a href="https://github.com/gorhom/react-native-bottom-sheet/commits?author=vonovak" title="Code">💻</a></td>
   </tr>
 </table>
 
