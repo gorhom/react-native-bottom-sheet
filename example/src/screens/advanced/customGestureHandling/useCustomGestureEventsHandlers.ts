@@ -56,7 +56,7 @@ export const useCustomGestureEventsHandlers = () => {
     [animatedPosition, animatedKeyboardState, animatedScrollableContentOffsetY]
   );
   const handleOnActive: GestureEventHandlerCallbackType = useWorkletCallback(
-    function handleOnActive(type, { translationY }, context) {
+    function handleOnActive(source, { translationY }, context) {
       gestureTranslationY.value = translationY;
 
       let highestSnapPoint =
@@ -92,7 +92,7 @@ export const useCustomGestureEventsHandlers = () => {
        * point, then do not interact with current gesture.
        */
       if (
-        type === GESTURE_SOURCE.SCROLLABLE &&
+        source === GESTURE_SOURCE.SCROLLABLE &&
         isScrollableRefreshable.value &&
         animatedPosition.value === highestSnapPoint
       ) {
@@ -107,7 +107,7 @@ export const useCustomGestureEventsHandlers = () => {
        */
       const negativeScrollableContentOffset =
         (context.initialPosition === highestSnapPoint &&
-          type === GESTURE_SOURCE.SCROLLABLE) ||
+          source === GESTURE_SOURCE.SCROLLABLE) ||
         !context.isScrollablePositionLocked
           ? animatedScrollableContentOffsetY.value * -1
           : 0;
@@ -135,7 +135,7 @@ export const useCustomGestureEventsHandlers = () => {
         context.initialPosition > secondHighestSnapPoint;
 
       const clampedPosition = (() => {
-        if (type === GESTURE_SOURCE.SCROLLABLE) {
+        if (source === GESTURE_SOURCE.SCROLLABLE) {
           const clampSource = (() => {
             if (isDraggingFromBottom) {
               return accumulatedDraggedPosition;
@@ -158,7 +158,7 @@ export const useCustomGestureEventsHandlers = () => {
        */
       if (
         context.isScrollablePositionLocked &&
-        type === GESTURE_SOURCE.SCROLLABLE &&
+        source === GESTURE_SOURCE.SCROLLABLE &&
         animatedPosition.value === highestSnapPoint
       ) {
         context.isScrollablePositionLocked = false;
@@ -169,7 +169,7 @@ export const useCustomGestureEventsHandlers = () => {
        */
       if (enableOverDrag) {
         if (
-          (type === GESTURE_SOURCE.HANDLE ||
+          (source === GESTURE_SOURCE.HANDLE ||
             animatedScrollableType.value === SCROLLABLE_TYPE.VIEW) &&
           draggedPosition < highestSnapPoint
         ) {
@@ -182,7 +182,7 @@ export const useCustomGestureEventsHandlers = () => {
         }
 
         if (
-          type === GESTURE_SOURCE.HANDLE &&
+          source === GESTURE_SOURCE.HANDLE &&
           draggedPosition > lowestSnapPoint
         ) {
           const resistedPosition =
