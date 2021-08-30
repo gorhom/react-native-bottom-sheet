@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "vonovak",
+      "name": "Vojtech Novak",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1566403?v=4",
+      "profile": "https://react-native-training.eu",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "react-native-bottom-sheet",
+  "projectOwner": "gorhom",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
