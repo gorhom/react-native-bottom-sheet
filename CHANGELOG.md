@@ -1,6 +1,17 @@
 # Changelog
 
-## [v4.0.0-alpha.30](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.29...v4.0.0-alpha.30)
+## [v4.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.30...v4.0.0)
+
+#### Improvements
+
+- chore: updated close method type ([ca3a11a](https://github.com/gorhom/react-native-bottom-sheet/commit/ca3a11a3f56f3ba3bcd865ce1006490f3819f054)).
+
+#### Documentations
+
+- docs: added auto-deployment for documentation website ([3b14281](https://github.com/gorhom/react-native-bottom-sheet/commit/3b1428199f49339d5aa8a607cd0f496907fcb2e5)).
+- docs: updated readme file ([84fdcf6](https://github.com/gorhom/react-native-bottom-sheet/commit/84fdcf6db98a5c58ee0b8cfa821bd8031c710df0)).
+
+## [v4.0.0-alpha.30](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.29...v4.0.0-alpha.30) - 2021-08-22
 
 #### Improvements
 
