@@ -232,6 +232,8 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           context
         ) {
           const highestSnapPoint = animatedHighestSnapPoint.value;
+          const isSheetAtHighestSnapPoint =
+            animatedPosition.value === highestSnapPoint;
 
           /**
            * if scrollable is refreshable and sheet position at the highest
@@ -240,7 +242,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           if (
             source === GESTURE_SOURCE.SCROLLABLE &&
             isScrollableRefreshable.value &&
-            animatedPosition.value === highestSnapPoint
+            isSheetAtHighestSnapPoint
           ) {
             return;
           }
@@ -256,8 +258,8 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             if (context.initialPosition > animatedPosition.value) {
               animateToPosition(
                 context.initialPosition,
-                velocityY / 2,
-                ANIMATION_SOURCE.GESTURE
+                ANIMATION_SOURCE.GESTURE,
+                velocityY / 2
               );
             }
             return;
@@ -330,36 +332,20 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             return;
           }
 
-          /**
-           * if gesture was picked by scrollable and did not move the sheet,
-           * then exit the method to prevent snapping.
-           */
-          if (
-            (source === GESTURE_SOURCE.SCROLLABLE
-              ? animatedScrollableContentOffsetY.value
-              : 0) > 0 &&
-            context.initialPosition === highestSnapPoint &&
-            animatedPosition.value === highestSnapPoint
-          ) {
-            return;
-          }
-
-          /**
-           * if gesture started by scrollable dragging the sheet than continue scrolling,
-           * then exit the method to prevent snapping.
-           */
-          if (
+          const wasGestureHandledByScrollView =
             source === GESTURE_SOURCE.SCROLLABLE &&
-            animatedScrollableContentOffsetY.value > 0 &&
-            animatedPosition.value === highestSnapPoint
-          ) {
+            animatedScrollableContentOffsetY.value > 0;
+          /**
+           * prevents snapping from top to middle / bottom with repeated interrupted scrolls
+           */
+          if (wasGestureHandledByScrollView && isSheetAtHighestSnapPoint) {
             return;
           }
 
           animateToPosition(
             destinationPoint,
-            velocityY / 2,
-            ANIMATION_SOURCE.GESTURE
+            ANIMATION_SOURCE.GESTURE,
+            velocityY / 2
           );
         },
         [
