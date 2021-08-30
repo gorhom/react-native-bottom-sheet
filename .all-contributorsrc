@@ -13,6 +13,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "kickbk",
+      "name": "kickbk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31323376?v=4",
+      "profile": "https://github.com/kickbk",
+      "contributions": [
+        "bug",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
