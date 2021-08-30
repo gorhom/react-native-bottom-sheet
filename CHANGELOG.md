@@ -1,6 +1,17 @@
 # Changelog
 
-## [v4.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.30...v4.0.0)
+## [v4.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0...v4.0.1)
+
+#### Fixes
+
+- fix: pass correct params to animateToPosition ([`#610`](https://github.com/gorhom/react-native-bottom-sheet/pull/610)).
+
+#### Documentations
+
+- docs: add kickbk as a contributor for bug, test ([`#612`](https://github.com/gorhom/react-native-bottom-sheet/pull/612)).
+- docs: add vonovak as a contributor for code ([`#611`](https://github.com/gorhom/react-native-bottom-sheet/pull/611)).
+
+## [v4.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.30...v4.0.0) - 2021-08-30
 
 #### Improvements
 
