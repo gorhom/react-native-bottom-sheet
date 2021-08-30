@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>React Native Bottom Sheet Blog</title>
+        <link>https://gorhom.github.io/react-native-bottom-sheet/blog</link>
+        <description>React Native Bottom Sheet Blog</description>
+        <lastBuildDate>Mon, 30 Aug 2021 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[BottomSheet v4 is here!]]></title>
+            <link>https://gorhom.github.io/react-native-bottom-sheet/blog/bottom-sheet-v4</link>
+            <guid>bottom-sheet-v4</guid>
+            <pubDate>Mon, 30 Aug 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[BottomSheet v4 comes with rewritten implementation to provide more stability, performance, and more features.]]></description>
+        </item>
+    </channel>
+</rss>

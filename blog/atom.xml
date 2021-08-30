@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://gorhom.github.io/react-native-bottom-sheet/blog</id>
+    <title>React Native Bottom Sheet Blog</title>
+    <updated>2021-08-30T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://gorhom.github.io/react-native-bottom-sheet/blog"/>
+    <subtitle>React Native Bottom Sheet Blog</subtitle>
+    <icon>https://gorhom.github.io/react-native-bottom-sheet/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[BottomSheet v4 is here!]]></title>
+        <id>bottom-sheet-v4</id>
+        <link href="https://gorhom.github.io/react-native-bottom-sheet/blog/bottom-sheet-v4"/>
+        <updated>2021-08-30T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[BottomSheet v4 comes with rewritten implementation to provide more stability, performance, and more features.]]></summary>
+        <author>
+            <name>Mo Gorhom</name>
+            <uri>https://github.com/gorhom</uri>
+        </author>
+    </entry>
+</feed>

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[2535],{6353:function(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"BottomSheet v4 is here!","permalink":"/react-native-bottom-sheet/blog/bottom-sheet-v4"}]}')}}]);
