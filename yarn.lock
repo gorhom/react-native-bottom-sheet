@@ -1278,7 +1278,7 @@
     url-loader "^4.1.1"
     webpack "^5.40.0"
 
-"@docusaurus/plugin-content-blog@2.0.0-beta.5":
+"@docusaurus/plugin-content-blog@2.0.0-beta.5", "@docusaurus/plugin-content-blog@^2.0.0-beta.5":
   version "2.0.0-beta.5"
   resolved "https://registry.yarnpkg.com/@docusaurus/plugin-content-blog/-/plugin-content-blog-2.0.0-beta.5.tgz#6f9e47eb72d4169ff36a8d0f26348caf18fa48dc"
   integrity sha512-gZmsBKibSE6/0LeGtpPtcRCvbl8XnRwsWhDGVf13CswnKSwmyE7FWq1ymAzgA4xJx//UamaRzZB9449+l2HVCg==

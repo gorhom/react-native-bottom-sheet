@@ -16,11 +16,12 @@ module.exports = {
       hideOnScroll: false,
       items: [
         {
-          to: "modal/",
+          to: "modal",
           activeBasePath: "modal",
           label: "Bottom Sheet Modal",
           position: "left",
         },
+        { to: "blog", label: "Blog", position: "left" },
         {
           href: "https://github.com/gorhom/react-native-bottom-sheet",
           label: "GitHub",
@@ -64,6 +65,14 @@ module.exports = {
               path: "v2",
             },
           },
+        },
+        blog: {
+          path: "blog",
+          routeBasePath: "/blog",
+          showReadingTime: false,
+          blogSidebarCount: "ALL",
+          editUrl:
+            "https://github.com/gorhom/react-native-bottom-sheet/edit/website/website/blog/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
