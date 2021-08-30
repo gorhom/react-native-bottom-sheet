@@ -1,9 +1,8 @@
 # React Native Bottom Sheet
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
+[![Reanimated v2 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/master?label=Reanimated%20v2&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![Reanimated v1 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/v2?label=Reanimated%20v1&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/npm/l/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/badge/types-included-blue?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-
-[![Reanimated v2 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/master?label=Reanimated%20v2&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![Reanimated v1 version](https://img.shields.io/github/package-json/v/gorhom/react-native-bottom-sheet/v2?label=Reanimated%20v1&style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/npm/l/@gorhom/bottom-sheet?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![npm](https://img.shields.io/badge/types-included-blue?style=flat-square)](https://www.npmjs.com/package/@gorhom/bottom-sheet) [![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/)
 
 A performant interactive bottom sheet with fully configurable options 🚀
 
@@ -45,25 +44,8 @@ This library been written in 2 versions of `Reanimated`, and kept both implement
 
 - [Mo Gorhom](https://gorhom.dev/)
 
-## License
 
-[MIT](./LICENSE)
-
-<div align="center">
-
-Liked the library? 😇
-
-<a href="https://www.buymeacoffee.com/gorhom" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-red.png" alt="Buy Me A Coffee" height="34" ></a>
-
-</div>
-
----
-
-<p align="center">
-<a href="https://gorhom.dev" target="_blank"><img alt="Mo Gorhom" src="./logo.png"></a>
-</p>
-
-## Contributors ✨
+## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
@@ -81,4 +63,20 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+## License
+
+[MIT](./LICENSE)
+
+<div align="center">
+
+Liked the library? 😇
+
+<a href="https://www.buymeacoffee.com/gorhom" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-red.png" alt="Buy Me A Coffee" height="34" ></a>
+
+</div>
+
+---
+
+<p align="center">
+<a href="https://gorhom.dev" target="_blank"><img alt="Mo Gorhom" src="./logo.png"></a>
+</p>
