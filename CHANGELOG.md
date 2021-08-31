@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0...v4.0.1)
+## [v4.0.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.1...v4.0.2)
+
+#### Fixes
+
+- fix: updated types for styles ([`#616`](https://github.com/gorhom/react-native-bottom-sheet/pull/616)).
+
+## [v4.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0...v4.0.1) - 2021-08-30
 
 #### Fixes
 
