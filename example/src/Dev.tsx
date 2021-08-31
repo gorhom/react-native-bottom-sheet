@@ -99,7 +99,7 @@ const App = () => {
           style={styles.flatlist}
           contentContainerStyle={styles.flatlistContainer}
         />
-        <BottomSheetFooter appearanceBehavior={['fade', 'scale']}>
+        <BottomSheetFooter>
           <RectButton style={styles.footer}>
             <Text style={styles.footerText}>this is a footer!</Text>
           </RectButton>
