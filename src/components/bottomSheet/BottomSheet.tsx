@@ -62,7 +62,7 @@ import {
   DEFAULT_ACCESSIBLE,
   DEFAULT_ACCESSIBILITY_LABEL,
   DEFAULT_ACCESSIBILITY_ROLE,
-  DEFAULT_ANNOUNCE_CHANGE_FOR_ACCESSIBILITY,
+  DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
   DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
@@ -123,7 +123,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
       accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
       accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
-      announceChangeForAccessibility: _providedAnnounceChangeForAccessibility = DEFAULT_ANNOUNCE_CHANGE_FOR_ACCESSIBILITY,
+      enableAccessibilityChangeAnnouncement: _providedEnableAccessibilityChangeAnnouncement = DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
       accessibilityPositionChangeAnnouncement: _providedAccessibilityPositionChangeAnnouncement = DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
       ...rest
     } = props;
@@ -568,7 +568,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
              * for accessibility service.
              */
             AccessibilityInfo.isScreenReaderEnabled().then(isEnabled => {
-              if (!isEnabled || !_providedAnnounceChangeForAccessibility) {
+              if (
+                !isEnabled ||
+                !_providedEnableAccessibilityChangeAnnouncement
+              ) {
                 return;
               }
               const positionInScreen = Math.max(

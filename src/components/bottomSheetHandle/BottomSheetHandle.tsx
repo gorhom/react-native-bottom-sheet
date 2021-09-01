@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { View } from 'react-native';
 import isEqual from 'lodash.isequal';
 import { styles } from './styles';
-import { BottomSheetDefaultHandleProps } from './types';
+import type { BottomSheetDefaultHandleProps } from './types';
 import {
   DEFAULT_ACCESSIBLE,
   DEFAULT_ACCESSIBILITY_ROLE,
