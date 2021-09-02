@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.0.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.1...v4.0.2)
+## [v4.0.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.2...v4.0.3)
+
+#### Fixes
+
+- fix: allow content to be accessible #619 ([f1baf0e](https://github.com/gorhom/react-native-bottom-sheet/commit/f1baf0e4748fd84110d905f82404a86fd697c936)).
+
+## [v4.0.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.1...v4.0.2) - 2021-08-31
 
 #### Fixes
 
