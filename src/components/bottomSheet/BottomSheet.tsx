@@ -1554,12 +1554,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               bottomInset={bottomInset}
               detached={detached}
             >
-              <Animated.View
-                accessible={true}
-                accessibilityRole="adjustable"
-                accessibilityLabel="Bottom Sheet"
-                style={containerStyle}
-              >
+              <Animated.View style={containerStyle}>
                 <BottomSheetBackgroundContainer
                   key="BottomSheetBackgroundContainer"
                   animatedIndex={animatedIndex}
