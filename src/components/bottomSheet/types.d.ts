@@ -47,7 +47,7 @@ export interface BottomSheetProps
     | Array<string | number>
     | Animated.SharedValue<Array<string | number>>;
   /**
-   * Defines how violently sheet has to stopped while over dragging.
+   * Defines how violently sheet has to be stopped while over dragging.
    * @type number
    * @default 2.5
    */
