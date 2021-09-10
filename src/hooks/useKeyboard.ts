@@ -86,26 +86,19 @@ export const useKeyboard = () => {
       );
     };
 
-    Keyboard.addListener(
+    const showSubscription = Keyboard.addListener(
       KEYBOARD_EVENT_MAPPER.KEYBOARD_SHOW,
       handleOnKeyboardShow
     );
 
-    Keyboard.addListener(
+    const hideSubscription = Keyboard.addListener(
       KEYBOARD_EVENT_MAPPER.KEYBOARD_HIDE,
       handleOnKeyboardHide
     );
 
     return () => {
-      Keyboard.removeListener(
-        KEYBOARD_EVENT_MAPPER.KEYBOARD_SHOW,
-        handleOnKeyboardShow
-      );
-
-      Keyboard.removeListener(
-        KEYBOARD_EVENT_MAPPER.KEYBOARD_HIDE,
-        handleOnKeyboardHide
-      );
+      showSubscription.remove();
+      hideSubscription.remove();
     };
   }, [handleKeyboardEvent]);
 
