@@ -45,7 +45,7 @@ String values should be a percentage.
 ```ts
 snapPoints={[200, 500]}
 snapPoints={[200, '50%']}
-snapPoints={[-1, '100%']}
+snapPoints={['100%']}
 ```
 
 ### `overDragResistanceFactor`
