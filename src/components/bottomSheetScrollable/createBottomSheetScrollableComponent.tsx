@@ -4,6 +4,7 @@ import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetRefreshControl from '../bottomSheetRefreshControl';
+import { BottomSheetScrollableCellRenderer } from './BottomSheetScrollableCellRenderer';
 import {
   useScrollHandler,
   useScrollableSetter,
@@ -28,6 +29,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       scrollEventsHandlersHook,
       // props
       enableFooterMarginAdjustment = false,
+      enableContentInteractionWhileAnimating = true,
       overScrollMode = 'never',
       keyboardDismissMode = 'interactive',
       showsVerticalScrollIndicator = true,
@@ -115,6 +117,11 @@ export function createBottomSheetScrollableComponent<T, P>(
             keyboardDismissMode={keyboardDismissMode}
             onScroll={scrollHandler}
             style={containerStyle}
+            CellRendererComponent={
+              enableContentInteractionWhileAnimating
+                ? BottomSheetScrollableCellRenderer
+                : undefined
+            }
           />
         </NativeViewGestureHandler>
       );
@@ -163,6 +170,11 @@ export function createBottomSheetScrollableComponent<T, P>(
             refreshControl={refreshControl}
             onScroll={scrollHandler}
             style={containerStyle}
+            CellRendererComponent={
+              enableContentInteractionWhileAnimating
+                ? BottomSheetScrollableCellRenderer
+                : undefined
+            }
           />
         </NativeViewGestureHandler>
       </BottomSheetDraggableView>

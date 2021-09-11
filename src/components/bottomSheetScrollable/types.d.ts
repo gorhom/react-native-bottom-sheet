@@ -29,6 +29,15 @@ export interface BottomSheetScrollableProps {
   enableFooterMarginAdjustment?: boolean;
 
   /**
+   * Allow user to interact with scrollable content
+   * while the sheet is animating.
+   *
+   * @type boolean
+   * @default true
+   */
+  enableContentInteractionWhileAnimating?: boolean;
+
+  /**
    * This needed when bottom sheet used with multiple scrollables to allow bottom sheet
    * detect the current scrollable ref, especially when used with `React Navigation`.
    * You will need to provide `useFocusEffect` from `@react-navigation/native`.
