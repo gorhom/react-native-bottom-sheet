@@ -2,6 +2,16 @@ import type { ShowcaseScreenType } from '@gorhom/showcase-template';
 
 export const screens = [
   {
+    title: 'Calendar',
+    data: [
+      {
+        name: 'Calendar',
+        slug: 'Calendar/CalendarExample',
+        getScreen: () => require('./calendar/CalendarExample').CalendarExample,
+      },
+    ],
+  },
+  {
     title: 'Basic',
     data: [
       {
