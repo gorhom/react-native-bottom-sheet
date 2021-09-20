@@ -10,6 +10,7 @@
     "postinstall": "npx patch-package"
   },
   "dependencies": {
+    "@breeffy/react-native-calendar": "^0.5.0-alpha.1",
     "@gorhom/portal": "^1.0.7",
     "@gorhom/showcase-template": "^2.0.4",
     "@react-native-community/blur": "^3.6.0",
