@@ -31,9 +31,9 @@ This library been written in 2 versions of `Reanimated`, and kept both implement
 
 - **`v2`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v2) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v2/CHANGELOG.md) : written with `Reanimated v1` & compatible with `Reanimated v2`.
 
-- **`v3`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v3) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v3/CHANGELOG.md) : written with `Reanimated v2`, soon to be deprecated in-favour of `v4`.
+- **`v3 (deprecated)`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v3) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v3/CHANGELOG.md) : written with `Reanimated v2`, soon to be deprecated in-favour of `v4`.
 
-- **`v4 (alpha)`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md) : written with `Reanimated v2`.
+- **`v4`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md) : written with `Reanimated v2`.
 
 > I highly recommend all `v3` users to upgrade to `v4` which provides more stability and all latest features.
 
