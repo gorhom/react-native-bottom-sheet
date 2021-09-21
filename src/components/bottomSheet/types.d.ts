@@ -4,6 +4,7 @@ import type { State } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
+import type { NullableAccessibilityProps } from '../../types';
 
 export type BottomSheetProps = {
   // configuration
@@ -140,7 +141,23 @@ export type BottomSheetProps = {
    * @type React.ReactNode[] | React.ReactNode
    */
   children: (() => React.ReactNode) | React.ReactNode[] | React.ReactNode;
-} & BottomSheetAnimationConfigs;
+
+  // accessibility
+  /**
+   * Enables announcement of the snap position change on screen readers.
+   * @type boolean
+   * @default true
+   */
+  enableAccessibilityChangeAnnouncement?: boolean;
+  /**
+   * Callback on snap position change that announces the returned string on screen readers.
+   * @type string | ((positionInScreen: string) => string)
+   */
+  accessibilityPositionChangeAnnouncement?:
+    | string
+    | ((positionInScreen: string) => string);
+} & BottomSheetAnimationConfigs &
+  Omit<NullableAccessibilityProps, 'accessibilityHint'>;
 
 export interface BottomSheetAnimationConfigs {
   /**

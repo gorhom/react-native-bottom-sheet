@@ -18,6 +18,9 @@ export const {
 // backdrop
 export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 
+// handle
+export { default as BottomSheetHandle } from './components/bottomSheetHandle';
+
 // modal
 export { default as BottomSheetModal } from './components/bottomSheetModal';
 export { default as BottomSheetModalProvider } from './components/bottomSheetModalProvider';

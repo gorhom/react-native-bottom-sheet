@@ -59,6 +59,11 @@ import {
   DEFAULT_HANDLE_HEIGHT,
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
   DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
+  DEFAULT_ACCESSIBLE,
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
+  DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
 } from './constants';
 import type { ScrollableRef, BottomSheetMethods } from '../../types';
 import type { BottomSheetProps } from './types';
@@ -113,6 +118,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       backdropComponent,
       backgroundComponent,
       children,
+
+      // accessibility
+      accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
+      accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
+      accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+      enableAccessibilityChangeAnnouncement: _providedEnableAccessibilityChangeAnnouncement = DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
+      accessibilityPositionChangeAnnouncement: _providedAccessibilityPositionChangeAnnouncement = DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
+      ...rest
     } = props;
     //#endregion
 
@@ -555,7 +568,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
              * for accessibility service.
              */
             AccessibilityInfo.isScreenReaderEnabled().then(isEnabled => {
-              if (!isEnabled) {
+              if (
+                !isEnabled ||
+                !_providedEnableAccessibilityChangeAnnouncement
+              ) {
                 return;
               }
               const positionInScreen = Math.max(
@@ -567,7 +583,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 0
               ).toFixed(0);
               AccessibilityInfo.announceForAccessibility(
-                `Bottom sheet snapped to ${positionInScreen}% of the screen`
+                typeof _providedAccessibilityPositionChangeAnnouncement ===
+                  'function'
+                  ? _providedAccessibilityPositionChangeAnnouncement(
+                      positionInScreen
+                    )
+                  : _providedAccessibilityPositionChangeAnnouncement
               );
             });
 
@@ -631,10 +652,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             {...containerTapGestureHandler}
           >
             <Animated.View
-              accessible={true}
-              accessibilityRole="adjustable"
-              accessibilityLabel="Bottom Sheet"
+              accessible={_providedAccessible ?? undefined}
+              accessibilityRole={_providedAccessibilityRole ?? undefined}
+              accessibilityLabel={_providedAccessibilityLabel ?? undefined}
               style={containerStyle}
+              {...rest}
             >
               <BottomSheetInternalProvider value={internalContextVariables}>
                 <BottomSheetBackgroundContainer

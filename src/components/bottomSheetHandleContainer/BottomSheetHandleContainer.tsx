@@ -66,10 +66,6 @@ const BottomSheetHandleContainerComponent = ({
       onHandlerStateChange={onHandlerStateChange}
     >
       <Animated.View
-        accessible={true}
-        accessibilityRole="adjustable"
-        accessibilityLabel="Bottom Sheet handle"
-        accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
         onLayout={shouldMeasureHeight ? handleOnLayout : undefined}
       >
         {renderHandle()}
