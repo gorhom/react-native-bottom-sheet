@@ -1,6 +1,47 @@
 # Changelog
 
-## [v2.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.6...v2.3.0)
+## [v2.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.3.0...v2.4.0)
+
+#### Features
+
+- feat: added custom accessibility support (#571)(by @nmuranovas)
+
+* feat: add custom accessibility support (#1)
+
+* feat: add accessibility support to BottomSheet
+* feat: add accessibility support to BottomSheetBackdrop
+* feat: add custom accessibility to BottomSheetHandle
+* feat: add BottomSheetHandle export to index.ts
+
+* Feature/custom accessibility (#2)
+
+* fix: rename announceChangeForAccessibility to enableAccessibilityChangeAnnouncement
+
+* fix: add 'import type' where needed
+
+* fix: type import ([7b1bcd8](https://github.com/gorhom/react-native-bottom-sheet/commit/7b1bcd853e35e025b661c82153264fea8943a7ad)).
+
+#### Improvements
+
+- chore: remove unnecessary useMemo ([`#413`](https://github.com/gorhom/react-native-bottom-sheet/pull/413)).
+- chore: updated examples & add shadow example ([`#394`](https://github.com/gorhom/react-native-bottom-sheet/pull/394)).
+- chore: updated package dependencies ([32c04e1](https://github.com/gorhom/react-native-bottom-sheet/commit/32c04e1838636f0266a189f4bfc22a108f32f5bd)).
+- chore: added stale to github actions ([71993f0](https://github.com/gorhom/react-native-bottom-sheet/commit/71993f0881feca9f70e010c75972fafb7c727c3a)).
+- chore: added delete dts files script ([181eb40](https://github.com/gorhom/react-native-bottom-sheet/commit/181eb40521792de80e2125b504be7ed165afb599)).
+
+#### Documentations
+
+- docs: renamed react-naigation.md to react-navigation.md ([`#541`](https://github.com/gorhom/react-native-bottom-sheet/pull/541)).
+- docs: updated React Navigation example link ([`#400`](https://github.com/gorhom/react-native-bottom-sheet/pull/400)).
+- docs: updated website ([`#381`](https://github.com/gorhom/react-native-bottom-sheet/pull/381)).
+- docs: delete old website folder ([9e5c07c](https://github.com/gorhom/react-native-bottom-sheet/commit/9e5c07ce35e9b2ea464c5675626e2e895c0ef380)).
+- docs: added adding shadow guide ([5a28241](https://github.com/gorhom/react-native-bottom-sheet/commit/5a28241da0fcbdd91ed59630bf277e5d06e5cb7c)).
+- docs: updated website and readme ([7f5e8d2](https://github.com/gorhom/react-native-bottom-sheet/commit/7f5e8d26ee57e815c3a1a4e7acf827cc1c648970)).
+- docs: updated readme file ([8a09ed3](https://github.com/gorhom/react-native-bottom-sheet/commit/8a09ed35ed41a86b658225c81272a8be2d76c3b9)).
+- docs: fixed website build ([224816e](https://github.com/gorhom/react-native-bottom-sheet/commit/224816ed8dd1be6ca3e4e144f8ffef3f044d5f45)).
+- docs: fix incorrect title of useBottomSheetTimingConfigs section(#455) ([d82ce16](https://github.com/gorhom/react-native-bottom-sheet/commit/d82ce16091be9b48dad05b7a0f392ea766eda5b9)).
+
+## [v2.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.2.6...v2.3.0) - 2021-03-27
 
 #### Features
 
