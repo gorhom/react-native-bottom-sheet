@@ -1337,10 +1337,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _keyboardState: animatedKeyboardState.value,
         _keyboardHeight: animatedKeyboardHeight.value,
       }),
-      (result, previousResult) => {
+      (result, _previousResult) => {
         const { _keyboardState, _keyboardHeight } = result;
-        const { _keyboardState: _previousKeyboardState,
-          _keyboardHeight: _previousKeyboardHeight } = previousResult;
+        const _previousKeyboardState = _previousResult?._keyboardState;
+        const _previousKeyboardHeight = _previousResult?._keyboardHeight;
 
         const hasActiveGesture =
           animatedContentGestureState.value === State.ACTIVE ||
