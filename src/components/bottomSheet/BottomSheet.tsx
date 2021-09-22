@@ -1333,8 +1333,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * @alias OnKeyboardStateChange
      */
     useAnimatedReaction(
-      () => animatedKeyboardState.value,
-      (_keyboardState, _previousKeyboardState) => {
+      () => ({
+        _keyboardState: animatedKeyboardState.value,
+        _keyboardHeight: animatedKeyboardHeight.value,
+      }),
+      (result, previousResult) => {
+        const { _keyboardState, _keyboardHeight } = result;
+        const { _keyboardState: _previousKeyboardState,
+          _keyboardHeight: _previousKeyboardHeight } = previousResult;
+
         const hasActiveGesture =
           animatedContentGestureState.value === State.ACTIVE ||
           animatedContentGestureState.value === State.BEGAN ||
@@ -1345,7 +1352,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           /**
            * if keyboard state is equal to the previous state, then exit the method
            */
-          _keyboardState === _previousKeyboardState ||
+          (_keyboardState === _previousKeyboardState &&
+            _keyboardHeight === _previousKeyboardHeight) ||
           /**
            * if user is interacting with sheet, then exit the method
            */
@@ -1374,6 +1382,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           method: 'useAnimatedReaction::OnKeyboardStateChange',
           params: {
             keyboardState: _keyboardState,
+            keyboardHeight: _keyboardHeight,
           },
         });
 
