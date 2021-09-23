@@ -29,8 +29,10 @@ export const animate = ({
   if (type === ANIMATION_METHOD.TIMING) {
     return withTiming(point, configs as Animated.WithTimingConfig, onComplete);
   } else {
-    // @ts-ignore
-    configs.velocity = velocity;
-    return withSpring(point, configs as Animated.WithSpringConfig, onComplete);
+    return withSpring(
+      point,
+      Object.assign({ velocity }, configs) as Animated.WithSpringConfig,
+      onComplete
+    );
   }
 };
