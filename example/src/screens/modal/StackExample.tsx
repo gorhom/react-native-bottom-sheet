@@ -63,7 +63,7 @@ const StackExample = () => {
     []
   );
   const renderBottomSheetContent = useCallback(
-    onPress => <ContactList type="FlatList" onItemPress={onPress} />,
+    onPress => <ContactList type="FlatList" onItemPress={onPress} count={6} />,
     []
   );
   return (
