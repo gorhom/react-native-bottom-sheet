@@ -45,11 +45,6 @@ module.exports = {
       trackingID: "UA-193461439-1",
       anonymizeIP: true,
     },
-    algolia: {
-      apiKey: "184c49269442932465c46fe5489b63e6",
-      indexName: "react-native-bottom-sheet",
-      contextualSearch: true,
-    },
   },
   presets: [
     [
@@ -85,4 +80,5 @@ module.exports = {
       },
     ],
   ],
+  plugins: [require.resolve("docusaurus-lunr-search")],
 };
