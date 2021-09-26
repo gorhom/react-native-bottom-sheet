@@ -50,7 +50,7 @@ snapPoints={['100%']}
 
 ### `overDragResistanceFactor`
 
-Defines how violently sheet has to stopped while over dragging.
+Defines how violently sheet has to be stopped while over dragging.
 
 | type   | default | required |
 | ------ | ------- | -------- |
