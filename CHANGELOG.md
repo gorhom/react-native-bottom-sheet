@@ -1,6 +1,31 @@
 # Changelog
 
-## [v4.0.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.2...v4.0.3)
+## [v4.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.3...v4.1.0)
+
+#### Features
+
+- feat: added handling for keyboard height change (#656)(by @Ferossgp)
+
+* React on keyboard height change
+
+* Handle null previous state android ([3c5fc57](https://github.com/gorhom/react-native-bottom-sheet/commit/3c5fc571e6442bd56712e9f4dbba89bbcd93dda1)).
+
+#### Improvements
+
+- chore: updated @gorhom/portal dependency ([366e46b](https://github.com/gorhom/react-native-bottom-sheet/commit/366e46bc44eb63f8e6bf99d225612c9659b4a72a)).
+
+#### Fixes
+
+- fix: updated initial position to screen height ([`#657`](https://github.com/gorhom/react-native-bottom-sheet/pull/657)).
+- fix: remove 'removeListener' as it is now deprecated (#635)(by @brianathere) ([f03b05b](https://github.com/gorhom/react-native-bottom-sheet/commit/f03b05bbc39bf62f7d97422e717f2998f2e1fada)).
+- fix: revert changes on BottomSheetModal that blocked stack behavour ([15225ae](https://github.com/gorhom/react-native-bottom-sheet/commit/15225aef40fb5cb789fb077505edb5d710ab9e91)).
+- fix: updated asigning velocity in animate worklet (#650) ([38b635e](https://github.com/gorhom/react-native-bottom-sheet/commit/38b635ec03d749cc0b7258ae2972ece722e0bb4a)).
+
+#### Documentations
+
+- docs: fix overDragResistanceFactor description ([`#633`](https://github.com/gorhom/react-native-bottom-sheet/pull/633)).
+
+## [v4.0.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.2...v4.0.3) - 2021-09-02
 
 #### Fixes
 
