@@ -30,6 +30,7 @@ const BottomSheetBackdropComponent = ({
   enableTouchThrough = DEFAULT_ENABLE_TOUCH_THROUGH,
   pressBehavior = DEFAULT_PRESS_BEHAVIOR,
   style,
+  children,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
@@ -104,7 +105,7 @@ const BottomSheetBackdropComponent = ({
     [disappearsOnIndex]
   );
   //#endregion
-
+  
   return pressBehavior !== 'none' ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View
@@ -116,14 +117,18 @@ const BottomSheetBackdropComponent = ({
         accessibilityHint={`Tap to ${
           typeof pressBehavior === 'string' ? pressBehavior : 'move'
         } the Bottom Sheet`}
-      />
+      >
+        {children}
+      </Animated.View>
     </TapGestureHandler>
   ) : (
     <Animated.View
       ref={containerRef}
       pointerEvents={pointerEvents}
       style={containerStyle}
-    />
+    >
+      {children}
+    </Animated.View>
   );
 };
 

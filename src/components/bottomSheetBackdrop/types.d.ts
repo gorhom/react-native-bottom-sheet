@@ -39,4 +39,8 @@ export interface BottomSheetDefaultBackdropProps
    * @default 'close'
    */
   pressBehavior?: BackdropPressBehavior;
+  /**
+   * Child component that will be rendered on backdrop.
+   */
+  children?: React.ReactNode;
 }
