@@ -29,7 +29,7 @@ export const usePropsValidator = ({
           : parseInt(snapPoint.replace('%', ''), 10);
 
       invariant(
-        _snapPoint > 0 || _snapPoint === INITIAL_SNAP_POINT,
+        _snapPoint !== 0 || _snapPoint === INITIAL_SNAP_POINT,
         `Snap point '${snapPoint}' is invalid. if you want to allow user to close the sheet, Please use 'enablePanDownToClose' prop.`
       );
     });
