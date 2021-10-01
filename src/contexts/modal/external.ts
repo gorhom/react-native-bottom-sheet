@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 export interface BottomSheetModalContextType {
-  dismiss: (key: string) => void;
+  dismiss: (key?: string) => boolean;
   dismissAll: () => void;
 }
 
