@@ -105,7 +105,7 @@ const BottomSheetBackdropComponent = ({
     [disappearsOnIndex]
   );
   //#endregion
-  
+
   return pressBehavior !== 'none' ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View

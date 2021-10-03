@@ -42,5 +42,5 @@ export interface BottomSheetDefaultBackdropProps
   /**
    * Child component that will be rendered on backdrop.
    */
-  children?: React.ReactNode;
+  children?: React.ReactNode | React.ReactNode[];
 }
