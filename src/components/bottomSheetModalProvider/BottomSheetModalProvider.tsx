@@ -135,13 +135,15 @@ const BottomSheetModalProviderWrapper = ({
   //#endregion
 
   //#region public methods
-  const handleDismiss = useCallback((key: string) => {
-    const sheetToBeDismissed = sheetsQueueRef.current.find(
-      item => item.key === key
-    );
+  const handleDismiss = useCallback((key?: string) => {
+    const sheetToBeDismissed = key
+      ? sheetsQueueRef.current.find(item => item.key === key)
+      : sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
     if (sheetToBeDismissed) {
       sheetToBeDismissed.ref.current.dismiss();
+      return true;
     }
+    return false;
   }, []);
   const handleDismissAll = useCallback(() => {
     sheetsQueueRef.current.map(item => {
