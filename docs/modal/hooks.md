@@ -43,10 +43,10 @@ const SheetContent = () => {
 ## `dismiss`
 
 ```ts
-type dismiss = (key: string) => void;
+type dismiss = (key?: string) => void;
 ```
 
-Dismiss a modal by its name/key.
+Dismiss a modal by its name/key, if key is not provided, then it will dismiss the last presented modal.
 
 ## `dismissAll`
 
