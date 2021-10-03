@@ -1,6 +1,13 @@
 # Changelog
 
-## [v4.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.3...v4.1.0)
+## [v4.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.0...v4.1.1)
+
+#### Improvements
+
+- refactor: allow to render component inside default backdrop ([`#662`](https://github.com/gorhom/react-native-bottom-sheet/pull/662)).
+- refactor: calling dismiss without a key will remove the current modal if any (#676)(by @Shywim) ([fd4bb8d](https://github.com/gorhom/react-native-bottom-sheet/commit/fd4bb8df8b4dae879326438697a85c0c9d2ddb24)).
+
+## [v4.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.3...v4.1.0) - 2021-09-26
 
 #### Features
 
