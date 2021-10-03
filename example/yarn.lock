@@ -699,12 +699,11 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
-"@gorhom/portal@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.7.tgz#e27cd40f8e2b6cb742050bcaa00fdcf94f3dfca8"
-  integrity sha512-lDZZ5/cjvg1GHrK6Swljv1EssndiVz0iXsIOpsI8FS6IDyxIDDnzbHQ6ZhLp95jDhDyE0UTUsAjL2PeI2yVKMQ==
+"@gorhom/portal@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.9.tgz#bd66e0e27e49fa3163b89c4c23661f31471a6343"
+  integrity sha512-tQUBKf1kDLK1l+0duYBxRqNMtdIrOAIp2H36Bc7/qUZXRxP1rUvj7EMmv6tdlKN/MzEiKPGx9wY0EmOYTjXIFQ==
   dependencies:
-    immer "^9.0.3"
     nanoid "^3.1.23"
 
 "@gorhom/showcase-template@^2.0.4":
@@ -2240,11 +2239,6 @@ image-size@^0.6.0:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
   integrity sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA==
-
-immer@^9.0.3:
-  version "9.0.5"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.5.tgz#a7154f34fe7064f15f00554cc94c66cc0bf453ec"
-  integrity sha512-2WuIehr2y4lmYz9gaQzetPR2ECniCifk4ORaQbU3g5EalLt+0IVTosEPJ5BoYl/75ky2mivzdRzV8wWgQGOSYQ==
 
 import-fresh@^2.0.0:
   version "2.0.0"

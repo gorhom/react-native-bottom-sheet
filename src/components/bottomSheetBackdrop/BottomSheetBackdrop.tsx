@@ -1,5 +1,5 @@
-import React, { memo, useMemo, useRef } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
+import { View, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
   and,
   block,
@@ -41,6 +41,8 @@ const AnimatedTouchableWithoutFeedback = Animated.createAnimatedComponent(
 
 const BottomSheetBackdropComponent = ({
   animatedIndex,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  animatedPosition,
   opacity = DEFAULT_OPACITY,
   appearsOnIndex = DEFAULT_APPEARS_ON_INDEX,
   disappearsOnIndex = DEFAULT_DISAPPEARS_ON_INDEX,
@@ -51,7 +53,7 @@ const BottomSheetBackdropComponent = ({
   accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
   accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
-  accessibilityHint: _providedAccessiblityHint = DEFAULT_ACCESSIBILITY_HINT,
+  accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
   ...rest
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
@@ -114,33 +116,28 @@ const BottomSheetBackdropComponent = ({
   );
   //#endregion
 
+  const setPointerEvents = useCallback((value: string) => {
+    if (containerRef.current) {
+      ((containerRef.current as any) as View).setNativeProps({
+        pointerEvents: value,
+      });
+    }
+  }, []);
+
   //#region effects
   useCode(
     () =>
       block([
         cond(
           and(eq(animatedIndex, disappearsOnIndex), isTouchable),
-          [
-            set(isTouchable, 0),
-            call([], () => {
-              // @ts-ignore
-              containerRef.current.setNativeProps({
-                pointerEvents: 'none',
-              });
-            }),
-          ],
+          [set(isTouchable, 0), call([], () => setPointerEvents('none'))],
           cond(and(neq(animatedIndex, disappearsOnIndex), not(isTouchable)), [
             set(isTouchable, 1),
-            call([], () => {
-              // @ts-ignore
-              containerRef.current.setNativeProps({
-                pointerEvents: 'auto',
-              });
-            }),
+            call([], () => setPointerEvents('auto')),
           ])
         ),
       ]),
-    []
+    [animatedIndex, disappearsOnIndex, isTouchable, setPointerEvents]
   );
   //#endregion
 
@@ -149,19 +146,24 @@ const BottomSheetBackdropComponent = ({
       accessible={_providedAccessible ?? undefined}
       accessibilityRole={_providedAccessibilityRole ?? undefined}
       accessibilityLabel={_providedAccessibilityLabel ?? undefined}
-      accessibilityHint={_providedAccessiblityHint ?? undefined}
-      onPress={handleOnPress}
+      accessibilityHint={_providedAccessibilityHint ?? undefined}
       style={buttonStyle}
+      onPress={handleOnPress}
       {...rest}
     >
-      <Animated.View key="backdrop" ref={containerRef} style={containerStyle} />
+      <Animated.View ref={containerRef} key="backdrop" style={containerStyle} />
     </AnimatedTouchableWithoutFeedback>
   ) : (
     <Animated.View
-      key="backdrop"
       ref={containerRef}
+      key="backdrop"
+      accessible={_providedAccessible ?? undefined}
+      accessibilityRole={_providedAccessibilityRole ?? undefined}
+      accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+      accessibilityHint={_providedAccessibilityHint ?? undefined}
       pointerEvents={pointerEvents}
       style={containerStyle}
+      {...rest}
     />
   );
 };
