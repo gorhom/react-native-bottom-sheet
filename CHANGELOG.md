@@ -1,6 +1,13 @@
 # Changelog
 
-## [v2.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.3.0...v2.4.0)
+## [v2.4.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.4.0...v2.4.1)
+
+#### Fixes
+
+- fix: updated @gorhom/portal v1.0.9 ([`#669`](https://github.com/gorhom/react-native-bottom-sheet/pull/669)).
+- fix: prevent passing animated prop to a non animated view #595 ([2ef441f](https://github.com/gorhom/react-native-bottom-sheet/commit/2ef441f0847a9a626fcc3c037f32853d9905c273)).
+
+## [v2.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v2.3.0...v2.4.0) - 2021-09-21
 
 #### Features
 
