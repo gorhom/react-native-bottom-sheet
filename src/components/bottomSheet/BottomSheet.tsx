@@ -1147,13 +1147,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region styles
-    const containerAnimatedStyle = useAnimatedStyle(() => ({
-      transform: [
-        {
-          translateY: animatedPosition.value,
-        },
-      ],
-    }));
+    const containerAnimatedStyle = useAnimatedStyle(
+      () => ({
+        opacity: animatedIndex.value === -1 ? 0 : 1,
+        transform: [
+          {
+            translateY: animatedPosition.value,
+          },
+        ],
+      }),
+      [animatedPosition, animatedIndex]
+    );
     const containerStyle = useMemo(
       () => [_providedStyle, styles.container, containerAnimatedStyle],
       [_providedStyle, containerAnimatedStyle]
