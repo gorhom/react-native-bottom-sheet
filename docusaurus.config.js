@@ -48,7 +48,7 @@ module.exports = {
     algolia: {
       apiKey: "184c49269442932465c46fe5489b63e6",
       indexName: "react-native-bottom-sheet",
-      // contextualSearch: true,
+      contextualSearch: true,
     },
   },
   presets: [
