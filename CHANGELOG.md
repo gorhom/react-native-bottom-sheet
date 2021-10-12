@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.0...v4.1.1)
+## [v4.1.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.1...v4.1.2)
+
+#### Fixes
+
+- fix: hide the bottom sheet on closed ([`#690`](https://github.com/gorhom/react-native-bottom-sheet/pull/690)).
+
+## [v4.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.0...v4.1.1) - 2021-10-03
 
 #### Improvements
 
