@@ -56,7 +56,7 @@ const BottomSheetModalProviderWrapper = ({
         !currentMountedSheet.willUnmount &&
         stackBehavior === MODAL_STACK_BEHAVIOR.replace
       ) {
-        currentMountedSheet.ref.current.minimize();
+        currentMountedSheet.ref?.current?.minimize();
       }
 
       /**
@@ -105,7 +105,7 @@ const BottomSheetModalProviderWrapper = ({
     ) {
       sheetsQueueRef.current[
         sheetsQueueRef.current.length - 1
-      ].ref.current.restore();
+      ].ref?.current?.restore();
     }
   }, []);
   const handleWillUnmountSheet = useCallback((key: string) => {
@@ -127,7 +127,7 @@ const BottomSheetModalProviderWrapper = ({
      */
     const hasMinimizedSheet = _sheetsQueue.length > 1;
     if (sheetOnTop && hasMinimizedSheet) {
-      _sheetsQueue[_sheetsQueue.length - 2].ref.current.restore();
+      _sheetsQueue[_sheetsQueue.length - 2].ref?.current?.restore();
     }
 
     sheetsQueueRef.current = _sheetsQueue;
@@ -140,14 +140,14 @@ const BottomSheetModalProviderWrapper = ({
       ? sheetsQueueRef.current.find(item => item.key === key)
       : sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
     if (sheetToBeDismissed) {
-      sheetToBeDismissed.ref.current.dismiss();
+      sheetToBeDismissed.ref?.current?.dismiss();
       return true;
     }
     return false;
   }, []);
   const handleDismissAll = useCallback(() => {
     sheetsQueueRef.current.map(item => {
-      item.ref.current.dismiss();
+      item.ref?.current?.dismiss();
     });
   }, []);
   //#endregion
