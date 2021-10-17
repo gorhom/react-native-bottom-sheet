@@ -38,7 +38,7 @@
     "bootstrap": "yarn install && yarn example"
   },
   "dependencies": {
-    "@gorhom/portal": "^1.0.9",
+    "@gorhom/portal": "^1.0.11",
     "invariant": "^2.2.4",
     "nanoid": "^3.1.20",
     "react-native-redash": "^16.1.1"
