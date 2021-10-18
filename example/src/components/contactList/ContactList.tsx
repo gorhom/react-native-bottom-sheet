@@ -115,6 +115,7 @@ const ContactList = ({
         renderItem={renderFlatListItem}
         style={styles.container}
         keyboardDismissMode="interactive"
+        indicatorStyle="black"
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
       />
