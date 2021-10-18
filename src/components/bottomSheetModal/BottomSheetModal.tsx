@@ -66,7 +66,8 @@ const BottomSheetModalComponent = forwardRef<
   const restoreIndexRef = useRef(-1);
   const minimized = useRef(false);
   const forcedDismissed = useRef(false);
-  const mounted = useRef(true);
+  const mounted = useRef(false);
+  mounted.current = mount;
   //#endregion
 
   //#region variables
@@ -82,7 +83,7 @@ const BottomSheetModalComponent = forwardRef<
     currentIndexRef.current = -1;
     restoreIndexRef.current = -1;
     minimized.current = false;
-    mounted.current = true;
+    mounted.current = false;
     forcedDismissed.current = false;
   }, []);
   const unmount = useCallback(
@@ -279,6 +280,14 @@ const BottomSheetModalComponent = forwardRef<
     },
     [key, unmount, willUnmountSheet]
   );
+  const handlePortalRender = useCallback(function handlePortalRender(
+    render: () => void
+  ) {
+    if (mounted.current) {
+      render();
+    }
+  },
+  []);
   const handleBottomSheetOnChange = useCallback(
     function handleBottomSheetOnChange(_index: number) {
       print({
@@ -341,7 +350,13 @@ const BottomSheetModalComponent = forwardRef<
   // render
   // console.log('BottomSheetModal', index, snapPoints)
   return mount ? (
-    <Portal key={key} name={key} handleOnUnmount={handlePortalOnUnmount}>
+    <Portal
+      key={key}
+      name={key}
+      handleOnMount={handlePortalRender}
+      handleOnUpdate={handlePortalRender}
+      handleOnUnmount={handlePortalOnUnmount}
+    >
       <BottomSheet
         {...bottomSheetProps}
         ref={bottomSheetRef}
@@ -349,7 +364,6 @@ const BottomSheetModalComponent = forwardRef<
         index={index}
         snapPoints={snapPoints}
         enablePanDownToClose={enablePanDownToClose}
-        animateOnMount={true}
         containerHeight={containerHeight}
         containerOffset={containerOffset}
         onChange={handleBottomSheetOnChange}
