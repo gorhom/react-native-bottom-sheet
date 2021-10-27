@@ -26,6 +26,7 @@ export interface BottomSheetInternalContextType
       | 'failOffsetX'
       | 'waitFor'
       | 'simultaneousHandlers'
+      | 'minDist'
     >,
     Required<
       Pick<

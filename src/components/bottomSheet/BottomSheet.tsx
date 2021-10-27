@@ -136,6 +136,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       activeOffsetY: _providedActiveOffsetY,
       failOffsetX: _providedFailOffsetX,
       failOffsetY: _providedFailOffsetY,
+      minDist: _providedMinDist,
 
       // callbacks
       onChange: _providedOnChange,
@@ -1075,6 +1076,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         activeOffsetY: _providedActiveOffsetY,
         failOffsetX: _providedFailOffsetX,
         failOffsetY: _providedFailOffsetY,
+        minDist: _providedMinDist,
         animateToPosition,
         stopAnimation,
         getKeyboardHeightInContainer,
@@ -1115,6 +1117,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedActiveOffsetY,
         _providedFailOffsetX,
         _providedFailOffsetY,
+        _providedMinDist,
         getKeyboardHeightInContainer,
         setScrollableRef,
         removeScrollableRef,

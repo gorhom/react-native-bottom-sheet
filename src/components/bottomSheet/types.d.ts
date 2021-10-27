@@ -25,6 +25,7 @@ export interface BottomSheetProps
         | 'failOffsetX'
         | 'waitFor'
         | 'simultaneousHandlers'
+        | 'minDist'
       >
     > {
   //#region configuration

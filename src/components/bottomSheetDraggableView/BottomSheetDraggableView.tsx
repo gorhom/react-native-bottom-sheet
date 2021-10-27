@@ -27,6 +27,7 @@ const BottomSheetDraggableViewComponent = ({
     activeOffsetY,
     failOffsetX,
     failOffsetY,
+    minDist,
   } = useBottomSheetInternal();
   const { contentPanGestureHandler } = useBottomSheetGestureHandlers();
 
@@ -82,6 +83,7 @@ const BottomSheetDraggableViewComponent = ({
       activeOffsetY={activeOffsetY}
       failOffsetX={failOffsetX}
       failOffsetY={failOffsetY}
+      minDist={minDist}
     >
       <Animated.View style={containerStyle} {...rest}>
         {children}
