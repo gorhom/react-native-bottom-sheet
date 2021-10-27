@@ -65,7 +65,7 @@ const BottomSheetModalProviderWrapper = ({
        */
       if (sheetIndex !== -1) {
         _sheetsQueue.splice(sheetIndex, 1);
-        ref.current.restore();
+        ref?.current?.restore();
       }
 
       _sheetsQueue.push({
