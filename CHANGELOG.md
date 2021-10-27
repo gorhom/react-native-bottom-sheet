@@ -1,6 +1,23 @@
 # Changelog
 
-## [v4.1.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.1...v4.1.2)
+## [v4.1.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.2...v4.1.3)
+
+#### Improvements
+
+- chore: updated @gorhom/portal dependency ([e777487](https://github.com/gorhom/react-native-bottom-sheet/commit/e77748712772f2da66ea27ddd655fc5b7d75ab02)).
+- refactor: updated modal ref calls to use optional chaining (#699)(by @jcgertig) ([ea19e3f](https://github.com/gorhom/react-native-bottom-sheet/commit/ea19e3fa17953854c769ef6d2033d14bcd5a747e)).
+- chore: updated sponsor link ([2b624cc](https://github.com/gorhom/react-native-bottom-sheet/commit/2b624ccfb8d5cb6c03337052e86d4d0d8ab960fa)).
+- chore: updated contact list scroll indicator style to black ([9cc8b17](https://github.com/gorhom/react-native-bottom-sheet/commit/9cc8b172298fa38c2a5597d3ed77361fd496db25)).
+
+#### Fixes
+
+- fix: prevent unstable mounting for modals (#697) ([657505a](https://github.com/gorhom/react-native-bottom-sheet/commit/657505a65b01a1ccd7e2027b12fe1953967aa875)).
+
+#### Documentations
+
+- docs: updated logo ([7c176e0](https://github.com/gorhom/react-native-bottom-sheet/commit/7c176e08eca0be638b283712c643f0ef281134ae)).
+
+## [v4.1.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.1...v4.1.2) - 2021-10-12
 
 #### Fixes
 
