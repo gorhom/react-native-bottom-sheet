@@ -19,6 +19,7 @@ import Animated, {
   runOnUI,
   cancelAnimation,
   useWorkletCallback,
+  withTiming
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import {
@@ -1149,6 +1150,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region styles
     const containerAnimatedStyle = useAnimatedStyle(
       () => ({
+        opacity: withTiming(animatedIndex.value === -1 ? 0 : 1, {duration: 0}),
         transform: [
           {
             translateY: animatedPosition.value,
