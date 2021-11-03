@@ -22,6 +22,7 @@ module.exports = {
           position: "left",
         },
         { to: "blog", label: "Blog", position: "left" },
+        { to: "sponsors", label: "Sponsors", position: "right" },
         {
           href: "https://github.com/gorhom/react-native-bottom-sheet",
           label: "GitHub",
