@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[1635],{1440:function(t){t.exports=JSON.parse('{"/react-native-bottom-sheet/blog/tags/v-4":{"allTagsPath":"/react-native-bottom-sheet/blog/tags","slug":"/react-native-bottom-sheet/blog/tags/v-4","name":"v4","count":1,"permalink":"/react-native-bottom-sheet/blog/tags/v-4"}}')}}]);
