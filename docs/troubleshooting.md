@@ -22,9 +22,9 @@ This section attempts to outline issues that users frequently encounter when fir
 
 ## Pressables / Touchables are not working on Android
 
-Due to wrapping the content and handle with `TapGestureHandler` & `PanGestureHandler`, any gesture interaction would not function as expected.
+Due to how we wrap content and handlers with `TapGestureHandler` & `PanGestureHandler`, any gesture interaction would not function as expected.
 
-To resolve this issue, please use touchables that this library provide.
+To resolve this issue, please use the touchables that this library provide.
 
 ```tsx
 import {
@@ -36,9 +36,9 @@ import {
 
 ## Adding horizontal FlatList or ScrollView is not working properly on Android
 
-Due to wrapping the content and handle with `TapGestureHandler` & `PanGestureHandler`, any gesture interaction would not function as expected.
+Due to how we wrap content and handlers with `TapGestureHandler` & `PanGestureHandler`, any gesture interaction would not function as expected.
 
-To resolve this issue, please use `ScrollView` & `FlatList` from `react-native-gesture-handler` provide instead `react-native`.
+To resolve this issue, please use the `ScrollView` & `FlatList` from `react-native-gesture-handler` instead of the usual `react-native`.
 
 ```tsx
 import {
