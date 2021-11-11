@@ -130,6 +130,12 @@ export interface BottomSheetProps
    * @default 0
    */
   bottomInset?: number;
+  /**
+   * Enable elevation on bottom sheet container.
+   * @type number
+   * @default 0
+   */
+  elevation?: number;
   //#endregion
 
   //#region keyboard

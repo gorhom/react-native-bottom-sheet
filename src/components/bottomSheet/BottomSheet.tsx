@@ -124,6 +124,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       containerOffset: _providedContainerOffset,
       topInset = 0,
       bottomInset = 0,
+      elevation = 0,
 
       // animated callback shared values
       animatedPosition: _providedAnimatedPosition,
@@ -1566,6 +1567,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               topInset={topInset}
               bottomInset={bottomInset}
               detached={detached}
+              elevation={elevation}
             >
               <Animated.View style={containerStyle}>
                 <BottomSheetBackgroundContainer
