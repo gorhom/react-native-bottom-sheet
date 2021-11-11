@@ -4,6 +4,7 @@ export { useScrollableInternal } from './useScrollableInternal';
 export { useStableCallback } from './useStableCallback';
 export { useNormalizedSnapPoints } from './useNormalizedSnapPoints';
 export { usePropsValidator } from './usePropsValidator';
+export { useScreenReader } from './useScreenReader';
 
 // reactive value/s
 export { useReactiveValue } from './useReactiveValue';

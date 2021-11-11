@@ -3,11 +3,14 @@ import isEqual from 'lodash.isequal';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import type { BottomSheetContentWrapperProps } from './types';
+import { useScreenReader } from '../../hooks/useScreenReader';
 
 const BottomSheetContentWrapperComponent = forwardRef<
   TapGestureHandler,
   BottomSheetContentWrapperProps
 >(({ children, onGestureEvent, onHandlerStateChange }, ref) => {
+  const { isScreenReaderEnabled } = useScreenReader();
+
   return (
     <TapGestureHandler
       ref={ref}
@@ -16,7 +19,11 @@ const BottomSheetContentWrapperComponent = forwardRef<
       onGestureEvent={onGestureEvent}
       onHandlerStateChange={onHandlerStateChange}
     >
-      <Animated.View pointerEvents="box-none">{children}</Animated.View>
+      {isScreenReaderEnabled ? (
+        children
+      ) : (
+        <Animated.View pointerEvents="box-none">{children}</Animated.View>
+      )}
     </TapGestureHandler>
   );
 });
