@@ -1,12 +1,22 @@
 import { useContext } from 'react';
-import { BottomSheetModalInternalContext } from '../contexts';
+import {
+  BottomSheetModalInternalContext,
+  BottomSheetModalInternalContextType,
+} from '../contexts';
 
-export const useBottomSheetModalInternal = () => {
+interface IUseBottomSheetModalInternal {
+  (unsafe?: false): BottomSheetModalInternalContextType;
+  (unsafe: true): BottomSheetModalInternalContextType | null;
+}
+
+export const useBottomSheetModalInternal: IUseBottomSheetModalInternal = ((
+  unsafe = false
+) => {
   const context = useContext(BottomSheetModalInternalContext);
 
-  if (context === null) {
+  if (unsafe !== true && context === null) {
     throw "'BottomSheetModalInternalContext' cannot be null!";
   }
 
   return context;
-};
+}) as IUseBottomSheetModalInternal;

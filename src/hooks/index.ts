@@ -1,11 +1,9 @@
 export { useBottomSheet } from './useBottomSheet';
 export { useBottomSheetInternal } from './useBottomSheetInternal';
-export { useBottomSheetInternal_unsafe } from './useBottomSheetInternal_unsafe';
 
 // modal
 export { useBottomSheetModal } from './useBottomSheetModal';
 export { useBottomSheetModalInternal } from './useBottomSheetModalInternal';
-export { useBottomSheetModalInternal_unsafe } from './useBottomSheetModalInternal_unsafe';
 
 // scrollable
 export { useScrollable } from './useScrollable';
