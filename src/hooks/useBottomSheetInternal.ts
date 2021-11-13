@@ -4,14 +4,16 @@ import {
   BottomSheetInternalContextType,
 } from '../contexts/internal';
 
-interface IUseBottomSheetInternal {
-  (unsafe?: false): BottomSheetInternalContextType;
-  (unsafe: true): BottomSheetInternalContextType | null;
-}
+export function useBottomSheetInternal(
+  unsafe?: false
+): BottomSheetInternalContextType;
+export function useBottomSheetInternal(
+  unsafe: true
+): BottomSheetInternalContextType | null;
 
-export const useBottomSheetInternal: IUseBottomSheetInternal = ((
-  unsafe = false
-) => {
+export function useBottomSheetInternal(
+  unsafe?: boolean
+): BottomSheetInternalContextType | null {
   const context = useContext(BottomSheetInternalContext);
 
   if (unsafe !== true && context === null) {
@@ -19,4 +21,4 @@ export const useBottomSheetInternal: IUseBottomSheetInternal = ((
   }
 
   return context;
-}) as IUseBottomSheetInternal;
+}
