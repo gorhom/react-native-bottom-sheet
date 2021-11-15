@@ -177,7 +177,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       );
     }
 
-    const refreshControlElementIOS = RefreshControlComponent ? (
+    const refreshControlIOS = RefreshControlComponent ? (
       <RefreshControlComponent
         refreshing={!!refreshing}
         onRefresh={onRefresh}
@@ -208,7 +208,7 @@ export function createBottomSheetScrollableComponent<T, P>(
             refreshing={refreshing}
             onRefresh={onRefresh}
             progressViewOffset={progressViewOffset}
-            refreshControl={refreshControlElementIOS}
+            refreshControl={refreshControlIOS}
             onScroll={scrollHandler}
             style={containerStyle}
           />
