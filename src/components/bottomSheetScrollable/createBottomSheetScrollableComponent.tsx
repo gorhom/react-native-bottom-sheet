@@ -1,5 +1,17 @@
-import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
-import { Platform } from 'react-native';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from 'react';
+import {
+  FlatListProps,
+  Platform,
+  RefreshControlProps,
+  ScrollViewProps,
+  SectionListProps,
+} from 'react-native';
 import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
@@ -15,12 +27,26 @@ import {
   SCROLLABLE_TYPE,
 } from '../../constants';
 import { styles } from './styles';
+import { BottomSheetScrollableProps } from './types';
+
+// createBottomSheetScrollableComponent works with any scrollable so the interface is fairly loose
+type ScrollableProps = ScrollViewProps &
+  Omit<FlatListProps<any>, 'renderItem' | 'data' | 'onRefresh'> &
+  Omit<SectionListProps<any>, 'renderItem' | 'sections' | 'onRefresh'> & {
+    onRefresh?: RefreshControlProps['onRefresh'];
+    enableFooterMarginAdjustment?: boolean;
+    children?: React.ReactNode;
+    RefreshControlComponent?: typeof BottomSheetRefreshControl;
+  } & Pick<
+    BottomSheetScrollableProps,
+    'focusHook' | 'scrollEventsHandlersHook'
+  >;
 
 export function createBottomSheetScrollableComponent<T, P>(
   type: SCROLLABLE_TYPE,
   ScrollableComponent: any
 ) {
-  return forwardRef<T, P>((props, ref) => {
+  return forwardRef<T, P>((props: ScrollableProps, ref) => {
     // props
     const {
       // hooks
@@ -35,9 +61,17 @@ export function createBottomSheetScrollableComponent<T, P>(
       refreshing,
       onRefresh,
       progressViewOffset,
-      refreshControl,
+      refreshControl, // deprecated
+      RefreshControlComponent,
       ...rest
-    }: any = props;
+    } = props;
+    useEffect(() => {
+      if (refreshControl) {
+        console.warn(
+          `BottomSheet scrollComponent of type:${type}. refreshControlProp is deprecated, use RefreshControlComponent prop`
+        );
+      }
+    }, [refreshControl]);
 
     //#region refs
     const nativeGestureRef = useRef<NativeViewGestureHandler>(null);
@@ -118,6 +152,8 @@ export function createBottomSheetScrollableComponent<T, P>(
           />
         </NativeViewGestureHandler>
       );
+      const RefreshControl =
+        RefreshControlComponent || BottomSheetRefreshControl;
       return (
         <BottomSheetDraggableView
           nativeGestureRef={nativeGestureRef}
@@ -125,21 +161,33 @@ export function createBottomSheetScrollableComponent<T, P>(
           style={styles.container}
         >
           {onRefresh ? (
-            <BottomSheetRefreshControl
+            <RefreshControl
               ref={refreshControlGestureRef}
-              refreshing={refreshing}
+              refreshing={!!refreshing}
               onRefresh={onRefresh}
               progressViewOffset={progressViewOffset}
               style={styles.container}
             >
               {scrollableContent}
-            </BottomSheetRefreshControl>
+            </RefreshControl>
           ) : (
             scrollableContent
           )}
         </BottomSheetDraggableView>
       );
     }
+
+    const refreshControlElementIOS = RefreshControlComponent ? (
+      <RefreshControlComponent
+        refreshing={!!refreshing}
+        onRefresh={onRefresh}
+        progressViewOffset={progressViewOffset}
+        children={null}
+      />
+    ) : (
+      refreshControl
+    );
+
     return (
       <BottomSheetDraggableView
         nativeGestureRef={nativeGestureRef}
@@ -160,7 +208,7 @@ export function createBottomSheetScrollableComponent<T, P>(
             refreshing={refreshing}
             onRefresh={onRefresh}
             progressViewOffset={progressViewOffset}
-            refreshControl={refreshControl}
+            refreshControl={refreshControlElementIOS}
             onScroll={scrollHandler}
             style={containerStyle}
           />

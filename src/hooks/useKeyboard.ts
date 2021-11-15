@@ -52,12 +52,19 @@ export const useKeyboard = () => {
         temporaryCachedKeyboardEvent.value = [state, height, duration, easing];
         return;
       }
-      keyboardHeight.value =
-        state === KEYBOARD_STATE.SHOWN
-          ? height
-          : height === 0
-          ? keyboardHeight.value
-          : height;
+      const keyboardHeightValue = (() => {
+        if (state === KEYBOARD_STATE.SHOWN) {
+          return height;
+        }
+        const notSureWhatThisMeans = height === 0;
+        if (notSureWhatThisMeans) {
+          return keyboardHeight.value;
+        } else {
+          return height;
+        }
+      })();
+
+      keyboardHeight.value = keyboardHeightValue;
       keyboardAnimationDuration.value = duration;
       keyboardAnimationEasing.value = easing;
       keyboardState.value = state;
