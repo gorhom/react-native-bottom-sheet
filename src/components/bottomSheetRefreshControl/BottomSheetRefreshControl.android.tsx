@@ -1,4 +1,4 @@
-import React, { forwardRef, memo } from 'react';
+import React, { forwardRef } from 'react';
 import { RefreshControl, RefreshControlProps } from 'react-native';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps } from 'react-native-reanimated';
@@ -7,7 +7,7 @@ import { useBottomSheetInternal } from '../../hooks';
 
 const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
-const BottomSheetRefreshControlComponent = forwardRef<
+const BottomSheetRefreshControl = forwardRef<
   NativeViewGestureHandler,
   RefreshControlProps
 >(({ onRefresh, ...rest }, ref) => {
@@ -30,8 +30,5 @@ const BottomSheetRefreshControlComponent = forwardRef<
     </NativeViewGestureHandler>
   );
 });
-
-const BottomSheetRefreshControl = memo(BottomSheetRefreshControlComponent);
-BottomSheetRefreshControl.displayName = 'BottomSheetRefreshControl';
 
 export default BottomSheetRefreshControl;
