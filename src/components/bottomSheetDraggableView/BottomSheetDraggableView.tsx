@@ -5,20 +5,19 @@ import {
   useBottomSheetGestureHandlers,
   useBottomSheetInternal,
 } from '../../hooks';
+import { GESTURE_SOURCE } from '../../constants';
 import type { BottomSheetDraggableViewProps } from './types';
 import { styles } from './styles';
 
 const BottomSheetDraggableViewComponent = ({
+  gestureType = GESTURE_SOURCE.CONTENT,
   nativeGestureRef,
   refreshControlGestureRef,
   style,
   children,
   ...rest
 }: BottomSheetDraggableViewProps) => {
-  // refs
-  const panGestureRef = useRef<PanGestureHandler>(null);
-
-  // hooks
+  //#region hooks
   const {
     enableContentPanningGesture,
     simultaneousHandlers: _providedSimultaneousHandlers,
@@ -28,9 +27,19 @@ const BottomSheetDraggableViewComponent = ({
     failOffsetX,
     failOffsetY,
   } = useBottomSheetInternal();
-  const { contentPanGestureHandler } = useBottomSheetGestureHandlers();
+  const { contentPanGestureHandler, scrollablePanGestureHandler } =
+    useBottomSheetGestureHandlers();
+  //#endregion
 
-  // variables
+  //#region variables
+  const panGestureRef = useRef<PanGestureHandler>(null);
+  const gestureHandler = useMemo(
+    () =>
+      gestureType === GESTURE_SOURCE.CONTENT
+        ? contentPanGestureHandler
+        : scrollablePanGestureHandler,
+    [gestureType, contentPanGestureHandler, scrollablePanGestureHandler]
+  );
   const simultaneousHandlers = useMemo(() => {
     const refs = [];
 
@@ -56,19 +65,19 @@ const BottomSheetDraggableViewComponent = ({
     nativeGestureRef,
     refreshControlGestureRef,
   ]);
+  //#endregion
 
-  // styles
+  //#region styles
   const containerStyle = useMemo(() => {
     if (!style) {
       return styles.container;
     }
-
     if (Array.isArray(style)) {
       return [styles.container, ...style];
     }
-
     return [styles.container, style];
   }, [style]);
+  //#endregion
 
   return (
     <PanGestureHandler
@@ -77,7 +86,7 @@ const BottomSheetDraggableViewComponent = ({
       simultaneousHandlers={simultaneousHandlers}
       shouldCancelWhenOutside={false}
       waitFor={waitFor}
-      onGestureEvent={contentPanGestureHandler}
+      onGestureEvent={gestureHandler}
       activeOffsetX={activeOffsetX}
       activeOffsetY={activeOffsetY}
       failOffsetX={failOffsetX}
