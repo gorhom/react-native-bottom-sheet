@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.1.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.3...v4.1.4)
+## [v4.1.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.4...v4.1.5)
+
+#### Fixes
+
+- fix: resume animation on interruption ([`#769`](https://github.com/gorhom/react-native-bottom-sheet/pull/769)).
+
+## [v4.1.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.3...v4.1.4) - 2021-11-21
 
 #### Improvements
 
