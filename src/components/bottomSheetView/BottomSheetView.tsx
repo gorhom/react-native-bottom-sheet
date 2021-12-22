@@ -25,7 +25,9 @@ function BottomSheetViewComponent({
     const paddingBottom =
       flattenStyle && 'paddingBottom' in flattenStyle
         ? flattenStyle.paddingBottom
-        : 0;
+        : flattenStyle && 'padding' in flattenStyle
+          ? flattenStyle.padding
+          : 0;
     return typeof paddingBottom === 'number' ? paddingBottom : 0;
   }, [style]);
   const containerAnimatedStyle = useAnimatedStyle(
