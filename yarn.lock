@@ -1210,10 +1210,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@gorhom/portal@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.11.tgz#4224d45fea25e70d7e55af3b67249bad0ac9359b"
-  integrity sha512-Vrh2hAVp8ZToJ1a1NbYnehNzdJTxJv1BF3vMNbz1pnJIqm0nbi2W51piVvfiqohCDAegOyCCH1j/AEhW2cJYTA==
+"@gorhom/portal@1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.12.tgz#1c0deabb3f9057c736352a88bae9ca891a100346"
+  integrity sha512-JOYe85RUwiksgdMbhLWDCLpH3kgFFz+LCu1lnxOMMBQSfAKtL5kkTKVrhtmQ3Lq3lJM2paGnLc4wJrlVuaC5Jw==
   dependencies:
     nanoid "^3.1.23"
 
