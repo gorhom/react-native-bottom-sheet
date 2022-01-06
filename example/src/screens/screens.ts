@@ -1,4 +1,4 @@
-import type { ShowcaseScreenType } from '@gorhom/showcase-template';
+import type { ShowcaseExampleScreenType } from '@gorhom/showcase-template';
 
 export const screens = [
   {
@@ -119,7 +119,7 @@ export const screens = [
           require('./advanced/customGestureHandling/CustomGestureHandling')
             .default,
       },
-    ] as ShowcaseScreenType[],
+    ] as ShowcaseExampleScreenType[],
   },
   {
     title: 'Third Party Integration',
@@ -128,6 +128,11 @@ export const screens = [
         name: 'React Navigation',
         slug: 'Integrations/NavigatorExample',
         getScreen: () => require('./integrations/NavigatorExample').default,
+      },
+      {
+        name: 'React Native Screens',
+        slug: 'Integrations/NativeScreensExample',
+        getScreen: () => require('./integrations/NativeScreensExample').default,
       },
       {
         name: 'View Pager',
@@ -143,6 +148,6 @@ export const screens = [
           headerTransparent: true,
         },
       },
-    ] as ShowcaseScreenType[],
+    ] as ShowcaseExampleScreenType[],
   },
 ];

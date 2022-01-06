@@ -286,7 +286,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4P8A237MEX;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BottomSheetExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -298,7 +298,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gorhom.bottomsheet;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.gorhom.bottom-sheet";
 				PRODUCT_NAME = BottomSheetExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -314,7 +314,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4P8A237MEX;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BottomSheetExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -325,7 +325,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gorhom.bottomsheet;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.gorhom.bottom-sheet";
 				PRODUCT_NAME = BottomSheetExample;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
