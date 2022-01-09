@@ -10,10 +10,11 @@ import ContactList from '../../components/contactList';
 import HeaderHandle from '../../components/headerHandle';
 import withModalProvider from '../withModalProvider';
 
-const BackdropExample = () => {
+export const BackdropExample = () => {
   // state
-  const [backdropPressBehavior, setBackdropPressBehavior] =
-    useState<'none' | 'close' | 'collapse'>('collapse');
+  const [backdropPressBehavior, setBackdropPressBehavior] = useState<
+    'none' | 'close' | 'collapse'
+  >('collapse');
   // refs
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 

@@ -22,6 +22,7 @@ import {
   useBottomSheetInternal,
 } from '../../hooks';
 import {
+  GESTURE_SOURCE,
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATE,
   SCROLLABLE_TYPE,
@@ -158,6 +159,7 @@ export function createBottomSheetScrollableComponent<T, P>(
         <BottomSheetDraggableView
           nativeGestureRef={nativeGestureRef}
           refreshControlGestureRef={refreshControlGestureRef}
+          gestureType={GESTURE_SOURCE.SCROLLABLE}
           style={styles.container}
         >
           {onRefresh ? (
@@ -191,6 +193,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     return (
       <BottomSheetDraggableView
         nativeGestureRef={nativeGestureRef}
+        gestureType={GESTURE_SOURCE.SCROLLABLE}
         style={styles.container}
       >
         <NativeViewGestureHandler

@@ -132,7 +132,11 @@ export interface Insets {
 export type GestureEventPayloadType = GestureEventPayload &
   PanGestureHandlerEventPayload;
 
-type GestureEventHandlerCallbackType<C = any> = (
+export type GestureEventContextType = {
+  didStart?: boolean;
+};
+
+export type GestureEventHandlerCallbackType<C = any> = (
   source: GESTURE_SOURCE,
   payload: GestureEventPayloadType,
   context: C

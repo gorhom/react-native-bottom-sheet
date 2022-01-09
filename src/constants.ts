@@ -5,8 +5,10 @@ const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 enum GESTURE_SOURCE {
-  SCROLLABLE = 0,
+  UNDETERMINED = 0,
+  SCROLLABLE,
   HANDLE,
+  CONTENT,
 }
 
 enum SHEET_STATE {

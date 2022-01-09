@@ -1,6 +1,31 @@
 # Changelog
 
-## [v4.1.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.2...v4.1.3)
+## [v4.1.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.4...v4.1.5)
+
+#### Fixes
+
+- fix: resume animation on interruption ([`#769`](https://github.com/gorhom/react-native-bottom-sheet/pull/769)).
+
+## [v4.1.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.3...v4.1.4) - 2021-11-21
+
+#### Improvements
+
+- chore: updated example dependencies ([9176e35](https://github.com/gorhom/react-native-bottom-sheet/commit/9176e35dec148a8d3eff8b472ccb495b4992d8e1)).
+- refactor: updated modal ref calls to use optional chaining (#725)(by @jcgertig)
+
+* Use optional chaining to make sure that the ref exisist
+
+* Make sure ref exists with optional chaining ([9ace1c6](https://github.com/gorhom/react-native-bottom-sheet/commit/9ace1c69f1153af8b598724f184672e3f6a807a5)).
+
+#### Fixes
+
+- fix: prevent hiding bottom sheet container on platforms other than Android (#719) ([3da1a2e](https://github.com/gorhom/react-native-bottom-sheet/commit/3da1a2e6f33fb886e53606d4bbcd06938d839008)).
+
+#### Documentations
+
+- docs: updated readme ([d951a19](https://github.com/gorhom/react-native-bottom-sheet/commit/d951a1976f5fd2e7a38bedbabb452a103b9644ea)).
+
+## [v4.1.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.2...v4.1.3) - 2021-10-18
 
 #### Improvements
 

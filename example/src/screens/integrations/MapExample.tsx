@@ -13,7 +13,6 @@ import {
   useDerivedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useHeaderHeight } from '@react-navigation/stack';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
@@ -21,6 +20,7 @@ import {
   TouchableOpacity,
   BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
+import { useHeaderHeight } from '@react-navigation/elements';
 import withModalProvider from '../withModalProvider';
 import { createLocationListMockData } from '../../utilities';
 import SearchHandle, {

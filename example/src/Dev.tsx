@@ -1,13 +1,13 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import {
   createBottomTabNavigator,
   useBottomTabBarHeight,
 } from '@react-navigation/bottom-tabs';
 import {
+  // BottomSheetBackdrop,
   BottomSheetFlatList,
-  BottomSheetFooter,
   BottomSheetModal,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
@@ -15,14 +15,13 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import { RectButton } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { createContactListMockData } from './utilities';
 import ContactItem from './components/contactItem';
 import SearchHandle from './components/searchHandle';
 import { Button } from 'react-native';
 
-const SNAP_POINTS = [150, 300];
+const SNAP_POINTS = [300];
 const DATA = createContactListMockData(30);
 
 const keyExtractor = (item: any, index: number) => `${item.name}.${index}`;
@@ -82,6 +81,10 @@ const App = () => {
         title="Present"
         onPress={() => bottomSheetRef.current?.present()}
       />
+      <Button
+        title="Close"
+        onPress={() => bottomSheetRef.current?.forceClose()}
+      />
       <BottomSheetModal
         ref={bottomSheetRef}
         snapPoints={SNAP_POINTS}
@@ -89,7 +92,13 @@ const App = () => {
         topInset={topSafeArea}
         bottomInset={bottomSafeArea}
         animatedPosition={animatedPosition}
-        enablePanDownToClose={false}
+        // backdropComponent={props => (
+        //   <BottomSheetBackdrop
+        //     disappearsOnIndex={-1}
+        //     appearsOnIndex={0}
+        //     {...props}
+        //   />
+        // )}
         handleComponent={renderHandle}
       >
         <BottomSheetFlatList
@@ -99,11 +108,6 @@ const App = () => {
           style={styles.flatlist}
           contentContainerStyle={styles.flatlistContainer}
         />
-        <BottomSheetFooter>
-          <RectButton style={styles.footer}>
-            <Text style={styles.footerText}>this is a footer!</Text>
-          </RectButton>
-        </BottomSheetFooter>
       </BottomSheetModal>
 
       {SNAP_POINTS.map(snapPoint => (
