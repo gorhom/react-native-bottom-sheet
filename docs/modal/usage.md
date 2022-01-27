@@ -18,7 +18,7 @@ image: /img/bottom-sheet-preview.gif
 slug: /modal/usage
 ---
 
-Here is a simple usage of the **Bottom Sheet Modal**, with non-scrollable content. For more scrollable usage please read [Scrollables](../scrollables).
+Here is a simple usage of the **Bottom Sheet Modal**, with non-scrollable content. For more scrollable usage please read [Scrollables](../../scrollables).
 
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react';
