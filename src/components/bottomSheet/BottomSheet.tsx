@@ -1286,6 +1286,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           !isLayoutCalculated.value ||
           !isAnimatedOnMount.value
         ) {
+          if (
+            Platform.OS === 'android' &&
+            keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
+            android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize &&
+            animatedPosition.value === _previousContainerHeight
+          ) {
+            animatedPosition.value = containerHeight;
+          }
           return;
         }
 
