@@ -96,9 +96,9 @@ const App = () => {
   const renderBackdrop = useCallback(
     props => (
       <BottomSheetBackdrop
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
         {...props}
-        disappearsOnIndex={1}
-        appearsOnIndex={2}
       />
     ),
     []
