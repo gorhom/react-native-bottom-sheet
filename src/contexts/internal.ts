@@ -48,6 +48,10 @@ export interface BottomSheetInternalContextType
   animatedSnapPoints: Animated.SharedValue<number[]>;
   animatedPosition: Animated.SharedValue<number>;
   animatedIndex: Animated.SharedValue<number>;
+  animatedStartPosition: Animated.SharedValue<number>;
+  animatedCurrentIndex: Animated.SharedValue<number>;
+  animatedNextPosition: Animated.SharedValue<number>;
+  animatedNextPositionIndex: Animated.SharedValue<number>;
   animatedContainerHeight: Animated.SharedValue<number>;
   animatedContentHeight: Animated.SharedValue<number>;
   animatedHighestSnapPoint: Animated.SharedValue<number>;
