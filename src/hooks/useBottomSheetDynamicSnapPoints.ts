@@ -37,7 +37,7 @@ export const useBottomSheetDynamicSnapPoints = (
     return initialSnapPoints.map(snapPoint =>
       snapPoint === 'CONTENT_HEIGHT' ? contentWithHandleHeight : snapPoint
     );
-  }, []);
+  }, [initialSnapPoints]);
 
   // callbacks
   const handleContentLayout = useCallback(
