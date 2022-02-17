@@ -89,6 +89,45 @@ const App = () => {
 };
 ```
 
+Usage in [Scrollables](https://gorhom.github.io/react-native-bottom-sheet/scrollables) is similar:
+
+```tsx
+import React from 'react';
+import BottomSheet, {
+  BottomSheetSectionList,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet';
+
+const App = () => {
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
+
+  return (
+    //... other views
+    <BottomSheet
+      ref={bottomSheetRef}
+      snapPoints={animatedSnapPoints}
+      handleHeight={animatedHandleHeight}
+      contentHeight={animatedContentHeight}
+    >
+    <BottomSheetSectionList
+      {...bottomSheetSectionListProps}
+      onLayout={handleContentLayout}
+      style={{ maxHeight: screenHeight * 0.9 }} // define a max height, which will not be surpassed by the contentHeight + will be respected by animatedSnapPoints
+      // ... other props, i.e. sections, renderItem, etc.
+    />
+    </BottomSheet>
+    //... other views
+  );
+};
+```
+
 ## `useBottomSheetSpringConfigs`
 
 Generate animation spring configs.
