@@ -9,6 +9,12 @@ import {
 } from '../../hooks';
 import { print } from '../../utilities';
 import type { BottomSheetHandleContainerProps } from './types';
+import {
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ACCESSIBLE,
+  DEFAULT_ACCESSIBILITY_HINT,
+} from './constants';
 
 function BottomSheetHandleContainerComponent({
   animatedIndex,
@@ -19,6 +25,10 @@ function BottomSheetHandleContainerComponent({
   handleComponent: _providedHandleComponent,
   handleStyle: _providedHandleStyle,
   handleIndicatorStyle: _providedIndicatorStyle,
+  accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
+  accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
+  accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+  accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
 }: BottomSheetHandleContainerProps) {
   //#region hooks
   const {
@@ -95,10 +105,10 @@ function BottomSheetHandleContainerComponent({
     >
       <Animated.View
         key="BottomSheetHandleContainer"
-        accessible={true}
-        accessibilityRole="adjustable"
-        accessibilityLabel="Bottom Sheet handle"
-        accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
+        accessible={_providedAccessible ?? undefined}
+        accessibilityRole={_providedAccessibilityRole ?? undefined}
+        accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+        accessibilityHint={_providedAccessibilityHint ?? undefined}
         onLayout={handleContainerLayout}
       >
         <HandleComponent

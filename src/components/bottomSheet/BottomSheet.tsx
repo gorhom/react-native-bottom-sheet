@@ -6,7 +6,7 @@ import React, {
   memo,
   useEffect,
 } from 'react';
-import { Platform } from 'react-native';
+import { AccessibilityInfo, Platform } from 'react-native';
 import invariant from 'invariant';
 import Animated, {
   useAnimatedReaction,
@@ -49,6 +49,7 @@ import {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
   ANIMATION_SOURCE,
+  WINDOW_HEIGHT,
 } from '../../constants';
 import {
   animate,
@@ -71,6 +72,11 @@ import {
   INITIAL_SNAP_POINT,
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   INITIAL_CONTAINER_OFFSET,
+  DEFAULT_ACCESSIBLE,
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
+  DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
@@ -83,6 +89,7 @@ Animated.addWhitelistedUIProps({
 type BottomSheet = BottomSheetMethods;
 
 const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
+  // eslint-disable-next-line no-shadow
   function BottomSheet(props, ref) {
     //#region validate props
     usePropsValidator(props);
@@ -152,6 +159,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       backgroundComponent,
       footerComponent,
       children,
+
+      // accessibility
+      accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
+      accessibilityLabel:
+        _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
+      accessibilityRole:
+        _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+      enableAccessibilityChangeAnnouncement:
+        _providedEnableAccessibilityChangeAnnouncement = DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
+      accessibilityPositionChangeAnnouncement:
+        _providedAccessibilityPositionChangeAnnouncement = DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
+      handleComponentAccessibility: _providedHandleComponentAccessibility,
+      ...rest
     } = props;
     //#endregion
 
@@ -587,8 +607,42 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (_providedOnChange) {
           _providedOnChange(index);
         }
+
+        AccessibilityInfo.isScreenReaderEnabled().then(isEnabled => {
+          if (
+            !isEnabled ||
+            !_providedEnableAccessibilityChangeAnnouncement ||
+            !_providedAccessibilityPositionChangeAnnouncement
+          ) {
+            return;
+          }
+
+          const positionInScreen = Math.max(
+            Math.floor(
+              ((WINDOW_HEIGHT - animatedSnapPoints.value[index] || 1) /
+                WINDOW_HEIGHT) *
+                100
+            ),
+            0
+          ).toFixed(0);
+
+          AccessibilityInfo.announceForAccessibility(
+            typeof _providedAccessibilityPositionChangeAnnouncement ===
+              'function'
+              ? _providedAccessibilityPositionChangeAnnouncement(
+                  positionInScreen
+                )
+              : _providedAccessibilityPositionChangeAnnouncement
+          );
+        });
       },
-      [_providedOnChange, animatedCurrentIndex]
+      [
+        _providedAccessibilityPositionChangeAnnouncement,
+        _providedEnableAccessibilityChangeAnnouncement,
+        _providedOnChange,
+        animatedCurrentIndex.value,
+        animatedSnapPoints.value,
+      ]
     );
     const handleOnAnimate = useCallback(
       function handleOnAnimate(toPoint: number) {
@@ -1578,6 +1632,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 />
                 <Animated.View
                   pointerEvents="box-none"
+                  accessible={_providedAccessible ?? undefined}
+                  accessibilityRole={_providedAccessibilityRole ?? undefined}
+                  accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+                  {...rest}
                   style={contentMaskContainerStyle}
                 >
                   <BottomSheetDraggableView
@@ -1608,6 +1666,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   handleComponent={handleComponent}
                   handleStyle={_providedHandleStyle}
                   handleIndicatorStyle={_providedHandleIndicatorStyle}
+                  accessible={_providedHandleComponentAccessibility?.accessible}
+                  accessibilityRole={
+                    _providedHandleComponentAccessibility?.accessibilityRole
+                  }
+                  accessibilityLabel={
+                    _providedHandleComponentAccessibility?.accessibilityLabel
+                  }
                 />
               </Animated.View>
               {/* <BottomSheetDebugView

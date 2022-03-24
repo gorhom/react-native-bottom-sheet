@@ -18,6 +18,10 @@ import {
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
   DEFAULT_PRESS_BEHAVIOR,
+  DEFAULT_ACCESSIBLE,
+  DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_HINT,
 } from './constants';
 import { styles } from './styles';
 import type { BottomSheetDefaultBackdropProps } from './types';
@@ -31,6 +35,10 @@ const BottomSheetBackdropComponent = ({
   pressBehavior = DEFAULT_PRESS_BEHAVIOR,
   style,
   children,
+  accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
+  accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+  accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
+  accessibilityHint: _providedAccessibilityHint,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
@@ -111,12 +119,15 @@ const BottomSheetBackdropComponent = ({
       <Animated.View
         ref={containerRef}
         style={containerStyle}
-        accessible={true}
-        accessibilityRole="button"
-        accessibilityLabel="Bottom Sheet backdrop"
-        accessibilityHint={`Tap to ${
-          typeof pressBehavior === 'string' ? pressBehavior : 'move'
-        } the Bottom Sheet`}
+        accessible={_providedAccessible ?? undefined}
+        accessibilityRole={_providedAccessibilityRole ?? undefined}
+        accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+        accessibilityHint={
+          _providedAccessibilityHint ??
+          DEFAULT_ACCESSIBILITY_HINT(
+            typeof pressBehavior === 'string' ? pressBehavior : 'move'
+          )
+        }
       >
         {children}
       </Animated.View>

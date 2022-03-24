@@ -12,7 +12,10 @@ import type {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
 } from '../../constants';
-import type { GestureEventsHandlersHookType } from '../../types';
+import type {
+  GestureEventsHandlersHookType,
+  NullableAccessibilityProps,
+} from '../../types';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
@@ -26,7 +29,8 @@ export interface BottomSheetProps
         | 'waitFor'
         | 'simultaneousHandlers'
       >
-    > {
+    >,
+    Omit<NullableAccessibilityProps, 'accessibilityHint'> {
   //#region configuration
   /**
    * Initial snap point index, provide `-1` to initiate bottom sheet in closed state.
@@ -286,6 +290,26 @@ export interface BottomSheetProps
    */
   $modal?: boolean;
   //#endregion
+
+  // accessibility
+  /**
+   * Enables announcement of the snap position change on screen readers.
+   * @type boolean
+   * @default true
+   */
+  enableAccessibilityChangeAnnouncement?: boolean;
+  /**
+   * Callback on snap position change that announces the returned string on screen readers.
+   * @type string | ((positionInScreen: string) => string)
+   */
+  accessibilityPositionChangeAnnouncement?:
+    | string
+    | ((positionInScreen: string) => string);
+  /**
+   * Enables the possibility to define custom accessibility props on the handle container component.
+   * @type NullableAccessibilityProps
+   */
+  handleComponentAccessibility?: NullableAccessibilityProps;
 }
 
 export interface BottomSheetAnimationConfigs {

@@ -4,6 +4,7 @@ import type {
   ScrollView,
   SectionList,
   NativeScrollEvent,
+  AccessibilityProps,
 } from 'react-native';
 import type {
   GestureEventPayload,
@@ -164,3 +165,10 @@ export type ScrollEventsHandlersHookType = (
   handleOnMomentumEnd?: ScrollEventHandlerCallbackType;
 };
 //#endregion
+
+export interface NullableAccessibilityProps extends AccessibilityProps {
+  accessible?: AccessibilityProps['accessible'] | null;
+  accessibilityLabel?: AccessibilityProps['accessibilityLabel'] | null;
+  accessibilityHint?: AccessibilityProps['accessibilityHint'] | null;
+  accessibilityRole?: AccessibilityProps['accessibilityRole'] | null;
+}
