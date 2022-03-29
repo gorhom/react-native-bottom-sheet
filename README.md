@@ -43,28 +43,13 @@ This library been written in 2 versions of `Reanimated`, and kept both implement
 
 - [Mo Gorhom](https://gorhom.dev/)
 
-## Contributors
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://react-native-training.eu"><img src="https://avatars.githubusercontent.com/u/1566403?v=4?s=76" width="76px;" alt=""/><br /><sub><b>Vojtech Novak</b></sub></a><br /><a href="https://github.com/gorhom/react-native-bottom-sheet/commits?author=vonovak" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/kickbk"><img src="https://avatars.githubusercontent.com/u/31323376?v=4?s=76" width="76px;" alt=""/><br /><sub><b>kickbk</b></sub></a><br /><a href="https://github.com/gorhom/react-native-bottom-sheet/issues?q=author%3Akickbk" title="Bug reports">🐛</a> <a href="https://github.com/gorhom/react-native-bottom-sheet/commits?author=kickbk" title="Tests">⚠️</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-## Sponsor & Support
+## Maintenance
 
 To keep this library maintained and up-to-date please consider [sponsoring it on GitHub](https://github.com/sponsors/gorhom). Or if you are looking for a private support or help in customizing the experience, then reach out to me on Twitter [@gorhom](https://twitter.com/gorhom).
+
+## Thanks
+
+[Thanks goes to these wonderful people](https://github.com/gorhom/react-native-bottom-sheet/graphs/contributors) for contributing to the project in the past!
 
 ## License
 
