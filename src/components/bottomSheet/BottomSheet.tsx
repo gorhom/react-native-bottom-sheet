@@ -72,7 +72,7 @@ import {
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   INITIAL_CONTAINER_OFFSET,
 } from './constants';
-import type { BottomSheetMethods, Insets } from '../../types';
+import type { BottomSheetMethods, BottomSheetOpenCloseStateType, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
 import { styles } from './styles';
 
@@ -260,6 +260,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     });
     const isInTemporaryPosition = useSharedValue(false);
     const isForcedClosing = useSharedValue(false);
+    const openClosedState = useSharedValue<BottomSheetOpenCloseStateType>("unknown");
 
     // gesture
     const animatedContentGestureState = useSharedValue<State>(
@@ -963,6 +964,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = false;
 
+        /**
+         * prevent looping close callback
+         */
+         openClosedState.value = "opened"
+
         runOnUI(animateToPosition)(
           nextPosition,
           ANIMATION_SOURCE.USER,
@@ -1010,6 +1016,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * reset temporary position boolean.
          */
         isInTemporaryPosition.value = false;
+
+        /**
+         * prevent looping close callback
+         */
+        openClosedState.value = "closed"
 
         runOnUI(animateToPosition)(
           nextPosition,
@@ -1505,7 +1516,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * if index is `-1` than we fire the `onClose` callback.
          */
-        if (_animatedIndex === -1 && _providedOnClose) {
+        if (_animatedIndex === -1 && _providedOnClose && openClosedState.value === "opened") {
           runOnJS(print)({
             component: BottomSheet.name,
             method: 'useAnimatedReaction::onClose',
@@ -1514,6 +1525,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               animatedIndex: _animatedIndex,
             },
           });
+
+          // prevent calling close in a loop
+          openClosedState.value = "closed"
           runOnJS(_providedOnClose)();
         }
       },

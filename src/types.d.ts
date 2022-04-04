@@ -163,4 +163,6 @@ export type ScrollEventsHandlersHookType = (
   handleOnMomentumBegin?: ScrollEventHandlerCallbackType;
   handleOnMomentumEnd?: ScrollEventHandlerCallbackType;
 };
+
+export type BottomSheetOpenCloseStateType = 'opened' | 'closed' | 'unknown';
 //#endregion
