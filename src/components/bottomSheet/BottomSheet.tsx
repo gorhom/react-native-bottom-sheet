@@ -1495,6 +1495,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         /**
+         * Fix the situation when the user is half pulling it down and release it.
+         * So the animation does the end of the moving down.
+         * It is equal to a closed bottom sheet
+         */
+        if (_animatedIndex === 0 && _contentGestureState === State.END) {
+          _animatedIndex = -1;
+        }
+
+        /**
          * if the index is not equal to the current index,
          * than the sheet position had changed and we trigger
          * the `onChange` callback.
