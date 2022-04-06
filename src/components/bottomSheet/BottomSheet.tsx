@@ -1504,7 +1504,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * So the animation does the end of the moving down.
          * It is equal to a closed bottom sheet
          */
-        if (_animatedIndex === 0 && _contentGestureState === State.END) {
+        if (
+          _animatedIndex === 0 &&
+          (_contentGestureState === State.END ||
+            _handleGestureState === State.END) &&
+          openClosedState.value === 'opened'
+        ) {
           _animatedIndex = -1;
         }
 
