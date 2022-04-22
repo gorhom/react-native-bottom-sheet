@@ -36,9 +36,7 @@ function BottomSheetContainerComponent({
         layout: { height },
       },
     }: LayoutChangeEvent) {
-      if (height !== containerHeight.value) {
-        containerHeight.value = height;
-      }
+      containerHeight.value = height;
 
       containerRef.current?.measure(
         (_x, _y, _width, _height, _pageX, pageY) => {
