@@ -45,7 +45,7 @@ Defines the stack behavior when modal mounts.
 
 ### `enableDismissOnClose`
 
-Dismiss the modal when it is closed
+Dismiss the modal when it is closed (will unmount the modal)
 
 | type    | default | required |
 | ------- | ------- | -------- |
@@ -55,7 +55,7 @@ Dismiss the modal when it is closed
 
 ### `onDismiss`
 
-Callback when the modal dismissed.
+Callback when the modal dismissed (unmounted)
 
 ```ts
 type onDismiss = () => void;
