@@ -1,11 +1,17 @@
-import Animated, { withSpring, withTiming } from 'react-native-reanimated';
+import {
+  WithSpringConfig,
+  WithTimingConfig,
+  withTiming,
+  withSpring,
+  AnimationCallback,
+} from 'react-native-reanimated';
 import { ANIMATION_CONFIGS, ANIMATION_METHOD } from '../constants';
 
 interface AnimateParams {
   point: number;
   velocity?: number;
-  configs?: Animated.WithSpringConfig | Animated.WithTimingConfig;
-  onComplete?: (isFinished: boolean) => void;
+  configs?: WithSpringConfig | WithTimingConfig;
+  onComplete?: AnimationCallback;
 }
 
 export const animate = ({
@@ -27,11 +33,11 @@ export const animate = ({
       : ANIMATION_METHOD.SPRING;
 
   if (type === ANIMATION_METHOD.TIMING) {
-    return withTiming(point, configs as Animated.WithTimingConfig, onComplete);
+    return withTiming(point, configs as WithTimingConfig, onComplete);
   } else {
     return withSpring(
       point,
-      Object.assign({ velocity }, configs) as Animated.WithSpringConfig,
+      Object.assign({ velocity }, configs) as WithSpringConfig,
       onComplete
     );
   }

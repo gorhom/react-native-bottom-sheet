@@ -1,6 +1,6 @@
 import type React from 'react';
-import type { StyleProp, ViewStyle } from 'react-native';
-import type Animated from 'react-native-reanimated';
+import type { ViewProps } from 'react-native';
+import type { AnimateProps } from 'react-native-reanimated';
 import type { BottomSheetVariables } from '../../types';
 
 export interface BottomSheetHandleProps extends BottomSheetVariables {}
@@ -11,13 +11,13 @@ export interface BottomSheetDefaultHandleProps extends BottomSheetHandleProps {
    * @type Animated.AnimateStyle<ViewStyle> | ViewStyle
    * @default undefined
    */
-  style?: StyleProp<ViewStyle | Animated.AnimateStyle<ViewStyle>>;
+  style?: AnimateProps<ViewProps>['style'];
   /**
    * View style to be applied to the handle indicator.
    * @type Animated.AnimateStyle<ViewStyle> | ViewStyle
    * @default undefined
    */
-  indicatorStyle?: StyleProp<ViewStyle | Animated.AnimateStyle<ViewStyle>>;
+  indicatorStyle?: AnimateProps<ViewProps>['style'];
   /**
    * Content to be added below the indicator.
    * @type React.ReactNode | React.ReactNode[];
