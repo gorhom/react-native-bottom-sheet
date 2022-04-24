@@ -1,6 +1,32 @@
 # Changelog
 
-## [v4.1.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.5...v4.1.6)
+## [v4.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.6...v4.2.0)
+
+#### Features
+
+- feat: allow unsafe usage for useBottomSheetInternal & useBottomSheetModalInternal (#740)(by @jembach)
+
+* feat: add useBottomSheetInternal_unsafe & useBottomSheetModalInternal_unsafe to access context
+
+* chore: export hooks useBottomSheetInternal_unsafe and useBottomSheetModalInternal_unsafe
+
+* refactor: combined unsafe hooks with default hooks using an argument
+
+* chore(useBottomSheetInternal): use function overloading instead of interface
+
+* chore(useBottomSheetModalInternal): use function overloading instead of interface
+
+* chore: fixed spacing
+
+Co-authored-by: gorhom &lt;gorhom.dev@gmail.com&gt; ([1bf6139](https://github.com/gorhom/react-native-bottom-sheet/commit/1bf613997cb7a7c8d1fd14f8253701e511a145c7)).
+
+#### Improvements
+
+- chore: fixed types import from reanimated ([831df9c](https://github.com/gorhom/react-native-bottom-sheet/commit/831df9c9e8f25ead974251efcdc384fa1ca00c2e)).
+- chore: fixed types import ([95cb80d](https://github.com/gorhom/react-native-bottom-sheet/commit/95cb80d3331efb12a1b22b904ebdc0155ebcd833)).
+- chore: exported useBottomSheetModalInternal hook ([31eb738](https://github.com/gorhom/react-native-bottom-sheet/commit/31eb73859b46ca325d8960baff9a9ddccb1b89fe)).
+
+## [v4.1.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.5...v4.1.6) - 2022-04-23
 
 #### Improvements
 
