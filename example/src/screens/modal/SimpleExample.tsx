@@ -6,7 +6,7 @@ import ContactList from '../../components/contactList';
 import HeaderHandle from '../../components/headerHandle';
 import withModalProvider from '../withModalProvider';
 
-const SimpleExample = () => {
+export const SimpleExample = () => {
   //#region state
   const [enablePanDownToClose, setEnablePanDownToClose] = useState(true);
   const [enableDismissOnClose, setEnableDismissOnClose] = useState(true);

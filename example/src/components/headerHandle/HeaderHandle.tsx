@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'center',
     fontWeight: 'bold',
+    color: 'black',
   },
   indicator: {
     height: 4,

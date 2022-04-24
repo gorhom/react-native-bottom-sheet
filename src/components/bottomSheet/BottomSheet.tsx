@@ -19,6 +19,8 @@ import Animated, {
   runOnUI,
   cancelAnimation,
   useWorkletCallback,
+  WithSpringConfig,
+  WithTimingConfig,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import {
@@ -624,7 +626,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animatedAnimationState.value = ANIMATION_STATE.STOPPED;
     }, [animatedPosition, animatedAnimationState, animatedAnimationSource]);
     const animateToPositionCompleted = useWorkletCallback(
-      function animateToPositionCompleted(isFinished: boolean) {
+      function animateToPositionCompleted(isFinished?: boolean) {
         isForcedClosing.value = false;
 
         if (!isFinished) {
@@ -651,7 +653,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         position: number,
         source: ANIMATION_SOURCE,
         velocity: number = 0,
-        configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
+        configs?: WithTimingConfig | WithSpringConfig
       ) {
         if (
           position === animatedPosition.value ||
@@ -722,7 +724,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const handleSnapToIndex = useCallback(
       function handleSnapToIndex(
         index: number,
-        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+        animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         const snapPoints = animatedSnapPoints.value;
         invariant(
@@ -781,7 +783,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const handleSnapToPosition = useWorkletCallback(
       function handleSnapToPosition(
         position: number | string,
-        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+        animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         print({
           component: BottomSheet.name,
@@ -839,7 +841,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleClose = useCallback(
       function handleClose(
-        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+        animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         print({
           component: BottomSheet.name,
@@ -885,7 +887,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleForceClose = useCallback(
       function handleForceClose(
-        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+        animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         print({
           component: BottomSheet.name,
@@ -933,7 +935,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleExpand = useCallback(
       function handleExpand(
-        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+        animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         print({
           component: BottomSheet.name,
@@ -982,7 +984,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const handleCollapse = useCallback(
       function handleCollapse(
-        animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+        animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         print({
           component: BottomSheet.name,
@@ -1149,7 +1151,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region styles
     const containerAnimatedStyle = useAnimatedStyle(
       () => ({
-        opacity: animatedIndex.value === -1 ? 0 : 1,
+        opacity:
+          Platform.OS === 'android' && animatedIndex.value === -1 ? 0 : 1,
         transform: [
           {
             translateY: animatedPosition.value,

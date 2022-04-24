@@ -1,6 +1,9 @@
 import type React from 'react';
 import type { ViewStyle, Insets, StyleProp } from 'react-native';
-import type Animated from 'react-native-reanimated';
+import type Animated, {
+  WithSpringConfig,
+  WithTimingConfig,
+} from 'react-native-reanimated';
 import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
@@ -293,14 +296,14 @@ export interface BottomSheetAnimationConfigs {
    * Animation configs, this could be created by:
    * - `useBottomSheetSpringConfigs`
    * - `useBottomSheetTimingConfigs`
-   * @type Animated.WithSpringConfig | Animated.WithTimingConfig
+   * @type WithSpringConfig | WithTimingConfig
    */
-  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig;
+  animationConfigs?: WithSpringConfig | WithTimingConfig;
 }
 
 export type AnimateToPositionType = (
   position: number,
   source: ANIMATION_SOURCE,
   velocity?: number,
-  configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
+  configs?: WithTimingConfig | WithSpringConfig
 ) => void;

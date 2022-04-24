@@ -7,8 +7,9 @@ import HeaderHandle from '../../components/headerHandle';
 
 const BackdropExample = () => {
   // state
-  const [backdropPressBehavior, setBackdropPressBehavior] =
-    useState<'none' | 'close' | 'collapse'>('collapse');
+  const [backdropPressBehavior, setBackdropPressBehavior] = useState<
+    'none' | 'close' | 'collapse'
+  >('collapse');
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);

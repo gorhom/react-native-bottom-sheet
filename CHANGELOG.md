@@ -1,6 +1,54 @@
 # Changelog
 
-## [v4.1.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.2...v4.1.3)
+## [v4.1.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.5...v4.1.6)
+
+#### Improvements
+
+- chore: updated react native to 0.68 ([b4614bd](https://github.com/gorhom/react-native-bottom-sheet/commit/b4614bdd70a82dc31d9ef148a47533682b67a802)).
+- chore: updated reanimated to 2.8 ([c1e6847](https://github.com/gorhom/react-native-bottom-sheet/commit/c1e6847048c43fb2b678bedfd94ae57502df9765)).
+- chore: added native screens example ([1cf46c0](https://github.com/gorhom/react-native-bottom-sheet/commit/1cf46c08c5561c0320c57e1006b24b70c690a34f)).
+- chore: updated react native portal library ([955b774](https://github.com/gorhom/react-native-bottom-sheet/commit/955b7748932ba5ea81d2406c0acf7b612fecbf0e)).
+- chore: updated portal to 1.0.12 ([0010008](https://github.com/gorhom/react-native-bottom-sheet/commit/0010008906154f9a545f89d5826ea7af48336610)).
+- chore: replaced blacklist with exclusionList (#649)(by @aleppos) ([e3881b3](https://github.com/gorhom/react-native-bottom-sheet/commit/e3881b3149c522102b93c5d2ed2a23003ece4ca2)).
+- chore: export BottomSheetFooterContainer component ([4f63b0d](https://github.com/gorhom/react-native-bottom-sheet/commit/4f63b0d0609160790b420d88478859b91fb8424d)).
+
+#### Fixes
+
+- fix: always update container height to avoid races. (#919)(by @elan)
+
+Updating a shared values is an asynchronous operation, so if two layouts happen in quick succession, we can miss an update. ([3245b23](https://github.com/gorhom/react-native-bottom-sheet/commit/3245b23653a38da2057f28d02f6d2bf1168864d0)).
+- fix: always update handle height to avoid races.(related #919) ([dbf8945](https://github.com/gorhom/react-native-bottom-sheet/commit/dbf894591db8c72c4a0a4a5f1c2986f07ed4b1fb)).
+
+#### Documentations
+
+- docs: updated the readme file ([d951b17](https://github.com/gorhom/react-native-bottom-sheet/commit/d951b17957eb5d2f7f1b40a628ba6d5edd4b5a99)).
+
+## [v4.1.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.4...v4.1.5) - 2021-12-05
+
+#### Fixes
+
+- fix: resume animation on interruption ([`#769`](https://github.com/gorhom/react-native-bottom-sheet/pull/769)).
+
+## [v4.1.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.3...v4.1.4) - 2021-11-21
+
+#### Improvements
+
+- chore: updated example dependencies ([9176e35](https://github.com/gorhom/react-native-bottom-sheet/commit/9176e35dec148a8d3eff8b472ccb495b4992d8e1)).
+- refactor: updated modal ref calls to use optional chaining (#725)(by @jcgertig)
+
+* Use optional chaining to make sure that the ref exisist
+
+* Make sure ref exists with optional chaining ([9ace1c6](https://github.com/gorhom/react-native-bottom-sheet/commit/9ace1c69f1153af8b598724f184672e3f6a807a5)).
+
+#### Fixes
+
+- fix: prevent hiding bottom sheet container on platforms other than Android (#719) ([3da1a2e](https://github.com/gorhom/react-native-bottom-sheet/commit/3da1a2e6f33fb886e53606d4bbcd06938d839008)).
+
+#### Documentations
+
+- docs: updated readme ([d951a19](https://github.com/gorhom/react-native-bottom-sheet/commit/d951a1976f5fd2e7a38bedbabb452a103b9644ea)).
+
+## [v4.1.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.2...v4.1.3) - 2021-10-18
 
 #### Improvements
 

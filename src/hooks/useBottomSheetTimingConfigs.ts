@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import Animated from 'react-native-reanimated';
+import type { WithTimingConfig } from 'react-native-reanimated';
 import { ANIMATION_DURATION, ANIMATION_EASING } from '../constants';
 
 /**
@@ -9,11 +9,9 @@ import { ANIMATION_DURATION, ANIMATION_EASING } from '../constants';
  * - duration 250
  * @param configs overridable configs.
  */
-export const useBottomSheetTimingConfigs = (
-  configs: Animated.WithTimingConfig
-) => {
+export const useBottomSheetTimingConfigs = (configs: WithTimingConfig) => {
   return useMemo(() => {
-    const _configs: Animated.WithTimingConfig = {
+    const _configs: WithTimingConfig = {
       easing: configs.easing || ANIMATION_EASING,
       duration: configs.duration || ANIMATION_DURATION,
     };

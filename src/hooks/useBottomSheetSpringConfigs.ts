@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import type Animated from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 
 /**
  * Generate spring animation configs.
  * @param configs overridable configs.
  */
 export const useBottomSheetSpringConfigs = (
-  configs: Omit<Animated.WithSpringConfig, 'velocity'>
+  configs: Omit<WithSpringConfig, 'velocity'>
 ) => {
   return useMemo(() => configs, [configs]);
 };
