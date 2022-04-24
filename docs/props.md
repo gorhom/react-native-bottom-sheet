@@ -195,7 +195,7 @@ Bottom inset to be added to the bottom sheet container.
 Defines the keyboard appearance behavior.
 
 - `extend`: extend the sheet to its maximum snap point.
-- `fillParent`: extend the sheet to full screen.
+- `fillParent`: extend the sheet to fill the parent view.
 - `interactive`: offset the sheet by the size of the keyboard.
 
 | type                                      | default       | required |
