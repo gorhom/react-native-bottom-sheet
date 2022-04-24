@@ -11,6 +11,7 @@ export { useBottomSheetModal } from './hooks/useBottomSheetModal';
 export { useBottomSheetSpringConfigs } from './hooks/useBottomSheetSpringConfigs';
 export { useBottomSheetTimingConfigs } from './hooks/useBottomSheetTimingConfigs';
 export { useBottomSheetInternal } from './hooks/useBottomSheetInternal';
+export { useBottomSheetModalInternal } from './hooks/useBottomSheetModalInternal';
 export { useBottomSheetDynamicSnapPoints } from './hooks/useBottomSheetDynamicSnapPoints';
 //#endregion
 
