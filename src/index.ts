@@ -28,7 +28,7 @@ export { default as BottomSheetView } from './components/bottomSheetView';
 export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
 export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 export { default as BottomSheetFooter } from './components/bottomSheetFooter';
-export { default as bottomSheetFooterContainer } from './components/bottomSheetFooterContainer/BottomSheetFooterContainer';
+export { default as BottomSheetFooterContainer } from './components/bottomSheetFooterContainer/BottomSheetFooterContainer';
 
 // touchables
 import BottomSheetTouchable from './components/touchables';
