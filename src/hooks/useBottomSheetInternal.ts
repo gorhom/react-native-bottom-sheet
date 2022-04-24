@@ -7,6 +7,7 @@ import {
 export function useBottomSheetInternal(
   unsafe?: false
 ): BottomSheetInternalContextType;
+
 export function useBottomSheetInternal(
   unsafe: true
 ): BottomSheetInternalContextType | null;
