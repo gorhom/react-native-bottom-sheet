@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.6...v4.2.0)
+## [v4.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.0...v4.2.1)
+
+#### Fixes
+
+- fix: updated footer container export name ([a887141](https://github.com/gorhom/react-native-bottom-sheet/commit/a88714153a780395337b84efe00e3d410702c1d9)).
+
+## [v4.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.1.6...v4.2.0) - 2022-04-24
 
 #### Features
 
