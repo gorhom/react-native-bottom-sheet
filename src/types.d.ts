@@ -9,7 +9,8 @@ import type {
   GestureEventPayload,
   PanGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
-import type Animated, {
+import type {
+  SharedValue,
   WithSpringConfig,
   WithTimingConfig,
 } from 'react-native-reanimated';
@@ -93,14 +94,14 @@ export interface BottomSheetModalMethods extends BottomSheetMethods {
 export interface BottomSheetVariables {
   /**
    * Current sheet position index.
-   * @type Animated.Value<number>
+   * @type SharedValue<number>
    */
-  animatedIndex: Animated.SharedValue<number>;
+  animatedIndex: SharedValue<number>;
   /**
    * Current sheet position.
-   * @type Animated.Value<number>
+   * @type SharedValue<number>
    */
-  animatedPosition: Animated.SharedValue<number>;
+  animatedPosition: SharedValue<number>;
 }
 
 //#region scrollables
@@ -148,7 +149,7 @@ type ScrollEventHandlerCallbackType<C = any> = (
 
 export type ScrollEventsHandlersHookType = (
   ref: React.RefObject<Scrollable>,
-  contentOffsetY: Animated.SharedValue<number>
+  contentOffsetY: SharedValue<number>
 ) => {
   handleOnScroll?: ScrollEventHandlerCallbackType;
   handleOnBeginDrag?: ScrollEventHandlerCallbackType;
