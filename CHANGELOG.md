@@ -1,6 +1,12 @@
 # Changelog
 
-## [v4.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.0...v4.2.1)
+## [v4.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.1...v4.2.2)
+
+#### Fixes
+
+- fix: change getting keyboard height in container from method to derived value ([a89ecfc](https://github.com/gorhom/react-native-bottom-sheet/commit/a89ecfc67f1291cb2ed5b477ad17a3fc5eaeb933)).
+
+## [v4.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.0...v4.2.1) - 2022-04-24
 
 #### Fixes
 
