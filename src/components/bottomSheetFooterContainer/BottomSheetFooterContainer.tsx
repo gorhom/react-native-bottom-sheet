@@ -14,13 +14,13 @@ const BottomSheetFooterContainerComponent = ({
     animatedFooterHeight,
     animatedPosition,
     animatedKeyboardState,
-    getKeyboardHeightInContainer,
+    animatedKeyboardHeightInContainer,
   } = useBottomSheetInternal();
   //#endregion
 
   //#region variables
   const animatedFooterPosition = useDerivedValue(() => {
-    const keyboardHeight = getKeyboardHeightInContainer();
+    const keyboardHeight = animatedKeyboardHeightInContainer.value;
     let footerTranslateY = Math.max(
       0,
       animatedContainerHeight.value - animatedPosition.value
@@ -37,12 +37,12 @@ const BottomSheetFooterContainerComponent = ({
 
     return footerTranslateY;
   }, [
+    animatedKeyboardHeightInContainer,
     animatedContainerHeight,
-    animatedFooterHeight,
-    animatedHandleHeight,
     animatedPosition,
     animatedKeyboardState,
-    getKeyboardHeightInContainer,
+    animatedFooterHeight,
+    animatedHandleHeight,
   ]);
   //#endregion
 

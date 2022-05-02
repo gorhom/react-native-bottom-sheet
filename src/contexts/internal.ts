@@ -55,6 +55,7 @@ export interface BottomSheetInternalContextType
   animatedFooterHeight: Animated.SharedValue<number>;
   animatedHandleHeight: Animated.SharedValue<number>;
   animatedKeyboardHeight: Animated.SharedValue<number>;
+  animatedKeyboardHeightInContainer: Animated.SharedValue<number>;
   animatedScrollableType: Animated.SharedValue<SCROLLABLE_TYPE>;
   animatedScrollableContentOffsetY: Animated.SharedValue<number>;
   animatedScrollableOverrideState: Animated.SharedValue<SCROLLABLE_STATE>;
@@ -66,7 +67,6 @@ export interface BottomSheetInternalContextType
   // methods
   stopAnimation: () => void;
   animateToPosition: AnimateToPositionType;
-  getKeyboardHeightInContainer: () => number;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
 }
