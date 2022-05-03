@@ -1,14 +1,17 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import {
+import { View, StyleSheet, Alert, useWindowDimensions } from 'react-native';
+import BottomSheet, {
   BottomSheetModal,
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
+  useBottomSheetTimingConfigs,
 } from '@gorhom/bottom-sheet';
 import Button from '../../components/button';
 import ContactList from '../../components/contactList';
 import HeaderHandle from '../../components/headerHandle';
 import withModalProvider from '../withModalProvider';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { print } from '../../../../src/utilities';
 
 export const BackdropExample = () => {
   // state
@@ -16,7 +19,7 @@ export const BackdropExample = () => {
     'none' | 'close' | 'collapse'
   >('collapse');
   // refs
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
   const snapPoints = useMemo(() => ['25%', '50%'], []);
@@ -51,12 +54,19 @@ export const BackdropExample = () => {
   }, []);
   //#endregion
 
+  const { top: topInsets } = useSafeAreaInsets();
+  const { height: screenHeight } = useWindowDimensions();
+  const modalHeight = screenHeight - topInsets - 80;
+  const animationConfigs = useBottomSheetTimingConfigs({
+    duration: 500,
+  });
+
   // renders
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop {...props} pressBehavior={backdropPressBehavior} />
+      <BottomSheetBackdrop {...props} opacity={0.7} />
     ),
-    [backdropPressBehavior]
+    []
   );
 
   const renderHeaderHandle = useCallback(
@@ -65,23 +75,34 @@ export const BackdropExample = () => {
   );
   return (
     <View style={styles.container}>
-      <Button label="Present Modal" onPress={handlePresentPress} />
-      <Button
-        label={`Toggle Press Behavior: ${backdropPressBehavior}`}
-        onPress={handleTogglePressBehavior}
-      />
       <Button label="Expand" onPress={handleExpandPress} />
-      <Button label="Collapse" onPress={handleCollapsePress} />
-      <Button label="Close" onPress={handleClosePress} />
-      <BottomSheetModal
+      <BottomSheet
         ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        onDismiss={handleDismiss}
+        index={-1}
+        enablePanDownToClose
+        snapPoints={[0.1, modalHeight]}
+        containerHeight={modalHeight}
         handleComponent={renderHeaderHandle}
         backdropComponent={renderBackdrop}
+        animationConfigs={animationConfigs}
+        onChange={(index: number) => {
+          print({
+            component: BottomSheet.name,
+            method: 'onChange',
+            params: {
+              index: index,
+            },
+          });
+        }}
+        onClose={() => {
+          print({
+            component: BottomSheet.name,
+            method: 'onClose',
+          });
+        }}
       >
         <ContactList type="View" count={5} />
-      </BottomSheetModal>
+      </BottomSheet>
     </View>
   );
 };

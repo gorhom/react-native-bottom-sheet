@@ -9,7 +9,7 @@ target 'BottomSheetExample' do
   use_react_native!(
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
-    :hermes_enabled => true
+    :hermes_enabled => false
   )
 
   # Enables Flipper.

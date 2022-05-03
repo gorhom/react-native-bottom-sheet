@@ -39,8 +39,8 @@ export default withModalProvider(() => (
       name="NativeModal"
       component={BackdropExample}
       options={{
-        presentation: 'modal',
-        headerShown: Platform.OS === 'ios',
+        presentation: 'fullScreenModal',
+        headerShown: false,
       }}
     />
   </NativeStack.Navigator>
