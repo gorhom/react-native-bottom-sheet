@@ -11,6 +11,7 @@ export { useBottomSheetModal } from './hooks/useBottomSheetModal';
 export { useBottomSheetSpringConfigs } from './hooks/useBottomSheetSpringConfigs';
 export { useBottomSheetTimingConfigs } from './hooks/useBottomSheetTimingConfigs';
 export { useBottomSheetInternal } from './hooks/useBottomSheetInternal';
+export { useBottomSheetModalInternal } from './hooks/useBottomSheetModalInternal';
 export { useBottomSheetDynamicSnapPoints } from './hooks/useBottomSheetDynamicSnapPoints';
 //#endregion
 
@@ -27,6 +28,7 @@ export { default as BottomSheetView } from './components/bottomSheetView';
 export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
 export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 export { default as BottomSheetFooter } from './components/bottomSheetFooter';
+export { default as BottomSheetFooterContainer } from './components/bottomSheetFooterContainer/BottomSheetFooterContainer';
 
 // touchables
 import BottomSheetTouchable from './components/touchables';
