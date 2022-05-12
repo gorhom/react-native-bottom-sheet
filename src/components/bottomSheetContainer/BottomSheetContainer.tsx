@@ -13,6 +13,7 @@ function BottomSheetContainerComponent({
   shouldCalculateHeight = true,
   detached,
   children,
+  containerStyle,
 }: BottomSheetContainerProps) {
   const containerRef = useRef<View>(null);
   //#region styles
@@ -24,8 +25,9 @@ function BottomSheetContainerComponent({
         bottom: bottomInset,
         overflow: detached ? 'visible' : 'hidden',
       },
+      containerStyle,
     ],
-    [detached, topInset, bottomInset]
+    [detached, topInset, bottomInset, containerStyle]
   );
   //#endregion
 
