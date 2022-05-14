@@ -21,6 +21,14 @@ import type { BottomSheetModalProps } from './types';
 
 type BottomSheetModal = BottomSheetModalMethods;
 
+const INITIAL_STATE: {
+  mount: boolean;
+  data: any;
+} = {
+  mount: false,
+  data: undefined,
+};
+
 const BottomSheetModalComponent = forwardRef<
   BottomSheetModal,
   BottomSheetModalProps
@@ -41,12 +49,12 @@ const BottomSheetModalComponent = forwardRef<
     onChange: _providedOnChange,
 
     // components
-    children,
+    children: Content,
     ...bottomSheetProps
   } = props;
 
   //#region state
-  const [mount, setMount] = useState(false);
+  const [{ mount, data }, setState] = useState(INITIAL_STATE);
   //#endregion
 
   //#region hooks
@@ -103,7 +111,7 @@ const BottomSheetModalComponent = forwardRef<
 
       // unmount the node, if sheet is still mounted
       if (_mounted) {
-        setMount(false);
+        setState(INITIAL_STATE);
       }
 
       // fire `onDismiss` callback
@@ -161,9 +169,12 @@ const BottomSheetModalComponent = forwardRef<
 
   //#region bottom sheet modal methods
   const handlePresent = useCallback(
-    function handlePresent() {
+    function handlePresent(_data?: any) {
       requestAnimationFrame(() => {
-        setMount(true);
+        setState({
+          mount: true,
+          data: _data,
+        });
         mountSheet(key, ref, stackBehavior);
 
         print({
@@ -348,7 +359,7 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   // render
-  // console.log('BottomSheetModal', index, snapPoints)
+  // console.log('BottomSheetModal', index, mount, data);
   return mount ? (
     <Portal
       key={key}
@@ -368,7 +379,9 @@ const BottomSheetModalComponent = forwardRef<
         containerOffset={containerOffset}
         onChange={handleBottomSheetOnChange}
         onClose={handleBottomSheetOnClose}
-        children={children}
+        children={
+          typeof Content === 'function' ? <Content data={data} /> : Content
+        }
         $modal={true}
       />
     </Portal>

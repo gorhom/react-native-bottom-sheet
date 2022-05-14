@@ -153,7 +153,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       backdropComponent,
       backgroundComponent,
       footerComponent,
-      children,
+      children: Content,
     } = props;
     //#endregion
 
@@ -1621,9 +1621,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                     key="BottomSheetRootDraggableView"
                     style={contentContainerStyle}
                   >
-                    {typeof children === 'function'
-                      ? (children as Function)()
-                      : children}
+                    {typeof Content === 'function' ? <Content /> : Content}
 
                     {footerComponent && (
                       <BottomSheetFooterContainer

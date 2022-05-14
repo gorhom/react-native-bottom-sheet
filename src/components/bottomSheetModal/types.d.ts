@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { BottomSheetProps } from '../bottomSheet';
 import type { MODAL_STACK_BEHAVIOR } from '../../constants';
 
@@ -43,4 +44,13 @@ export interface BottomSheetModalProps
    * @type () => void;
    */
   onDismiss?: () => void;
+
+  /**
+   * A scrollable node or normal view.
+   * @type React.ReactNode[] | React.ReactNode
+   */
+  children:
+    | (({ data: any }?) => React.ReactNode)
+    | React.ReactNode[]
+    | React.ReactNode;
 }
