@@ -1,6 +1,17 @@
 # Changelog
 
-## [v4.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.1...v4.2.2)
+## [v4.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.2...v4.3.0)
+
+#### Features
+
+- feat: added data to present modal api ([`#942`](https://github.com/gorhom/react-native-bottom-sheet/pull/942)).
+
+#### Improvements
+
+- refactor: expose animateOnMount for modals ([`#943`](https://github.com/gorhom/react-native-bottom-sheet/pull/943)).
+- refactor: added jest mock file ([`#941`](https://github.com/gorhom/react-native-bottom-sheet/pull/941)).
+
+## [v4.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.1...v4.2.2) - 2022-05-02
 
 #### Fixes
 
