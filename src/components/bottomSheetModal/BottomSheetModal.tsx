@@ -44,6 +44,7 @@ const BottomSheetModalComponent = forwardRef<
     index = 0,
     snapPoints,
     enablePanDownToClose = true,
+    animateOnMount = true,
 
     // callbacks
     onChange: _providedOnChange,
@@ -70,7 +71,7 @@ const BottomSheetModalComponent = forwardRef<
 
   //#region refs
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const currentIndexRef = useRef(-1);
+  const currentIndexRef = useRef(!animateOnMount ? index : -1);
   const restoreIndexRef = useRef(-1);
   const minimized = useRef(false);
   const forcedDismissed = useRef(false);
@@ -375,6 +376,7 @@ const BottomSheetModalComponent = forwardRef<
         index={index}
         snapPoints={snapPoints}
         enablePanDownToClose={enablePanDownToClose}
+        animateOnMount={animateOnMount}
         containerHeight={containerHeight}
         containerOffset={containerOffset}
         onChange={handleBottomSheetOnChange}

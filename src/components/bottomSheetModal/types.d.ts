@@ -11,10 +11,7 @@ export interface BottomSheetModalPrivateMethods {
 export type BottomSheetModalStackBehavior = keyof typeof MODAL_STACK_BEHAVIOR;
 
 export interface BottomSheetModalProps
-  extends Omit<
-    BottomSheetProps,
-    'animateOnMount' | 'containerHeight' | 'onClose'
-  > {
+  extends Omit<BottomSheetProps, 'containerHeight' | 'onClose'> {
   /**
    * Modal name to help identify the modal for later on.
    * @type string
