@@ -17,7 +17,7 @@ Inherits `TextInputProps` from `react-native`.
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 const App = () => {
   // ref
