@@ -19,7 +19,7 @@ const BottomSheetModalProvider = ({ children }) => {
 
 const BottomSheetBackdrop = NOOP;
 
-const BottomSheetScrollable = props => {
+const BottomSheetComponent = props => {
   return props.children;
 };
 
@@ -103,10 +103,11 @@ const useBottomSheetDynamicSnapPoints = () => ({
 });
 
 module.exports = {
-  BottomSheetScrollView: BottomSheetScrollable,
-  BottomSheetSectionList: BottomSheetScrollable,
-  BottomSheetFlatList: BottomSheetScrollable,
-  BottomSheetVirtualizedList: BottomSheetScrollable,
+  BottomSheetView: BottomSheetComponent,
+  BottomSheetScrollView: BottomSheetComponent,
+  BottomSheetSectionList: BottomSheetComponent,
+  BottomSheetFlatList: BottomSheetComponent,
+  BottomSheetVirtualizedList: BottomSheetComponent,
 
   BottomSheetModalProvider,
   BottomSheetModal,
