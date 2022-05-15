@@ -58,6 +58,8 @@ const BottomSheetBackdropComponent = ({
       snapToIndex(disappearsOnIndex as number);
     } else if (typeof pressBehavior === 'number') {
       snapToIndex(pressBehavior);
+    } else if (typeof pressBehavior === 'function') {
+      runOnJS(pressBehavior)()
     }
   }, [snapToIndex, close, disappearsOnIndex, pressBehavior]);
   const handleContainerTouchability = useCallback(
