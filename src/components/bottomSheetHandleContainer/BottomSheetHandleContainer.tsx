@@ -69,9 +69,6 @@ function BottomSheetHandleContainerComponent({
         layout: { height },
       },
     }: LayoutChangeEvent) {
-      if (height === handleHeight.value) {
-        return;
-      }
       handleHeight.value = height;
 
       print({

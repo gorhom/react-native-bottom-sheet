@@ -10,7 +10,11 @@ import type {
   GestureEventPayload,
   PanGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
-import type Animated from 'react-native-reanimated';
+import type {
+  SharedValue,
+  WithSpringConfig,
+  WithTimingConfig,
+} from 'react-native-reanimated';
 import type { GESTURE_SOURCE } from './constants';
 
 //#region Methods
@@ -20,95 +24,86 @@ export interface BottomSheetMethods {
    * @param index snap point index.
    * @param animationConfigs snap animation configs.
    *
-   * @see {Animated.WithSpringConfig}
-   * @see {Animated.WithTimingConfig}
+   * @see {WithSpringConfig}
+   * @see {WithTimingConfig}
    */
   snapToIndex: (
     index: number,
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+    animationConfigs?: WithSpringConfig | WithTimingConfig
   ) => void;
   /**
    * Snap to a position out of provided  `snapPoints`.
    * @param position position in pixel or percentage.
    * @param animationConfigs snap animation configs.
    *
-   * @see {Animated.WithSpringConfig}
-   * @see {Animated.WithTimingConfig}
+   * @see {WithSpringConfig}
+   * @see {WithTimingConfig}
    */
   snapToPosition: (
     position: number | string,
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
+    animationConfigs?: WithSpringConfig | WithTimingConfig
   ) => void;
   /**
    * Snap to the maximum provided point from `snapPoints`.
    * @param animationConfigs snap animation configs.
    *
-   * @see {Animated.WithSpringConfig}
-   * @see {Animated.WithTimingConfig}
+   * @see {WithSpringConfig}
+   * @see {WithTimingConfig}
    */
-  expand: (
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
-  ) => void;
+  expand: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
   /**
    * Snap to the minimum provided point from `snapPoints`.
    * @param animationConfigs snap animation configs.
    *
-   * @see {Animated.WithSpringConfig}
-   * @see {Animated.WithTimingConfig}
+   * @see {WithSpringConfig}
+   * @see {WithTimingConfig}
    */
-  collapse: (
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
-  ) => void;
+  collapse: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
   /**
    * Close the bottom sheet.
    * @param animationConfigs snap animation configs.
    *
-   * @see {Animated.WithSpringConfig}
-   * @see {Animated.WithTimingConfig}
+   * @see {WithSpringConfig}
+   * @see {WithTimingConfig}
    */
-  close: (
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
-  ) => void;
+  close: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
   /**
    * Force close the bottom sheet, this prevent any interruptions till the sheet is closed.
    * @param animationConfigs snap animation configs.
    *
-   * @see {Animated.WithSpringConfig}
-   * @see {Animated.WithTimingConfig}
+   * @see {WithSpringConfig}
+   * @see {WithTimingConfig}
    */
-  forceClose: (
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
-  ) => void;
+  forceClose: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
 }
 export interface BottomSheetModalMethods extends BottomSheetMethods {
   /**
    * Mount and present the bottom sheet modal to the initial snap point.
+   * @param data to be passed to the modal.
    */
-  present: () => void;
+  present: (data?: any) => void;
   /**
    * Close and unmount the bottom sheet modal.
    * @param animationConfigs snap animation configs.
    *
-   * @see {Animated.WithSpringConfig}
-   * @see {Animated.WithTimingConfig}
+   * @see {WithSpringConfig}
+   * @see {WithTimingConfig}
    */
-  dismiss: (
-    animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig
-  ) => void;
+  dismiss: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
 }
 //#endregion
 
 export interface BottomSheetVariables {
   /**
    * Current sheet position index.
-   * @type Animated.Value<number>
+   * @type SharedValue<number>
    */
-  animatedIndex: Animated.SharedValue<number>;
+  animatedIndex: SharedValue<number>;
   /**
    * Current sheet position.
-   * @type Animated.Value<number>
+   * @type SharedValue<number>
    */
-  animatedPosition: Animated.SharedValue<number>;
+  animatedPosition: SharedValue<number>;
 }
 
 //#region scrollables
@@ -156,7 +151,7 @@ type ScrollEventHandlerCallbackType<C = any> = (
 
 export type ScrollEventsHandlersHookType = (
   ref: React.RefObject<Scrollable>,
-  contentOffsetY: Animated.SharedValue<number>
+  contentOffsetY: SharedValue<number>
 ) => {
   handleOnScroll?: ScrollEventHandlerCallbackType;
   handleOnBeginDrag?: ScrollEventHandlerCallbackType;

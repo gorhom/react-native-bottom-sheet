@@ -1,6 +1,11 @@
 import type React from 'react';
 import type { ViewStyle, Insets, StyleProp } from 'react-native';
-import type Animated from 'react-native-reanimated';
+import type {
+  SharedValue,
+  AnimateStyle,
+  WithSpringConfig,
+  WithTimingConfig,
+} from 'react-native-reanimated';
 import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
@@ -47,9 +52,7 @@ export interface BottomSheetProps
    * snapPoints={['%100']}
    * @type Array<string | number>
    */
-  snapPoints:
-    | Array<string | number>
-    | Animated.SharedValue<Array<string | number>>;
+  snapPoints: Array<string | number> | SharedValue<Array<string | number>>;
   /**
    * Defines how violently sheet has to be stopped while over dragging.
    * @type number
@@ -101,24 +104,24 @@ export interface BottomSheetProps
    * unless `handleHeight` is provided.
    * @type number
    */
-  handleHeight?: number | Animated.SharedValue<number>;
+  handleHeight?: number | SharedValue<number>;
   /**
    * Container height helps to calculate the internal sheet layouts,
    * if `containerHeight` not provided, the library internally will calculate it,
    * however this will cause an extra re-rendering.
-   * @type number | Animated.SharedValue<number>;
+   * @type number | SharedValue<number>;
    */
-  containerHeight?: number | Animated.SharedValue<number>;
+  containerHeight?: number | SharedValue<number>;
   /**
    * Content height helps dynamic snap points calculation.
-   * @type number | Animated.SharedValue<number>;
+   * @type number | SharedValue<number>;
    */
-  contentHeight?: number | Animated.SharedValue<number>;
+  contentHeight?: number | SharedValue<number>;
   /**
    * Container offset helps to accurately detect container offsets.
-   * @type Animated.SharedValue<number>;
+   * @type SharedValue<number>;
    */
-  containerOffset?: Animated.SharedValue<Required<Insets>>;
+  containerOffset?: SharedValue<Required<Insets>>;
   /**
    * Top inset value helps to calculate percentage snap points values,
    * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or
@@ -166,11 +169,11 @@ export interface BottomSheetProps
   /**
    * View style to be applied to the sheet container component,
    * it also could be an Animated Style.
-   * @type Animated.AnimateStyle<ViewStyle>
+   * @type AnimateStyle<ViewStyle>
    * @default undefined
    */
   style?: StyleProp<
-    Animated.AnimateStyle<
+    AnimateStyle<
       Omit<
         ViewStyle,
         | 'flexDirection'
@@ -219,14 +222,14 @@ export interface BottomSheetProps
   //#region animated nodes
   /**
    * Animated value to be used as a callback of the position node internally.
-   * @type Animated.Value<number>
+   * @type SharedValue<number>
    */
-  animatedPosition?: Animated.SharedValue<number>;
+  animatedPosition?: SharedValue<number>;
   /**
    * Animated value to be used as a callback for the position index node internally.
-   * @type Animated.Value<number>
+   * @type SharedValue<number>
    */
-  animatedIndex?: Animated.SharedValue<number>;
+  animatedIndex?: SharedValue<number>;
   //#endregion
 
   //#region callbacks
@@ -317,14 +320,14 @@ export interface BottomSheetAnimationConfigs {
    * Animation configs, this could be created by:
    * - `useBottomSheetSpringConfigs`
    * - `useBottomSheetTimingConfigs`
-   * @type Animated.WithSpringConfig | Animated.WithTimingConfig
+   * @type WithSpringConfig | WithTimingConfig
    */
-  animationConfigs?: Animated.WithSpringConfig | Animated.WithTimingConfig;
+  animationConfigs?: WithSpringConfig | WithTimingConfig;
 }
 
 export type AnimateToPositionType = (
   position: number,
   source: ANIMATION_SOURCE,
   velocity?: number,
-  configs?: Animated.WithTimingConfig | Animated.WithSpringConfig
+  configs?: WithTimingConfig | WithSpringConfig
 ) => void;

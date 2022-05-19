@@ -31,7 +31,7 @@ Check out [the documentation website](https://gorhom.github.io/react-native-bott
 
 ## Versioning
 
-This library been written in 2 versions of `Reanimated`, and kept both implementation in 3 separate branches:
+This library been written in 2 versions of `Reanimated`, and kept both implementation in 2 separate branches:
 
 - **`v2`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v2) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v2/CHANGELOG.md) : written with `Reanimated v1` & compatible with `Reanimated v2`.
 
@@ -46,6 +46,8 @@ This library been written in 2 versions of `Reanimated`, and kept both implement
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+> These people have helped to improve the library, but **DO NOT** maintain it.
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -73,5 +75,10 @@ To keep this library maintained and up-to-date please consider [sponsoring it on
 ---
 
 <p align="center">
-<a href="https://gorhom.dev" target="_blank"><img height="18" alt="Mo Gorhom" src="./logo.png"></a>
+  <a href="https://gorhom.dev/#gh-light-mode-only" target="_blank">
+    <img height="18" alt="Mo Gorhom" src="./mogorhom-light.png">
+  </a>
+  <a href="https://gorhom.dev/#gh-dark-mode-only" target="_blank">
+    <img height="18" alt="Mo Gorhom" src="./mogorhom-dark.png">
+  </a>
 </p>

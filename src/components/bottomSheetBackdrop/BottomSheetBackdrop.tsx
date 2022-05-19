@@ -28,10 +28,10 @@ import type { BottomSheetDefaultBackdropProps } from './types';
 
 const BottomSheetBackdropComponent = ({
   animatedIndex,
-  opacity = DEFAULT_OPACITY,
-  appearsOnIndex = DEFAULT_APPEARS_ON_INDEX,
-  disappearsOnIndex = DEFAULT_DISAPPEARS_ON_INDEX,
-  enableTouchThrough = DEFAULT_ENABLE_TOUCH_THROUGH,
+  opacity: _providedOpacity,
+  appearsOnIndex: _providedAppearsOnIndex,
+  disappearsOnIndex: _providedDisappearsOnIndex,
+  enableTouchThrough: _providedEnableTouchThrough,
   pressBehavior = DEFAULT_PRESS_BEHAVIOR,
   style,
   children,
@@ -42,6 +42,15 @@ const BottomSheetBackdropComponent = ({
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
+  //#endregion
+
+  //#region defaults
+  const opacity = _providedOpacity ?? DEFAULT_OPACITY;
+  const appearsOnIndex = _providedAppearsOnIndex ?? DEFAULT_APPEARS_ON_INDEX;
+  const disappearsOnIndex =
+    _providedDisappearsOnIndex ?? DEFAULT_DISAPPEARS_ON_INDEX;
+  const enableTouchThrough =
+    _providedEnableTouchThrough ?? DEFAULT_ENABLE_TOUCH_THROUGH;
   //#endregion
 
   //#region variables
