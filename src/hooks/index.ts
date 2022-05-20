@@ -8,6 +8,7 @@ export { useBottomSheetModalInternal } from './useBottomSheetModalInternal';
 // scrollable
 export { useScrollable } from './useScrollable';
 export { useScrollableSetter } from './useScrollableSetter';
+export { useScrollEventsHandlersDefault } from './useScrollEventsHandlersDefault';
 export { useScrollHandler } from './useScrollHandler';
 
 // gestures
