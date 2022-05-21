@@ -162,6 +162,13 @@ export interface BottomSheetProps
 
   //#endregion
 
+  //#region styles
+  /**
+   * View style to be applied to the container.
+   * @type ViewStyle
+   * @default undefined
+   */
+  containerStyle?: StyleProp<ViewStyle>;
   /**
    * View style to be applied to the sheet container component,
    * it also could be an Animated Style.
@@ -185,7 +192,6 @@ export interface BottomSheetProps
   >;
   /**
    * View style to be applied to the background component.
-   *
    * @type ViewStyle
    * @default undefined
    */
@@ -194,18 +200,18 @@ export interface BottomSheetProps
   >;
   /**
    * View style to be applied to the handle component.
-   *
    * @type ViewStyle
    * @default undefined
    */
   handleStyle?: StyleProp<ViewStyle>;
   /**
    * View style to be applied to the handle indicator component.
-   *
    * @type ViewStyle
    * @default undefined
    */
   handleIndicatorStyle?: StyleProp<ViewStyle>;
+  //#endregion
+
   /**
    * Custom hook to provide pan gesture events handler, which will allow advance and
    * customize handling for pan gesture.

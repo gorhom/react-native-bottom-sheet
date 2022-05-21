@@ -107,6 +107,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       // styles
       style: _providedStyle,
+      containerStyle: _providedContainerStyle,
       backgroundStyle: _providedBackgroundStyle,
       handleStyle: _providedHandleStyle,
       handleIndicatorStyle: _providedHandleIndicatorStyle,
@@ -1604,6 +1605,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               topInset={topInset}
               bottomInset={bottomInset}
               detached={detached}
+              style={_providedContainerStyle}
             >
               <Animated.View style={containerStyle}>
                 <BottomSheetBackgroundContainer
