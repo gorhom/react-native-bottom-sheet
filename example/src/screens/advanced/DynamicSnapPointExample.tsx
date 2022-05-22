@@ -4,6 +4,7 @@ import BottomSheet, {
   BottomSheetView,
   useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
+import { useShowcaseTheme } from '@gorhom/showcase-template';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Button from '../../components/button';
 
@@ -21,6 +22,7 @@ const DynamicSnapPointExample = () => {
     animatedContentHeight,
     handleContentLayout,
   } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
+  const { dark } = useShowcaseTheme();
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {
@@ -51,6 +53,10 @@ const DynamicSnapPointExample = () => {
     }),
     [count]
   );
+  const messageStyle = useMemo(
+    () => [styles.message, { color: dark ? 'white' : 'black' }],
+    [dark]
+  );
 
   // renders
   return (
@@ -69,7 +75,7 @@ const DynamicSnapPointExample = () => {
           style={contentContainerStyle}
           onLayout={handleContentLayout}
         >
-          <Text style={styles.message}>
+          <Text style={messageStyle}>
             Could this sheet resize to its content height ?
           </Text>
           <View style={emojiContainerStyle}>
