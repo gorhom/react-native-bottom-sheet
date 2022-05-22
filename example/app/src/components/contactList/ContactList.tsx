@@ -192,12 +192,12 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   container: {
-    overflow: 'visible',
+    overflow: 'scroll',
     flex: 1,
   },
   contentContainer: {
     paddingHorizontal: 16,
-    overflow: 'visible',
+    overflow: 'scroll',
   },
 });
 

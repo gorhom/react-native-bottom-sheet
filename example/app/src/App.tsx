@@ -8,9 +8,13 @@ const author = {
   url: 'https://gorhom.dev',
 };
 
-export const App = ({ screens: providedScreens }) => {
+interface AppProps {
+  screens?: any[];
+}
+
+export const App = ({ screens: providedScreens }: AppProps) => {
   const screens = useMemo(
-    () => [...defaultScreens, ...providedScreens],
+    () => [...defaultScreens, ...(providedScreens ? providedScreens : [])],
     [providedScreens]
   );
   return (
