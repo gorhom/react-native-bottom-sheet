@@ -7,7 +7,6 @@ import {
 } from '../../hooks';
 import { GESTURE_SOURCE } from '../../constants';
 import type { BottomSheetDraggableViewProps } from './types';
-import { styles } from './styles';
 
 const BottomSheetDraggableViewComponent = ({
   gestureType = GESTURE_SOURCE.CONTENT,
@@ -67,18 +66,6 @@ const BottomSheetDraggableViewComponent = ({
   ]);
   //#endregion
 
-  //#region styles
-  const containerStyle = useMemo(() => {
-    if (!style) {
-      return styles.container;
-    }
-    if (Array.isArray(style)) {
-      return [styles.container, ...style];
-    }
-    return [styles.container, style];
-  }, [style]);
-  //#endregion
-
   return (
     <PanGestureHandler
       ref={panGestureRef}
@@ -92,7 +79,7 @@ const BottomSheetDraggableViewComponent = ({
       failOffsetX={failOffsetX}
       failOffsetY={failOffsetY}
     >
-      <Animated.View style={containerStyle} {...rest}>
+      <Animated.View style={style} {...rest}>
         {children}
       </Animated.View>
     </PanGestureHandler>
