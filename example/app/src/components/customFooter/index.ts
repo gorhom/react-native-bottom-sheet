@@ -1,0 +1,1 @@
+export { CustomFooter } from './CustomFooter';

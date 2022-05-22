@@ -3,16 +3,23 @@ const fs = require('fs');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 const escape = require('escape-string-regexp');
 
-const root = path.resolve(__dirname, '..');
-const pak = JSON.parse(
+const root = path.resolve(__dirname, '../..');
+const rootPak = JSON.parse(
   fs.readFileSync(path.join(root, 'package.json'), 'utf8')
+);
+
+const app = path.join(__dirname, '../app');
+const appPak = JSON.parse(
+  fs.readFileSync(path.join(app, 'package.json'), 'utf8')
 );
 
 const modules = [
   '@babel/runtime',
   ...Object.keys({
-    ...pak.dependencies,
-    ...pak.peerDependencies,
+    ...rootPak.dependencies,
+    ...rootPak.peerDependencies,
+    ...appPak.devDependencies,
+    ...appPak.peerDependencies,
   }),
 ];
 
@@ -23,6 +30,7 @@ module.exports = {
   resolver: {
     blacklistRE: exclusionList([
       new RegExp(`^${escape(path.join(root, 'node_modules'))}\\/.*$`),
+      new RegExp(`^${escape(path.join(app, 'node_modules'))}\\/.*$`),
     ]),
 
     extraNodeModules: modules.reduce((acc, name) => {

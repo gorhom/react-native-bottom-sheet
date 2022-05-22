@@ -21,13 +21,15 @@ import {
   BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import { useHeaderHeight } from '@react-navigation/elements';
-import withModalProvider from '../withModalProvider';
 import { createLocationListMockData } from '../../utilities';
-import SearchHandle, {
+import {
+  withModalProvider,
+  SearchHandle,
   SEARCH_HANDLE_HEIGHT,
-} from '../../components/searchHandle';
-import LocationItem from '../../components/locationItem';
-import LocationDetails, {
+} from '@gorhom/bottom-sheet-example-app';
+import { LocationItem } from '../../components/locationItem';
+import {
+  LocationDetails,
   LOCATION_DETAILS_HEIGHT,
 } from '../../components/locationDetails';
 import LocationDetailsHandle from '../../components/locationDetailsHandle';

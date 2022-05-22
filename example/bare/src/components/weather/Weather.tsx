@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { ShowcaseLabel, useShowcaseTheme } from '@gorhom/showcase-template';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SEARCH_HANDLE_HEIGHT } from '../../components/searchHandle';
+import { SEARCH_HANDLE_HEIGHT } from '@gorhom/bottom-sheet-example-app';
 import { LOCATION_DETAILS_HEIGHT } from '../locationDetails';
 
 interface WeatherProps {

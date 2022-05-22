@@ -6,9 +6,9 @@ import {
   TransitionPresets,
 } from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
-import Button from '../../components/button';
-import createDummyScreen from '../DummyScreen';
+import { Button } from '@gorhom/bottom-sheet-example-app';
 import { NavigationContainer } from '@react-navigation/native';
+import createDummyScreen from '../DummyScreen';
 
 const Stack = createStackNavigator();
 const ScreenA = createDummyScreen({

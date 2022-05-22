@@ -1,1 +1,1 @@
-export { default, LOCATION_DETAILS_HEIGHT } from './LocationDetails';
+export { LocationDetails, LOCATION_DETAILS_HEIGHT } from './LocationDetails';

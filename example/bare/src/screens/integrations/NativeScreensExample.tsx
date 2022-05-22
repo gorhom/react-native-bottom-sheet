@@ -2,9 +2,11 @@ import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Button from '../../components/button';
-import withModalProvider from '../withModalProvider';
-import BackdropExample from '../modal/BackdropExample';
+import {
+  ModalBackdropExample,
+  Button,
+  withModalProvider,
+} from '@gorhom/bottom-sheet-example-app';
 
 const RootScreen = () => {
   const { navigate } = useNavigation();
@@ -37,7 +39,7 @@ export default withModalProvider(() => (
     />
     <NativeStack.Screen
       name="NativeModal"
-      component={BackdropExample}
+      component={ModalBackdropExample}
       options={{
         presentation: 'modal',
         headerShown: Platform.OS === 'ios',

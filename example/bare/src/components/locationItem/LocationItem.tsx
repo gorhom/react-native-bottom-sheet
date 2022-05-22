@@ -69,6 +69,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const LocationItem = memo(LocationItemComponent);
-
-export default LocationItem;
+export const LocationItem = memo(LocationItemComponent);

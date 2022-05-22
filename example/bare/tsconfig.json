@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@gorhom/bottom-sheet": ["../src/index"]
+      "@gorhom/bottom-sheet": ["../../src/index"],
+      "@gorhom/bottom-sheet-example-app": ["../app/src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

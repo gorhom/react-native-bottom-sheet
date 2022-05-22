@@ -1,6 +1,6 @@
 import React, { useCallback, memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import ContactList from '../components/contactList';
+import { ContactList } from '@gorhom/bottom-sheet-example-app';
 
 interface DummyScreenProps {
   title: string;
@@ -18,7 +18,7 @@ const createDummyScreen = ({
     const { navigate } = useNavigation();
 
     const handleNavigatePress = useCallback(() => {
-      requestAnimationFrame(() => navigate(nextScreen));
+      requestAnimationFrame(() => navigate(nextScreen as any));
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

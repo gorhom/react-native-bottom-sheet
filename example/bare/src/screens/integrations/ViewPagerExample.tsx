@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import BottomSheet from '@gorhom/bottom-sheet';
-import ContactList from '../../components/contactList';
+import { ContactList } from '@gorhom/bottom-sheet-example-app';
 
 const FirstRoute = () => {
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);

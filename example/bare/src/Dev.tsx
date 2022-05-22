@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import {
   createBottomTabNavigator,
@@ -17,9 +17,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { createContactListMockData } from './utilities';
-import ContactItem from './components/contactItem';
-import SearchHandle from './components/searchHandle';
-import { Button } from 'react-native';
+import { SearchHandle, ContactItem } from '@gorhom/bottom-sheet-example-app';
 
 const SNAP_POINTS = [300];
 const DATA = createContactListMockData(30);
