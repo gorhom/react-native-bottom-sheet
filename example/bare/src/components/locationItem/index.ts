@@ -1,0 +1,1 @@
+export { LocationItem } from './LocationItem';

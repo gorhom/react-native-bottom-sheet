@@ -1,0 +1,54 @@
+{
+  "name": "@gorhom/bottom-sheet-example-expo",
+  "description": "Example app for @gorhom/bottom-sheet",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@gorhom/portal": "^1.0.13",
+    "@gorhom/showcase-template": "^2.1.0",
+    "@react-navigation/bottom-tabs": "^6.3.1",
+    "@react-navigation/elements": "^1.3.3",
+    "@react-navigation/material-top-tabs": "^6.2.1",
+    "@react-navigation/native": "^6.0.10",
+    "@react-navigation/native-stack": "^6.6.2",
+    "@react-navigation/stack": "^6.2.1",
+    "expo": "~45.0.4",
+    "expo-status-bar": "~1.3.0",
+    "faker": "^4.1.0",
+    "nanoid": "^3.3.3",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-native": "0.68.2",
+    "react-native-gesture-handler": "~2.2.1",
+    "react-native-pager-view": "^5.4.22",
+    "react-native-reanimated": "~2.8.0",
+    "react-native-redash": "^16.2.4",
+    "react-native-safe-area-context": "^4.2.5",
+    "react-native-screens": "~3.11.1",
+    "react-native-tab-view": "^3.1.1",
+    "react-native-web": "0.17.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@types/react": "17.0.2",
+    "@types/react-native": "0.67.7",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "expo-cli": "^5.4.6",
+    "typescript": "~4.3.5"
+  },
+  "resolutions": {
+    "@babel/core": "^7.18.0",
+    "@babel/runtime": "^7.18.0",
+    "@babel/preset-typescript": "7.17.12",
+    "@types/react": "17.0.2",
+    "@types/react-native": "0.67.7"
+  }
+}
