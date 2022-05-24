@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, ComponentProps, memo } from 'react';
-import { StyleSheet, Text, Platform, View, ViewStyle } from 'react-native';
+import { Text, Platform, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import {
@@ -14,6 +14,7 @@ import {
   createContactSectionsMockData,
 } from '../../utilities/createMockData';
 import { ContactItem } from '../contactItem';
+import { styles } from './styles';
 
 export interface ContactListProps
   extends Pick<
@@ -180,25 +181,5 @@ const ContactListComponent = ({
 
   return null;
 };
-
-const styles = StyleSheet.create({
-  sectionHeaderContainer: {
-    paddingTop: 24,
-    paddingBottom: 6,
-    backgroundColor: 'white',
-  },
-  sectionHeaderTitle: {
-    fontSize: 16,
-    textTransform: 'uppercase',
-  },
-  container: {
-    overflow: 'scroll',
-    flex: 1,
-  },
-  contentContainer: {
-    paddingHorizontal: 16,
-    overflow: 'scroll',
-  },
-});
 
 export const ContactList = memo(ContactListComponent);
