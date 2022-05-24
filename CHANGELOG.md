@@ -1,6 +1,19 @@
 # Changelog
 
-## [v4.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.2...v4.3.0)
+## [v4.3.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.0...v4.3.1)
+
+#### Improvements
+
+- chore: added Expo example  ([`#958`](https://github.com/gorhom/react-native-bottom-sheet/pull/958)).
+- refactor: allow passing style to the container ([5e1ed9d](https://github.com/gorhom/react-native-bottom-sheet/commit/5e1ed9da98913d47b27912f49cf7e12b2393176e)).
+- chore: fixed dynamic snap point example text color ([321de77](https://github.com/gorhom/react-native-bottom-sheet/commit/321de777cb848c85a85ac6107ddc26bef1845566)).
+
+#### Fixes
+
+- fix: removed flex style from draggable view ([29152fb](https://github.com/gorhom/react-native-bottom-sheet/commit/29152fb65672a07ff91249a882f0fc0f3d9b796c)).
+- fix: added a fixed position for the container on web ([ce5115a](https://github.com/gorhom/react-native-bottom-sheet/commit/ce5115a2abd2ddc7140eb3037274b2c5bb3ff10a)).
+
+## [v4.3.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.2.2...v4.3.0) - 2022-05-14
 
 #### Features
 
