@@ -73,6 +73,7 @@ const BottomSheetModalComponent = forwardRef<
   const bottomSheetRef = useRef<BottomSheet>(null);
   const currentIndexRef = useRef(!animateOnMount ? index : -1);
   const restoreIndexRef = useRef(-1);
+  const animatingInRef = useRef(!animateOnMount);
   const minimized = useRef(false);
   const forcedDismissed = useRef(false);
   const mounted = useRef(false);
@@ -276,7 +277,11 @@ const BottomSheetModalComponent = forwardRef<
       /**
        * if modal is already been dismiss, we exit the method.
        */
-      if (currentIndexRef.current === -1 && minimized.current === false) {
+      if (
+        currentIndexRef.current === -1 &&
+        minimized.current === false &&
+        !animatingInRef.current
+      ) {
         return;
       }
 
@@ -311,6 +316,7 @@ const BottomSheetModalComponent = forwardRef<
         },
       });
       currentIndexRef.current = _index;
+      animatingInRef.current = false;
 
       if (_providedOnChange) {
         _providedOnChange(_index);
