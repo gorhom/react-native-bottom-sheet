@@ -48,6 +48,7 @@ const BottomSheetModalComponent = forwardRef<
 
     // callbacks
     onChange: _providedOnChange,
+    onAnimate: _providedOnAnimate,
 
     // components
     children: Content,
@@ -73,7 +74,7 @@ const BottomSheetModalComponent = forwardRef<
   const bottomSheetRef = useRef<BottomSheet>(null);
   const currentIndexRef = useRef(!animateOnMount ? index : -1);
   const restoreIndexRef = useRef(-1);
-  const animatingInRef = useRef(!animateOnMount);
+  const animatingRef = useRef(!animateOnMount);
   const minimized = useRef(false);
   const forcedDismissed = useRef(false);
   const mounted = useRef(false);
@@ -201,7 +202,11 @@ const BottomSheetModalComponent = forwardRef<
       /**
        * if modal is already been dismiss, we exit the method.
        */
-      if (currentIndexRef.current === -1 && minimized.current === false) {
+       if (
+        currentIndexRef.current === -1 &&
+        minimized.current === false &&
+        !animatingRef.current
+      ) {
         return;
       }
 
@@ -280,7 +285,7 @@ const BottomSheetModalComponent = forwardRef<
       if (
         currentIndexRef.current === -1 &&
         minimized.current === false &&
-        !animatingInRef.current
+        !animatingRef.current
       ) {
         return;
       }
@@ -305,6 +310,19 @@ const BottomSheetModalComponent = forwardRef<
     }
   },
   []);
+  const handleBottomSheetOnAnimate = useCallback(
+    function handleBottomSheetOnAnimate(
+      _fromIndex: number,
+      _toIndex: number,
+    ) {
+      animatingRef.current = true;
+
+      if (_providedOnAnimate) {
+        _providedOnAnimate(_fromIndex, _toIndex);
+      }
+    },
+    [_providedOnAnimate]
+  );
   const handleBottomSheetOnChange = useCallback(
     function handleBottomSheetOnChange(_index: number) {
       print({
@@ -316,7 +334,7 @@ const BottomSheetModalComponent = forwardRef<
         },
       });
       currentIndexRef.current = _index;
-      animatingInRef.current = false;
+      animatingRef.current = false;
 
       if (_providedOnChange) {
         _providedOnChange(_index);
@@ -387,6 +405,7 @@ const BottomSheetModalComponent = forwardRef<
         containerOffset={containerOffset}
         onChange={handleBottomSheetOnChange}
         onClose={handleBottomSheetOnClose}
+        onAnimate={handleBottomSheetOnAnimate}
         children={
           typeof Content === 'function' ? <Content data={data} /> : Content
         }
