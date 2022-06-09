@@ -1379,6 +1379,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => ({
         _keyboardState: animatedKeyboardState.value,
         _keyboardHeight: animatedKeyboardHeight.value,
+        _animatedKeyboardHeightInContainer:
+          animatedKeyboardHeightInContainer.value,
       }),
       (result, _previousResult) => {
         const { _keyboardState, _keyboardHeight } = result;
