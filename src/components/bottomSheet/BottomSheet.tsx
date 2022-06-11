@@ -291,36 +291,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animationEasing: keyboardAnimationEasing,
       shouldHandleKeyboardEvents,
     } = useKeyboard();
-    /**
-     * Returns keyboard height that in the root container.
-     */
-    const animatedKeyboardHeightInContainer = useDerivedValue(() => {
-      /**
-       * if android software input mode is not `adjustPan`, than keyboard
-       * height will be 0 all the time.
-       */
-      if (
-        Platform.OS === 'android' &&
-        android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize
-      ) {
-        return 0;
-      }
-
-      return $modal
-        ? Math.abs(
-            animatedKeyboardHeight.value -
-              Math.abs(bottomInset - animatedContainerOffset.value.bottom)
-          )
-        : Math.abs(
-            animatedKeyboardHeight.value - animatedContainerOffset.value.bottom
-          );
-    }, [
-      $modal,
-      android_keyboardInputMode,
-      bottomInset,
-      animatedKeyboardHeight,
-      animatedContainerOffset,
-    ]);
+    const animatedKeyboardHeightInContainer = useSharedValue(0);
     //#endregion
 
     //#region state/dynamic variables
@@ -1379,13 +1350,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => ({
         _keyboardState: animatedKeyboardState.value,
         _keyboardHeight: animatedKeyboardHeight.value,
-        _animatedKeyboardHeightInContainer:
-          animatedKeyboardHeightInContainer.value,
       }),
       (result, _previousResult) => {
         const { _keyboardState, _keyboardHeight } = result;
         const _previousKeyboardState = _previousResult?._keyboardState;
         const _previousKeyboardHeight = _previousResult?._keyboardHeight;
+
+        /**
+         * Calculate the keyboard height in the container.
+         */
+        animatedKeyboardHeightInContainer.value = $modal
+          ? Math.abs(
+              _keyboardHeight -
+                Math.abs(bottomInset - animatedContainerOffset.value.bottom)
+            )
+          : Math.abs(_keyboardHeight - animatedContainerOffset.value.bottom);
 
         const hasActiveGesture =
           animatedContentGestureState.value === State.ACTIVE ||
@@ -1419,6 +1398,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
             android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize)
         ) {
+          animatedKeyboardHeightInContainer.value = 0;
           return;
         }
 
@@ -1444,9 +1424,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         );
       },
       [
+        $modal,
+        bottomInset,
         keyboardBehavior,
         keyboardBlurBehavior,
         android_keyboardInputMode,
+        animatedContainerOffset,
         getNextPosition,
       ]
     );
