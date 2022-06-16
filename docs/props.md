@@ -382,7 +382,7 @@ Component to be placed as a sheet footer.
 
 ### `children`
 
-`Scrollable` node or react node to be places as a sheet content.
+`Scrollable` node or react node to be placed as a sheet content.
 
 | type                                                          | default | required |
 | ------------------------------------------------------------- | ------- | -------- |
