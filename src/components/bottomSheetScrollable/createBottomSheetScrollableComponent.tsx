@@ -106,9 +106,11 @@ export function createBottomSheetScrollableComponent<T, P>(
     useAnimatedReaction(
       () => scrollableContentOffsetY,
       result => {
-        runOnJS(onScrollPositionUpdate)({ position: result.value });
+        if (onScrollPositionUpdate) {
+          runOnJS(onScrollPositionUpdate)({ position: result.value });
+        }
       },
-      [scrollableContentOffsetY.value]
+      [scrollableContentOffsetY.value, onScrollPositionUpdate]
     );
     //#endregion
 
