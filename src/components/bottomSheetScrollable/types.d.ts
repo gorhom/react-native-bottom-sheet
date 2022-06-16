@@ -47,6 +47,11 @@ export interface BottomSheetScrollableProps {
    * @default useScrollEventsHandlersDefault
    */
   scrollEventsHandlersHook?: ScrollEventsHandlersHookType;
+
+  /**
+   * Called when there is a scroll position update
+   */
+  onScrollPositionUpdate: (position: number) => void;
 }
 
 export type ScrollableProps<T> =

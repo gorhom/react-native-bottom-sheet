@@ -1,6 +1,11 @@
 import React, { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import { Platform } from 'react-native';
-import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
+import {
+  runOnJS,
+  useAnimatedProps,
+  useAnimatedReaction,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetRefreshControl from '../bottomSheetRefreshControl';
@@ -35,6 +40,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       style,
       refreshing,
       onRefresh,
+      onScrollPositionUpdate,
       progressViewOffset,
       refreshControl,
       ...rest
@@ -96,6 +102,13 @@ export function createBottomSheetScrollableComponent<T, P>(
       scrollableContentOffsetY,
       onRefresh !== undefined,
       focusHook
+    );
+    useAnimatedReaction(
+      () => scrollableContentOffsetY,
+      result => {
+        runOnJS(onScrollPositionUpdate)({ position: result.value });
+      },
+      [scrollableContentOffsetY.value]
     );
     //#endregion
 

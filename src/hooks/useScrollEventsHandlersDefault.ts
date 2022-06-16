@@ -26,7 +26,8 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
   //#region callbacks
   const handleOnScroll: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useWorkletCallback(
-      (_, context) => {
+      ({ contentOffset: { y } }, context) => {
+        scrollableContentOffsetY.value = y;
         /**
          * if sheet position is extended or fill parent, then we reset
          * `shouldLockInitialPosition` value to false.
