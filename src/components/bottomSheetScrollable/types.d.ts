@@ -51,7 +51,7 @@ export interface BottomSheetScrollableProps {
   /**
    * Called when there is a scroll position update
    */
-  onScrollPositionUpdate: (position: number) => void;
+  onScrollPositionUpdate: ({ position }: { position: number }) => void;
 }
 
 export type ScrollableProps<T> =
