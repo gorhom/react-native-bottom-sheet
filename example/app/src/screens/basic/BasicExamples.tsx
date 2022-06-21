@@ -5,7 +5,6 @@ import { ContactList } from '../../components/contactList';
 import { Button } from '../../components/button';
 
 interface ExampleScreenProps {
-  title: string;
   type: 'FlatList' | 'SectionList' | 'ScrollView' | 'View' | 'VirtualizedList';
   count?: number;
 }
@@ -121,27 +120,22 @@ const styles = StyleSheet.create({
 });
 
 export const FlatListExampleScreen = createExampleScreen({
-  title: 'FlatList Example',
   type: 'FlatList',
 });
 
 export const VirtualizedListExampleScreen = createExampleScreen({
-  title: 'VirtualizedList Example',
   type: 'VirtualizedList',
 });
 
 export const ScrollViewExampleScreen = createExampleScreen({
-  title: 'Title',
   type: 'ScrollView',
 });
 
 export const SectionListExampleScreen = createExampleScreen({
-  title: 'Title',
   type: 'SectionList',
 });
 
 export const ViewExampleScreen = createExampleScreen({
-  title: 'Title',
   type: 'View',
   count: 8,
 });
