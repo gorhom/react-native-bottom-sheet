@@ -37,6 +37,10 @@ export function createBottomSheetScrollableComponent<T, P>(
       onRefresh,
       progressViewOffset,
       refreshControl,
+      // events
+      onScroll,
+      onScrollBeginDrag,
+      onScrollEndDrag,
       ...rest
     }: any = props;
 
@@ -47,7 +51,12 @@ export function createBottomSheetScrollableComponent<T, P>(
 
     //#region hooks
     const { scrollableRef, scrollableContentOffsetY, scrollHandler } =
-      useScrollHandler(scrollEventsHandlersHook);
+      useScrollHandler(
+        scrollEventsHandlersHook,
+        onScroll,
+        onScrollBeginDrag,
+        onScrollEndDrag
+      );
     const {
       enableContentPanningGesture,
       animatedFooterHeight,
