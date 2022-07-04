@@ -4,6 +4,7 @@ import type {
   ScrollView,
   SectionList,
   NativeScrollEvent,
+  NativeSyntheticEvent,
 } from 'react-native';
 import type {
   GestureEventPayload,
@@ -111,6 +112,9 @@ export type ScrollableRef = {
   id: number;
   node: React.RefObject<Scrollable>;
 };
+export type ScrollableEvent = (
+  event: Pick<NativeSyntheticEvent<NativeScrollEvent>, 'nativeEvent'>
+) => void;
 //#endregion
 
 //#region utils

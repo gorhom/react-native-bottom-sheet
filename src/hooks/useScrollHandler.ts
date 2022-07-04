@@ -1,14 +1,18 @@
 import {
+  runOnJS,
   useAnimatedRef,
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
 import { useScrollEventsHandlersDefault } from './useScrollEventsHandlersDefault';
 import { workletNoop as noop } from '../utilities';
-import type { Scrollable } from '../types';
+import type { Scrollable, ScrollableEvent } from '../types';
 
 export const useScrollHandler = (
-  useScrollEventsHandlers = useScrollEventsHandlersDefault
+  useScrollEventsHandlers = useScrollEventsHandlersDefault,
+  onScroll?: ScrollableEvent,
+  onScrollBeginDrag?: ScrollableEvent,
+  onScrollEndDrag?: ScrollableEvent
 ) => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
@@ -28,9 +32,27 @@ export const useScrollHandler = (
   // callbacks
   const scrollHandler = useAnimatedScrollHandler(
     {
-      onScroll: handleOnScroll,
-      onBeginDrag: handleOnBeginDrag,
-      onEndDrag: handleOnEndDrag,
+      onScroll: (event, context) => {
+        handleOnScroll(event, context);
+
+        if (onScroll) {
+          runOnJS(onScroll)({ nativeEvent: event });
+        }
+      },
+      onBeginDrag: (event, context) => {
+        handleOnBeginDrag(event, context);
+
+        if (onScrollBeginDrag) {
+          runOnJS(onScrollBeginDrag)({ nativeEvent: event });
+        }
+      },
+      onEndDrag: (event, context) => {
+        handleOnEndDrag(event, context);
+
+        if (onScrollEndDrag) {
+          runOnJS(onScrollEndDrag)({ nativeEvent: event });
+        }
+      },
       onMomentumBegin: handleOnMomentumBegin,
       onMomentumEnd: handleOnMomentumEnd,
     },
@@ -40,6 +62,9 @@ export const useScrollHandler = (
       handleOnEndDrag,
       handleOnMomentumBegin,
       handleOnMomentumEnd,
+      onScroll,
+      onScrollBeginDrag,
+      onScrollEndDrag,
     ]
   );
 
