@@ -13,7 +13,7 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/stale@v3.0.19
+    - uses: actions/stale@v5.0.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-issue-message: 'This issue is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days.'
@@ -26,3 +26,5 @@ jobs:
         days-before-close: 5
         days-before-pr-close: 10
         exempt-assignees: 'gorhom'
+        exempt-issue-labels: 'sponsor'
+        exempt-pr-labels: 'sponsor'
