@@ -1,6 +1,8 @@
 # Changelog
 
-## [v4.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.2...v4.4.0)
+## [v4.4.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.0...v4.4.1)
+
+## [v4.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.2...v4.4.0) - 2022-07-09
 
 #### Features
 
