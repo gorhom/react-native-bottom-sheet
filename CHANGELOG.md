@@ -1,6 +1,17 @@
 # Changelog
 
-## [v4.3.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.1...v4.3.2)
+## [v4.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.2...v4.4.0)
+
+#### Features
+
+- feat: allow scrollable events ([`#1019`](https://github.com/gorhom/react-native-bottom-sheet/pull/1019)).
+
+#### Improvements
+
+- chore: updated git actions ([bd0a9de](https://github.com/gorhom/react-native-bottom-sheet/commit/bd0a9de4af48b7babbf524a1b6fc1e799441b207)).
+- chore: export internal hooks ([603ac94](https://github.com/gorhom/react-native-bottom-sheet/commit/603ac9420a6958a9dfc54975576ed19f306a89e7)).
+
+## [v4.3.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.1...v4.3.2) - 2022-06-13
 
 ## [v4.3.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.0...v4.3.1) - 2022-05-24
 
