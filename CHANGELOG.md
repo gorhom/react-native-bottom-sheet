@@ -1,6 +1,11 @@
 # Changelog
 
-## [v4.4.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.0...v4.4.1)
+## [v4.4.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.0...v4.4.2)
+
+#### Improvements
+
+- chore: export internal hook and type ([a3ae54d](https://github.com/gorhom/react-native-bottom-sheet/commit/a3ae54dcf7079e88979057f2e19a7813082e798d)).
+- chore: updated release script ([a0b64b7](https://github.com/gorhom/react-native-bottom-sheet/commit/a0b64b7f3da9c6dc811a068fc839efd653c74c16)).
 
 ## [v4.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.2...v4.4.0) - 2022-07-09
 
