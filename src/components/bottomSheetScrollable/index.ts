@@ -9,4 +9,5 @@ export type {
   BottomSheetScrollViewMethods,
   BottomSheetSectionListMethods,
   BottomSheetVirtualizedListMethods,
+  BottomSheetScrollableProps,
 } from './types';

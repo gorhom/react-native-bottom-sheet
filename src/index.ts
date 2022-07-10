@@ -17,6 +17,7 @@ export { useScrollEventsHandlersDefault } from './hooks/useScrollEventsHandlersD
 export { useGestureEventsHandlersDefault } from './hooks/useGestureEventsHandlersDefault';
 export { useBottomSheetGestureHandlers } from './hooks/useBottomSheetGestureHandlers';
 export { useScrollHandler } from './hooks/useScrollHandler';
+export { useScrollableSetter } from './hooks/useScrollableSetter';
 //#endregion
 
 //#region components
@@ -58,6 +59,7 @@ export type {
   BottomSheetScrollViewMethods,
   BottomSheetSectionListMethods,
   BottomSheetVirtualizedListMethods,
+  BottomSheetScrollableProps,
 } from './components/bottomSheetScrollable';
 
 export type {
