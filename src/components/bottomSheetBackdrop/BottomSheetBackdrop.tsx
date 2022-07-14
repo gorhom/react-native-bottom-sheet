@@ -29,6 +29,7 @@ const BottomSheetBackdropComponent = ({
   disappearsOnIndex: _providedDisappearsOnIndex,
   enableTouchThrough: _providedEnableTouchThrough,
   pressBehavior = DEFAULT_PRESS_BEHAVIOR,
+  onPress,
   style,
   children,
 }: BottomSheetDefaultBackdropProps) => {
@@ -52,6 +53,8 @@ const BottomSheetBackdropComponent = ({
 
   //#region callbacks
   const handleOnPress = useCallback(() => {
+    onPress?.()
+
     if (pressBehavior === 'close') {
       close();
     } else if (pressBehavior === 'collapse') {
