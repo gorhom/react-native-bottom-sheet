@@ -210,7 +210,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animateOnMount ? -1 : _providedIndex
     );
     const animatedPosition = useSharedValue(INITIAL_POSITION);
-    const animatedNextPosition = useSharedValue(0);
+    const animatedNextPosition = useSharedValue(Number.NEGATIVE_INFINITY);
     const animatedNextPositionIndex = useSharedValue(0);
 
     // conditional
