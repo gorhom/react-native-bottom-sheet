@@ -73,6 +73,7 @@ import {
   INITIAL_SNAP_POINT,
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   INITIAL_CONTAINER_OFFSET,
+  INITIAL_VALUE,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
@@ -210,7 +211,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animateOnMount ? -1 : _providedIndex
     );
     const animatedPosition = useSharedValue(INITIAL_POSITION);
-    const animatedNextPosition = useSharedValue(0);
+    const animatedNextPosition = useSharedValue(INITIAL_VALUE);
     const animatedNextPositionIndex = useSharedValue(0);
 
     // conditional
@@ -651,8 +652,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
         animatedAnimationState.value = ANIMATION_STATE.STOPPED;
-        animatedNextPosition.value = Number.NEGATIVE_INFINITY;
-        animatedNextPositionIndex.value = Number.NEGATIVE_INFINITY;
+        animatedNextPosition.value = INITIAL_VALUE;
+        animatedNextPositionIndex.value = INITIAL_VALUE;
       }
     );
     const animateToPosition: AnimateToPositionType = useWorkletCallback(
