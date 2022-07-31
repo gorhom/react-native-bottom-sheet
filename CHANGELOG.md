@@ -1,11 +1,25 @@
 # Changelog
 
-## [v4.4.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.0...v4.4.2)
+## [v4.4.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.0...v4.4.3)
 
 #### Improvements
 
 - chore: export internal hook and type ([a3ae54d](https://github.com/gorhom/react-native-bottom-sheet/commit/a3ae54dcf7079e88979057f2e19a7813082e798d)).
+- chore: updated is-sponsor-label action ([5281041](https://github.com/gorhom/react-native-bottom-sheet/commit/5281041bdad5fb522a964e61e8ff79acea16143e)).
+- chore: updated sponsor-label action ([2583e3b](https://github.com/gorhom/react-native-bottom-sheet/commit/2583e3b18dcde4e1bc449e43f7c0991d257c67df)).
 - chore: updated release script ([a0b64b7](https://github.com/gorhom/react-native-bottom-sheet/commit/a0b64b7f3da9c6dc811a068fc839efd653c74c16)).
+
+#### Fixes
+
+- fix: closed bottom sheet snap point (by @eastroot1590) (#1043, #1035)
+
+* fix: closed bottom sheet snap point
+
+closed bottom sheet can't directly snap to 100% because initial animatedNextPosition is 0 and 100%'s nextPosition is 0 too.
+
+* refactor: extracted initial next value to constants file
+
+Co-authored-by: Bran &lt;eastroot1590@gmail.com&gt; ([c7f2ce2](https://github.com/gorhom/react-native-bottom-sheet/commit/c7f2ce26fdaf525951b70b76cd857e0b63cb4865)).
 
 ## [v4.4.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.3.2...v4.4.0) - 2022-07-09
 
