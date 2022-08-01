@@ -1,6 +1,5 @@
 import { Keyboard, Platform } from 'react-native';
 import { runOnJS, useWorkletCallback } from 'react-native-reanimated';
-import { clamp, snapPoint } from 'react-native-redash';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 import {
   ANIMATION_SOURCE,
@@ -13,6 +12,8 @@ import type {
   GestureEventsHandlersHookType,
   GestureEventHandlerCallbackType,
 } from '../types';
+import { clamp } from '../utilities/clamp';
+import { snapPoint } from '../utilities/snapPoint';
 
 type GestureEventContextType = {
   initialPosition: number;
