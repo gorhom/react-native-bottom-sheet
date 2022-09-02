@@ -7,6 +7,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { StyleSheet } from 'react-native';
+import { FullWindowOverlay } from 'react-native-screens';
 import { Portal, usePortal } from '@gorhom/portal';
 import { nanoid } from 'nanoid/non-secure';
 import BottomSheet from '../bottomSheet';
@@ -369,23 +371,25 @@ const BottomSheetModalComponent = forwardRef<
       handleOnUpdate={handlePortalRender}
       handleOnUnmount={handlePortalOnUnmount}
     >
-      <BottomSheet
-        {...bottomSheetProps}
-        ref={bottomSheetRef}
-        key={key}
-        index={index}
-        snapPoints={snapPoints}
-        enablePanDownToClose={enablePanDownToClose}
-        animateOnMount={animateOnMount}
-        containerHeight={containerHeight}
-        containerOffset={containerOffset}
-        onChange={handleBottomSheetOnChange}
-        onClose={handleBottomSheetOnClose}
-        children={
-          typeof Content === 'function' ? <Content data={data} /> : Content
-        }
-        $modal={true}
-      />
+      <FullWindowOverlay style={StyleSheet.absoluteFill}>
+        <BottomSheet
+          {...bottomSheetProps}
+          ref={bottomSheetRef}
+          key={key}
+          index={index}
+          snapPoints={snapPoints}
+          enablePanDownToClose={enablePanDownToClose}
+          animateOnMount={animateOnMount}
+          containerHeight={containerHeight}
+          containerOffset={containerOffset}
+          onChange={handleBottomSheetOnChange}
+          onClose={handleBottomSheetOnClose}
+          children={
+            typeof Content === 'function' ? <Content data={data} /> : Content
+          }
+          $modal={true}
+        />
+      </FullWindowOverlay>
     </Portal>
   ) : null;
 });
