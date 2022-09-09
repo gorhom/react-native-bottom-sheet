@@ -1,6 +1,19 @@
 # Changelog
 
-## [v4.4.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.0...v4.4.3)
+## [v4.4.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.3...v4.4.4)
+
+#### Improvements
+
+- chore: remove nanoid and react-native-redash to clean up some build issues (#1046)(by @natew) ([`#1046`](https://github.com/gorhom/react-native-bottom-sheet/pull/1046)).
+- chore: updated example packages ([`#1064`](https://github.com/gorhom/react-native-bottom-sheet/pull/1064)).
+- chore: updated example styling ([1e99e8d](https://github.com/gorhom/react-native-bottom-sheet/commit/1e99e8d2e7b73de42b751d32777f18906881eca8)).
+
+#### Fixes
+
+- fix: check if next and current indices are different before animating to a snap position (#1095)(by @itsramiel) ([3b75d5d](https://github.com/gorhom/react-native-bottom-sheet/commit/3b75d5d84e0a02933ef2b01d855d9f6036c756b2)).
+- fix: don't react to snap point changes if height is 0 (#855)(by @simon-abbott) ([29af238](https://github.com/gorhom/react-native-bottom-sheet/commit/29af238d9eed31f0d9cad39ade8a43cf37ca2e72)).
+
+## [v4.4.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.0...v4.4.3) - 2022-07-31
 
 #### Improvements
 
