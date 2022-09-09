@@ -39,7 +39,8 @@
     "bootstrap": "yarn install && yarn example"
   },
   "dependencies": {
-    "@gorhom/portal": "1.0.13"
+    "@gorhom/portal": "1.0.13",
+    "invariant": "^2.2.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
