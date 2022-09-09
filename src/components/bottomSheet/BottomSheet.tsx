@@ -1315,7 +1315,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * if snap points changed while sheet is animating, then
          * we stop the animation and animate to the updated point.
          */
-        if (animatedAnimationState.value === ANIMATION_STATE.RUNNING) {
+        if (
+          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          animatedNextPositionIndex.value !== animatedCurrentIndex.value
+        ) {
           nextPosition =
             animatedNextPositionIndex.value !== -1
               ? snapPoints[animatedNextPositionIndex.value]
