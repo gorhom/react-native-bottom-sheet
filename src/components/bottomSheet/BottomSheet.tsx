@@ -1294,7 +1294,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (
           JSON.stringify(snapPoints) === JSON.stringify(_previousSnapPoints) ||
           !isLayoutCalculated.value ||
-          !isAnimatedOnMount.value
+          !isAnimatedOnMount.value ||
+          containerHeight <= 0
         ) {
           return;
         }
