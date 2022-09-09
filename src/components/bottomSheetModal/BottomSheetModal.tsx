@@ -8,7 +8,6 @@ import React, {
   useState,
 } from 'react';
 import { Portal, usePortal } from '@gorhom/portal';
-import { nanoid } from 'nanoid/non-secure';
 import BottomSheet from '../bottomSheet';
 import { useBottomSheetModalInternal } from '../../hooks';
 import { print } from '../../utilities';
@@ -18,6 +17,7 @@ import {
 } from './constants';
 import type { BottomSheetModalMethods, BottomSheetMethods } from '../../types';
 import type { BottomSheetModalProps } from './types';
+import { id } from '../../utilities/id';
 
 type BottomSheetModal = BottomSheetModalMethods;
 
@@ -80,7 +80,7 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region variables
-  const key = useMemo(() => name || `bottom-sheet-modal-${nanoid()}`, [name]);
+  const key = useMemo(() => name || `bottom-sheet-modal-${id()}`, [name]);
   //#endregion
 
   //#region private methods
