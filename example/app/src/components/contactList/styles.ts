@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
   sectionHeaderTitle: {
     fontSize: 16,
     textTransform: 'uppercase',
+    color: 'black',
   },
   container: {
     overflow: 'visible',
