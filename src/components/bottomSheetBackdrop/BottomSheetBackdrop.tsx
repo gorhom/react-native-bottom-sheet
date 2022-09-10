@@ -53,7 +53,7 @@ const BottomSheetBackdropComponent = ({
 
   //#region callbacks
   const handleOnPress = useCallback(() => {
-    onPress?.()
+    onPress?.();
 
     if (pressBehavior === 'close') {
       close();
@@ -62,7 +62,7 @@ const BottomSheetBackdropComponent = ({
     } else if (typeof pressBehavior === 'number') {
       snapToIndex(pressBehavior);
     }
-  }, [snapToIndex, close, disappearsOnIndex, pressBehavior]);
+  }, [snapToIndex, close, disappearsOnIndex, pressBehavior, onPress]);
   const handleContainerTouchability = useCallback(
     (shouldDisableTouchability: boolean) => {
       if (!containerRef.current) {
