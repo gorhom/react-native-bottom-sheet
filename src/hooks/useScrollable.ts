@@ -1,6 +1,6 @@
 import { useCallback, RefObject, useRef } from 'react';
-import { findNodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
+import { getRefNativeTag } from '../utilities/getRefNativeTag';
 import { SCROLLABLE_STATE, SCROLLABLE_TYPE } from '../constants';
 import type { ScrollableRef, Scrollable } from '../types';
 
@@ -38,7 +38,7 @@ export const useScrollable = () => {
     // find node handle id
     let id;
     try {
-      id = findNodeHandle(ref.current);
+      id = getRefNativeTag(ref);
     } catch {
       return;
     }
