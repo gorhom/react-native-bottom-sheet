@@ -27,7 +27,7 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.4",
-    "react-native-gesture-handler": "~2.5.0",
+    "react-native-gesture-handler": "~2.6.0",
     "react-native-pager-view": "5.4.24",
     "react-native-reanimated": "~2.9.1",
     "react-native-redash": "^16.2.4",
