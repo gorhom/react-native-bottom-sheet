@@ -8,6 +8,7 @@ import {
   useBottomSheetInternal,
 } from '../../hooks';
 import { print } from '../../utilities';
+import { styles } from './styles';
 import type { BottomSheetHandleContainerProps } from './types';
 
 function BottomSheetHandleContainerComponent({
@@ -96,6 +97,7 @@ function BottomSheetHandleContainerComponent({
         accessibilityRole="adjustable"
         accessibilityLabel="Bottom Sheet handle"
         accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
+        style={styles.container}
         onLayout={handleContainerLayout}
       >
         <HandleComponent
