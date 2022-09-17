@@ -30,6 +30,7 @@ const BottomSheetBackdropComponent = ({
   disappearsOnIndex: _providedDisappearsOnIndex,
   enableTouchThrough: _providedEnableTouchThrough,
   pressBehavior = DEFAULT_PRESS_BEHAVIOR,
+  onPress,
   style,
   children,
 }: BottomSheetDefaultBackdropProps) => {
@@ -54,6 +55,8 @@ const BottomSheetBackdropComponent = ({
 
   //#region callbacks
   const handleOnPress = useCallback(() => {
+    onPress?.();
+
     if (pressBehavior === 'close') {
       close();
     } else if (pressBehavior === 'collapse') {
@@ -61,7 +64,7 @@ const BottomSheetBackdropComponent = ({
     } else if (typeof pressBehavior === 'number') {
       snapToIndex(pressBehavior);
     }
-  }, [snapToIndex, close, disappearsOnIndex, pressBehavior]);
+  }, [snapToIndex, close, disappearsOnIndex, pressBehavior, onPress]);
   const handleContainerTouchability = useCallback(
     (shouldDisableTouchability: boolean) => {
       setPointerEvents(shouldDisableTouchability ? 'none' : 'auto');

@@ -40,6 +40,12 @@ export interface BottomSheetDefaultBackdropProps
    * @default 'close'
    */
   pressBehavior?: BackdropPressBehavior;
+
+  /**
+   * Function which will be executed on pressing backdrop component
+   * @type {Function}
+   */
+  onPress?: () => void;
   /**
    * Child component that will be rendered on backdrop.
    */
