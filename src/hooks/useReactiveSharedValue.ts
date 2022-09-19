@@ -11,7 +11,7 @@ export const useReactiveSharedValue = <T>(
   const initialValueRef = useRef<T>(null);
   const valueRef = useRef<Animated.SharedValue<T>>(null);
 
-  if (typeof value === 'object' && 'value' in value) {
+  if (value && typeof value === 'object' && 'value' in value) {
     /**
      * if provided value is a shared value,
      * then we do not initialize another one.

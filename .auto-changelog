@@ -1,7 +1,27 @@
 {
   "handlebarsSetup": "./scripts/auto-changelog.js",
-  "ignoreCommitPattern": "^chore: release v",
+  "ignoreCommitPattern": "release v",
   "startingVersion": "v4.0.0-alpha.0",
   "unreleased": false,
-  "commitLimit": false
+  "commitLimit": false,
+  "replaceText": {
+    "([bB]reaking: )": "",
+    "([bB]reaking change: )": "",
+    "(^[fF]eat: )": "",
+    "(^[fF]eat\\()": "(",
+    "(^[fF]ix: )": "",
+    "(^[fF]ix\\()": "(",
+    "(^[cC]hore: )": "",
+    "(^[cC]hore\\()": "(",
+    "(^[dD]ocs: )": "",
+    "(^[dD]ocs\\()": "(",
+    "(^[rR]efactor: )": "",
+    "(^[rR]efactor\\()": "(",
+    "(^[tT]est: )": "",
+    "(^[tT]est\\()": "(",
+    "(^[sS]tyle: )": "",
+    "(^[sS]tyle\\()": "(",
+    "(^[pP]erf: )": "",
+    "(^[pP]erf\\()": "("
+  }
 }
