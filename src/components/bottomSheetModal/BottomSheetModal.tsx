@@ -142,30 +142,36 @@ const BottomSheetModalComponent = forwardRef<
     }
     bottomSheetRef.current?.snapToPosition(...args);
   }, []);
-  const handleExpand = useCallback((...args) => {
+  const handleExpand = useCallback<BottomSheetMethods['expand']>((...args) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.expand(...args);
   }, []);
-  const handleCollapse = useCallback((...args) => {
-    if (minimized.current) {
-      return;
-    }
-    bottomSheetRef.current?.collapse(...args);
-  }, []);
-  const handleClose = useCallback((...args) => {
+  const handleCollapse = useCallback<BottomSheetMethods['collapse']>(
+    (...args) => {
+      if (minimized.current) {
+        return;
+      }
+      bottomSheetRef.current?.collapse(...args);
+    },
+    []
+  );
+  const handleClose = useCallback<BottomSheetMethods['close']>((...args) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.close(...args);
   }, []);
-  const handleForceClose = useCallback((...args) => {
-    if (minimized.current) {
-      return;
-    }
-    bottomSheetRef.current?.forceClose(...args);
-  }, []);
+  const handleForceClose = useCallback<BottomSheetMethods['forceClose']>(
+    (...args) => {
+      if (minimized.current) {
+        return;
+      }
+      bottomSheetRef.current?.forceClose(...args);
+    },
+    []
+  );
   //#endregion
 
   //#region bottom sheet modal methods

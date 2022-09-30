@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { ViewStyle } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
@@ -31,7 +31,7 @@ export interface BottomSheetDefaultFooterProps extends BottomSheetFooterProps {
   /**
    * Component to be placed in the footer.
    *
-   * @type {ReactNode | ReactNode[]}
+   * @type {ReactNode | ReactNode[] | (() => ReactElement)}
    */
-  children?: ReactNode | ReactNode[];
+  children?: ReactNode | ReactNode[] | (() => ReactElement);
 }
