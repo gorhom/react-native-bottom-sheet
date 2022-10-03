@@ -1,35 +1,57 @@
-import React, { forwardRef, memo } from 'react';
+import React, { memo, useContext, useMemo } from 'react';
 import { RefreshControl, RefreshControlProps } from 'react-native';
-import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  SimultaneousGesture,
+} from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps } from 'react-native-reanimated';
+import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import { SCROLLABLE_STATE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
 
 const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
 
-const BottomSheetRefreshControlComponent = forwardRef<
-  NativeViewGestureHandler,
-  RefreshControlProps
->(({ onRefresh, ...rest }, ref) => {
-  // hooks
-  const { animatedScrollableState } = useBottomSheetInternal();
+interface BottomSheetRefreshControlProps extends RefreshControlProps {
+  scrollableGesture: SimultaneousGesture;
+}
 
-  // variables
+function BottomSheetRefreshControlComponent({
+  onRefresh,
+  scrollableGesture,
+  ...rest
+}: BottomSheetRefreshControlProps) {
+  //#region hooks
+  const draggableGesture = useContext(BottomSheetDraggableContext);
+  const { animatedScrollableState } = useBottomSheetInternal();
+  //#endregion
+
+  //#region variables
   const animatedProps = useAnimatedProps(() => ({
     enabled: animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED,
   }));
+  const gesture = useMemo(
+    () =>
+      Gesture.Simultaneous(
+        Gesture.Native().shouldCancelWhenOutside(false),
+        scrollableGesture,
+        draggableGesture!
+      ),
+    [draggableGesture, scrollableGesture]
+  );
+  //#endregion
 
   // render
   return (
-    <NativeViewGestureHandler ref={ref} shouldCancelWhenOutside={false}>
+    <GestureDetector gesture={gesture}>
       <AnimatedRefreshControl
         {...rest}
         onRefresh={onRefresh}
         animatedProps={animatedProps}
       />
-    </NativeViewGestureHandler>
+    </GestureDetector>
   );
-});
+}
 
 const BottomSheetRefreshControl = memo(BottomSheetRefreshControlComponent);
 BottomSheetRefreshControl.displayName = 'BottomSheetRefreshControl';
