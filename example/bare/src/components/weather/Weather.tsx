@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import Animated, {
-  Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
@@ -45,7 +44,7 @@ const Weather = ({ animatedIndex, animatedPosition }: WeatherProps) => {
             animatedIndex.value,
             [1, 1.25],
             [1, 0],
-            Extrapolate.CLAMP
+            Animated.Extrapolate.CLAMP
           ),
         },
       ],
