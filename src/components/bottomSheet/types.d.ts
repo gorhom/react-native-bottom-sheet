@@ -6,7 +6,7 @@ import type {
   WithSpringConfig,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import type { PanGestureHandlerProps } from 'react-native-gesture-handler';
+import type { PanGesture } from 'react-native-gesture-handler';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
@@ -21,17 +21,7 @@ import type { GestureEventsHandlersHookType } from '../../types';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
-    Partial<
-      Pick<
-        PanGestureHandlerProps,
-        | 'activeOffsetY'
-        | 'activeOffsetX'
-        | 'failOffsetY'
-        | 'failOffsetX'
-        | 'waitFor'
-        | 'simultaneousHandlers'
-      >
-    > {
+    Partial<BottomSheetGestureProps> {
   //#region configuration
   /**
    * Initial snap point index, provide `-1` to initiate bottom sheet in closed state.
@@ -313,3 +303,16 @@ export type AnimateToPositionType = (
   velocity?: number,
   configs?: WithTimingConfig | WithSpringConfig
 ) => void;
+
+export type BottomSheetGestureProps = {
+  activeOffsetX: Parameters<PanGesture['activeOffsetX']>[0];
+  activeOffsetY: Parameters<PanGesture['activeOffsetY']>[0];
+
+  failOffsetY: Parameters<PanGesture['failOffsetY']>[0];
+  failOffsetX: Parameters<PanGesture['failOffsetX']>[0];
+
+  simultaneousHandlers: Parameters<
+    PanGesture['simultaneousWithExternalGesture']
+  >[0];
+  waitFor: Parameters<PanGesture['requireExternalGestureToFail']>[0];
+};

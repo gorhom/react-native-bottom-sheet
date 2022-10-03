@@ -135,16 +135,39 @@ export type GestureEventContextType = {
   didStart?: boolean;
 };
 
-export type GestureEventHandlerCallbackType<C = any> = (
+export type GestureEventHandlerCallbackType = (
   source: GESTURE_SOURCE,
-  payload: GestureEventPayloadType,
-  context: C
+  payload: GestureEventPayloadType
 ) => void;
 
 export type GestureEventsHandlersHookType = () => {
   handleOnStart: GestureEventHandlerCallbackType;
-  handleOnActive: GestureEventHandlerCallbackType;
+  handleOnChange: GestureEventHandlerCallbackType;
   handleOnEnd: GestureEventHandlerCallbackType;
+  handleOnFinalize: GestureEventHandlerCallbackType;
+};
+
+export type GestureHandlersHookType = (
+  source: GESTURE_SOURCE,
+  state: Animated.SharedValue<State>,
+  gestureSource: Animated.SharedValue<GESTURE_SOURCE>,
+  onStart: GestureEventHandlerCallbackType,
+  onChange: GestureEventHandlerCallbackType,
+  onEnd: GestureEventHandlerCallbackType,
+  onFinalize: GestureEventHandlerCallbackType
+) => {
+  handleOnStart: (
+    event: GestureStateChangeEvent<PanGestureHandlerEventPayload>
+  ) => void;
+  handleOnChange: (
+    event: GestureStateChangeEvent<PanGestureHandlerEventPayload>
+  ) => void;
+  handleOnEnd: (
+    event: GestureStateChangeEvent<PanGestureHandlerEventPayload>
+  ) => void;
+  handleOnFinalize: (
+    event: GestureStateChangeEvent<PanGestureHandlerEventPayload>
+  ) => void;
 };
 
 type ScrollEventHandlerCallbackType<C = any> = (

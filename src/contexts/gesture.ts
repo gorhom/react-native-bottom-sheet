@@ -1,11 +1,13 @@
 import { createContext } from 'react';
-import type { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
+import type { Gesture } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/gesture';
+import type { GestureHandlersHookType } from '../types';
 
 export interface BottomSheetGestureHandlersContextType {
-  contentPanGestureHandler: (event: PanGestureHandlerGestureEvent) => void;
-  handlePanGestureHandler: (event: PanGestureHandlerGestureEvent) => void;
-  scrollablePanGestureHandler: (event: PanGestureHandlerGestureEvent) => void;
+  contentPanGestureHandler: ReturnType<GestureHandlersHookType>;
+  handlePanGestureHandler: ReturnType<GestureHandlersHookType>;
 }
 
 export const BottomSheetGestureHandlersContext =
   createContext<BottomSheetGestureHandlersContextType | null>(null);
+
+export const BottomSheetDraggableContext = createContext<Gesture | null>(null);
