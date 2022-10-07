@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { ViewProps } from 'react-native';
 import Animated, {
   interpolate,
@@ -48,6 +48,7 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   //#region variables
+  const containerRef = useRef<Animated.View>(null);
   const [pointerEvents, setPointerEvents] = useState<
     ViewProps['pointerEvents']
   >(enableTouchThrough ? 'none' : 'auto');
@@ -67,6 +68,9 @@ const BottomSheetBackdropComponent = ({
   }, [snapToIndex, close, disappearsOnIndex, pressBehavior, onPress]);
   const handleContainerTouchability = useCallback(
     (shouldDisableTouchability: boolean) => {
+      if (!containerRef.current) {
+        return;
+      }
       setPointerEvents(shouldDisableTouchability ? 'none' : 'auto');
     },
     []
@@ -117,6 +121,7 @@ const BottomSheetBackdropComponent = ({
   return pressBehavior !== 'none' ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View
+        ref={containerRef}
         style={containerStyle}
         pointerEvents={pointerEvents}
         accessible={true}
@@ -130,7 +135,11 @@ const BottomSheetBackdropComponent = ({
       </Animated.View>
     </TapGestureHandler>
   ) : (
-    <Animated.View pointerEvents={pointerEvents} style={containerStyle}>
+    <Animated.View
+      ref={containerRef}
+      pointerEvents={pointerEvents}
+      style={containerStyle}
+    >
       {children}
     </Animated.View>
   );
