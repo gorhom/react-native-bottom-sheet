@@ -156,6 +156,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       backgroundComponent,
       footerComponent,
       children: Content,
+
+      // E2E
+      testID,
+      accessibilityLabel,
     } = props;
     //#endregion
 
@@ -1596,6 +1600,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               bottomInset={bottomInset}
               detached={detached}
               style={_providedContainerStyle}
+              testID={testID}
+              accessibilityLabel={accessibilityLabel}
             >
               <Animated.View style={containerStyle}>
                 <BottomSheetBackgroundContainer

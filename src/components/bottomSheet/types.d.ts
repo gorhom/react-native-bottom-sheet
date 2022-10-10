@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { ViewStyle, Insets, StyleProp } from 'react-native';
+import type { ViewStyle, Insets, StyleProp, ViewProps } from 'react-native';
 import type {
   SharedValue,
   AnimateStyle,
@@ -19,8 +19,11 @@ import type {
 } from '../../constants';
 import type { GestureEventsHandlersHookType } from '../../types';
 
+type ViewTestIDProps = Pick<ViewProps, 'testID' | 'accessibilityLabel'>;
+
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
+    ViewTestIDProps,
     Partial<
       Pick<
         PanGestureHandlerProps,

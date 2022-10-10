@@ -20,6 +20,8 @@ function BottomSheetContainerComponent({
   detached,
   style,
   children,
+  testID,
+  accessibilityLabel,
 }: BottomSheetContainerProps) {
   const containerRef = useRef<View>(null);
   //#region styles
@@ -80,6 +82,9 @@ function BottomSheetContainerComponent({
       onLayout={shouldCalculateHeight ? handleContainerLayout : undefined}
       style={containerStyle}
       children={children}
+      accessible={false}
+      testID={testID}
+      accessibilityLabel={accessibilityLabel}
     />
   );
   //#endregion
