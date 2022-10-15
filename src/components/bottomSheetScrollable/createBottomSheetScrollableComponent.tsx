@@ -73,10 +73,10 @@ export function createBottomSheetScrollableComponent<T, P>(
 
     const nativeGesture = useMemo(
       () =>
-        Gesture.Simultaneous(
-          Gesture.Native().shouldCancelWhenOutside(false),
-          draggableGesture!
-        ),
+        Gesture.Native()
+          // @ts-ignore
+          .simultaneousWithExternalGesture(draggableGesture!)
+          .shouldCancelWhenOutside(false),
       [draggableGesture]
     );
     //#endregion

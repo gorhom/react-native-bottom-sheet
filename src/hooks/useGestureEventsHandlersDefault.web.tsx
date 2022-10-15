@@ -66,7 +66,6 @@ export const useGestureEventsHandlersDefault = () => {
   //#region gesture methods
   const handleOnStart: GestureEventHandlerCallbackType = useWorkletCallback(
     function handleOnStart(__, { translationY }) {
-      // console.log('handleOnStart');
       // cancel current animation
       stopAnimation();
 
@@ -93,9 +92,8 @@ export const useGestureEventsHandlersDefault = () => {
       animatedScrollableContentOffsetY,
     ]
   );
-  const handleOnActive: GestureEventHandlerCallbackType = useWorkletCallback(
-    function handleOnActive(source, { translationY }) {
-      // console.log('handleOnActive');
+  const handleOnChange: GestureEventHandlerCallbackType = useWorkletCallback(
+    function handleOnChange(source, { translationY }) {
       let highestSnapPoint = animatedHighestSnapPoint.value;
 
       translationY = translationY - context.value.initialTranslationY;
@@ -130,7 +128,7 @@ export const useGestureEventsHandlersDefault = () => {
        * point, then do not interact with current gesture.
        */
       if (
-        source === GESTURE_SOURCE.SCROLLABLE &&
+        source === GESTURE_SOURCE.CONTENT &&
         isScrollableRefreshable.value &&
         animatedPosition.value === highestSnapPoint
       ) {
@@ -145,7 +143,7 @@ export const useGestureEventsHandlersDefault = () => {
        */
       const negativeScrollableContentOffset =
         (context.value.initialPosition === highestSnapPoint &&
-          source === GESTURE_SOURCE.SCROLLABLE) ||
+          source === GESTURE_SOURCE.CONTENT) ||
         !context.value.isScrollablePositionLocked
           ? animatedScrollableContentOffsetY.value * -1
           : 0;
@@ -179,7 +177,7 @@ export const useGestureEventsHandlersDefault = () => {
        */
       if (
         context.value.isScrollablePositionLocked &&
-        source === GESTURE_SOURCE.SCROLLABLE &&
+        source === GESTURE_SOURCE.CONTENT &&
         animatedPosition.value === highestSnapPoint
       ) {
         context.value.isScrollablePositionLocked = false;
@@ -215,7 +213,7 @@ export const useGestureEventsHandlersDefault = () => {
         }
 
         if (
-          source === GESTURE_SOURCE.SCROLLABLE &&
+          source === GESTURE_SOURCE.CONTENT &&
           draggedPosition + negativeScrollableContentOffset > lowestSnapPoint
         ) {
           const resistedPosition =
@@ -259,7 +257,7 @@ export const useGestureEventsHandlersDefault = () => {
        * point, then do not interact with current gesture.
        */
       if (
-        source === GESTURE_SOURCE.SCROLLABLE &&
+        source === GESTURE_SOURCE.CONTENT &&
         isScrollableRefreshable.value &&
         isSheetAtHighestSnapPoint
       ) {
@@ -352,7 +350,7 @@ export const useGestureEventsHandlersDefault = () => {
       }
 
       const wasGestureHandledByScrollView =
-        source === GESTURE_SOURCE.SCROLLABLE &&
+        source === GESTURE_SOURCE.CONTENT &&
         animatedScrollableContentOffsetY.value > 0;
       /**
        * prevents snapping from top to middle / bottom with repeated interrupted scrolls
@@ -391,7 +389,7 @@ export const useGestureEventsHandlersDefault = () => {
 
   return {
     handleOnStart,
-    handleOnActive,
+    handleOnChange,
     handleOnEnd,
     handleOnFinalize,
   };

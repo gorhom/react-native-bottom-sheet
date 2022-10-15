@@ -2,6 +2,7 @@ import { useEffect, useRef, TouchEvent } from 'react';
 import { useSharedValue } from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 import { ANIMATION_STATE, SCROLLABLE_STATE } from '../constants';
+import { getRefNativeTag } from '../utilities/getRefNativeTag';
 import type { Scrollable } from '../types';
 
 export type ScrollEventContextType = {
@@ -28,7 +29,7 @@ export const useScrollHandler = () => {
 
   //#region effects
   useEffect(() => {
-    const element = scrollableRef.current as any;
+    const element = getRefNativeTag(scrollableRef) as any;
 
     var scrollOffset = 0;
     var supportsPassive = false;
@@ -39,7 +40,6 @@ export const useScrollHandler = () => {
     var shouldLockInitialPosition = false;
 
     function handleOnTouchStart(event: TouchEvent) {
-      // console.log('handleOnTouchStart');
       if (event.touches.length !== 1) return;
 
       initialContentOffsetY = element.scrollTop;
@@ -48,11 +48,6 @@ export const useScrollHandler = () => {
     }
 
     function handleOnTouchMove(event: TouchEvent) {
-      // console.log(
-      //   'handleOnTouchMove',
-      //   animatedScrollableState.value === SCROLLABLE_STATE.LOCKED
-      // );
-
       if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
         return event.preventDefault();
       }
@@ -72,13 +67,10 @@ export const useScrollHandler = () => {
     }
 
     function handleOnTouchEnd() {
-      // console.log('handleOnTouchEnd');
-      // console.log('');
       if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
         const lockPosition = shouldLockInitialPosition
           ? initialContentOffsetY ?? 0
           : 0;
-        // @ts-ignore
         element.scroll({
           top: 0,
           left: 0,
@@ -172,6 +164,7 @@ export const useScrollHandler = () => {
   //#endregion
 
   return {
+    scrollHandler: undefined,
     scrollableRef,
     scrollableContentOffsetY,
   };

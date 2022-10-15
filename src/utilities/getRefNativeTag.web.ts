@@ -1,5 +1,6 @@
 import type { RefObject } from 'react';
+import { findNodeHandle } from 'react-native';
 
 export function getRefNativeTag(ref: RefObject<any>) {
-  return ref?.current || null;
+  return findNodeHandle(ref?.current) || null;
 }

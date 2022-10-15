@@ -1,5 +1,8 @@
 import { registerRootComponent } from 'expo';
 
+import { enableExperimentalWebImplementation } from 'react-native-gesture-handler';
+enableExperimentalWebImplementation(true);
+
 import { enableScreens } from 'react-native-screens';
 enableScreens(true);
 
