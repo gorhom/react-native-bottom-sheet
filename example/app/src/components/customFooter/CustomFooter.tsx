@@ -8,7 +8,7 @@ import {
 import { RectButton } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
-  Extrapolate,
+  Extrapolation,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
@@ -32,7 +32,7 @@ const CustomFooterComponent = ({
       animatedIndex.value,
       [0, 1],
       [toRad(0), toRad(-180)],
-      Extrapolate.CLAMP
+      Extrapolation.CLAMP
     );
     return {
       transform: [{ rotate: `${arrowRotate}rad` }],
@@ -48,7 +48,7 @@ const CustomFooterComponent = ({
         animatedIndex.value,
         [-0.85, 0],
         [0, 1],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP
       ),
     }),
     [animatedIndex]

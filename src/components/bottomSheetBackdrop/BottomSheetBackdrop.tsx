@@ -2,7 +2,7 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { ViewProps } from 'react-native';
 import Animated, {
   interpolate,
-  Extrapolate,
+  Extrapolation,
   useAnimatedStyle,
   useAnimatedReaction,
   useAnimatedGestureHandler,
@@ -91,7 +91,7 @@ const BottomSheetBackdropComponent = ({
       animatedIndex.value,
       [-1, disappearsOnIndex, appearsOnIndex],
       [0, 0, opacity],
-      Extrapolate.CLAMP
+      Extrapolation.CLAMP
     ),
     flex: 1,
   }));
