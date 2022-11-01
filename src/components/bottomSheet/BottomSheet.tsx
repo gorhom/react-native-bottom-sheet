@@ -1401,7 +1401,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
            */
           (Platform.OS === 'android' &&
             keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
-            android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize)
+            android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize) ||
+          /**
+           * if the sheet is closing, then exit then method
+           */ 
+          animatedNextPositionIndex.value == -1
         ) {
           animatedKeyboardHeightInContainer.value = 0;
           return;
