@@ -603,7 +603,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const handleOnAnimate = useCallback(
       function handleOnAnimate(toPoint: number) {
         const snapPoints = animatedSnapPoints.value;
-        const toIndex = snapPoints.indexOf(toPoint);
+        const toIndex = snapPoints.indexOf(toPoint + animatedKeyboardHeight.value);
 
         print({
           component: BottomSheet.name,
