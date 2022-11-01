@@ -693,7 +693,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * store next position
          */
-        animatedNextPosition.value = position;
+        animatedNextPosition.value = position + animatedKeyboardHeight.value;
         animatedNextPositionIndex.value =
           animatedSnapPoints.value.indexOf(position + animatedKeyboardHeight.value);
 
