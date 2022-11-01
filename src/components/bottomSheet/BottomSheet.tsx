@@ -603,7 +603,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const handleOnAnimate = useCallback(
       function handleOnAnimate(toPoint: number) {
         const snapPoints = animatedSnapPoints.value;
-        const toIndex = snapPoints.indexOf(toPoint + animatedKeyboardHeight.value);
+        const toIndex = snapPoints.indexOf(toPoint);
 
         print({
           component: BottomSheet.name,
@@ -693,14 +693,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * store next position
          */
-        animatedNextPosition.value = position + animatedKeyboardHeight.value;
+        const keyboardOffset = animatedKeyboardState.value == KEYBOARD_STATE.SHOWN ? animatedKeyboardHeight.value : 0;
+
+        animatedNextPosition.value = position + keyboardOffset;
         animatedNextPositionIndex.value =
-          animatedSnapPoints.value.indexOf(position + animatedKeyboardHeight.value);
+          animatedSnapPoints.value.indexOf(position + keyboardOffset);
 
         /**
          * fire `onAnimate` callback
          */
-        runOnJS(handleOnAnimate)(position);
+        runOnJS(handleOnAnimate)(position + keyboardOffset);
 
         /**
          * force animation configs from parameters, if provided
