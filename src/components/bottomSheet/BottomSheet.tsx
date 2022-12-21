@@ -618,9 +618,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        if (toIndex !== animatedCurrentIndex.value) {
-          _providedOnAnimate(animatedCurrentIndex.value, toIndex);
-        }
+        _providedOnAnimate(animatedCurrentIndex.value, toIndex);
       },
       [_providedOnAnimate, animatedSnapPoints, animatedCurrentIndex]
     );
