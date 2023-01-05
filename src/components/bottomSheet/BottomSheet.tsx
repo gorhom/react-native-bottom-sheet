@@ -1561,7 +1561,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       _providedIndex,
       animatedCurrentIndex,
       isAnimatedOnMount,
-      handleSnapToIndex,
     ]);
     //#endregion
 
