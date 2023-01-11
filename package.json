@@ -1,5 +1,5 @@
 {
-  "name": "@gorhom/bottom-sheet",
+  "name": "@discord/bottom-sheet",
   "version": "4.6.1",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
   "main": "lib/commonjs/index",
@@ -20,7 +20,7 @@
     "reanimated",
     "sheet"
   ],
-  "repository": "https://github.com/gorhom/react-native-bottom-sheet",
+  "repository": "https://github.com/discord/react-native-bottom-sheet",
   "author": "Mo Gorhom (https://gorhom.dev)",
   "license": "MIT",
   "bugs": {
