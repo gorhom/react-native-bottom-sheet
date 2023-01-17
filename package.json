@@ -2,10 +2,7 @@
   "name": "@discord/bottom-sheet",
   "version": "4.4.5",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/index.d.ts",
-  "react-native": "src/index.ts",
+  "main": "src/index.ts",
   "files": [
     "src",
     "lib",
