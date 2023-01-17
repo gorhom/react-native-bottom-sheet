@@ -143,14 +143,14 @@ const BottomSheetModalComponent = forwardRef<
     }
     bottomSheetRef.current?.snapToPosition(...args);
   }, []);
-  const handleExpand = useCallback<BottomSheetMethods['expand']>((...args) => {
+  const handleExpand = useCallback<BottomSheetMethods['expand']>((...args: any[]) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.expand(...args);
   }, []);
   const handleCollapse = useCallback<BottomSheetMethods['collapse']>(
-    (...args) => {
+    (...args: any[]) => {
       if (minimized.current) {
         return;
       }
@@ -158,14 +158,14 @@ const BottomSheetModalComponent = forwardRef<
     },
     []
   );
-  const handleClose = useCallback<BottomSheetMethods['close']>((...args) => {
+  const handleClose = useCallback<BottomSheetMethods['close']>((...args: any[]) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.close(...args);
   }, []);
   const handleForceClose = useCallback<BottomSheetMethods['forceClose']>(
-    (...args) => {
+    (...args: any[]) => {
       if (minimized.current) {
         return;
       }
