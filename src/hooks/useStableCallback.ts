@@ -8,7 +8,7 @@ type Callback = (...args: any[]) => any;
 export const useStableCallback = (callback: Callback) => {
   const callbackRef = useRef<Callback>();
   const memoCallback = useCallback(
-    (...args) => callbackRef.current && callbackRef.current(...args),
+    (...args: any) => callbackRef.current && callbackRef.current(...args),
     []
   );
   useEffect(() => {

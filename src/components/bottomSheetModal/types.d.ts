@@ -46,8 +46,5 @@ export interface BottomSheetModalProps
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode
    */
-  children:
-    | (({ data: any }?) => React.ReactNode)
-    | React.ReactNode[]
-    | React.ReactNode;
+  children: React.FC<{ data: any }> | React.ReactNode[] | React.ReactNode;
 }

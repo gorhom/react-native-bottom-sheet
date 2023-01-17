@@ -33,5 +33,5 @@ export interface BottomSheetDefaultFooterProps extends BottomSheetFooterProps {
    *
    * @type {ReactNode | ReactNode[]}
    */
-  children?: ReactNode | ReactNode[];
+  children?: (() => ReactNode) | ReactNode | ReactNode[];
 }

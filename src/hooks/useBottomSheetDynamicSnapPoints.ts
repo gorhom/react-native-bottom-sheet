@@ -45,7 +45,7 @@ export const useBottomSheetDynamicSnapPoints = (
       nativeEvent: {
         layout: { height },
       },
-    }) => {
+    }: any) => {
       animatedContentHeight.value = height;
     },
     [animatedContentHeight]

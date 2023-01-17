@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { ViewProps } from 'react-native';
+import type { ViewProps } from 'react-native';
 import Animated, {
   interpolate,
   Extrapolate,
@@ -115,6 +115,7 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   return pressBehavior !== 'none' ? (
+    // @ts-ignore
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View
         style={containerStyle}

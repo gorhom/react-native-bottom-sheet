@@ -13,7 +13,7 @@ const BottomSheetTextInputComponent = forwardRef<
 
   //#region callbacks
   const handleOnFocus = useCallback(
-    args => {
+    (args: any) => {
       shouldHandleKeyboardEvents.value = true;
       if (onFocus) {
         onFocus(args);
@@ -22,7 +22,7 @@ const BottomSheetTextInputComponent = forwardRef<
     [onFocus, shouldHandleKeyboardEvents]
   );
   const handleOnBlur = useCallback(
-    args => {
+    (args: any) => {
       shouldHandleKeyboardEvents.value = false;
       if (onBlur) {
         onBlur(args);

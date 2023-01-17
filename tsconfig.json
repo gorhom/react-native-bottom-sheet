@@ -21,7 +21,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "importsNotUsedAsValues": "error"
   },
   "exclude": ["example"],
   "include": ["src"]

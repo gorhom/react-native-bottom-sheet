@@ -142,25 +142,25 @@ const BottomSheetModalComponent = forwardRef<
     }
     bottomSheetRef.current?.snapToPosition(...args);
   }, []);
-  const handleExpand = useCallback((...args) => {
+  const handleExpand = useCallback((...args: any[]) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.expand(...args);
   }, []);
-  const handleCollapse = useCallback((...args) => {
+  const handleCollapse = useCallback((...args: any[]) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.collapse(...args);
   }, []);
-  const handleClose = useCallback((...args) => {
+  const handleClose = useCallback((...args: any[]) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.close(...args);
   }, []);
-  const handleForceClose = useCallback((...args) => {
+  const handleForceClose = useCallback((...args: any[]) => {
     if (minimized.current) {
       return;
     }
