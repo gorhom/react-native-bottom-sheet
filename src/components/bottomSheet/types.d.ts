@@ -299,11 +299,11 @@ export interface BottomSheetProps
    */
   backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
   /**
-   * Component to be placed as a footer.
+   * Function to render as the footer.
    * @see {BottomSheetFooterProps}
-   * @type React.FC\<BottomSheetFooterProps\>
+   * @type (props: BottomSheetFooterProps) => React.ReactElement | null;
    */
-  footerComponent?: React.FC<BottomSheetFooterProps>;
+  renderFooter?: (props: BottomSheetFooterProps) => React.ReactElement | null;
   /**
    * A scrollable node or normal view.
    * @type (() => React.ReactElement) | React.ReactNode[] | React.ReactNode
