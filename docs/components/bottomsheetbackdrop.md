@@ -71,7 +71,7 @@ What should happen when user press backdrop?
 
 | type                              | default | required |
 | --------------------------------- | ------- | -------- |
-| `BackdropPressBehavior` \| number | 'close' | NO       |
+| `BackdropPressBehavior` \| number | 'none' | NO       |
 
 ## Example
 
