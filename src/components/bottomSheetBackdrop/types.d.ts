@@ -50,4 +50,20 @@ export interface BottomSheetDefaultBackdropProps
    * Child component that will be rendered on backdrop.
    */
   children?: ReactNode | ReactNode[];
+
+  /**
+   * Top inset value helps to calculate percentage snap points values,
+   * usually comes from `@react-navigation/stack` hook `useHeaderHeight` or
+   * from `react-native-safe-area-context` hook `useSafeArea`.
+   * @type number
+   * @default 0
+   */
+  topInset?: number;
+  /**
+   * Bottom inset value helps to calculate percentage snap points values,
+   * usually comes from `react-native-safe-area-context` hook `useSafeArea`.
+   * @type number
+   * @default 0
+   */
+  bottomInset?: number;
 }

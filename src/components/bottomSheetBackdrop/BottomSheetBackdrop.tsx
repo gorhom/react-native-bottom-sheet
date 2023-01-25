@@ -19,6 +19,8 @@ import {
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
   DEFAULT_PRESS_BEHAVIOR,
+  DEFAULT_TOP_INSET,
+  DEFAULT_BOTTOM_INSET,
 } from './constants';
 import { styles } from './styles';
 import type { BottomSheetDefaultBackdropProps } from './types';
@@ -33,6 +35,8 @@ const BottomSheetBackdropComponent = ({
   onPress,
   style,
   children,
+  topInset = DEFAULT_TOP_INSET,
+  bottomInset = DEFAULT_BOTTOM_INSET,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
@@ -96,8 +100,13 @@ const BottomSheetBackdropComponent = ({
     flex: 1,
   }));
   const containerStyle = useMemo(
-    () => [styles.container, style, containerAnimatedStyle],
-    [style, containerAnimatedStyle]
+    () => [
+      styles.container,
+      style,
+      containerAnimatedStyle,
+      { top: topInset, bottom: bottomInset },
+    ],
+    [style, containerAnimatedStyle, topInset, bottomInset]
   );
   //#endregion
 
