@@ -250,9 +250,13 @@ export interface BottomSheetProps
   /**
    * Callback when the sheet about to animate to a new position.
    *
-   * @type (fromIndex: number, toIndex: number) => void;
+   * @type (fromIndex: number, toIndex: number, source: ANIMATION_SOURCE) => void;
    */
-  onAnimate?: (fromIndex: number, toIndex: number) => void;
+  onAnimate?: (
+    fromIndex: number,
+    toIndex: number,
+    source: ANIMATION_SOURCE
+  ) => void;
   //#endregion
 
   //#region components
