@@ -1,15 +1,15 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
+import React, { memo, useCallback, useMemo, useRef } from "react";
 import {
   LayoutChangeEvent,
   StatusBar,
   StyleProp,
   View,
   ViewStyle,
-} from 'react-native';
-import { WINDOW_HEIGHT } from '../../constants';
-import { print } from '../../utilities';
-import { styles } from './styles';
-import type { BottomSheetContainerProps } from './types';
+} from "react-native";
+import { WINDOW_HEIGHT } from "../../constants";
+import { print } from "../../utilities";
+import { styles } from "./styles";
+import type { BottomSheetContainerProps } from "./types";
 
 function BottomSheetContainerComponent({
   containerHeight,
@@ -30,7 +30,7 @@ function BottomSheetContainerComponent({
       {
         top: topInset,
         bottom: bottomInset,
-        overflow: detached ? 'visible' : 'hidden',
+        overflow: detached ? "visible" : "hidden",
       },
     ],
     [style, detached, topInset, bottomInset]
@@ -48,6 +48,7 @@ function BottomSheetContainerComponent({
 
       containerRef.current?.measure(
         (_x, _y, _width, _height, _pageX, pageY) => {
+          if (!containerOffset.value) return;
           containerOffset.value = {
             top: pageY,
             left: 0,
@@ -62,7 +63,7 @@ function BottomSheetContainerComponent({
 
       print({
         component: BottomSheetContainer.displayName,
-        method: 'handleContainerLayout',
+        method: "handleContainerLayout",
         params: {
           height,
         },
@@ -86,6 +87,6 @@ function BottomSheetContainerComponent({
 }
 
 const BottomSheetContainer = memo(BottomSheetContainerComponent);
-BottomSheetContainer.displayName = 'BottomSheetContainer';
+BottomSheetContainer.displayName = "BottomSheetContainer";
 
 export default BottomSheetContainer;
