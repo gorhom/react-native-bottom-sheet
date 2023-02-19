@@ -1370,12 +1370,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * Calculate the keyboard height in the container.
          */
-        animatedKeyboardHeightInContainer.value = $modal
-          ? Math.abs(
-              _keyboardHeight -
-                Math.abs(bottomInset - animatedContainerOffset.value.bottom)
-            )
-          : Math.abs(_keyboardHeight - animatedContainerOffset.value.bottom);
+        animatedKeyboardHeightInContainer.value =
+          _keyboardHeight === 0
+            ? 0
+            : $modal
+            ? Math.abs(
+                _keyboardHeight -
+                  Math.abs(bottomInset - animatedContainerOffset.value.bottom)
+              )
+            : Math.abs(_keyboardHeight - animatedContainerOffset.value.bottom);
 
         /**
          * if keyboard state is equal to the previous state, then exit the method
