@@ -137,7 +137,7 @@ export type GestureEventContextType = {
 
 export type GestureEventHandlerCallbackType = (
   source: GESTURE_SOURCE,
-  event: GestureStateChangeEvent<PanGestureHandlerEventPayload>
+  payload: GestureEventPayloadType
 ) => void;
 
 export type GestureEventsHandlersHookType = () => {

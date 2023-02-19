@@ -76,7 +76,7 @@ const DetachedExample = () => {
         snapPoints={animatedSnapPoints}
         handleHeight={animatedHandleHeight}
         contentHeight={animatedContentHeight}
-        bottomInset={safeBottomArea + 34}
+        bottomInset={safeBottomArea + 16}
         enablePanDownToClose={true}
         style={styles.sheetContainer}
         backgroundComponent={null}
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingTop: 12,
     paddingBottom: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
   },
   footer: {
     justifyContent: 'center',

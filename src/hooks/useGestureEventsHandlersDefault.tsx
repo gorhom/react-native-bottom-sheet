@@ -33,7 +33,6 @@ const INITIAL_CONTEXT: GestureEventContextType = {
 
 const resetContext = (context: any) => {
   'worklet';
-
   Object.keys(context).map(key => {
     context[key] = undefined;
   });
