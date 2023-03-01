@@ -6,6 +6,7 @@ import type {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
+import type { FlashList } from '@shopify/flash-list';
 import type {
   GestureEventPayload,
   PanGestureHandlerEventPayload,
@@ -107,7 +108,7 @@ export interface BottomSheetVariables {
 }
 
 //#region scrollables
-export type Scrollable = FlatList | ScrollView | SectionList;
+export type Scrollable = FlatList | FlashList | ScrollView | SectionList;
 export type ScrollableRef = {
   id: number;
   node: React.RefObject<Scrollable>;

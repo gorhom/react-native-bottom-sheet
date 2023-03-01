@@ -25,6 +25,7 @@ export {
   BottomSheetScrollView,
   BottomSheetSectionList,
   BottomSheetFlatList,
+  BottomSheetFlashList,
   BottomSheetVirtualizedList,
 } from './components/bottomSheetScrollable';
 export { default as BottomSheetHandle } from './components/bottomSheetHandle';
@@ -56,6 +57,7 @@ export type { BottomSheetFooterProps } from './components/bottomSheetFooter';
 
 export type {
   BottomSheetFlatListMethods,
+  BottomSheetFlashListMethods,
   BottomSheetScrollViewMethods,
   BottomSheetSectionListMethods,
   BottomSheetVirtualizedListMethods,
