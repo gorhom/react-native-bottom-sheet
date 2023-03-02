@@ -7,8 +7,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { StyleSheet } from 'react-native';
 import { Portal, usePortal } from '@gorhom/portal';
 import BottomSheet from '../bottomSheet';
+import FullWindowOverlay from '../fullWindowOverlay/FullWindowOverlay';
 import { useBottomSheetModalInternal } from '../../hooks';
 import { print } from '../../utilities';
 import {
@@ -375,23 +377,26 @@ const BottomSheetModalComponent = forwardRef<
       handleOnUpdate={handlePortalRender}
       handleOnUnmount={handlePortalOnUnmount}
     >
-      <BottomSheet
-        {...bottomSheetProps}
-        ref={bottomSheetRef}
-        key={key}
-        index={index}
-        snapPoints={snapPoints}
-        enablePanDownToClose={enablePanDownToClose}
-        animateOnMount={animateOnMount}
-        containerHeight={containerHeight}
-        containerOffset={containerOffset}
-        onChange={handleBottomSheetOnChange}
-        onClose={handleBottomSheetOnClose}
-        children={
-          typeof Content === 'function' ? <Content data={data} /> : Content
-        }
-        $modal={true}
-      />
+      {/* FullWindowOverlay will only be used if your project has react-native-screens installed, otherwise children is just returned */}
+      <FullWindowOverlay style={StyleSheet.absoluteFill}>
+        <BottomSheet
+          {...bottomSheetProps}
+          ref={bottomSheetRef}
+          key={key}
+          index={index}
+          snapPoints={snapPoints}
+          enablePanDownToClose={enablePanDownToClose}
+          animateOnMount={animateOnMount}
+          containerHeight={containerHeight}
+          containerOffset={containerOffset}
+          onChange={handleBottomSheetOnChange}
+          onClose={handleBottomSheetOnClose}
+          children={
+            typeof Content === 'function' ? <Content data={data} /> : Content
+          }
+          $modal={true}
+        />
+      </FullWindowOverlay>
     </Portal>
   ) : null;
 });
