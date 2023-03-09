@@ -242,6 +242,12 @@ export interface BottomSheetProps
    */
   onChange?: (index: number) => void;
   /**
+   * Callback injected before the sheet is about to close. Return value of the promise determines whether to continue closing.
+   *
+   * @type () => Promise<boolean>;
+   */
+  onRequestClose?: () => Promise<boolean>;
+  /**
    * Callback when the sheet close.
    *
    * @type () => void;

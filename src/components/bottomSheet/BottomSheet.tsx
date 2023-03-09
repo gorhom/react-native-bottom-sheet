@@ -143,6 +143,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       // callbacks
       onChange: _providedOnChange,
+      onRequestClose: _providedOnRequestClose,
       onClose: _providedOnClose,
       onAnimate: _providedOnAnimate,
 
@@ -848,7 +849,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
     const handleClose = useCallback(
-      function handleClose(
+      async function handleClose(
         animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         print({
@@ -869,6 +870,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           nextPosition === animatedNextPosition.value ||
           isForcedClosing.value
         ) {
+          return;
+        }
+
+        /**
+         * If an onRequestClose handler is provided, we await the return value to determine whether to proceed with closing.
+         */
+        if(_providedOnRequestClose && !(await _providedOnRequestClose())) {
           return;
         }
 
