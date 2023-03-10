@@ -216,6 +216,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedNextPositionIndex = useSharedValue(0);
 
     // conditional
+    const shouldCloseWithoutCallbacks = useSharedValue(false);
     const isAnimatedOnMount = useSharedValue(false);
     const isContentHeightFixed = useSharedValue(false);
     const isLayoutCalculated = useDerivedValue(() => {
@@ -601,6 +602,34 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [_providedOnChange, animatedCurrentIndex]
     );
+
+    const handleOnClose = async (fromIndex: number) => {
+      print({
+        component: BottomSheet.name,
+        method: handleOnClose.name,
+        params: {
+          fromIndex
+        },
+      });
+        /**
+         * If an onRequestClose handler is provided, we await the return value to determine whether to proceed with closing.
+         */
+        if(_providedOnRequestClose) {
+         
+          handleSnapToIndex(fromIndex);
+
+          if((await _providedOnRequestClose())) {
+            shouldCloseWithoutCallbacks.value = true;
+            handleForceClose();
+          } 
+
+          return;
+        }
+
+        _providedOnClose && _providedOnClose();
+
+      }
+    
     const handleOnAnimate = useCallback(
       function handleOnAnimate(toPoint: number) {
         const snapPoints = animatedSnapPoints.value;
@@ -849,7 +878,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
     const handleClose = useCallback(
-      async function handleClose(
+      function handleClose(
         animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         print({
@@ -873,12 +902,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        /**
-         * If an onRequestClose handler is provided, we await the return value to determine whether to proceed with closing.
-         */
-        if(_providedOnRequestClose && !(await _providedOnRequestClose())) {
-          return;
-        }
 
         /**
          * reset temporary position variable.
@@ -1519,6 +1542,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        const prevIndex = animatedCurrentIndex.value;
+
         /**
          * if the index is not equal to the current index,
          * than the sheet position had changed and we trigger
@@ -1541,16 +1566,24 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * if index is `-1` than we fire the `onClose` callback.
          */
-        if (_animatedIndex === -1 && _providedOnClose) {
-          runOnJS(print)({
-            component: BottomSheet.name,
-            method: 'useAnimatedReaction::onClose',
-            params: {
-              animatedCurrentIndex: animatedCurrentIndex.value,
-              animatedIndex: _animatedIndex,
-            },
-          });
-          runOnJS(_providedOnClose)();
+        if (_animatedIndex === -1) {
+          if(shouldCloseWithoutCallbacks.value === false) {
+            runOnJS(handleOnClose)(prevIndex);
+            runOnJS(print)({
+              component: BottomSheet.name,
+              method: 'useAnimatedReaction::onClose',
+              params: {
+                animatedCurrentIndex: animatedCurrentIndex.value,
+                animatedIndex: _animatedIndex,
+              },
+            });
+          } else {
+            shouldCloseWithoutCallbacks.value = false
+            if(_providedOnClose){
+              runOnJS(_providedOnClose)();
+            }
+          }
+   
         }
       },
       [handleOnChange, _providedOnClose]

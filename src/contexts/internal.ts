@@ -65,6 +65,7 @@ export interface BottomSheetInternalContextType
   shouldHandleKeyboardEvents: Animated.SharedValue<boolean>;
 
   // methods
+  onRequestClose?: () => Promise<boolean>;
   stopAnimation: () => void;
   animateToPosition: AnimateToPositionType;
   setScrollableRef: (ref: ScrollableRef) => void;
