@@ -266,6 +266,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     });
     const isInTemporaryPosition = useSharedValue(false);
     const isForcedClosing = useSharedValue(false);
+    const shouldPreventOnRequestClose = useSharedValue(false);
 
     // gesture
     const animatedContentGestureState = useSharedValue<State>(
@@ -957,6 +958,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isForcedClosing.value = true;
 
+        /**
+         * set should prevent on request close variable.
+         */
+        shouldPreventOnRequestClose.value = true;
+
         runOnUI(animateToPosition)(
           nextPosition,
           ANIMATION_SOURCE.USER,
@@ -1503,6 +1509,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => ({
         _animatedIndex: animatedIndex.value,
         _animatedPosition: animatedPosition.value,
+        _shouldPreventOnRequestClose: shouldPreventOnRequestClose.value,
         _animationState: animatedAnimationState.value,
         _contentGestureState: animatedContentGestureState.value,
         _handleGestureState: animatedHandleGestureState.value,
@@ -1510,6 +1517,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ({
         _animatedIndex,
         _animationState,
+        _shouldPreventOnRequestClose,
         _contentGestureState,
         _handleGestureState,
       }) => {
@@ -1566,8 +1574,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * if index is `-1` than we fire the `onClose` callback.
          */
-        if (_animatedIndex === -1) {
-          if(shouldCloseWithoutCallbacks.value === false) {
+        if (_animatedIndex === -1 && _animatedIndex !== prevIndex) {
+          if(!_shouldPreventOnRequestClose && shouldCloseWithoutCallbacks.value === false) {
             runOnJS(handleOnClose)(prevIndex);
             runOnJS(print)({
               component: BottomSheet.name,
