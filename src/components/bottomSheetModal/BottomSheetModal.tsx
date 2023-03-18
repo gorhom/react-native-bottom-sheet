@@ -142,30 +142,36 @@ const BottomSheetModalComponent = forwardRef<
     }
     bottomSheetRef.current?.snapToPosition(...args);
   }, []);
-  const handleExpand = useCallback((...args) => {
+  const handleExpand: BottomSheetMethods['expand'] = useCallback((...args) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.expand(...args);
   }, []);
-  const handleCollapse = useCallback((...args) => {
-    if (minimized.current) {
-      return;
-    }
-    bottomSheetRef.current?.collapse(...args);
-  }, []);
-  const handleClose = useCallback((...args) => {
+  const handleCollapse: BottomSheetMethods['collapse'] = useCallback(
+    (...args) => {
+      if (minimized.current) {
+        return;
+      }
+      bottomSheetRef.current?.collapse(...args);
+    },
+    []
+  );
+  const handleClose: BottomSheetMethods['close'] = useCallback((...args) => {
     if (minimized.current) {
       return;
     }
     bottomSheetRef.current?.close(...args);
   }, []);
-  const handleForceClose = useCallback((...args) => {
-    if (minimized.current) {
-      return;
-    }
-    bottomSheetRef.current?.forceClose(...args);
-  }, []);
+  const handleForceClose: BottomSheetMethods['forceClose'] = useCallback(
+    (...args) => {
+      if (minimized.current) {
+        return;
+      }
+      bottomSheetRef.current?.forceClose(...args);
+    },
+    []
+  );
   //#endregion
 
   //#region bottom sheet modal methods
@@ -381,9 +387,7 @@ const BottomSheetModalComponent = forwardRef<
         containerOffset={containerOffset}
         onChange={handleBottomSheetOnChange}
         onClose={handleBottomSheetOnClose}
-        children={
-          typeof Content === 'function' ? <Content data={data} /> : Content
-        }
+        children={typeof Content === 'function' ? Content({ data }) : Content}
         $modal={true}
       />
     </Portal>
