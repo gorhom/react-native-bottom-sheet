@@ -275,7 +275,7 @@ export interface BottomSheetProps
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode
    */
-  children: (() => React.ReactNode) | React.ReactNode[] | React.ReactNode;
+  children: React.ReactNode;
   //#endregion
 
   //#region private
