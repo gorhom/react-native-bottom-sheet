@@ -1,0 +1,99 @@
+diff --git a/node_modules/react-native-reanimated/lib/index.web.js b/node_modules/react-native-reanimated/lib/index.web.js
+index e3133c4..cfe93a9 100644
+--- a/node_modules/react-native-reanimated/lib/index.web.js
++++ b/node_modules/react-native-reanimated/lib/index.web.js
+@@ -1,4 +1,14 @@
+ // tree-shaken side effects
++import webGlobalIsInitialized from './reanimated2/js-reanimated/global';
++if (!webGlobalIsInitialized) {
++  /* 
++    `webGlobalIsInitialized` should always be `true`, 
++    but we need to use `webGlobalIsInitialized` somewhere to ensure function execution, 
++    in another way, the bundler can remove unused variables. 
++  */
++  console.error('[Reanimated] Unable to initialize global objects for web.');
++}
++
+ import './reanimated2/js-reanimated/global';
+ // @ts-ignore backward compatibility with treeshaking
+ export * from './reanimated1';
+diff --git a/node_modules/react-native-reanimated/lib/reanimated2/js-reanimated/global.js b/node_modules/react-native-reanimated/lib/reanimated2/js-reanimated/global.js
+index ce8f449..5404db8 100644
+--- a/node_modules/react-native-reanimated/lib/reanimated2/js-reanimated/global.js
++++ b/node_modules/react-native-reanimated/lib/reanimated2/js-reanimated/global.js
+@@ -1,31 +1,44 @@
+ // In order to keep bundle size down, we treat this file as a polyfill for Web.
++
+ import { shouldBeUseWeb } from '../PlatformChecker';
+ const initializeGlobalsForWeb = () => {
+-    if (shouldBeUseWeb()) {
+-        global._frameTimestamp = null;
+-        global._setGlobalConsole = (_val) => {
+-            // noop
+-        };
+-        global._measure = () => {
+-            console.warn("[Reanimated] You can't use `measure` with Chrome Debugger or with web version");
+-            return {
+-                x: 0,
+-                y: 0,
+-                width: 0,
+-                height: 0,
+-                pageX: 0,
+-                pageY: 0,
+-            };
+-        };
+-        global._scrollTo = () => {
+-            console.warn("[Reanimated] You can't use `scrollTo` with Chrome Debugger or with web version");
+-        };
+-        global._setGestureState = () => {
+-            console.warn("[Reanimated] You can't use `setGestureState` with Chrome Debugger or with web version");
+-        };
+-    }
+-    return true;
++  if (shouldBeUseWeb()) {
++    global._frameTimestamp = null;
++    global._setGlobalConsole = (_val) => {
++      // noop
++    };
++    global._measure = () => {
++      console.warn(
++        "[Reanimated] You can't use `measure` with Chrome Debugger or with web version"
++      );
++      return {
++        x: 0,
++        y: 0,
++        width: 0,
++        height: 0,
++        pageX: 0,
++        pageY: 0,
++      };
++    };
++    global._scrollTo = () => {
++      console.warn(
++        "[Reanimated] You can't use `scrollTo` with Chrome Debugger or with web version"
++      );
++    };
++    global._dispatchCommand = () => {
++      console.warn(
++        "[Reanimated] You can't use `scrollTo` or `dispatchCommand` methods with Chrome Debugger or with web version"
++      );
++    };
++    global._setGestureState = () => {
++      console.warn(
++        "[Reanimated] You can't use `setGestureState` with Chrome Debugger or with web version"
++      );
++    };
++  }
++  return true;
+ };
++
+ /*
+   If a file doesn't export anything, tree shaking doesn't pack 
+   it into the JS bundle. In effect, the code inside of this file 
+@@ -33,4 +46,5 @@ const initializeGlobalsForWeb = () => {
+   into a function, and we call this one during creating 
+   the module export object.
+ */
++
+ export default initializeGlobalsForWeb();
+\ No newline at end of file
