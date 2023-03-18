@@ -1,6 +1,22 @@
 ## Changelog
 
-### [v4.4.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.4...v4.4.5) - 
+### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.5...v5.0.0-alpha.0) - 
+
+#### New Features
+
+- added web support (#1150) ([`a996b4a`](https://github.com/gorhom/react-native-bottom-sheet/commit/a996b4aa68139136ec75e0921025d235471c838d))
+- rewrite gesture apis with gesture handler 2 (#1126) ([`6a4d296`](https://github.com/gorhom/react-native-bottom-sheet/commit/6a4d2967684b01e28f23b1b35afbb4cc4dabaf1d))
+
+#### Fixes
+
+- (#1119): fixed race condition between onmount and keyboard animations ([`a1ec74d`](https://github.com/gorhom/react-native-bottom-sheet/commit/a1ec74dbbc85476bb39f3637e9a97214e0cad9a0))
+- correctly check for non-null object (#1122)(by @stropho) ([`54abf0c`](https://github.com/gorhom/react-native-bottom-sheet/commit/54abf0c0832d1451dfe11be212fc5f938ff5c5fd))
+
+#### Chores And Housekeeping
+
+- updated reanimated to v3 (#1324) ([`4829316`](https://github.com/gorhom/react-native-bottom-sheet/commit/4829316beeff95c9e2efa5fbfdfcf7ef37b4af60))
+
+### [v4.4.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.4...v4.4.5) -  19 September 2022 
 
 #### Refactoring and Updates
 
