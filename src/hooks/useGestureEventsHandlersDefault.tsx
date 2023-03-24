@@ -39,6 +39,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       overDragResistanceFactor,
       isInTemporaryPosition,
       isScrollableRefreshable,
+      isScrollableLocked,
       animateToPosition,
       stopAnimation,
     } = useBottomSheetInternal();
@@ -110,6 +111,14 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             isScrollableRefreshable.value &&
             animatedPosition.value === highestSnapPoint
           ) {
+            return;
+          }
+
+          /**
+           * if scrollable isn't currently marked as translatable, then do not
+           * interact with current gesture.
+           */
+          if (source === GESTURE_SOURCE.SCROLLABLE && !isScrollableLocked.value) {
             return;
           }
 
@@ -233,6 +242,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           context
         ) {
           const highestSnapPoint = animatedHighestSnapPoint.value;
+
           const isSheetAtHighestSnapPoint =
             animatedPosition.value === highestSnapPoint;
 
@@ -245,6 +255,10 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             isScrollableRefreshable.value &&
             isSheetAtHighestSnapPoint
           ) {
+            return;
+          }
+
+          if (!isScrollableLocked.value && animatedSnapPoints.value.includes(animatedPosition.value)) {
             return;
           }
 
@@ -353,6 +367,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           enablePanDownToClose,
           isInTemporaryPosition,
           isScrollableRefreshable,
+          isScrollableLocked,
           animatedClosedPosition,
           animatedHighestSnapPoint,
           animatedKeyboardHeight,
