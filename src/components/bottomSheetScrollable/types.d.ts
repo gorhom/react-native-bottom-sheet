@@ -47,6 +47,11 @@ export interface BottomSheetScrollableProps {
    * @default useScrollEventsHandlersDefault
    */
   scrollEventsHandlersHook?: ScrollEventsHandlersHookType;
+
+  /**
+   * An initial scroll buffer to prevent the bottom sheet from immediately following the scroll gesture.
+   */
+  scrollBuffer?: number;
 }
 
 export type ScrollableProps<T> =
