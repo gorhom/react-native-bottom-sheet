@@ -15,6 +15,7 @@ import type {
   View,
   ScrollViewComponent,
   NodeHandle,
+  ScrollResponderMixin,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { ScrollEventsHandlersHookType } from '../../types';
@@ -114,7 +115,7 @@ export interface BottomSheetFlatListMethods {
   /**
    * Provides a handle to the underlying scroll responder.
    */
-  getScrollResponder: () => ReactNode | null | undefined;
+  getScrollResponder: () => ScrollResponderMixin | null | undefined;
 
   /**
    * Provides a reference to the underlying host component
@@ -175,7 +176,7 @@ export interface BottomSheetScrollViewMethods {
    * implement this method so that they can be composed while providing access
    * to the underlying scroll responder's methods.
    */
-  getScrollResponder(): ReactNode;
+  getScrollResponder(): ScrollResponderMixin;
 
   getScrollableNode(): any;
 
@@ -231,7 +232,7 @@ export interface BottomSheetSectionListMethods {
   /**
    * Provides a handle to the underlying scroll responder.
    */
-  getScrollResponder(): ScrollView | undefined;
+  getScrollResponder(): ScrollResponderMixin | undefined;
 
   /**
    * Provides a handle to the underlying scroll node.
