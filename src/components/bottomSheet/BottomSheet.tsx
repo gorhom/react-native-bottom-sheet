@@ -1190,8 +1190,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region styles
     const containerAnimatedStyle = useAnimatedStyle(
       () => ({
-        opacity:
-          Platform.OS === 'android' && animatedIndex.value === -1 ? 0 : 1,
         transform: [
           {
             translateY: animatedPosition.value,
