@@ -66,6 +66,7 @@
   "peerDependencies": {
     "@types/react": "*",
     "@types/react-native": "*",
+    "@shopify/flash-list": "*",
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=1.10.1",
