@@ -14,7 +14,8 @@ export type ScrollEventContextType = {
 export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
   scrollableRef,
   scrollableContentOffsetY,
-  scrollBuffer
+  scrollBuffer,
+  preserveScrollMomentum
 ) => {
   // hooks
   const {
@@ -25,6 +26,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     isScrollableLocked,
   } = useBottomSheetInternal();
   const awaitingFirstScroll = useSharedValue(false);
+  const scrollEnded = useSharedValue(false);
 
   //#region callbacks
   const handleOnScroll: ScrollEventHandlerCallbackType<ScrollEventContextType> =
@@ -36,9 +38,9 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
          * handleOnBeginDrag, and the scrollable shouldn't be locked when scrolling back to the
          * start of the list.
          */
-        if (scrollBuffer && awaitingFirstScroll.value && !isScrollableLocked.value) {
+        if ((preserveScrollMomentum || scrollBuffer) && awaitingFirstScroll.value && !isScrollableLocked.value) {
           const isScrollingTowardsBottom = context.initialContentOffsetY < event.contentOffset.y;
-          if (isScrollingTowardsBottom && event.contentOffset.y > scrollBuffer && context.shouldLockInitialPosition) {
+          if (isScrollingTowardsBottom && event.contentOffset.y > (scrollBuffer ?? 0) && context.shouldLockInitialPosition) {
             isScrollableLocked.value = true;
             animatedScrollableState.value = SCROLLABLE_STATE.LOCKED;
             context.shouldLockInitialPosition = true;
@@ -58,12 +60,14 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
         }
 
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
-          const lockPosition = context.shouldLockInitialPosition
-            ? context.initialContentOffsetY ?? 0
-            : 0;
-          // @ts-ignore
-          scrollTo(scrollableRef, 0, lockPosition, false);
-          scrollableContentOffsetY.value = lockPosition;
+          if (!(preserveScrollMomentum && scrollEnded.value)) {
+            const lockPosition = context.shouldLockInitialPosition
+              ? context.initialContentOffsetY ?? 0
+              : 0;
+            // @ts-ignore
+            scrollTo(scrollableRef, 0, lockPosition, false);
+            scrollableContentOffsetY.value = lockPosition;
+          }
           return;
         }
       },
@@ -82,6 +86,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
         rootScrollableContentOffsetY.value = y;
         context.initialContentOffsetY = y;
         awaitingFirstScroll.value = true;
+        scrollEnded.value = false;
 
         if (scrollBuffer) {
           if (y <= 0 && (
@@ -93,7 +98,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
             isScrollableLocked.value = false;
           }
         } else {
-          isScrollableLocked.value = true;
+          isScrollableLocked.value = preserveScrollMomentum ? y <= 0 : true;
         }
 
         /**
@@ -118,8 +123,9 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     );
   const handleOnEndDrag: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useWorkletCallback(
-      ({ contentOffset: { y } }, context) => {
+      ({ contentOffset: { y }}, context) => {
         awaitingFirstScroll.value = false;
+        scrollEnded.value = true;
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
           const lockPosition = context.shouldLockInitialPosition
             ? context.initialContentOffsetY ?? 0
@@ -146,12 +152,14 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     useWorkletCallback(
       ({ contentOffset: { y } }, context) => {
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
-          const lockPosition = context.shouldLockInitialPosition
-            ? context.initialContentOffsetY ?? 0
-            : 0;
-          // @ts-ignore
-          scrollTo(scrollableRef, 0, lockPosition, false);
-          scrollableContentOffsetY.value = 0;
+          if (!(preserveScrollMomentum && scrollEnded.value)) {
+            const lockPosition = context.shouldLockInitialPosition
+              ? context.initialContentOffsetY ?? 0
+              : 0;
+            // @ts-ignore
+            scrollTo(scrollableRef, 0, lockPosition, false);
+            scrollableContentOffsetY.value = 0;
+          }
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {

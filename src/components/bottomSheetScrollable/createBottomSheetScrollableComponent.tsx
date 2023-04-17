@@ -38,6 +38,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       progressViewOffset,
       refreshControl,
       scrollBuffer,
+      preserveScrollMomentum,
       // events
       onScroll,
       onScrollBeginDrag,
@@ -57,7 +58,8 @@ export function createBottomSheetScrollableComponent<T, P>(
         onScroll,
         onScrollBeginDrag,
         onScrollEndDrag,
-        scrollBuffer
+        scrollBuffer,
+        preserveScrollMomentum
       );
     const {
       enableContentPanningGesture,
@@ -69,8 +71,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#region variables
     const scrollableAnimatedProps = useAnimatedProps(
       () => ({
-        decelerationRate:
-          SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
+        ...(preserveScrollMomentum ? {} : {decelerationRate: SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value]}),
         showsVerticalScrollIndicator: showsVerticalScrollIndicator
           ? animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED
           : showsVerticalScrollIndicator,
@@ -107,6 +108,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       scrollableContentOffsetY,
       onRefresh !== undefined,
       scrollBuffer,
+      preserveScrollMomentum,
       focusHook
     );
     //#endregion

@@ -52,6 +52,11 @@ export interface BottomSheetScrollableProps {
    * An initial scroll buffer to prevent the bottom sheet from immediately following the scroll gesture.
    */
   scrollBuffer?: number;
+
+  /**
+   * Whether or not to preserve scroll momentum when expanding a scrollable bottom sheet component.
+   */
+  preserveScrollMomentum?: boolean;
 }
 
 export type ScrollableProps<T> =
