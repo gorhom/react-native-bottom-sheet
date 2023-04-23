@@ -42,7 +42,7 @@ const App = () => {
 ### `present`
 
 ```ts
-type present = (data: any) => void;
+type present = (data?: any) => void;
 ```
 
 Mount and present the modal.
