@@ -225,6 +225,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           animatedScrollableContentOffsetY,
         ]
       );
+    const dismissKeyboard = () => Keyboard.dismiss()
     const handleOnEnd: GestureEventHandlerCallbackType<GestureEventContextType> =
       useWorkletCallback(
         function handleOnEnd(
@@ -296,7 +297,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
                 absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
               )
             ) {
-              runOnJS(Keyboard.dismiss)();
+              runOnJS(dismissKeyboard)();
             }
           }
 
