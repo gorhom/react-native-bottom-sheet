@@ -31,7 +31,7 @@ export interface BottomSheetDefaultFooterProps extends BottomSheetFooterProps {
   /**
    * Component to be placed in the footer.
    *
-   * @type {ReactNode | ReactNode[]}
+   * @type {ReactNode|ReactNode[]}
    */
   children?: ReactNode | ReactNode[];
 }
