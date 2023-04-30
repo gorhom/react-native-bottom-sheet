@@ -12,6 +12,8 @@ import {
 } from '@gorhom/bottom-sheet';
 import { useGestureTranslationY } from './GestureTranslationContext';
 
+const dismissKeyboardOnJs = runOnJS(Keyboard.dismiss);
+
 export const useCustomGestureEventsHandlers = () => {
   // hooks
   const gestureTranslationY = useGestureTranslationY();
@@ -266,7 +268,7 @@ export const useCustomGestureEventsHandlers = () => {
             absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
           )
         ) {
-          runOnJS(Keyboard.dismiss)();
+          dismissKeyboardOnJs();
         }
       }
 
