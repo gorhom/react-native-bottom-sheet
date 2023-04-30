@@ -39,13 +39,18 @@ export const useBottomSheetDynamicSnapPoints = (
     );
   }, []);
 
+  type HandleContentLayoutProps = {
+    nativeEvent: {
+      layout: { height: number };
+    };
+  };
   // callbacks
   const handleContentLayout = useCallback(
     ({
       nativeEvent: {
         layout: { height },
       },
-    }) => {
+    }: HandleContentLayoutProps) => {
       animatedContentHeight.value = height;
     },
     [animatedContentHeight]
