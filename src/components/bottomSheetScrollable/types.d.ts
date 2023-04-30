@@ -6,7 +6,6 @@ import type {
   RefObject,
 } from 'react';
 import type {
-  ScrollView,
   VirtualizedListProps,
   ScrollViewProps,
   FlatListProps,
