@@ -105,6 +105,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
+      callBackToInterruptClose,
 
       // styles
       style: _providedStyle,
@@ -1580,6 +1581,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         <BottomSheetInternalProvider value={internalContextVariables}>
           <BottomSheetGestureHandlersProvider
             gestureEventsHandlersHook={gestureEventsHandlersHook}
+            callBackToInterruptClose={callBackToInterruptClose}
           >
             <BottomSheetBackdropContainer
               key="BottomSheetBackdropContainer"

@@ -24,7 +24,7 @@ type GestureEventContextType = {
 const dismissKeyboardOnJs = runOnJS(Keyboard.dismiss);
 
 export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
-  () => {
+  (callBackToInterruptClose?: () => void) => {
     //#region variables
     const {
       animatedPosition,
@@ -321,11 +321,13 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           /**
            * calculate the destination point, using redash.
            */
-          const destinationPoint = snapPoint(
+          let destinationPoint = snapPoint(
             translationY + context.initialPosition,
             velocityY,
             snapPoints
           );
+
+          if (callBackToInterruptClose) destinationPoint = snapPoints[1];
 
           /**
            * if destination point is the same as the current position,
@@ -350,6 +352,10 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             ANIMATION_SOURCE.GESTURE,
             velocityY / 2
           );
+
+          if (callBackToInterruptClose) {
+            runOnJS(callBackToInterruptClose)();
+          }
         },
         [
           enablePanDownToClose,
@@ -363,6 +369,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           animatedSnapPoints,
           animatedScrollableContentOffsetY,
           animateToPosition,
+          callBackToInterruptClose
         ]
       );
     //#endregion

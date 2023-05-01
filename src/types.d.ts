@@ -141,7 +141,7 @@ export type GestureEventHandlerCallbackType<C = any> = (
   context: C
 ) => void;
 
-export type GestureEventsHandlersHookType = () => {
+export type GestureEventsHandlersHookType = (callBackToInterruptClose?: () => void) => {
   handleOnStart: GestureEventHandlerCallbackType;
   handleOnActive: GestureEventHandlerCallbackType;
   handleOnEnd: GestureEventHandlerCallbackType;

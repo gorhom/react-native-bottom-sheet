@@ -241,6 +241,13 @@ export interface BottomSheetProps
    * @type (index: number) => void;
    */
   onChange?: (index: number) => void;
+
+  /**
+   * Callback when the sheet tried to close. At that point the animation is stopped and execute the callback.
+   *
+   * @type () => void;
+   */
+  callBackToInterruptClose?: () => void;
   /**
    * Callback when the sheet close.
    *
