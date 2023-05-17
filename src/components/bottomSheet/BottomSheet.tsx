@@ -1284,15 +1284,28 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     useAnimatedReaction(
       () => ({
         snapPoints: animatedSnapPoints.value,
+        providedSnapPoints: ('value' in _providedSnapPoints
+          ? _providedSnapPoints.value
+          : _providedSnapPoints),
         containerHeight: animatedContainerHeight.value,
+        keyboardInputMode: android_keyboardInputMode,
       }),
       (result, _previousResult) => {
-        const { snapPoints, containerHeight } = result;
-        const _previousSnapPoints = _previousResult?.snapPoints;
+        const { 
+          snapPoints,
+          providedSnapPoints,
+          containerHeight,
+          keyboardInputMode
+        } = result;        const _previousSnapPoints = _previousResult?.snapPoints;
         const _previousContainerHeight = _previousResult?.containerHeight;
 
         if (
-          JSON.stringify(snapPoints) === JSON.stringify(_previousSnapPoints) ||
+          (JSON.stringify(snapPoints) === JSON.stringify(_previousSnapPoints) &&
+          Platform.OS !== "android") ||
+          (JSON.stringify(snapPoints) === JSON.stringify(_previousSnapPoints) &&
+          Platform.OS === "android" &&
+          keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize &&
+          providedSnapPoints.indexOf("100%") === -1) ||
           !isLayoutCalculated.value ||
           !isAnimatedOnMount.value ||
           containerHeight <= 0
