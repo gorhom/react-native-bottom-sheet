@@ -21,6 +21,7 @@ type GestureEventContextType = {
   isScrollablePositionLocked: boolean;
 };
 
+const dismissKeyboard = Keyboard.dismiss
 
 export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
   () => {
@@ -297,7 +298,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
                 absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
               )
             ) {
-              runOnJS(Keyboard.dismiss);
+              runOnJS(dismissKeyboard)
             }
           }
 
