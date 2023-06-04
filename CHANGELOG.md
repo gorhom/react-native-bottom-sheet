@@ -1,17 +1,30 @@
 ## Changelog
 
-### [v4.4.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.0...v4.4.6) - 
+### [v4.4.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.1...v4.4.7) - 
 
 #### Fixes
 
+- resume close animation when container gets resized (#1374) (#1392) ([`92ad842`](https://github.com/gorhom/react-native-bottom-sheet/commit/92ad84283afb389ee23768f0c29e7808af4b6b0c))
 - fixed keyboard dismissing issue with Reanimated v3 (#1346)(by @janicduplessis) ([`94cf11e`](https://github.com/gorhom/react-native-bottom-sheet/commit/94cf11eb43f9cc2a356da7e7967ec63baf390a74))
 - (BottomSheetScrollView): updated scroll responders props type (#1335)(by @eps1lon) ([`9c5af58`](https://github.com/gorhom/react-native-bottom-sheet/commit/9c5af584516690cb5143caabb7722e0c2340cc57))
+- crash on swipe down (#1367)(by @beqramo) ([`235466f`](https://github.com/gorhom/react-native-bottom-sheet/commit/235466fef552f2cf7cbbafb06029cdd879624606))
 
 #### Chores And Housekeeping
 
 - fixed types (#1123)(by @stropho) ([`d41eda2`](https://github.com/gorhom/react-native-bottom-sheet/commit/d41eda227e76b89432164ec8dc5cc1ebd5f638ee))
 
-### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.5...v5.0.0-alpha.0) -  18 March 2023 
+### [v5.0.0-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) -  30 April 2023 
+
+#### Fixes
+
+- (BottomSheetScrollView): updated scroll responders props type (#1335)(by @eps1lon) ([`e42fafc`](https://github.com/gorhom/react-native-bottom-sheet/commit/e42fafcc492d01665c296bf551a6a264eb866fc5))
+- fixed keyboard dismissing issue with Reanimated v3 (#1346)(by @janicduplessis) ([`1d1a464`](https://github.com/gorhom/react-native-bottom-sheet/commit/1d1a46489bede1d3f119df2fb6f467e778461c39))
+
+#### Chores And Housekeeping
+
+- fixed types (#1123)(by @stropho) ([`b440964`](https://github.com/gorhom/react-native-bottom-sheet/commit/b44096451d4fed81be7f08b0edf638e4a1c42ccd))
+
+### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.6...v5.0.0-alpha.0) -  18 March 2023 
 
 #### New Features
 
@@ -21,11 +34,22 @@
 #### Fixes
 
 - (#1119): fixed race condition between onmount and keyboard animations ([`a1ec74d`](https://github.com/gorhom/react-native-bottom-sheet/commit/a1ec74dbbc85476bb39f3637e9a97214e0cad9a0))
-- correctly check for non-null object (#1122)(by @stropho) ([`54abf0c`](https://github.com/gorhom/react-native-bottom-sheet/commit/54abf0c0832d1451dfe11be212fc5f938ff5c5fd))
 
 #### Chores And Housekeeping
 
 - updated reanimated to v3 (#1324) ([`4829316`](https://github.com/gorhom/react-native-bottom-sheet/commit/4829316beeff95c9e2efa5fbfdfcf7ef37b4af60))
+
+### [v4.4.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.5...v4.4.6) -  30 April 2023 
+
+#### Fixes
+
+- fixed keyboard dismissing issue with Reanimated v3 (#1346)(by @janicduplessis) ([`94cf11e`](https://github.com/gorhom/react-native-bottom-sheet/commit/94cf11eb43f9cc2a356da7e7967ec63baf390a74))
+- (BottomSheetScrollView): updated scroll responders props type (#1335)(by @eps1lon) ([`9c5af58`](https://github.com/gorhom/react-native-bottom-sheet/commit/9c5af584516690cb5143caabb7722e0c2340cc57))
+- correctly check for non-null object (#1122)(by @stropho) ([`54abf0c`](https://github.com/gorhom/react-native-bottom-sheet/commit/54abf0c0832d1451dfe11be212fc5f938ff5c5fd))
+
+#### Chores And Housekeeping
+
+- fixed types (#1123)(by @stropho) ([`d41eda2`](https://github.com/gorhom/react-native-bottom-sheet/commit/d41eda227e76b89432164ec8dc5cc1ebd5f638ee))
 
 ### [v4.4.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.4...v4.4.5) -  19 September 2022 
 
