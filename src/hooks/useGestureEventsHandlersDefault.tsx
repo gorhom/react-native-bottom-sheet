@@ -298,7 +298,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
                 absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
               )
             ) {
-              runOnJS(dismissKeyboard)
+              runOnJS(dismissKeyboard)();
             }
           }
 
