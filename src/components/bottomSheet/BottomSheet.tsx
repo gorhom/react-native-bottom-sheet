@@ -679,6 +679,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             currentPosition: animatedPosition.value,
             position,
             velocity,
+            animatedContainerHeight: animatedContainerHeight.value,
           },
         });
 
@@ -1291,6 +1292,31 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         const _previousSnapPoints = _previousResult?.snapPoints;
         const _previousContainerHeight = _previousResult?.containerHeight;
 
+        let nextPosition;
+        let animationConfig;
+        let animationSource = ANIMATION_SOURCE.SNAP_POINT_CHANGE;
+
+        /**
+         * if the bottom sheet is closing and the container gets resized,
+         * then we restart the closing animation to the new position.
+         */
+        if (
+          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          animatedNextPositionIndex.value === -1 &&
+          _previousContainerHeight !== containerHeight
+        ) {
+          animationSource = ANIMATION_SOURCE.CONTAINER_RESIZE;
+          animationConfig = {
+            duration: 0,
+          };
+          animateToPosition(
+            containerHeight,
+            animationSource,
+            0,
+            animationConfig
+          );
+        }
+
         if (
           JSON.stringify(snapPoints) === JSON.stringify(_previousSnapPoints) ||
           !isLayoutCalculated.value ||
@@ -1307,10 +1333,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             snapPoints,
           },
         });
-
-        let nextPosition;
-        let animationConfig;
-        let animationSource = ANIMATION_SOURCE.SNAP_POINT_CHANGE;
 
         /**
          * if snap points changed while sheet is animating, then
