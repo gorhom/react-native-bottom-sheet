@@ -35,6 +35,13 @@ export interface BottomSheetModalProps
    */
   enableDismissOnClose?: boolean;
 
+  /**
+   * Add a custom wrapper like FullWindowOverlay, allow to fix issue like https://github.com/gorhom/react-native-bottom-sheet/issues/832
+   * @type React.ComponentType
+   * @default undefined
+   */
+  bottomSheetWrapper?: React.ComponentType<React.PropsWithChildren<{}>>;
+
   // callbacks
   /**
    * Callback when the modal dismissed.

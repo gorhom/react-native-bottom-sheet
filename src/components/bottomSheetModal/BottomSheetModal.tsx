@@ -7,10 +7,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { StyleSheet } from 'react-native';
 import { Portal, usePortal } from '@gorhom/portal';
 import BottomSheet from '../bottomSheet';
-import FullWindowOverlay from '../fullWindowOverlay/FullWindowOverlay';
 import { useBottomSheetModalInternal } from '../../hooks';
 import { print } from '../../utilities';
 import {
@@ -47,6 +45,7 @@ const BottomSheetModalComponent = forwardRef<
     snapPoints,
     enablePanDownToClose = true,
     animateOnMount = true,
+    bottomSheetWrapper: BottomSheetWrapper = React.Fragment,
 
     // callbacks
     onChange: _providedOnChange,
@@ -377,8 +376,7 @@ const BottomSheetModalComponent = forwardRef<
       handleOnUpdate={handlePortalRender}
       handleOnUnmount={handlePortalOnUnmount}
     >
-      {/* FullWindowOverlay will only be used if your project has react-native-screens installed, otherwise children is just returned */}
-      <FullWindowOverlay style={StyleSheet.absoluteFill}>
+      <BottomSheetWrapper>
         <BottomSheet
           {...bottomSheetProps}
           ref={bottomSheetRef}
@@ -396,7 +394,7 @@ const BottomSheetModalComponent = forwardRef<
           }
           $modal={true}
         />
-      </FullWindowOverlay>
+      </BottomSheetWrapper>
     </Portal>
   ) : null;
 });
