@@ -1,9 +1,5 @@
 ## Changelog
 
-## [Unreleased]
-
-- Add `bottomSheetWrapper` prop for `BottomSheetModal` component (#832)(by @magrinj)
-
 ### [v4.4.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.1...v4.4.7) - 
 
 #### Fixes

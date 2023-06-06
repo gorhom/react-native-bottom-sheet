@@ -45,7 +45,7 @@ const BottomSheetModalComponent = forwardRef<
     snapPoints,
     enablePanDownToClose = true,
     animateOnMount = true,
-    bottomSheetWrapper: BottomSheetWrapper = React.Fragment,
+    containerComponent: ContainerComponent = React.Fragment,
 
     // callbacks
     onChange: _providedOnChange,
@@ -376,7 +376,7 @@ const BottomSheetModalComponent = forwardRef<
       handleOnUpdate={handlePortalRender}
       handleOnUnmount={handlePortalOnUnmount}
     >
-      <BottomSheetWrapper>
+      <ContainerComponent>
         <BottomSheet
           {...bottomSheetProps}
           ref={bottomSheetRef}
@@ -394,7 +394,7 @@ const BottomSheetModalComponent = forwardRef<
           }
           $modal={true}
         />
-      </BottomSheetWrapper>
+      </ContainerComponent>
     </Portal>
   ) : null;
 });
