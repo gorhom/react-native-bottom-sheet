@@ -68,10 +68,34 @@ const DynamicSnapPointExample = () => {
         />
       </View>
       <View style={styles.buttonGroup}>
-        <Button label="default (50%)" onPress={() => setMaxHeight(undefined)} />
-        <Button label="75%" onPress={() => setMaxHeight('75%')} />
-        <Button label="100%" onPress={() => setMaxHeight('100%')} />
-        <Button label="150px" onPress={() => setMaxHeight(150)} />
+        <Button
+          label="default (50%)"
+          onPress={() => {
+            setMaxHeight(undefined);
+            handleExpandPress();
+          }}
+        />
+        <Button
+          label="75%"
+          onPress={() => {
+            setMaxHeight('75%');
+            handleExpandPress();
+          }}
+        />
+        <Button
+          label="100%"
+          onPress={() => {
+            setMaxHeight('100%');
+            handleExpandPress();
+          }}
+        />
+        <Button
+          label="150px"
+          onPress={() => {
+            setMaxHeight(150);
+            handleExpandPress();
+          }}
+        />
       </View>
       <BottomSheet
         ref={bottomSheetRef}
