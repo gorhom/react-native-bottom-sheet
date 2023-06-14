@@ -119,6 +119,12 @@ export const screens = [
           require('./advanced/customGestureHandling/CustomGestureHandling')
             .default,
       },
+      {
+        name: 'Max height scrollable sheet',
+        slug: 'Advanced/ScrollableDynamicHeightExample',
+        getScreen: () =>
+          require('./advanced/ScrollableDynamicHeightExample').default,
+      },
     ] as ShowcaseExampleScreenType[],
   },
 ];
