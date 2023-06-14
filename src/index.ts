@@ -13,6 +13,7 @@ export { useBottomSheetTimingConfigs } from './hooks/useBottomSheetTimingConfigs
 export { useBottomSheetInternal } from './hooks/useBottomSheetInternal';
 export { useBottomSheetModalInternal } from './hooks/useBottomSheetModalInternal';
 export { useBottomSheetDynamicSnapPoints } from './hooks/useBottomSheetDynamicSnapPoints';
+export { useMaxHeightScrollableBottomSheet } from './hooks/useMaxHeightScrollableBottomSheet';
 export { useScrollEventsHandlersDefault } from './hooks/useScrollEventsHandlersDefault';
 export { useGestureEventsHandlersDefault } from './hooks/useGestureEventsHandlersDefault';
 export { useBottomSheetGestureHandlers } from './hooks/useBottomSheetGestureHandlers';
