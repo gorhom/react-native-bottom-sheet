@@ -40,63 +40,7 @@ const DynamicSnapPointExample = () => {
     <View style={styles.container}>
       <Button label="Expand" onPress={handleExpandPress} />
       <Button label="Close" onPress={handleClosePress} />
-      <View style={styles.buttonGroup}>
-        <Button
-          style={styles.button}
-          label="Add Item"
-          onPress={() => changeItemsCount(1)}
-        />
-        <View style={styles.gap} />
-        <Button
-          style={styles.button}
-          label="Remove Item"
-          onPress={() => changeItemsCount(-1)}
-        />
-      </View>
-      <View style={styles.buttonGroup}>
-        <Button
-          style={styles.button}
-          label="Fill To the brim"
-          onPress={() => setCount(100)}
-        />
 
-        <View style={styles.gap} />
-        <Button
-          style={styles.button}
-          label="Remove all"
-          onPress={() => setCount(0)}
-        />
-      </View>
-      <View style={styles.buttonGroup}>
-        <Button
-          label="default (50%)"
-          onPress={() => {
-            setMaxHeight(undefined);
-            handleExpandPress();
-          }}
-        />
-        <Button
-          label="75%"
-          onPress={() => {
-            setMaxHeight('75%');
-            handleExpandPress();
-          }}
-        />
-        <Button
-          label="100%"
-          onPress={() => {
-            setMaxHeight('100%');
-            handleExpandPress();
-          }}
-        />
-        <Button
-          label="150px"
-          onPress={() => {
-            setMaxHeight(150);
-            handleExpandPress();
-          }}
-        />
-      </View>
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={animatedSnapPoints}
@@ -110,6 +54,65 @@ const DynamicSnapPointExample = () => {
           onLayout={handleContentLayout}
           scrollEnabled={true}
         >
+          <View style={styles.actionsContainer}>
+            <View style={styles.buttonGroup}>
+              <Button
+                label="default (50%)"
+                onPress={() => {
+                  setMaxHeight(undefined);
+                  handleExpandPress();
+                }}
+              />
+              <Button
+                label="75%"
+                onPress={() => {
+                  setMaxHeight('75%');
+                  handleExpandPress();
+                }}
+              />
+              <Button
+                label="100%"
+                onPress={() => {
+                  setMaxHeight('100%');
+                  handleExpandPress();
+                }}
+              />
+              <Button
+                label="150px"
+                onPress={() => {
+                  setMaxHeight(150);
+                  handleExpandPress();
+                }}
+              />
+            </View>
+            <View style={styles.buttonGroup}>
+              <Button
+                style={styles.button}
+                label="Add Item"
+                onPress={() => changeItemsCount(1)}
+              />
+              <View style={styles.gap} />
+              <Button
+                style={styles.button}
+                label="Remove Item"
+                onPress={() => changeItemsCount(-1)}
+              />
+            </View>
+            <View style={styles.buttonGroup}>
+              <Button
+                style={styles.button}
+                label="Add 100 items"
+                onPress={() => setCount(100)}
+              />
+
+              <View style={styles.gap} />
+              <Button
+                style={styles.button}
+                label="Remove all"
+                onPress={() => setCount(0)}
+              />
+            </View>
+          </View>
           {Array.from({ length: count }).map((_, index) => (
             <View key={index} style={styles.item}>
               <Text style={styles.itemText}>👋 I am a item 👋</Text>
@@ -153,6 +156,9 @@ const styles = StyleSheet.create({
   gap: {
     width: 12,
     height: '100%',
+  },
+  actionsContainer: {
+    padding: 12,
   },
 });
 
