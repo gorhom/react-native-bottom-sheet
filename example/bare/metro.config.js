@@ -1,3 +1,5 @@
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+
 const path = require('path');
 const fs = require('fs');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
@@ -23,7 +25,7 @@ const modules = [
   }),
 ];
 
-module.exports = {
+const config = {
   projectRoot: __dirname,
   watchFolders: [root],
 
@@ -48,3 +50,5 @@ module.exports = {
     }),
   },
 };
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);
