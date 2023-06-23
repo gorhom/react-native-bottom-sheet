@@ -9,6 +9,7 @@
  */
 
 const React = require('react');
+const ReactNative = require('react-native');
 
 const NOOP = () => {};
 const NOOP_VALUE = { value: 0 };
@@ -104,10 +105,10 @@ const useBottomSheetDynamicSnapPoints = () => ({
 
 module.exports = {
   BottomSheetView: BottomSheetComponent,
-  BottomSheetScrollView: BottomSheetComponent,
-  BottomSheetSectionList: BottomSheetComponent,
-  BottomSheetFlatList: BottomSheetComponent,
-  BottomSheetVirtualizedList: BottomSheetComponent,
+  BottomSheetScrollView: ReactNative.ScrollView,
+  BottomSheetSectionList: ReactNative.SectionList,
+  BottomSheetFlatList: ReactNative.FlatList,
+  BottomSheetVirtualizedList: ReactNative.VirtualizedList,
 
   BottomSheetModalProvider,
   BottomSheetModal,
