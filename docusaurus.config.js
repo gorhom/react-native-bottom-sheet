@@ -1,3 +1,5 @@
+const { themes } = require("prism-react-renderer");
+
 module.exports = {
   title: "React Native Bottom Sheet",
   tagline:
@@ -37,16 +39,13 @@ module.exports = {
       ],
     },
     prism: {
-      theme: require("prism-react-renderer/themes/dracula"),
+      theme: themes.dracula,
     },
     footer: {
       copyright: `Copyright © ${new Date().getFullYear()} <a rel="noreferrer" href="https://gorhom.dev/" target="_blank">Mo Gorhom</a>. Built with Docusaurus.`,
     },
-    googleAnalytics: {
-      trackingID: "UA-193461439-1",
-      anonymizeIP: true,
-    },
     algolia: {
+      appId: "V136OEODKA",
       apiKey: "184c49269442932465c46fe5489b63e6",
       indexName: "react-native-bottom-sheet",
       contextualSearch: true,
@@ -82,6 +81,10 @@ module.exports = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
+        },
+        googleAnalytics: {
+          trackingID: "UA-193461439-1",
+          anonymizeIP: true,
         },
       },
     ],
