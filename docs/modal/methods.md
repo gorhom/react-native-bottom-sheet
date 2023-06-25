@@ -41,16 +41,22 @@ const App = () => {
 
 ### `present`
 
-```ts
-type present = () => void;
-```
+Mount and present the bottom sheet modal to the initial snap point.
 
-Mount and present the modal.
+```ts
+type present = (
+  // Data to be passed to the modal.
+  data?: any
+) => void;
+```
 
 ### `dismiss`
 
-```ts
-type dismiss = () => void;
-```
+Close and unmount the bottom sheet modal.
 
-Close and unmount the modal.
+```ts
+type dismiss = (
+  // AnimationConfigs snap animation configs.
+  animationConfigs?: WithSpringConfig | WithTimingConfig
+) => void;
+```
