@@ -64,3 +64,15 @@ type onDismiss = () => void;
 | type     | default | required |
 | -------- | ------- | -------- |
 | function | null    | NO       |
+
+## Components
+
+### `containerComponent`
+
+Component to be placed as a bottom sheet container, this is to place
+the bottom sheet at the very top layer of your application when using `FullWindowOverlay`
+from `React Native Screens`. [read more](https://github.com/gorhom/react-native-bottom-sheet/issues/832)
+
+| type            | default   | required |
+| --------------- | --------- | -------- |
+| React.ReactNode | undefined | NO       |
