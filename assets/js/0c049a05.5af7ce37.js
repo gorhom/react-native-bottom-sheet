@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[276],{2305:e=>{e.exports=JSON.parse('{"label":"v4","permalink":"/react-native-bottom-sheet/blog/tags/v-4","allTagsPath":"/react-native-bottom-sheet/blog/tags","count":1}')}}]);
