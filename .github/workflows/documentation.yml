@@ -46,7 +46,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GH_PAGES_DEPLOY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
           user_name: gorhom
           user_email: gorhom.dev@gmail.com
