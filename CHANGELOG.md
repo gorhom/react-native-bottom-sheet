@@ -1,6 +1,18 @@
 ## Changelog
 
-### [v5.0.0-alpha.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) - 
+### [v5.0.0-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.2...v5.0.0-alpha.3) - 
+
+#### Fixes
+
+- resume close animation when container gets resized (#1374) (#1392) ([`1f69625`](https://github.com/gorhom/react-native-bottom-sheet/commit/1f69625e180fcec4d8d3dec436f8d5bb4eba476b))
+- (bottom-sheet-modal): added container component prop to modal (#1309)(by @magrinj) ([`67e1e09`](https://github.com/gorhom/react-native-bottom-sheet/commit/67e1e09acbc0e96e435a0c2247fa1e0bc19f91aa))
+- updated scrollables mocks with ReactNative list equivalent (#1394)(by @gkueny) ([`630f87f`](https://github.com/gorhom/react-native-bottom-sheet/commit/630f87ff6bd19c4dfc071783139c938eda3baf6c))
+
+#### Chores And Housekeeping
+
+- updated react native and other deps (#1412) ([`549e461`](https://github.com/gorhom/react-native-bottom-sheet/commit/549e461530a91e1d7c95a5178bd2238ebf84df86))
+
+### [v5.0.0-alpha.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) -  4 June 2023 
 
 #### Fixes
 
@@ -281,7 +293,7 @@
 - add kickbk as a contributor for bug, test (#612) ([`3316c8b`](https://github.com/gorhom/react-native-bottom-sheet/commit/3316c8b92662e5be92d2c355f3fa04632eb8b6bf))
 - add vonovak as a contributor for code (#611) ([`7c97e8f`](https://github.com/gorhom/react-native-bottom-sheet/commit/7c97e8ffd76936a5168ad9f914bdc5e1ab1b3bdd))
 
-### [v4.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.30...v4.0.0) -  30 August 2021 
+## [v4.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.0.0-alpha.30...v4.0.0) -  30 August 2021 
 
 #### Documentation Changes
 
