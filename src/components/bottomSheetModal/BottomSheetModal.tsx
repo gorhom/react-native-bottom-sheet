@@ -10,7 +10,7 @@ import React, {
 import { Portal, usePortal } from '@gorhom/portal';
 import BottomSheet from '../bottomSheet';
 import { useBottomSheetModalInternal } from '../../hooks';
-import { print } from '../../utilities';
+import { print, isFunction } from '../../utilities';
 import {
   DEFAULT_STACK_BEHAVIOR,
   DEFAULT_ENABLE_DISMISS_ON_CLOSE,
@@ -71,6 +71,7 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region refs
+  const internalRef = useRef<BottomSheetModal | null>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const currentIndexRef = useRef(!animateOnMount ? index : -1);
   const restoreIndexRef = useRef(-1);
@@ -78,6 +79,16 @@ const BottomSheetModalComponent = forwardRef<
   const forcedDismissed = useRef(false);
   const mounted = useRef(false);
   mounted.current = mount;
+
+  const handleRef = (newRef: BottomSheetModal) => {
+    if (isFunction(ref)) {
+      ref(newRef);
+    } else if (ref) {
+      ref.current = newRef;
+    }
+
+    internalRef.current = newRef;
+  };
   //#endregion
 
   //#region variables
@@ -183,7 +194,7 @@ const BottomSheetModalComponent = forwardRef<
           mount: true,
           data: _data,
         });
-        mountSheet(key, ref, stackBehavior);
+        mountSheet(key, internalRef, stackBehavior);
 
         print({
           component: BottomSheetModal.name,
@@ -349,7 +360,7 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region expose methods
-  useImperativeHandle(ref, () => ({
+  useImperativeHandle(handleRef, () => ({
     // sheet
     snapToIndex: handleSnapToIndex,
     snapToPosition: handleSnapToPosition,

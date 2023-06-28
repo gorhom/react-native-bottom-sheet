@@ -1,4 +1,4 @@
-const isFunction = (ref: unknown): ref is Function => typeof ref === 'function';
+import { isFunction } from './isFunction';
 
 const hasNativeTag = (
   ref: unknown
