@@ -200,7 +200,7 @@ Defines the keyboard appearance behavior.
 
 | type                                      | default       | required |
 | ----------------------------------------- | ------------- | -------- |
-| 'extend' \| 'fullScreen' \| 'interactive' | 'interactive' | NO       |
+| 'extend' \| 'fillParent' \| 'interactive' | 'interactive' | NO       |
 
 ### `keyboardBlurBehavior`
 
