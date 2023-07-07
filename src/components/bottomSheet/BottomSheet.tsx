@@ -388,6 +388,26 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return SCROLLABLE_STATE.LOCKED;
     });
     // dynamic
+    const isContainerHeightCollapsing = useSharedValue<boolean>(false);
+    useAnimatedReaction(
+      () => animatedSheetHeight.value,
+      (cur, prev) => {
+        isContainerHeightCollapsing.value = !!(prev && cur < prev);
+      }
+    );
+    useEffect(() => {
+      let timeout: any;
+
+      // if we're beginning a window collapse start a timer to flag it as
+      // completed as a failsafe.
+      if (isContainerHeightCollapsing.value) {
+        timeout = setTimeout(() => {
+          isContainerHeightCollapsing.value = false;
+        }, 100);
+      }
+
+      return () => timeout && clearTimeout(timeout);
+    }, [isContainerHeightCollapsing]);
     const animatedContentHeight = useDerivedValue(() => {
       const keyboardHeightInContainer = animatedKeyboardHeightInContainer.value;
       const handleHeight = Math.max(0, animatedHandleHeight.value);
@@ -474,6 +494,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             Extrapolate.CLAMP
           )
         : -1;
+
+      /**
+       * Don't adjust the animatedIndex if the calculation is triggered
+       * by the collapse in height of the window.
+       */
+      if (isContainerHeightCollapsing.value === true) {
+        isContainerHeightCollapsing.value = false;
+        return animatedCurrentIndex.value;
+      }
 
       /**
        * if the sheet is currently running an animation by the keyboard opening,
