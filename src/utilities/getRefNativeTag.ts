@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 const isFunction = (ref: unknown): ref is Function => typeof ref === 'function';
 
 const hasNativeTag = (
@@ -28,10 +30,13 @@ export function getRefNativeTag(ref: unknown) {
   }
 
   if (!nativeTag || typeof nativeTag !== 'number') {
+    if (Platform.OS === 'web') {
+      return 0;
+    }
     throw new Error(
-      `Unexpected nativeTag: ${refType}; nativeTag=${nativeTag} 
+      `Unexpected nativeTag: ${refType}; nativeTag=${nativeTag}
 
-			createBottomSheetScrollableComponent's ScrollableComponent needs to return 
+			createBottomSheetScrollableComponent's ScrollableComponent needs to return
 			a reference that contains a nativeTag to a Native HostComponent.
 
 			ref=${ref}
