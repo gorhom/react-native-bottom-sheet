@@ -1,17 +1,12 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { ViewProps } from 'react-native';
+import { Pressable, ViewProps } from 'react-native';
 import Animated, {
   interpolate,
   Extrapolate,
   useAnimatedStyle,
   useAnimatedReaction,
-  useAnimatedGestureHandler,
   runOnJS,
 } from 'react-native-reanimated';
-import {
-  TapGestureHandler,
-  TapGestureHandlerGestureEvent,
-} from 'react-native-gesture-handler';
 import { useBottomSheet } from '../../hooks';
 import {
   DEFAULT_OPACITY,
@@ -22,6 +17,8 @@ import {
 } from './constants';
 import { styles } from './styles';
 import type { BottomSheetDefaultBackdropProps } from './types';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const BottomSheetBackdropComponent = ({
   animatedIndex,
@@ -73,18 +70,6 @@ const BottomSheetBackdropComponent = ({
   );
   //#endregion
 
-  //#region tap gesture
-  const gestureHandler =
-    useAnimatedGestureHandler<TapGestureHandlerGestureEvent>(
-      {
-        onFinish: () => {
-          runOnJS(handleOnPress)();
-        },
-      },
-      [handleOnPress]
-    );
-  //#endregion
-
   //#region styles
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -115,20 +100,19 @@ const BottomSheetBackdropComponent = ({
   //#endregion
 
   return pressBehavior !== 'none' ? (
-    <TapGestureHandler onGestureEvent={gestureHandler}>
-      <Animated.View
-        style={containerStyle}
-        pointerEvents={pointerEvents}
-        accessible={true}
-        accessibilityRole="button"
-        accessibilityLabel="Bottom Sheet backdrop"
-        accessibilityHint={`Tap to ${
-          typeof pressBehavior === 'string' ? pressBehavior : 'move'
-        } the Bottom Sheet`}
-      >
-        {children}
-      </Animated.View>
-    </TapGestureHandler>
+    <AnimatedPressable
+      onPress={handleOnPress}
+      style={containerStyle}
+      pointerEvents={pointerEvents}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel="Bottom Sheet backdrop"
+      accessibilityHint={`Tap to ${
+        typeof pressBehavior === 'string' ? pressBehavior : 'move'
+      } the Bottom Sheet`}
+    >
+      {children}
+    </AnimatedPressable>
   ) : (
     <Animated.View pointerEvents={pointerEvents} style={containerStyle}>
       {children}
