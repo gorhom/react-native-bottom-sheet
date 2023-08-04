@@ -183,7 +183,7 @@ const BottomSheetModalProviderWrapper = ({
     <BottomSheetModalProvider value={externalContextVariables}>
       <BottomSheetModalInternalProvider value={internalContextVariables}>
         <BottomSheetContainer
-          containerOffset={animatedContainerOffset}
+          containerOffset={animatedContainerOffset as any}
           containerHeight={animatedContainerHeight}
           children={null}
         />

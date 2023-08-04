@@ -19,8 +19,6 @@ import Animated, {
   runOnUI,
   cancelAnimation,
   useWorkletCallback,
-  WithSpringConfig,
-  WithTimingConfig,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import {
@@ -661,7 +659,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         position: number,
         source: ANIMATION_SOURCE,
         velocity: number = 0,
-        configs?: WithTimingConfig | WithSpringConfig
+        configs?: any
       ) {
         if (
           position === animatedPosition.value ||
@@ -731,10 +729,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region public methods
     const handleSnapToIndex = useCallback(
-      function handleSnapToIndex(
-        index: number,
-        animationConfigs?: WithSpringConfig | WithTimingConfig
-      ) {
+      function handleSnapToIndex(index: number, animationConfigs?: any) {
         const snapPoints = animatedSnapPoints.value;
         invariant(
           index >= -1 && index <= snapPoints.length - 1,
@@ -792,7 +787,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const handleSnapToPosition = useWorkletCallback(
       function handleSnapToPosition(
         position: number | string,
-        animationConfigs?: WithSpringConfig | WithTimingConfig
+        animationConfigs?: any
       ) {
         print({
           component: BottomSheet.name,
@@ -849,9 +844,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
     const handleClose = useCallback(
-      function handleClose(
-        animationConfigs?: WithSpringConfig | WithTimingConfig
-      ) {
+      function handleClose(animationConfigs?: any) {
         print({
           component: BottomSheet.name,
           method: handleClose.name,
@@ -895,9 +888,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
     const handleForceClose = useCallback(
-      function handleForceClose(
-        animationConfigs?: WithSpringConfig | WithTimingConfig
-      ) {
+      function handleForceClose(animationConfigs?: any) {
         print({
           component: BottomSheet.name,
           method: handleForceClose.name,
@@ -943,9 +934,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
     const handleExpand = useCallback(
-      function handleExpand(
-        animationConfigs?: WithSpringConfig | WithTimingConfig
-      ) {
+      function handleExpand(animationConfigs?: any) {
         print({
           component: BottomSheet.name,
           method: handleExpand.name,
@@ -992,9 +981,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
     const handleCollapse = useCallback(
-      function handleCollapse(
-        animationConfigs?: WithSpringConfig | WithTimingConfig
-      ) {
+      function handleCollapse(animationConfigs?: any) {
         print({
           component: BottomSheet.name,
           method: handleCollapse.name,
@@ -1599,7 +1586,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     });
     return (
       <BottomSheetProvider value={externalContextVariables}>
-        <BottomSheetInternalProvider value={internalContextVariables}>
+        <BottomSheetInternalProvider value={internalContextVariables as any}>
           <BottomSheetGestureHandlersProvider
             gestureEventsHandlersHook={gestureEventsHandlersHook}
           >
@@ -1613,7 +1600,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               key="BottomSheetContainer"
               shouldCalculateHeight={!$modal}
               containerHeight={_animatedContainerHeight}
-              containerOffset={animatedContainerOffset}
+              containerOffset={animatedContainerOffset as any}
               topInset={topInset}
               bottomInset={bottomInset}
               detached={detached}

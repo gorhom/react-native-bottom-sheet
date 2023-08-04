@@ -15,6 +15,7 @@ export const useScrollHandler = (
   onScrollEndDrag?: ScrollableEvent
 ) => {
   // refs
+  // @ts-ignore
   const scrollableRef = useAnimatedRef<Scrollable>();
 
   // variables

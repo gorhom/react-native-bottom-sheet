@@ -21,7 +21,7 @@ type GestureEventContextType = {
   isScrollablePositionLocked: boolean;
 };
 
-const dismissKeyboard = Keyboard.dismiss
+const dismissKeyboard = Keyboard.dismiss;
 
 export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
   () => {

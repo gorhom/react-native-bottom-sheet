@@ -1,5 +1,5 @@
 import { Dimensions, Platform } from 'react-native';
-import Animated, { Easing } from 'react-native-reanimated';
+import { Easing } from 'react-native-reanimated';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
@@ -62,7 +62,7 @@ enum KEYBOARD_STATE {
   HIDDEN,
 }
 
-const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
+const ANIMATION_EASING = Easing.out(Easing.exp);
 const ANIMATION_DURATION = 250;
 
 const ANIMATION_CONFIGS_IOS = {

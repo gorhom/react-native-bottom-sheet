@@ -52,14 +52,18 @@ export const useKeyboard = () => {
         temporaryCachedKeyboardEvent.value = [state, height, duration, easing];
         return;
       }
+      // @ts-ignore
       keyboardHeight.value =
         state === KEYBOARD_STATE.SHOWN
           ? height
           : height === 0
           ? keyboardHeight.value
           : height;
+      // @ts-ignore
       keyboardAnimationDuration.value = duration;
+      // @ts-ignore
       keyboardAnimationEasing.value = easing;
+      // @ts-ignore
       keyboardState.value = state;
       temporaryCachedKeyboardEvent.value = [];
     },
