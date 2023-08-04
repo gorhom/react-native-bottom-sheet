@@ -4,6 +4,7 @@ import { useBottomSheetInternal } from './useBottomSheetInternal';
 import { getRefNativeTag } from '../utilities/getRefNativeTag';
 import type { SCROLLABLE_TYPE } from '../constants';
 import type { Scrollable } from '../types';
+import { Platform } from 'react-native';
 
 export const useScrollableSetter = (
   ref: React.RefObject<Scrollable>,
@@ -23,6 +24,8 @@ export const useScrollableSetter = (
     isScrollableLocked,
     setScrollableRef,
     removeScrollableRef,
+    animatedContainerHeight,
+    animatedContentHeight,
   } = useBottomSheetInternal();
 
   // callbacks
@@ -31,7 +34,8 @@ export const useScrollableSetter = (
     rootScrollableContentOffsetY.value = contentOffsetY.value;
     animatedScrollableType.value = type;
     isScrollableRefreshable.value = refreshable;
-    isScrollableLocked.value = !preserveScrollMomentum && !scrollBuffer;
+    // Android scrollview doesn't bounce so we need to set isScrollableLocked so that the sheet can be pulled up/down
+    isScrollableLocked.value = (!preserveScrollMomentum && !scrollBuffer) || (Platform.OS === 'android' && animatedContentHeight.value <= animatedContainerHeight.value);
     isContentHeightFixed.value = false;
 
     // set current scrollable ref
