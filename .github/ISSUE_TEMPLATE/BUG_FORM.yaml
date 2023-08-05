@@ -1,5 +1,5 @@
 name: Bug Report
-description: File a bug report
+description: Create a bug report to help us improve the library.
 title: "[Bug]: "
 labels: ["bug", "triage"]
 body:
@@ -7,23 +7,29 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
-  - type: input
-    id: contact
-    attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
-    validations:
-      required: false
   - type: textarea
-    id: what-happened
+    id: current-behaviour
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: Current Behaviour
+      description: A concise description of what you are experiencing.
     validations:
       required: true
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: Expected Behaviour
+      description: A concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: repo-steps
+    attributes:
+      label: Steps To Reproduce
+      description: Steps to reproduce the bug.
+      placeholder: 1. present the bottom sheet. \n2. drag the bottom sheet. \n3. ....
+    validations:
+      required: true
+
   - type: dropdown
     id: version
     attributes:
