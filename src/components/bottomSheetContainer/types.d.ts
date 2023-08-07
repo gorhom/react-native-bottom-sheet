@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
-import type { Insets, StyleProp, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { BottomSheetProps } from '../bottomSheet/types';
+import type { Insets } from '../../types';
 
 export interface BottomSheetContainerProps
   extends Partial<

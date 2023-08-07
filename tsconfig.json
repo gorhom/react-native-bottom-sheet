@@ -22,7 +22,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
-    "importsNotUsedAsValues": "error"
+    "importsNotUsedAsValues": "error",
+    "ignoreDeprecations": "5.0"
   },
   "exclude": ["example"],
   "include": ["src"]
