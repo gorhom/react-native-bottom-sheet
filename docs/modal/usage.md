@@ -3,7 +3,6 @@ id: usage
 title: Usage
 description: Bottom Sheet modal usage.
 keywords:
-  - bottomsheet
   - bottom-sheet
   - bottom sheet
   - react-native
