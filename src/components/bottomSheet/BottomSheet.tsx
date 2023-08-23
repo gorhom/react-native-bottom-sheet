@@ -5,6 +5,7 @@ import React, {
   useImperativeHandle,
   memo,
   useEffect,
+  useState
 } from 'react';
 import { Platform } from 'react-native';
 import invariant from 'invariant';
@@ -158,6 +159,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       children: Content,
     } = props;
     //#endregion
+
+/**
+ * state that will render child only when it is visible
+ */
+    const [renderChildren, setRenderChildren ]:any = useState(_providedIndex===-1 || detached===true?false:true);
+
 
     //#region layout variables
     /**
@@ -933,6 +940,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           0,
           animationConfigs
         );
+        setRenderChildren(true)
       },
       [
         animateToPosition,
@@ -1635,7 +1643,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                     key="BottomSheetRootDraggableView"
                     style={contentContainerStyle}
                   >
-                    {typeof Content === 'function' ? <Content /> : Content}
+                    {
+                      renderChildren?
+                      typeof Content === 'function' ? <Content /> : Content
+                      :
+                      null
+
+                    }
 
                     {footerComponent && (
                       <BottomSheetFooterContainer
