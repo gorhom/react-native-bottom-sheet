@@ -1,4 +1,4 @@
-import React, { memo, useCallback, forwardRef } from 'react';
+import React, { memo, useCallback, forwardRef, useEffect } from 'react';
 import type {
   TextInputFocusEventData,
   NativeSyntheticEvent,
@@ -36,6 +36,14 @@ const BottomSheetTextInputComponent = forwardRef<
   );
   //#endregion
 
+  //#region effects
+  useEffect(() => {
+    return () => {
+      // Reset the flag on unmount
+      shouldHandleKeyboardEvents.value = false;
+    };
+  }, [shouldHandleKeyboardEvents]);
+  //#endregion
   return (
     <TextInput
       ref={ref}
