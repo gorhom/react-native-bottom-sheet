@@ -72,5 +72,6 @@ export type {
 
 //#region utilities
 export * from './constants';
+export { getKeyboardAnimationConfigs } from './utilities';
 export { enableLogging } from './utilities/logger';
 //#endregion
