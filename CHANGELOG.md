@@ -1,17 +1,39 @@
 ## Changelog
 
-### [v4.4.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.1...v4.4.7) - 
+### [v4.4.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.3...v4.4.8) - 
 
 #### Fixes
 
 - resume close animation when container gets resized (#1374) (#1392) ([`92ad842`](https://github.com/gorhom/react-native-bottom-sheet/commit/92ad84283afb389ee23768f0c29e7808af4b6b0c))
+- (bottom-sheet-modal): added container component prop to modal (#1309)(by @magrinj) ([`1ecad69`](https://github.com/gorhom/react-native-bottom-sheet/commit/1ecad692d9477f7c7f8d7f54fcf7f990aabe5a04))
+- (BottomSheetTextInput): reset shouldHandleKeyboardEvents on unmount (#1495)(by @koplyarov) ([`6a5034c`](https://github.com/gorhom/react-native-bottom-sheet/commit/6a5034cd83c24db65a12444ba8d9e949fd64f316))
+- updated scrollables mocks with ReactNative list equivalent (#1394)(by @gkueny) ([`ea03e78`](https://github.com/gorhom/react-native-bottom-sheet/commit/ea03e78f40d2c5c028467ebf6f1959fb5381b93d))
 - fixed keyboard dismissing issue with Reanimated v3 (#1346)(by @janicduplessis) ([`94cf11e`](https://github.com/gorhom/react-native-bottom-sheet/commit/94cf11eb43f9cc2a356da7e7967ec63baf390a74))
 - (BottomSheetScrollView): updated scroll responders props type (#1335)(by @eps1lon) ([`9c5af58`](https://github.com/gorhom/react-native-bottom-sheet/commit/9c5af584516690cb5143caabb7722e0c2340cc57))
+- updated containerOffset top value to default to 0 (#1420)(by @beqramo) ([`218e006`](https://github.com/gorhom/react-native-bottom-sheet/commit/218e006a4a015625fcf424b99f432319daf88aad))
 - crash on swipe down (#1367)(by @beqramo) ([`235466f`](https://github.com/gorhom/react-native-bottom-sheet/commit/235466fef552f2cf7cbbafb06029cdd879624606))
 
 #### Chores And Housekeeping
 
 - fixed types (#1123)(by @stropho) ([`d41eda2`](https://github.com/gorhom/react-native-bottom-sheet/commit/d41eda227e76b89432164ec8dc5cc1ebd5f638ee))
+
+### [v5.0.0-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.2...v5.0.0-alpha.3) -  25 June 2023 
+
+#### Fixes
+
+- resume close animation when container gets resized (#1374) (#1392) ([`1f69625`](https://github.com/gorhom/react-native-bottom-sheet/commit/1f69625e180fcec4d8d3dec436f8d5bb4eba476b))
+- (bottom-sheet-modal): added container component prop to modal (#1309)(by @magrinj) ([`67e1e09`](https://github.com/gorhom/react-native-bottom-sheet/commit/67e1e09acbc0e96e435a0c2247fa1e0bc19f91aa))
+- updated scrollables mocks with ReactNative list equivalent (#1394)(by @gkueny) ([`630f87f`](https://github.com/gorhom/react-native-bottom-sheet/commit/630f87ff6bd19c4dfc071783139c938eda3baf6c))
+
+#### Chores And Housekeeping
+
+- updated react native and other deps (#1412) ([`549e461`](https://github.com/gorhom/react-native-bottom-sheet/commit/549e461530a91e1d7c95a5178bd2238ebf84df86))
+
+### [v5.0.0-alpha.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) -  4 June 2023 
+
+#### Fixes
+
+- crash on swipe down (#1367)(by @beqramo) ([`3ccbefc`](https://github.com/gorhom/react-native-bottom-sheet/commit/3ccbefc4d16558867d518f7e0306fbb4d1dbdbeb))
 
 ### [v5.0.0-alpha.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) -  30 April 2023 
 
@@ -24,7 +46,7 @@
 
 - fixed types (#1123)(by @stropho) ([`b440964`](https://github.com/gorhom/react-native-bottom-sheet/commit/b44096451d4fed81be7f08b0edf638e4a1c42ccd))
 
-### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.6...v5.0.0-alpha.0) -  18 March 2023 
+### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.7...v5.0.0-alpha.0) -  18 March 2023 
 
 #### New Features
 
@@ -38,6 +60,13 @@
 #### Chores And Housekeeping
 
 - updated reanimated to v3 (#1324) ([`4829316`](https://github.com/gorhom/react-native-bottom-sheet/commit/4829316beeff95c9e2efa5fbfdfcf7ef37b4af60))
+
+### [v4.4.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.6...v4.4.7) -  4 June 2023 
+
+#### Fixes
+
+- resume close animation when container gets resized (#1374) (#1392) ([`92ad842`](https://github.com/gorhom/react-native-bottom-sheet/commit/92ad84283afb389ee23768f0c29e7808af4b6b0c))
+- crash on swipe down (#1367)(by @beqramo) ([`235466f`](https://github.com/gorhom/react-native-bottom-sheet/commit/235466fef552f2cf7cbbafb06029cdd879624606))
 
 ### [v4.4.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.5...v4.4.6) -  30 April 2023 
 
