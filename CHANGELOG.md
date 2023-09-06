@@ -1,6 +1,17 @@
 ## Changelog
 
-### [v5.0.0-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.2...v5.0.0-alpha.3) - 
+### [v5.0.0-alpha.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.3...v5.0.0-alpha.4) - 
+
+#### Fixes
+
+- (BottomSheetTextInput): reset shouldHandleKeyboardEvents on unmount (#1495)(by @koplyarov) ([`81cd66f`](https://github.com/gorhom/react-native-bottom-sheet/commit/81cd66f9c49843e43231d1d81ec4aa518a9f1b95))
+- updated containerOffset top value to default to 0 (#1420)(by @beqramo) ([`b81cb93`](https://github.com/gorhom/react-native-bottom-sheet/commit/b81cb9368b55c24703a9c000a76e89a2d253e141))
+
+#### Chores And Housekeeping
+
+- updated expo and react native deps (#1445) ([`f6f2304`](https://github.com/gorhom/react-native-bottom-sheet/commit/f6f2304235c05f92d86ce8083caf910b9297a10a))
+
+### [v5.0.0-alpha.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.2...v5.0.0-alpha.3) -  25 June 2023 
 
 #### Fixes
 
@@ -29,7 +40,7 @@
 
 - fixed types (#1123)(by @stropho) ([`b440964`](https://github.com/gorhom/react-native-bottom-sheet/commit/b44096451d4fed81be7f08b0edf638e4a1c42ccd))
 
-### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.7...v5.0.0-alpha.0) -  18 March 2023 
+### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.8...v5.0.0-alpha.0) -  18 March 2023 
 
 #### New Features
 
@@ -43,6 +54,15 @@
 #### Chores And Housekeeping
 
 - updated reanimated to v3 (#1324) ([`4829316`](https://github.com/gorhom/react-native-bottom-sheet/commit/4829316beeff95c9e2efa5fbfdfcf7ef37b4af60))
+
+### [v4.4.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.7...v4.4.8) -  6 September 2023 
+
+#### Fixes
+
+- (bottom-sheet-modal): added container component prop to modal (#1309)(by @magrinj) ([`1ecad69`](https://github.com/gorhom/react-native-bottom-sheet/commit/1ecad692d9477f7c7f8d7f54fcf7f990aabe5a04))
+- (BottomSheetTextInput): reset shouldHandleKeyboardEvents on unmount (#1495)(by @koplyarov) ([`6a5034c`](https://github.com/gorhom/react-native-bottom-sheet/commit/6a5034cd83c24db65a12444ba8d9e949fd64f316))
+- updated scrollables mocks with ReactNative list equivalent (#1394)(by @gkueny) ([`ea03e78`](https://github.com/gorhom/react-native-bottom-sheet/commit/ea03e78f40d2c5c028467ebf6f1959fb5381b93d))
+- updated containerOffset top value to default to 0 (#1420)(by @beqramo) ([`218e006`](https://github.com/gorhom/react-native-bottom-sheet/commit/218e006a4a015625fcf424b99f432319daf88aad))
 
 ### [v4.4.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.6...v4.4.7) -  4 June 2023 
 
