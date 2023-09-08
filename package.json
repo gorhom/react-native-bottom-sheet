@@ -40,7 +40,8 @@
   },
   "dependencies": {
     "@gorhom/portal": "1.0.14",
-    "invariant": "^2.2.4"
+    "invariant": "^2.2.4",
+    "react-native-safe-area-context": "^4.7.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
