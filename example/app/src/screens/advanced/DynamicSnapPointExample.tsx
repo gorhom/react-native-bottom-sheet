@@ -39,20 +39,14 @@ const DynamicSnapPointExample = () => {
 
   // styles
   const contentContainerStyle = useMemo(
-    () => [
-      styles.contentContainerStyle,
-      childViewMaxHeightStyle,
-      { paddingBottom: safeBottomArea || 6 },
-    ],
-    [safeBottomArea, childViewMaxHeightStyle]
+    () => [styles.contentContainerStyle, childViewMaxHeightStyle],
+    [childViewMaxHeightStyle]
   );
-  const emojiContainerStyle = useMemo(
-    () => ({
-      ...styles.emojiContainer,
-      height: 50 * count,
-    }),
-    [count]
+  const contentStyle = useMemo(
+    () => [{ paddingBottom: safeBottomArea || 6 }],
+    [safeBottomArea]
   );
+  const emojisToShow = [...Array(count)].map((_, i) => i);
 
   // renders
   return (
@@ -71,14 +65,18 @@ const DynamicSnapPointExample = () => {
           style={contentContainerStyle}
           onLayout={handleContentLayout}
         >
-          <Text style={styles.message}>
-            Could this sheet resize to its content height ?
-          </Text>
-          <View style={emojiContainerStyle}>
-            <Text style={styles.emoji}>😍</Text>
+          <View style={contentStyle}>
+            <Text style={styles.message}>
+              Could this sheet resize to its content height ?
+            </Text>
+            <Button label="Yes" onPress={handleIncreaseContentPress} />
+            <Button label="Maybe" onPress={handleDecreaseContentPress} />
+            {emojisToShow.map((_, i) => (
+              <View key={i} style={styles.emojiContainer}>
+                <Text style={styles.emoji}>😍</Text>
+              </View>
+            ))}
           </View>
-          <Button label="Yes" onPress={handleIncreaseContentPress} />
-          <Button label="Maybe" onPress={handleDecreaseContentPress} />
         </BottomSheetScrollView>
       </BottomSheet>
     </View>
@@ -91,6 +89,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   contentContainerStyle: {
+    flex: 1,
     paddingTop: 12,
     paddingBottom: 6,
     paddingHorizontal: 24,
@@ -102,13 +101,16 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   emoji: {
-    fontSize: 156,
+    fontSize: 40,
     textAlign: 'center',
     alignSelf: 'center',
   },
   emojiContainer: {
     overflow: 'hidden',
+    borderRadius: 8,
     justifyContent: 'center',
+    backgroundColor: '#e1e1e1',
+    marginVertical: 12,
   },
 });
 
