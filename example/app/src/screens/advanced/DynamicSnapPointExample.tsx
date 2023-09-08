@@ -20,7 +20,8 @@ const DynamicSnapPointExample = () => {
     animatedSnapPoints,
     animatedContentHeight,
     handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
+    childViewMaxHeightStyle,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints, '90%');
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {
@@ -40,9 +41,10 @@ const DynamicSnapPointExample = () => {
   const contentContainerStyle = useMemo(
     () => [
       styles.contentContainerStyle,
+      childViewMaxHeightStyle,
       { paddingBottom: safeBottomArea || 6 },
     ],
-    [safeBottomArea]
+    [safeBottomArea, childViewMaxHeightStyle]
   );
   const emojiContainerStyle = useMemo(
     () => ({
