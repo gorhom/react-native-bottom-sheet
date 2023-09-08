@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import BottomSheet, {
-  BottomSheetView,
+  BottomSheetScrollView,
   useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,7 +21,7 @@ const DynamicSnapPointExample = () => {
     animatedContentHeight,
     handleContentLayout,
     childViewMaxHeightStyle,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints, '90%');
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints, '70%');
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {
@@ -67,7 +67,7 @@ const DynamicSnapPointExample = () => {
         enablePanDownToClose={true}
         animateOnMount={true}
       >
-        <BottomSheetView
+        <BottomSheetScrollView
           style={contentContainerStyle}
           onLayout={handleContentLayout}
         >
@@ -79,7 +79,7 @@ const DynamicSnapPointExample = () => {
           </View>
           <Button label="Yes" onPress={handleIncreaseContentPress} />
           <Button label="Maybe" onPress={handleDecreaseContentPress} />
-        </BottomSheetView>
+        </BottomSheetScrollView>
       </BottomSheet>
     </View>
   );
