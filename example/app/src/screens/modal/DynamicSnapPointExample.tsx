@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import {
   BottomSheetModal,
-  BottomSheetView,
+  BottomSheetScrollView,
   useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,7 +22,8 @@ const DynamicSnapPointExample = () => {
     animatedSnapPoints,
     animatedContentHeight,
     handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
+    childViewMaxHeightStyle,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints, '70%');
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {
@@ -31,7 +32,6 @@ const DynamicSnapPointExample = () => {
   const handleDecreaseContentPress = useCallback(() => {
     setCount(state => Math.max(state - 1, 0));
   }, []);
-
   const handlePresentPress = useCallback(() => {
     bottomSheetRef.current?.present();
   }, []);
@@ -41,19 +41,14 @@ const DynamicSnapPointExample = () => {
 
   // styles
   const contentContainerStyle = useMemo(
-    () => ({
-      ...styles.contentContainerStyle,
-      paddingBottom: safeBottomArea || 6,
-    }),
+    () => [styles.contentContainerStyle, childViewMaxHeightStyle],
+    [childViewMaxHeightStyle]
+  );
+  const contentStyle = useMemo(
+    () => [{ paddingBottom: safeBottomArea || 6 }],
     [safeBottomArea]
   );
-  const emojiContainerStyle = useMemo(
-    () => ({
-      ...styles.emojiContainer,
-      height: 50 * count,
-    }),
-    [count]
-  );
+  const emojisToShow = [...Array(count)].map((_, i) => i);
 
   // renders
   return (
@@ -66,20 +61,25 @@ const DynamicSnapPointExample = () => {
         handleHeight={animatedHandleHeight}
         contentHeight={animatedContentHeight}
         enablePanDownToClose={true}
+        animateOnMount={true}
       >
-        <BottomSheetView
+        <BottomSheetScrollView
           style={contentContainerStyle}
           onLayout={handleContentLayout}
         >
-          <Text style={styles.message}>
-            Could this sheet modal resize to its content height ?
-          </Text>
-          <View style={emojiContainerStyle}>
-            <Text style={styles.emoji}>😍</Text>
+          <View style={contentStyle}>
+            <Text style={styles.message}>
+              Could this sheet resize to its content height ?
+            </Text>
+            <Button label="Yes" onPress={handleIncreaseContentPress} />
+            <Button label="Maybe" onPress={handleDecreaseContentPress} />
+            {emojisToShow.map((_, i) => (
+              <View key={i} style={styles.emojiContainer}>
+                <Text style={styles.emoji}>😍</Text>
+              </View>
+            ))}
           </View>
-          <Button label="Yes" onPress={handleIncreaseContentPress} />
-          <Button label="Maybe" onPress={handleDecreaseContentPress} />
-        </BottomSheetView>
+        </BottomSheetScrollView>
       </BottomSheetModal>
     </View>
   );
@@ -102,13 +102,16 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   emoji: {
-    fontSize: 156,
+    fontSize: 40,
     textAlign: 'center',
     alignSelf: 'center',
   },
   emojiContainer: {
     overflow: 'hidden',
+    borderRadius: 8,
     justifyContent: 'center',
+    backgroundColor: '#e1e1e1',
+    marginVertical: 12,
   },
 });
 
