@@ -1,26 +1,16 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import BottomSheet, {
-  BottomSheetView,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '../../components/button';
 
 const DynamicSnapPointExample = () => {
   // state
   const [count, setCount] = useState(0);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
 
   // hooks
   const { bottom: safeBottomArea } = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
   // callbacks
   const handleIncreaseContentPress = useCallback(() => {
@@ -59,16 +49,11 @@ const DynamicSnapPointExample = () => {
       <Button label="Close" onPress={handleClosePress} />
       <BottomSheet
         ref={bottomSheetRef}
-        snapPoints={animatedSnapPoints}
-        handleHeight={animatedHandleHeight}
-        contentHeight={animatedContentHeight}
+        enableDynamicSizing={true}
         enablePanDownToClose={true}
         animateOnMount={true}
       >
-        <BottomSheetView
-          style={contentContainerStyle}
-          onLayout={handleContentLayout}
-        >
+        <BottomSheetView style={contentContainerStyle}>
           <Text style={styles.message}>
             Could this sheet resize to its content height ?
           </Text>

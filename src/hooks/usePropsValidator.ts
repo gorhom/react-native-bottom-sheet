@@ -52,9 +52,10 @@ export const usePropsValidator = ({
     );
 
     invariant(
-      typeof index === 'number'
-        ? index >= -1 && index <= _snapPoints.length - 1
-        : true,
+      enableDynamicSizing ||
+        (typeof index === 'number'
+          ? index >= -1 && index <= _snapPoints.length - 1
+          : true),
       `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
         _snapPoints.length - 1
       }`
