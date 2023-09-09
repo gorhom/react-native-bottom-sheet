@@ -70,22 +70,3 @@ export const useNormalizedSnapPoints = (
 
   return normalizedSnapPoints;
 };
-
-// const normalizedSnapPoints = useDerivedValue(() =>
-//     providedSnapPoints
-//       ? ('value' in providedSnapPoints
-//           ? providedSnapPoints.value
-//           : providedSnapPoints
-//         ).map(snapPoint => {
-//           if (containerHeight.value === INITIAL_CONTAINER_HEIGHT) {
-//             return INITIAL_SNAP_POINT;
-//           }
-
-//           return normalizeSnapPoint(snapPoint, containerHeight.value);
-//         })
-//       : containerHeight.value === INITIAL_CONTAINER_HEIGHT ||
-//         contentHeight.value === INITIAL_CONTAINER_HEIGHT ||
-//         handleHeight.value === INITIAL_HANDLE_HEIGHT
-//       ? [INITIAL_SNAP_POINT]
-//       : [containerHeight.value - (contentHeight.value + handleHeight.value)]
-//   );
