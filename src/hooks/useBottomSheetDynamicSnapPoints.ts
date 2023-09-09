@@ -17,6 +17,7 @@ import {
  *  - animatedContentHeight: an animated content height callback node to be set on `BottomSheet` or `BottomSheetModal`.
  *  - handleContentLayout: a `onLayout` callback method to be set on `BottomSheetView` component.
  * }
+ * @deprecated will be deprecated in the next major release! please use the new introduce prop `enableDynamicSizing`.
  */
 export const useBottomSheetDynamicSnapPoints = (
   initialSnapPoints: Array<string | number>
