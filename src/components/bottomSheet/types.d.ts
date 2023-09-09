@@ -86,6 +86,13 @@ export interface BottomSheetProps
    */
   enablePanDownToClose?: boolean;
   /**
+   * Enable dynamic sizing for content view and scrollable
+   * content size.
+   * @type boolean
+   * @default false
+   */
+  enableDynamicSizing?: boolean;
+  /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
    * @default true
@@ -133,6 +140,13 @@ export interface BottomSheetProps
    * @default 0
    */
   bottomInset?: number;
+  /**
+   * Max dynamic content size height to limit the bottom sheet height
+   * from exceeding a provided size.
+   * @type number
+   * @default container height
+   */
+  maxDynamicContentSize?: number;
   //#endregion
 
   //#region keyboard

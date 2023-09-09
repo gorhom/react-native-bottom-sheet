@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import {
   INITIAL_HANDLE_HEIGHT,
@@ -56,6 +56,13 @@ export const useBottomSheetDynamicSnapPoints = (
     [animatedContentHeight]
   );
 
+  //#region effects
+  useEffect(() => {
+    console.warn(
+      '`useBottomSheetDynamicSnapPoints` will be deprecated in the next major release! please use the new introduce prop `enableDynamicSizing`.'
+    );
+  }, []);
+  //#endregion
   return {
     animatedSnapPoints,
     animatedHandleHeight,
