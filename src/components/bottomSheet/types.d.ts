@@ -42,6 +42,8 @@ export interface BottomSheetProps
   /**
    * Points for the bottom sheet to snap to. It accepts array of number, string or mix.
    * String values should be a percentage.
+   *
+   * ⚠️ This prop is required unless you set `enableDynamicSizing` to `true`.
    * @example
    * snapPoints={[200, 500]}
    * snapPoints={[200, '%50']}
