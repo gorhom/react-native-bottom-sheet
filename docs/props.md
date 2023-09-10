@@ -32,10 +32,13 @@ Initial snap index. You also could provide `-1` to initiate bottom sheet in clos
 
 Points for the bottom sheet to snap to, **points should be sorted from bottom to top**. It accepts array of number, string or mix.
 
-| type                  | required |
-| --------------------- | -------- |
-| Array<number\|string> | YES      |
+| type                                                          | required |
+| ------------------------------------------------------------- | -------- |
+| Array<number\|string> \| SharedValue<Array<string \| number>> | YES\*    |
 
+:::caution
+This prop is required unless you set `enableDynamicSizing` to `true`.
+:::
 :::caution
 String values should be a percentage.
 :::
@@ -95,6 +98,20 @@ Enable pan down gesture to close the sheet.
 | type    | default | required |
 | ------- | ------- | -------- |
 | boolean | false   | NO       |
+
+### `enableDynamicSizing`
+
+Enable dynamic sizing for content view and scrollable content size.
+
+| type    | default | required |
+| ------- | ------- | -------- |
+| boolean | false   | NO       |
+
+:::caution
+
+Setting this prop to `true`, will result in adding a new snap point to the provided snap points and will be sorted accordingly, and this might effect the indexing, for example, if provided snap points are `[100, 1000]`, and the content size is `500` then the final snap points will be `[100, 500, 1000]`.
+
+:::
 
 ### `animateOnMount`
 
@@ -188,6 +205,14 @@ Bottom inset to be added to the bottom sheet container.
 | ------ | ------- | -------- |
 | number | 0       | NO       |
 
+### `maxDynamicContentSize`
+
+Max dynamic content size height to limit the bottom sheet height from exceeding a provided size.
+
+| type   | default          | required |
+| ------ | ---------------- | -------- |
+| number | container height | NO       |
+
 ## Keyboard Configuration
 
 ### `keyboardBehavior`
@@ -232,9 +257,9 @@ Animation configs, this could be created by:
 
 ```ts
 type animationConfigs = (
-  point: number,
-  velocity: number,
-  callback: () => void
+	point: number,
+	velocity: number,
+	callback: () => void
 ) => number;
 ```
 
