@@ -50,7 +50,10 @@ export interface BottomSheetProps
    * snapPoints={['%100']}
    * @type Array<string | number>
    */
-  snapPoints?: Array<string | number> | SharedValue<Array<string | number>>;
+  snapPoints?:
+    | Array<string | number>
+    | SharedValue<Array<string | number>>
+    | Readonly<(string | number)[] | SharedValue<(string | number)[]>>;
   /**
    * Defines how violently sheet has to be stopped while over dragging.
    * @type number
