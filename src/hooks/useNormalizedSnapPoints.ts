@@ -66,7 +66,7 @@ export const useNormalizedSnapPoints = (
       _normalizedSnapPoints = _normalizedSnapPoints.sort((a, b) => b - a);
     }
     return _normalizedSnapPoints;
-  }, [snapPoints]);
+  }, [snapPoints, enableDynamicSizing, maxDynamicContentSize]);
 
   return normalizedSnapPoints;
 };
