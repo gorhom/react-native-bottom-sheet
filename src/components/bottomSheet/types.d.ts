@@ -50,7 +50,8 @@ export interface BottomSheetProps
    * snapPoints={['%100']}
    * @type Array<string | number>
    */
-  snapPoints?:
+  snapPoints: BottomSheetProps['enableDynamicSizing'] extends true
+    ? never : 
     | Array<string | number>
     | SharedValue<Array<string | number>>
     | Readonly<(string | number)[] | SharedValue<(string | number)[]>>;
