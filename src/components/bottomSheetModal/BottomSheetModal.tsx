@@ -376,7 +376,7 @@ const BottomSheetModalComponent = forwardRef<
       handleOnUpdate={handlePortalRender}
       handleOnUnmount={handlePortalOnUnmount}
     >
-      <ContainerComponent>
+      <ContainerComponent key={key}>
         <BottomSheet
           {...bottomSheetProps}
           ref={bottomSheetRef}
