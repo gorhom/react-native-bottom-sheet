@@ -68,7 +68,7 @@ export function createBottomSheetScrollableComponent<T, P>(
           ? animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED
           : showsVerticalScrollIndicator,
       }),
-      [showsVerticalScrollIndicator]
+      [animatedScrollableState, showsVerticalScrollIndicator]
     );
 
     const nativeGesture = useMemo(

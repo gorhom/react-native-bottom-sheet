@@ -41,7 +41,7 @@ import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetFooterContainer from '../bottomSheetFooterContainer/BottomSheetFooterContainer';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
-// import BottomSheetDebugView from '../bottomSheetDebugView';
+import BottomSheetDebugView from '../bottomSheetDebugView';
 import {
   ANIMATION_STATE,
   KEYBOARD_STATE,
@@ -1683,7 +1683,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   handleIndicatorStyle={_providedHandleIndicatorStyle}
                 />
               </Animated.View>
-              {/* <BottomSheetDebugView
+              <BottomSheetDebugView
                 values={{
                   // topInset,
                   // bottomInset,
@@ -1707,7 +1707,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   // isContentHeightFixed,
                   // isInTemporaryPosition,
                 }}
-              /> */}
+              />
             </BottomSheetContainer>
           </BottomSheetGestureHandlersProvider>
         </BottomSheetInternalProvider>

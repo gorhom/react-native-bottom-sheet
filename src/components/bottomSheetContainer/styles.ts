@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
+  root: {
+    flex: 1,
   },
+  container: StyleSheet.absoluteFillObject,
 });
