@@ -1181,17 +1181,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const contentContainerAnimatedStyle = useAnimatedStyle(() => {
       /**
-       * if dynamic sizing is enabled, and content height
-       * is still not set, then we exit method.
-       */
-      if (
-        enableDynamicSizing &&
-        animatedContentHeight.value === INITIAL_CONTAINER_HEIGHT
-      ) {
-        return {};
-      }
-
-      /**
        * if content height was provided, then we skip setting
        * calculated height.
        */
