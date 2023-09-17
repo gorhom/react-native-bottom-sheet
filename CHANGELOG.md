@@ -1,26 +1,17 @@
 ## Changelog
 
-### [v4.5.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.4...v4.5.0) - 
-
-#### New Features
-
-- added dynamic sizing (#1513)(with @Eli-Nathan & @ororsatti) ([`7330c7c`](https://github.com/gorhom/react-native-bottom-sheet/commit/7330c7c7e6a72aa3353fb83fd2b86543ad42b199))
+### [v4.5.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.5.0...v4.5.1) - 
 
 #### Fixes
 
-- resume close animation when container gets resized (#1374) (#1392) ([`92ad842`](https://github.com/gorhom/react-native-bottom-sheet/commit/92ad84283afb389ee23768f0c29e7808af4b6b0c))
-- (bottom-sheet-modal): added container component prop to modal (#1309)(by @magrinj) ([`1ecad69`](https://github.com/gorhom/react-native-bottom-sheet/commit/1ecad692d9477f7c7f8d7f54fcf7f990aabe5a04))
-- updated snapPoint prop type (#1479)(by @nicolascavallin) ([`0b1c8cc`](https://github.com/gorhom/react-native-bottom-sheet/commit/0b1c8ccd39df23fc75bc53cf8d8866d94a39eedc))
-- (BottomSheetTextInput): reset shouldHandleKeyboardEvents on unmount (#1495)(by @koplyarov) ([`6a5034c`](https://github.com/gorhom/react-native-bottom-sheet/commit/6a5034cd83c24db65a12444ba8d9e949fd64f316))
-- updated scrollables mocks with ReactNative list equivalent (#1394)(by @gkueny) ([`ea03e78`](https://github.com/gorhom/react-native-bottom-sheet/commit/ea03e78f40d2c5c028467ebf6f1959fb5381b93d))
-- fixed keyboard dismissing issue with Reanimated v3 (#1346)(by @janicduplessis) ([`94cf11e`](https://github.com/gorhom/react-native-bottom-sheet/commit/94cf11eb43f9cc2a356da7e7967ec63baf390a74))
-- (BottomSheetScrollView): updated scroll responders props type (#1335)(by @eps1lon) ([`9c5af58`](https://github.com/gorhom/react-native-bottom-sheet/commit/9c5af584516690cb5143caabb7722e0c2340cc57))
-- updated containerOffset top value to default to 0 (#1420)(by @beqramo) ([`218e006`](https://github.com/gorhom/react-native-bottom-sheet/commit/218e006a4a015625fcf424b99f432319daf88aad))
-- crash on swipe down (#1367)(by @beqramo) ([`235466f`](https://github.com/gorhom/react-native-bottom-sheet/commit/235466fef552f2cf7cbbafb06029cdd879624606))
+- allowed content max height be applied for dynamic sizing ([`af53c28`](https://github.com/gorhom/react-native-bottom-sheet/commit/af53c285cdf04ecb266a30c3b4e595b3b1827c03))
+- dismiss all action for modals (#1529)(by @david-gomes5) ([`6fc2cd1`](https://github.com/gorhom/react-native-bottom-sheet/commit/6fc2cd11d2dfb52131ad86d5b8449cc482e42002))
 
 #### Chores And Housekeeping
 
-- fixed types (#1123)(by @stropho) ([`d41eda2`](https://github.com/gorhom/react-native-bottom-sheet/commit/d41eda227e76b89432164ec8dc5cc1ebd5f638ee))
+- update dev dependencies ([`fef9925`](https://github.com/gorhom/react-native-bottom-sheet/commit/fef9925541a2e8fb31482cdf788e410a4d8fbf80))
+- updated detached modal example ([`55c9857`](https://github.com/gorhom/react-native-bottom-sheet/commit/55c9857ff36d89d1a4bad5f7a9881791c5dd6980))
+- updated snap points normalisation hook deps ([`9564467`](https://github.com/gorhom/react-native-bottom-sheet/commit/9564467612d7d98e08b77bae4446e6884f332987))
 
 ### [v5.0.0-alpha.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.3...v5.0.0-alpha.4) -  6 September 2023 
 
@@ -62,7 +53,7 @@
 
 - fixed types (#1123)(by @stropho) ([`b440964`](https://github.com/gorhom/react-native-bottom-sheet/commit/b44096451d4fed81be7f08b0edf638e4a1c42ccd))
 
-### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.8...v5.0.0-alpha.0) -  18 March 2023 
+### [v5.0.0-alpha.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.5.0...v5.0.0-alpha.0) -  18 March 2023 
 
 #### New Features
 
@@ -76,6 +67,16 @@
 #### Chores And Housekeeping
 
 - updated reanimated to v3 (#1324) ([`4829316`](https://github.com/gorhom/react-native-bottom-sheet/commit/4829316beeff95c9e2efa5fbfdfcf7ef37b4af60))
+
+### [v4.5.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.8...v4.5.0) -  10 September 2023 
+
+#### New Features
+
+- added dynamic sizing (#1513)(with @Eli-Nathan & @ororsatti) ([`7330c7c`](https://github.com/gorhom/react-native-bottom-sheet/commit/7330c7c7e6a72aa3353fb83fd2b86543ad42b199))
+
+#### Fixes
+
+- updated snapPoint prop type (#1479)(by @nicolascavallin) ([`0b1c8cc`](https://github.com/gorhom/react-native-bottom-sheet/commit/0b1c8ccd39df23fc75bc53cf8d8866d94a39eedc))
 
 ### [v4.4.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.4.7...v4.4.8) -  6 September 2023 
 
