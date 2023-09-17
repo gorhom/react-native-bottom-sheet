@@ -53,7 +53,7 @@ export const screens = [
         getScreen: () => require('./modal/StackExample').default,
       },
       {
-        name: 'Dynamic Snap Point',
+        name: 'Dynamic Sizing',
         slug: 'Modal/DynamicSnapPointExample',
         getScreen: () => require('./modal/DynamicSnapPointExample').default,
       },
@@ -88,7 +88,7 @@ export const screens = [
         getScreen: () => require('./advanced/BackdropExample').default,
       },
       {
-        name: 'Dynamic Snap Point',
+        name: 'Dynamic Sizing',
         slug: 'Advanced/DynamicSnapPointExample',
         getScreen: () => require('./advanced/DynamicSnapPointExample').default,
       },
