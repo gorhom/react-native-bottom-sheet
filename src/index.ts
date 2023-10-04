@@ -24,7 +24,6 @@ export { useScrollableSetter } from './hooks/useScrollableSetter';
 export {
   BottomSheetScrollView,
   BottomSheetSectionList,
-  BottomSheetFlashList,
   BottomSheetFlatList,
   BottomSheetVirtualizedList,
 } from './components/bottomSheetScrollable';
@@ -56,7 +55,6 @@ export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop'
 export type { BottomSheetFooterProps } from './components/bottomSheetFooter';
 
 export type {
-  BottomSheetFlashListMethods,
   BottomSheetFlatListMethods,
   BottomSheetScrollViewMethods,
   BottomSheetSectionListMethods,
