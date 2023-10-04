@@ -43,6 +43,8 @@ export function createBottomSheetScrollableComponent<T, P>(
       onScrollBeginDrag,
       onScrollEndDrag,
       onContentSizeChange,
+      //overrides
+      forceScrollOnGestureHandler,
       ...rest
     }: any = props;
 
@@ -69,6 +71,8 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region variables
+    const scrollEnabled =
+      forceScrollOnGestureHandler || enableContentPanningGesture;
     const scrollableAnimatedProps = useAnimatedProps(
       () => ({
         decelerationRate:
@@ -131,7 +135,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       const scrollableContent = (
         <NativeViewGestureHandler
           ref={nativeGestureRef}
-          enabled={enableContentPanningGesture}
+          enabled={scrollEnabled}
           shouldCancelWhenOutside={false}
         >
           <ScrollableComponent
@@ -178,7 +182,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       >
         <NativeViewGestureHandler
           ref={nativeGestureRef}
-          enabled={enableContentPanningGesture}
+          enabled={scrollEnabled}
           shouldCancelWhenOutside={false}
         >
           <ScrollableComponent
