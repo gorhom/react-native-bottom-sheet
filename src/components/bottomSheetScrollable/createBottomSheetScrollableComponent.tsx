@@ -8,6 +8,7 @@ import {
   useScrollHandler,
   useScrollableSetter,
   useBottomSheetInternal,
+  useStableCallback,
 } from '../../hooks';
 import {
   GESTURE_SOURCE,
@@ -41,6 +42,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       onScroll,
       onScrollBeginDrag,
       onScrollEndDrag,
+      onContentSizeChange,
       ...rest
     }: any = props;
 
@@ -61,6 +63,8 @@ export function createBottomSheetScrollableComponent<T, P>(
       enableContentPanningGesture,
       animatedFooterHeight,
       animatedScrollableState,
+      animatedContentHeight,
+      enableDynamicSizing,
     } = useBottomSheetInternal();
     //#endregion
 
@@ -74,6 +78,20 @@ export function createBottomSheetScrollableComponent<T, P>(
           : showsVerticalScrollIndicator,
       }),
       [showsVerticalScrollIndicator]
+    );
+    //#endregion
+
+    //#region callbacks
+    const handleContentSizeChange = useStableCallback(
+      (contentWidth: number, contentHeight: number) => {
+        if (enableDynamicSizing) {
+          animatedContentHeight.value = contentHeight;
+        }
+
+        if (onContentSizeChange) {
+          onContentSizeChange(contentWidth, contentHeight);
+        }
+      }
     );
     //#endregion
 
@@ -124,6 +142,7 @@ export function createBottomSheetScrollableComponent<T, P>(
             overScrollMode={overScrollMode}
             keyboardDismissMode={keyboardDismissMode}
             onScroll={scrollHandler}
+            onContentSizeChange={handleContentSizeChange}
             style={containerStyle}
           />
         </NativeViewGestureHandler>
@@ -174,6 +193,7 @@ export function createBottomSheetScrollableComponent<T, P>(
             progressViewOffset={progressViewOffset}
             refreshControl={refreshControl}
             onScroll={scrollHandler}
+            onContentSizeChange={handleContentSizeChange}
             style={containerStyle}
           />
         </NativeViewGestureHandler>

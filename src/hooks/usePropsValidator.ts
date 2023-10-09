@@ -11,14 +11,19 @@ import type { BottomSheetProps } from '../components/bottomSheet';
 export const usePropsValidator = ({
   index,
   snapPoints,
+  enableDynamicSizing,
   topInset,
   bottomInset,
 }: BottomSheetProps) => {
   useMemo(() => {
     //#region snap points
-    const _snapPoints = 'value' in snapPoints ? snapPoints.value : snapPoints;
+    const _snapPoints = snapPoints
+      ? 'value' in snapPoints
+        ? snapPoints.value
+        : snapPoints
+      : [];
     invariant(
-      _snapPoints,
+      _snapPoints || enableDynamicSizing,
       `'snapPoints' was not provided! please provide at least one snap point.`
     );
 
@@ -35,7 +40,7 @@ export const usePropsValidator = ({
     });
 
     invariant(
-      'value' in _snapPoints || _snapPoints.length > 0,
+      'value' in _snapPoints || _snapPoints.length > 0 || enableDynamicSizing,
       `'snapPoints' was provided with no points! please provide at least one snap point.`
     );
     //#endregion
@@ -47,9 +52,10 @@ export const usePropsValidator = ({
     );
 
     invariant(
-      typeof index === 'number'
-        ? index >= -1 && index <= _snapPoints.length - 1
-        : true,
+      enableDynamicSizing ||
+        (typeof index === 'number'
+          ? index >= -1 && index <= _snapPoints.length - 1
+          : true),
       `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
         _snapPoints.length - 1
       }`
@@ -68,5 +74,5 @@ export const usePropsValidator = ({
     //#endregion
 
     // animations
-  }, [index, snapPoints, topInset, bottomInset]);
+  }, [index, snapPoints, topInset, bottomInset, enableDynamicSizing]);
 };

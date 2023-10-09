@@ -21,7 +21,7 @@ type GestureEventContextType = {
   isScrollablePositionLocked: boolean;
 };
 
-const dismissKeyboardOnJs = runOnJS(Keyboard.dismiss);
+const dismissKeyboard = Keyboard.dismiss;
 
 export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
   (callBackToInterruptClose?: () => void) => {
@@ -298,7 +298,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
                 absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
               )
             ) {
-              dismissKeyboardOnJs();
+              runOnJS(dismissKeyboard)();
             }
           }
 

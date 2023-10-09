@@ -33,6 +33,7 @@ export interface BottomSheetInternalContextType
         | 'enableContentPanningGesture'
         | 'enableOverDrag'
         | 'enablePanDownToClose'
+        | 'enableDynamicSizing'
         | 'overDragResistanceFactor'
       >
     > {

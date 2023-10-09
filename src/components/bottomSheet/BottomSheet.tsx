@@ -74,6 +74,7 @@ import {
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   INITIAL_CONTAINER_OFFSET,
   INITIAL_VALUE,
+  DEFAULT_DYNAMIC_SIZING,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
@@ -104,6 +105,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
+      enableDynamicSizing = DEFAULT_DYNAMIC_SIZING,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
       callBackToInterruptClose,
 
@@ -129,6 +131,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       containerOffset: _providedContainerOffset,
       topInset = 0,
       bottomInset = 0,
+      maxDynamicContentSize,
 
       // animated callback shared values
       animatedPosition: _providedAnimatedPosition,
@@ -186,12 +189,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       _providedHandleHeight ?? INITIAL_HANDLE_HEIGHT
     );
     const animatedFooterHeight = useSharedValue(0);
+    const animatedContentHeight = useSharedValue(INITIAL_CONTAINER_HEIGHT);
     const animatedSnapPoints = useNormalizedSnapPoints(
       _providedSnapPoints,
       animatedContainerHeight,
-      topInset,
-      bottomInset,
-      $modal
+      animatedContentHeight,
+      animatedHandleHeight,
+      enableDynamicSizing,
+      maxDynamicContentSize
     );
     const animatedHighestSnapPoint = useDerivedValue(
       () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
@@ -389,7 +394,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return SCROLLABLE_STATE.LOCKED;
     });
     // dynamic
-    const animatedContentHeight = useDerivedValue(() => {
+    const animatedContentHeightMax = useDerivedValue(() => {
       const keyboardHeightInContainer = animatedKeyboardHeightInContainer.value;
       const handleHeight = Math.max(0, animatedHandleHeight.value);
       let contentHeight = animatedSheetHeight.value - handleHeight;
@@ -680,6 +685,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             currentPosition: animatedPosition.value,
             position,
             velocity,
+            animatedContainerHeight: animatedContainerHeight.value,
           },
         });
 
@@ -807,9 +813,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         const nextPosition = normalizeSnapPoint(
           position,
-          animatedContainerHeight.value,
-          topInset,
-          bottomInset
+          animatedContainerHeight.value
         );
 
         /**
@@ -1054,6 +1058,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const internalContextVariables = useMemo(
       () => ({
         enableContentPanningGesture,
+        enableDynamicSizing,
         overDragResistanceFactor,
         enableOverDrag,
         enablePanDownToClose,
@@ -1121,6 +1126,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         overDragResistanceFactor,
         enableOverDrag,
         enablePanDownToClose,
+        enableDynamicSizing,
         _providedSimultaneousHandlers,
         _providedWaitFor,
         _providedActiveOffsetX,
@@ -1185,11 +1191,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       return {
         height: animate({
-          point: animatedContentHeight.value,
+          point: animatedContentHeightMax.value,
           configs: _providedAnimationConfigs,
         }),
       };
-    }, [animatedContentHeight, _providedContentHeight]);
+    }, [animatedContentHeightMax, enableDynamicSizing, animatedContentHeight]);
     const contentContainerStyle = useMemo(
       () => [styles.contentContainer, contentContainerAnimatedStyle],
       [contentContainerAnimatedStyle]
@@ -1292,6 +1298,31 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         const _previousSnapPoints = _previousResult?.snapPoints;
         const _previousContainerHeight = _previousResult?.containerHeight;
 
+        let nextPosition;
+        let animationConfig;
+        let animationSource = ANIMATION_SOURCE.SNAP_POINT_CHANGE;
+
+        /**
+         * if the bottom sheet is closing and the container gets resized,
+         * then we restart the closing animation to the new position.
+         */
+        if (
+          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          animatedNextPositionIndex.value === -1 &&
+          _previousContainerHeight !== containerHeight
+        ) {
+          animationSource = ANIMATION_SOURCE.CONTAINER_RESIZE;
+          animationConfig = {
+            duration: 0,
+          };
+          animateToPosition(
+            containerHeight,
+            animationSource,
+            0,
+            animationConfig
+          );
+        }
+
         if (
           JSON.stringify(snapPoints) === JSON.stringify(_previousSnapPoints) ||
           !isLayoutCalculated.value ||
@@ -1308,10 +1339,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             snapPoints,
           },
         });
-
-        let nextPosition;
-        let animationConfig;
-        let animationSource = ANIMATION_SOURCE.SNAP_POINT_CHANGE;
 
         /**
          * if snap points changed while sheet is animating, then
@@ -1644,18 +1671,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   // topInset,
                   // bottomInset,
                   animatedSheetState,
-                  animatedScrollableState,
-                  animatedScrollableOverrideState,
+                  // animatedScrollableState,
+                  // animatedScrollableOverrideState,
                   // isScrollableRefreshable,
                   // animatedScrollableContentOffsetY,
                   // keyboardState,
                   // animatedIndex,
                   // animatedCurrentIndex,
                   // animatedPosition,
-                  // animatedContainerHeight,
-                  // animatedSheetHeight,
-                  // animatedHandleHeight,
-                  // animatedContentHeight,
+                  animatedContainerHeight,
+                  animatedSheetHeight,
+                  animatedHandleHeight,
+                  animatedContentHeight,
                   // // keyboardHeight,
                   // isLayoutCalculated,
                   // isContentHeightFixed,

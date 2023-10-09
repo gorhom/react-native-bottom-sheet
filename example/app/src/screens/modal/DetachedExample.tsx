@@ -5,7 +5,6 @@ import {
   BottomSheetModal,
   BottomSheetView,
   BottomSheetFooter,
-  useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
 import { Button } from '../../components/button';
 import { ContactItem } from '../../components/contactItem';
@@ -18,16 +17,9 @@ const DetachedExample = () => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
   const data = useMemo(() => createContactListMockData(2), []);
 
   // hooks
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   const { bottom: safeBottomArea } = useSafeAreaInsets();
 
   // callbacks
@@ -73,9 +65,7 @@ const DetachedExample = () => {
       <Button label="Close" onPress={handleClosePress} />
       <BottomSheetModal
         ref={bottomSheetRef}
-        snapPoints={animatedSnapPoints}
-        handleHeight={animatedHandleHeight}
-        contentHeight={animatedContentHeight}
+        enableDynamicSizing={true}
         bottomInset={safeBottomArea + 34}
         enablePanDownToClose={true}
         style={styles.sheetContainer}
@@ -87,7 +77,6 @@ const DetachedExample = () => {
         <BottomSheetView
           style={styles.contentContainerStyle}
           enableFooterMarginAdjustment={true}
-          onLayout={handleContentLayout}
         >
           {data.map(renderItem)}
         </BottomSheetView>

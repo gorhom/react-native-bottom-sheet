@@ -42,13 +42,18 @@ export interface BottomSheetProps
   /**
    * Points for the bottom sheet to snap to. It accepts array of number, string or mix.
    * String values should be a percentage.
+   *
+   * ⚠️ This prop is required unless you set `enableDynamicSizing` to `true`.
    * @example
    * snapPoints={[200, 500]}
    * snapPoints={[200, '%50']}
    * snapPoints={['%100']}
    * @type Array<string | number>
    */
-  snapPoints: Array<string | number> | SharedValue<Array<string | number>>;
+  snapPoints?:
+    | Array<string | number>
+    | SharedValue<Array<string | number>>
+    | Readonly<(string | number)[] | SharedValue<(string | number)[]>>;
   /**
    * Defines how violently sheet has to be stopped while over dragging.
    * @type number
@@ -85,6 +90,13 @@ export interface BottomSheetProps
    * @default false
    */
   enablePanDownToClose?: boolean;
+  /**
+   * Enable dynamic sizing for content view and scrollable
+   * content size.
+   * @type boolean
+   * @default false
+   */
+  enableDynamicSizing?: boolean;
   /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean
@@ -133,6 +145,13 @@ export interface BottomSheetProps
    * @default 0
    */
   bottomInset?: number;
+  /**
+   * Max dynamic content size height to limit the bottom sheet height
+   * from exceeding a provided size.
+   * @type number
+   * @default container height
+   */
+  maxDynamicContentSize?: number;
   //#endregion
 
   //#region keyboard
