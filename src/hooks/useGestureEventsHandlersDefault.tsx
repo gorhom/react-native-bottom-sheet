@@ -327,7 +327,11 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             snapPoints
           );
 
-          if (callBackToInterruptClose) destinationPoint = snapPoints[1];
+          const isCloseIntent = animatedClosedPosition.value === destinationPoint
+
+          if (isCloseIntent && callBackToInterruptClose) {
+            destinationPoint = snapPoints[1];
+          }
 
           /**
            * if destination point is the same as the current position,
@@ -353,7 +357,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             velocityY / 2
           );
 
-          if (callBackToInterruptClose) {
+          if (isCloseIntent && callBackToInterruptClose) {
             runOnJS(callBackToInterruptClose)();
           }
         },
