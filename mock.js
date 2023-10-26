@@ -109,6 +109,7 @@ module.exports = {
   BottomSheetSectionList: ReactNative.SectionList,
   BottomSheetFlatList: ReactNative.FlatList,
   BottomSheetVirtualizedList: ReactNative.VirtualizedList,
+  BottomSheetTextInput: ReactNative.TextInput,
 
   BottomSheetModalProvider,
   BottomSheetModal,
