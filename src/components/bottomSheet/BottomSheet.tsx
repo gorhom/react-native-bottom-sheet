@@ -1301,6 +1301,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         let animationConfig;
         let animationSource = ANIMATION_SOURCE.SNAP_POINT_CHANGE;
 
+        if(animatedNextPositionIndex.value < 0 && animatedCurrentIndex.value < 0) {
+            return;
+        }
+
         /**
          * if the bottom sheet is closing and the container gets resized,
          * then we restart the closing animation to the new position.
