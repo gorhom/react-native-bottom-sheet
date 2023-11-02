@@ -626,8 +626,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [_providedOnChange, animatedCurrentIndex]
     );
     const handleOnAnimate = useCallback(
-      function handleOnAnimate(toPoint: number, source: ANIMATION_SOURCE) {
-        const snapPoints = animatedSnapPoints.value;
+      function handleOnAnimate(toPoint: number, source: ANIMATION_SOURCE, snapPoints: number[]) {
         const closedPosition = animatedClosedPosition.value;
         const toIndex =
           toPoint === closedPosition ? -1 : snapPoints.indexOf(toPoint);
@@ -731,7 +730,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * fire `onAnimate` callback
          */
-        runOnJS(handleOnAnimate)(position, source);
+        runOnJS(handleOnAnimate)(position, source, animatedSnapPoints.value);
 
         /**
          * force animation configs from parameters, if provided
