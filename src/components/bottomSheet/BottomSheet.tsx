@@ -807,39 +807,58 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
 
-        /**
-         * normalized provided position.
-         */
-        const nextPosition = normalizeSnapPoint(
-          position,
-          animatedContainerHeight.value
-        );
+        const snapToPosition = () => {
+          /**
+           * normalized provided position.
+           */
+          const nextPosition = normalizeSnapPoint(
+            position,
+            animatedContainerHeight.value
+          );
+
+          /**
+           * exit method if :
+           * - layout is not calculated.
+           * - already animating to next position.
+           * - sheet is forced closing.
+           */
+          if (
+            !isLayoutCalculated ||
+            nextPosition === animatedNextPosition.value ||
+            isForcedClosing.value
+          ) {
+            return;
+          }
+
+          /**
+           * mark the new position as temporary.
+           */
+          isInTemporaryPosition.value = true;
+
+          runOnUI(animateToPosition)(
+            nextPosition,
+            ANIMATION_SOURCE.USER,
+            0,
+            animationConfigs
+          );
+        };
 
         /**
-         * exit method if :
-         * - layout is not calculated.
-         * - already animating to next position.
-         * - sheet is forced closing.
+         * Checks whether the library has measured the container's height or if it was passed from props.
+         * If the height is not measured, the function waits for the value to be updated.
+         * The variable 'isContainerHeightCalculated' cannot be solely trusted,
+         * as it only checks if the value is neither undefined nor null.
+         * Fixes: https://github.com/gorhom/react-native-bottom-sheet/issues/1294
          */
-        if (
-          !isLayoutCalculated ||
-          nextPosition === animatedNextPosition.value ||
-          isForcedClosing.value
-        ) {
-          return;
-        }
-
-        /**
-         * mark the new position as temporary.
-         */
-        isInTemporaryPosition.value = true;
-
-        runOnUI(animateToPosition)(
-          nextPosition,
-          ANIMATION_SOURCE.USER,
-          0,
-          animationConfigs
-        );
+        if (animatedContainerHeight.value === INITIAL_CONTAINER_HEIGHT)
+          runOnUI(() => {
+            const id = Math.random();
+            animatedContainerHeight.addListener(id, () => {
+              runOnJS(snapToPosition)();
+              animatedContainerHeight.removeListener(id);
+            });
+          })();
+        else snapToPosition();
       },
       [
         animateToPosition,
