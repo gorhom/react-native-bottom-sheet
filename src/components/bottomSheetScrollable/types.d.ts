@@ -1,10 +1,4 @@
-import type {
-  DependencyList,
-  EffectCallback,
-  ReactNode,
-  Ref,
-  RefObject,
-} from 'react';
+import type { DependencyList, EffectCallback, Ref, RefObject } from 'react';
 import type {
   VirtualizedListProps,
   ScrollViewProps,
@@ -139,7 +133,6 @@ export type BottomSheetScrollViewProps = Omit<
 > &
   BottomSheetScrollableProps & {
     ref?: Ref<BottomSheetScrollViewMethods>;
-    children: ReactNode | ReactNode[];
   };
 
 export interface BottomSheetScrollViewMethods {
