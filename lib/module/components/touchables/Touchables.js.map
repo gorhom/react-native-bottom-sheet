@@ -1,0 +1,1 @@
+{"version":3,"sources":["Touchables.tsx"],"names":["TouchableOpacity","TouchableHighlight","TouchableWithoutFeedback"],"mappings":"AAAA,SACEA,gBADF,EAEEC,kBAFF,EAGEC,wBAHF,QAIO,8BAJP","sourcesContent":["export {\n  TouchableOpacity,\n  TouchableHighlight,\n  TouchableWithoutFeedback,\n} from 'react-native-gesture-handler';\n"]}

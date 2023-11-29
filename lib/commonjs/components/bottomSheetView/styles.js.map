@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles.ts"],"names":["styles","StyleSheet","create","container"],"mappings":";;;;;;;AAAA;;AAEO,MAAMA,MAAM,GAAGC,wBAAWC,MAAX,CAAkB;AACtCC,EAAAA,SAAS,EAAE,CACT;AADS;AAD2B,CAAlB,CAAf","sourcesContent":["import { StyleSheet } from 'react-native';\n\nexport const styles = StyleSheet.create({\n  container: {\n    // flex: 1,\n  },\n});\n"]}

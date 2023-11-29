@@ -1,0 +1,1 @@
+{"version":3,"sources":["noop.ts"],"names":["workletNoop","noop"],"mappings":";;;;;;;AAAA,MAAMA,WAAW,GAAG,MAAM;AACxB;AACD,CAFD;;;;AAIA,MAAMC,IAAI,GAAG,MAAM,CAAE,CAArB","sourcesContent":["const workletNoop = () => {\n  'worklet';\n};\n\nconst noop = () => {};\n\nexport { noop, workletNoop };\n"]}
