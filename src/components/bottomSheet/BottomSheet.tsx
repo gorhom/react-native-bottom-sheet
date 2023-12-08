@@ -1690,7 +1690,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   accessible={_providedAccessible ?? undefined}
                   accessibilityRole={_providedAccessibilityRole ?? undefined}
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
-                  {...rest}
                 >
                   <BottomSheetDraggableView
                     key="BottomSheetRootDraggableView"
