@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { ViewProps } from 'react-native';
 import Animated, {
   interpolate,
@@ -44,6 +51,7 @@ const BottomSheetBackdropComponent = ({
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
+  const isMounted = useRef(false);
   //#endregion
 
   //#region defaults
@@ -61,6 +69,16 @@ const BottomSheetBackdropComponent = ({
   >(enableTouchThrough ? 'none' : 'auto');
   //#endregion
 
+  //#region effects
+  useEffect(() => {
+    // Without this we get "Warning: Can't perform a React state update on an unmounted component [...] in BottomSheetBackdrop"
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  //#endregion
+
   //#region callbacks
   const handleOnPress = useCallback(() => {
     onPress?.();
@@ -75,7 +93,8 @@ const BottomSheetBackdropComponent = ({
   }, [snapToIndex, close, disappearsOnIndex, pressBehavior, onPress]);
   const handleContainerTouchability = useCallback(
     (shouldDisableTouchability: boolean) => {
-      setPointerEvents(shouldDisableTouchability ? 'none' : 'auto');
+      isMounted.current &&
+        setPointerEvents(shouldDisableTouchability ? 'none' : 'auto');
     },
     []
   );
