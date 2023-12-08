@@ -40,7 +40,7 @@ const BottomSheetBackdropComponent = ({
   accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
   accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
-  accessibilityHint: _providedAccessiblityHint = DEFAULT_ACCESSIBILITY_HINT,
+  accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
   ...rest
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
@@ -121,26 +121,30 @@ const BottomSheetBackdropComponent = ({
     },
     [disappearsOnIndex]
   );
-  //#endregion
 
-  return pressBehavior !== 'none' ? (
-    <TapGestureHandler onGestureEvent={gestureHandler}>
+  const AnimatedView = () => {
+    return (
       <Animated.View
         style={containerStyle}
         pointerEvents={pointerEvents}
         accessible={_providedAccessible ?? undefined}
         accessibilityRole={_providedAccessibilityRole ?? undefined}
         accessibilityLabel={_providedAccessibilityLabel ?? undefined}
-        accessibilityHint={_providedAccessiblityHint ?? undefined}
+        accessibilityHint={_providedAccessibilityHint ? _providedAccessibilityHint : `Tap to ${typeof pressBehavior === 'string' ? pressBehavior : 'move'} the Bottom Sheet`}
         {...rest}
       >
         {children}
       </Animated.View>
+    )
+  }
+  //#endregion
+
+  return pressBehavior !== 'none' ? (
+    <TapGestureHandler onGestureEvent={gestureHandler}>
+      <AnimatedView />
     </TapGestureHandler>
   ) : (
-    <Animated.View pointerEvents={pointerEvents} style={containerStyle}>
-      {children}
-    </Animated.View>
+    <AnimatedView />
   );
 };
 

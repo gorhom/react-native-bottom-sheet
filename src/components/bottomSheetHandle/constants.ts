@@ -1,8 +1,7 @@
 const DEFAULT_ACCESSIBLE = true;
 const DEFAULT_ACCESSIBILITY_ROLE = 'adjustable';
-const DEFAULT_ACCESSIBILITY_LABEL = 'Bottom Sheet handle';
-const DEFAULT_ACCESSIBILITY_HINT =
-  'Drag up or down to extend or minimize the Bottom Sheet';
+const DEFAULT_ACCESSIBILITY_LABEL = 'Bottom sheet handle';
+const DEFAULT_ACCESSIBILITY_HINT = 'Drag up or down to extend or minimize the bottom sheet';
 
 export {
   DEFAULT_ACCESSIBLE,
