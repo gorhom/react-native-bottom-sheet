@@ -1,4 +1,4 @@
-import { scrollTo, useSharedValue, useWorkletCallback } from 'react-native-reanimated';
+import { scrollTo, useSharedValue, useWorkletCallback, useAnimatedReaction } from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 import { ANIMATION_STATE, SCROLLABLE_STATE, SHEET_STATE } from '../constants';
 import type {
@@ -16,7 +16,8 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
   scrollableRef,
   scrollableContentOffsetY,
   scrollBuffer,
-  preserveScrollMomentum
+  preserveScrollMomentum,
+  lockableScrollableContentOffsetY,
 ) => {
   // hooks
   const {
@@ -25,10 +26,19 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     animatedAnimationState,
     animatedScrollableContentOffsetY: rootScrollableContentOffsetY,
     isScrollableLocked,
-    lockableScrollableContentOffsetY,
   } = useBottomSheetInternal();
   const awaitingFirstScroll = useSharedValue(false);
   const scrollEnded = useSharedValue(false);
+  const _lockableScrollableContentOffsetY = useSharedValue(0);
+
+  useAnimatedReaction(
+    () => _lockableScrollableContentOffsetY.value,
+    _lockableScrollableContentOffsetY => {
+      if (lockableScrollableContentOffsetY) {
+        lockableScrollableContentOffsetY.value = _lockableScrollableContentOffsetY;
+      }
+    }
+  );
 
   //#region callbacks
   const handleOnScroll: ScrollEventHandlerCallbackType<ScrollEventContextType> =
@@ -71,11 +81,11 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
             // @ts-ignore
             scrollTo(scrollableRef, 0, lockPosition, false);
             scrollableContentOffsetY.value = lockPosition;
-            lockableScrollableContentOffsetY.value = lockPosition;
+            _lockableScrollableContentOffsetY.value = lockPosition;
           }
           return;
         }
-        lockableScrollableContentOffsetY.value = event.contentOffset.y;
+        _lockableScrollableContentOffsetY.value = event.contentOffset.y;
       },
       [
         scrollableRef,
@@ -89,7 +99,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
       (event, context) => {
         const y = event.contentOffset.y;
         scrollableContentOffsetY.value = y;
-        lockableScrollableContentOffsetY.value = y;
+        _lockableScrollableContentOffsetY.value = y;
         rootScrollableContentOffsetY.value = y;
         context.initialContentOffsetY = y;
         awaitingFirstScroll.value = true;
@@ -150,12 +160,12 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = lockPosition;
-          lockableScrollableContentOffsetY.value = lockPosition;
+          _lockableScrollableContentOffsetY.value = lockPosition;
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
-          lockableScrollableContentOffsetY.value = y;
+          _lockableScrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
         }
       },
@@ -178,13 +188,13 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
             // @ts-ignore
             scrollTo(scrollableRef, 0, lockPosition, false);
             scrollableContentOffsetY.value = 0;
-            lockableScrollableContentOffsetY.value = 0;
+            _lockableScrollableContentOffsetY.value = 0;
           }
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
-          lockableScrollableContentOffsetY.value = y;
+          _lockableScrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
         }
       },

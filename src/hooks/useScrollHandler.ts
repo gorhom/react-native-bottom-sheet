@@ -1,4 +1,5 @@
 import {
+  SharedValue,
   runOnJS,
   useAnimatedRef,
   useAnimatedScrollHandler,
@@ -14,7 +15,8 @@ export const useScrollHandler = (
   onScrollBeginDrag?: ScrollableEvent,
   onScrollEndDrag?: ScrollableEvent,
   scrollBuffer?: number,
-  preserveScrollMomentum?: boolean
+  preserveScrollMomentum?: boolean,
+  lockableScrollableContentOffsetY?: SharedValue<number>,
 ) => {
   // refs
   const scrollableRef = useAnimatedRef<Scrollable>();
@@ -29,7 +31,7 @@ export const useScrollHandler = (
     handleOnEndDrag = noop,
     handleOnMomentumEnd = noop,
     handleOnMomentumBegin = noop,
-  } = useScrollEventsHandlers(scrollableRef, scrollableContentOffsetY, scrollBuffer, preserveScrollMomentum);
+  } = useScrollEventsHandlers(scrollableRef, scrollableContentOffsetY, scrollBuffer, preserveScrollMomentum, lockableScrollableContentOffsetY);
 
   // callbacks
   const scrollHandler = useAnimatedScrollHandler(
