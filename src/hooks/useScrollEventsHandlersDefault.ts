@@ -25,6 +25,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     animatedAnimationState,
     animatedScrollableContentOffsetY: rootScrollableContentOffsetY,
     isScrollableLocked,
+    lockableScrollableContentOffsetY,
   } = useBottomSheetInternal();
   const awaitingFirstScroll = useSharedValue(false);
   const scrollEnded = useSharedValue(false);
@@ -70,9 +71,11 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
             // @ts-ignore
             scrollTo(scrollableRef, 0, lockPosition, false);
             scrollableContentOffsetY.value = lockPosition;
+            lockableScrollableContentOffsetY.value = lockPosition;
           }
           return;
         }
+        lockableScrollableContentOffsetY.value = event.contentOffset.y;
       },
       [
         scrollableRef,
@@ -86,6 +89,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
       (event, context) => {
         const y = event.contentOffset.y;
         scrollableContentOffsetY.value = y;
+        lockableScrollableContentOffsetY.value = y;
         rootScrollableContentOffsetY.value = y;
         context.initialContentOffsetY = y;
         awaitingFirstScroll.value = true;
@@ -146,10 +150,12 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = lockPosition;
+          lockableScrollableContentOffsetY.value = lockPosition;
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
+          lockableScrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
         }
       },
@@ -172,11 +178,13 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
             // @ts-ignore
             scrollTo(scrollableRef, 0, lockPosition, false);
             scrollableContentOffsetY.value = 0;
+            lockableScrollableContentOffsetY.value = 0;
           }
           return;
         }
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
+          lockableScrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
         }
       },
