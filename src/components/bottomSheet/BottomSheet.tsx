@@ -6,7 +6,7 @@ import React, {
   memo,
   useEffect,
 } from 'react';
-import { Platform } from 'react-native';
+import { AccessibilityInfo, Platform } from 'react-native';
 import invariant from 'invariant';
 import Animated, {
   useAnimatedReaction,
@@ -51,6 +51,7 @@ import {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
   ANIMATION_SOURCE,
+  WINDOW_HEIGHT
 } from '../../constants';
 import {
   animate,
@@ -74,6 +75,11 @@ import {
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   INITIAL_CONTAINER_OFFSET,
   INITIAL_VALUE,
+  DEFAULT_ACCESSIBLE,
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
+  DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
   DEFAULT_DYNAMIC_SIZING,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
@@ -159,6 +165,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       backgroundComponent,
       footerComponent,
       children: Content,
+
+      // accessibility
+      accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
+      accessibilityLabel:
+      _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
+      accessibilityRole:
+      _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+      enableAccessibilityChangeAnnouncement:
+      _providedEnableAccessibilityChangeAnnouncement = DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
+      accessibilityPositionChangeAnnouncement:
+      _providedAccessibilityPositionChangeAnnouncement = DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
     } = props;
     //#endregion
 
@@ -602,8 +619,43 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (_providedOnChange) {
           _providedOnChange(index);
         }
+
+
+        AccessibilityInfo.isScreenReaderEnabled().then(isEnabled => {
+          if (
+            !isEnabled ||
+            !_providedEnableAccessibilityChangeAnnouncement ||
+            !_providedAccessibilityPositionChangeAnnouncement
+          ) {
+            return;
+          }
+
+          const positionInScreen = Math.max(
+            Math.floor(
+              ((WINDOW_HEIGHT - animatedSnapPoints.value[index] || 1) /
+                WINDOW_HEIGHT) *
+              100
+            ),
+            0
+          ).toFixed(0);
+
+          AccessibilityInfo.announceForAccessibility(
+            typeof _providedAccessibilityPositionChangeAnnouncement ===
+              'function'
+              ? _providedAccessibilityPositionChangeAnnouncement(
+                positionInScreen
+              )
+              : _providedAccessibilityPositionChangeAnnouncement
+          );
+        });
       },
-      [_providedOnChange, animatedCurrentIndex]
+      [
+        _providedOnChange,
+        animatedCurrentIndex,
+        _providedEnableAccessibilityChangeAnnouncement,
+        _providedAccessibilityPositionChangeAnnouncement,
+        animatedSnapPoints,
+      ]
     );
     const handleOnAnimate = useCallback(
       function handleOnAnimate(toPoint: number) {
@@ -1635,6 +1687,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 <Animated.View
                   pointerEvents="box-none"
                   style={contentMaskContainerStyle}
+                  accessible={_providedAccessible ?? undefined}
+                  accessibilityRole={_providedAccessibilityRole ?? undefined}
+                  accessibilityLabel={_providedAccessibilityLabel ?? undefined}
                 >
                   <BottomSheetDraggableView
                     key="BottomSheetRootDraggableView"
