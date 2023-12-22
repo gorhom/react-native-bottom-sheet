@@ -92,7 +92,8 @@ function BottomSheetHandleContainerComponent({
     >
       <Animated.View
         key="BottomSheetHandleContainer"
-        accessible={true}
+        accessible={false}
+        importantForAccessibility={"no"}
         accessibilityRole="adjustable"
         accessibilityLabel="Bottom Sheet handle"
         accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"

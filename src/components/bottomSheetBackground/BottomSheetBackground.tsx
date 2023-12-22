@@ -9,7 +9,7 @@ const BottomSheetBackgroundComponent = ({
 }: BottomSheetBackgroundProps) => (
   <View
     pointerEvents={pointerEvents}
-    accessible={true}
+    accessible={false}
     accessibilityRole="adjustable"
     accessibilityLabel="Bottom Sheet"
     style={[styles.container, style]}

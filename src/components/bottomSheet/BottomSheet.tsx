@@ -1685,11 +1685,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   backgroundStyle={_providedBackgroundStyle}
                 />
                 <Animated.View
-                  pointerEvents="box-none"
+                  // pointerEvents="box-none"
                   style={contentMaskContainerStyle}
-                  accessible={_providedAccessible ?? undefined}
-                  accessibilityRole={_providedAccessibilityRole ?? undefined}
-                  accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+                  accessible={false}
+                  // accessibilityRole={_providedAccessibilityRole ?? undefined}
+                  // accessibilityLabel={_providedAccessibilityLabel ?? undefined}
                 >
                   <BottomSheetDraggableView
                     key="BottomSheetRootDraggableView"
