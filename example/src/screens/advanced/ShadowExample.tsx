@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useShowcaseTheme } from '@gorhom/showcase-template';
 import { Button } from '../../components/button';
@@ -18,6 +18,7 @@ const ShadowExample = () => {
   const sheetStyle = useMemo(
     () => ({
       ...styles.sheetContainer,
+      ...styles.sheetContainerShadow,
       shadowColor: colors.secondaryText,
     }),
     [colors.secondaryText]
@@ -68,15 +69,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopStartRadius: 24,
     borderTopEndRadius: 24,
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.75,
-    shadowRadius: 16.0,
-
-    elevation: 24,
   },
+  sheetContainerShadow: Platform.select({
+    ios: {
+      shadowOffset: {
+        width: 0,
+        height: 12,
+      },
+      shadowOpacity: 0.75,
+      shadowRadius: 16.0,
+      shadowColor: '#000',
+    },
+    android: {
+      elevation: 24,
+    },
+    web: {
+      boxShadow: '0px -4px 16px rgba(0,0,0, 0.25)',
+    },
+  }) as any,
 });
 
 export default ShadowExample;

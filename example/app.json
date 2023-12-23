@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Bottom Sheet",
-    "slug": "bottomsheet",
+    "name": "BottomSheet",
+    "slug": "BottomSheet",
     "githubUrl": "https://github.com/gorhom/react-native-bottom-sheet",
-    "version": "1.0.0",
+    "version": "5.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#000"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "dev.gorhom.bottomsheet"
