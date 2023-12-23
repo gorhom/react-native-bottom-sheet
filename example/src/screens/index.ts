@@ -150,11 +150,11 @@ if (Platform.OS !== 'web') {
         getScreen: () =>
           require('./integrations/navigation/NavigatorExample').default,
       },
-      // {
-      //   name: 'React Native Screens',
-      //   slug: 'Integrations/NativeScreensExample',
-      //   getScreen: () => require('./integrations/NativeScreensExample').default,
-      // },
+      {
+        name: 'React Native Screens',
+        slug: 'Integrations/NativeScreensExample',
+        getScreen: () => require('./integrations/NativeScreensExample').default,
+      },
       {
         name: 'View Pager',
         slug: 'Integrations/ViewPagerExample',
