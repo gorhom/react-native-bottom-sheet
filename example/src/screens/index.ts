@@ -144,11 +144,12 @@ if (Platform.OS !== 'web') {
   const integrationSection = {
     title: 'Third Party Integration',
     data: [
-      // {
-      //   name: 'React Navigation',
-      //   slug: 'Integrations/NavigatorExample',
-      //   getScreen: () => require('./integrations/NavigatorExample').default,
-      // },
+      {
+        name: 'React Navigation',
+        slug: 'Integrations/NavigatorExample',
+        getScreen: () =>
+          require('./integrations/navigation/NavigatorExample').default,
+      },
       // {
       //   name: 'React Native Screens',
       //   slug: 'Integrations/NativeScreensExample',

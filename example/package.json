@@ -15,6 +15,7 @@
     "@react-navigation/material-top-tabs": "^6.6.5",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
+    "@react-navigation/stack": "^6.3.20",
     "expo": "~50.0.0-preview.7",
     "expo-blur": "~12.9.1",
     "expo-status-bar": "~1.11.1",
