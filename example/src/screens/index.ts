@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+const screens = [];
+
 //#region Basic Section
 const basicSection = {
   title: 'Basic',
@@ -34,6 +36,7 @@ const basicSection = {
     },
   ],
 };
+screens.push(basicSection);
 //#endregion
 
 //#region Modal Section
@@ -67,6 +70,7 @@ const modalSection = {
     },
   ],
 };
+screens.push(modalSection);
 //#endregion
 
 //#region Advanced Section
@@ -111,7 +115,6 @@ const advancedSection = {
     },
   ],
 };
-
 if (Platform.OS !== 'web') {
   advancedSection.data.push(
     {
@@ -133,8 +136,44 @@ if (Platform.OS !== 'web') {
     }
   );
 }
+screens.push(advancedSection);
 //#endregion
 
-const screens = [basicSection, modalSection, advancedSection];
+//#region Third Party Integration Section
+if (Platform.OS !== 'web') {
+  const integrationSection = {
+    title: 'Third Party Integration',
+    data: [
+      // {
+      //   name: 'React Navigation',
+      //   slug: 'Integrations/NavigatorExample',
+      //   getScreen: () => require('./integrations/NavigatorExample').default,
+      // },
+      // {
+      //   name: 'React Native Screens',
+      //   slug: 'Integrations/NativeScreensExample',
+      //   getScreen: () => require('./integrations/NativeScreensExample').default,
+      // },
+      // {
+      //   name: 'View Pager',
+      //   slug: 'Integrations/ViewPagerExample',
+      //   getScreen: () => require('./integrations/ViewPagerExample').default,
+      // },
+      {
+        name: 'Map',
+        slug: 'Integrations/MapExample',
+        getScreen: () => require('./integrations/map/MapExample').default,
+        screenOptions: {
+          headerTintColor: 'black',
+          headerTransparent: true,
+        },
+      },
+    ],
+    collapsed: true,
+  };
+  screens.push(integrationSection);
+}
+
+//#endregion
 
 export { screens };
