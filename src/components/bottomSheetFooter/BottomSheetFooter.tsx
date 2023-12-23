@@ -56,11 +56,7 @@ function BottomSheetFooterComponent({
   //#endregion
 
   return children !== null ? (
-    <Animated.View
-      pointerEvents="box-none"
-      onLayout={handleContainerLayout}
-      style={containerStyle}
-    >
+    <Animated.View onLayout={handleContainerLayout} style={containerStyle}>
       {children}
     </Animated.View>
   ) : null;
