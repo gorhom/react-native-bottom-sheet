@@ -154,11 +154,11 @@ if (Platform.OS !== 'web') {
       //   slug: 'Integrations/NativeScreensExample',
       //   getScreen: () => require('./integrations/NativeScreensExample').default,
       // },
-      // {
-      //   name: 'View Pager',
-      //   slug: 'Integrations/ViewPagerExample',
-      //   getScreen: () => require('./integrations/ViewPagerExample').default,
-      // },
+      {
+        name: 'View Pager',
+        slug: 'Integrations/ViewPagerExample',
+        getScreen: () => require('./integrations/ViewPagerExample').default,
+      },
       {
         name: 'Map',
         slug: 'Integrations/MapExample',
