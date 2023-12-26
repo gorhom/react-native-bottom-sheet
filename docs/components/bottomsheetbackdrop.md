@@ -60,11 +60,20 @@ Enable touch through backdrop component.
 | ------- | ------- | -------- |
 | boolean | false   | NO       |
 
+### `onPress`
+
+Pressing the backdrop will call the `onPress` function, it will be called before the action defined by `pressBehavior` is executed
+
+| type    | default | required |
+| ------- | ------- | -------- |
+| function | undefined   | NO       |
+
 ### `pressBehavior`
 
 What should happen when user press backdrop?
 
-- `none`: do nothing.
+- `none`: do nothing, and `onPress` prop will be ignored.
+- `''`: do nothing, but your can use `onPress` prop to provide your own custom press behavior, for example, show a confirm dialog before closing the sheet.
 - `close`: close the sheet.
 - `collapse`: collapse the sheet.
 - `N`: snap point index.
