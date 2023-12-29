@@ -25,25 +25,35 @@ function BottomSheetViewComponent({
   //#endregion
 
   //#region styles
+  const flattenContainerStyle = useMemo(
+    () => StyleSheet.flatten(style),
+    [style]
+  );
   const containerStylePaddingBottom = useMemo(() => {
-    const flattenStyle = StyleSheet.flatten(style);
     const paddingBottom =
-      flattenStyle && 'paddingBottom' in flattenStyle
-        ? flattenStyle.paddingBottom
+      flattenContainerStyle && 'paddingBottom' in flattenContainerStyle
+        ? flattenContainerStyle.paddingBottom
         : 0;
     return typeof paddingBottom === 'number' ? paddingBottom : 0;
-  }, [style]);
-  const containerAnimatedStyle = useAnimatedStyle(
+  }, [flattenContainerStyle]);
+  const containerStyle = useMemo(() => {
+    return {
+      ...flattenContainerStyle,
+      paddingBottom: 0,
+    };
+  }, [flattenContainerStyle]);
+  const spaceStyle = useAnimatedStyle(
     () => ({
-      paddingBottom: enableFooterMarginAdjustment
+      opacity: 0,
+      height: enableFooterMarginAdjustment
         ? animatedFooterHeight.value + containerStylePaddingBottom
         : containerStylePaddingBottom,
     }),
-    [containerStylePaddingBottom, enableFooterMarginAdjustment]
-  );
-  const containerStyle = useMemo(
-    () => [style, containerAnimatedStyle],
-    [style, containerAnimatedStyle]
+    [
+      enableFooterMarginAdjustment,
+      containerStylePaddingBottom,
+      animatedFooterHeight,
+    ]
   );
   //#endregion
 
@@ -81,6 +91,7 @@ function BottomSheetViewComponent({
   return (
     <Animated.View onLayout={handleLayout} style={containerStyle} {...rest}>
       {children}
+      <Animated.View pointerEvents="none" style={spaceStyle} />
     </Animated.View>
   );
 }

@@ -1,0 +1,64 @@
+diff --git a/node_modules/react-native-gesture-handler/lib/module/handlers/gestures/GestureDetector.js b/node_modules/react-native-gesture-handler/lib/module/handlers/gestures/GestureDetector.js
+index baf1ca3..545560a 100644
+--- a/node_modules/react-native-gesture-handler/lib/module/handlers/gestures/GestureDetector.js
++++ b/node_modules/react-native-gesture-handler/lib/module/handlers/gestures/GestureDetector.js
+@@ -23,6 +23,9 @@ import { RNRenderer } from '../../RNRenderer';
+ import { isExperimentalWebImplementationEnabled } from '../../EnableExperimentalWebImplementation';
+ const ALLOWED_PROPS = [...baseGestureHandlerWithMonitorProps, ...tapGestureHandlerProps, ...panGestureHandlerProps, ...panGestureHandlerCustomNativeProps, ...longPressGestureHandlerProps, ...forceTouchGestureHandlerProps, ...flingGestureHandlerProps];
+ 
++const scheduleUpdate =
++  Platform.OS === 'web' ? requestAnimationFrame : setImmediate;
++
+ function convertToHandlerTag(ref) {
+   if (typeof ref === 'number') {
+     return ref;
+@@ -84,7 +87,7 @@ function attachHandlers({
+   // when it's ran
+ 
+ 
+-  setImmediate(() => {
++  scheduleUpdate(() => {
+     if (!mountedRef.current) {
+       return;
+     }
+@@ -100,7 +103,7 @@ function attachHandlers({
+   // when it's ran
+ 
+ 
+-  setImmediate(() => {
++  scheduleUpdate(() => {
+     if (!mountedRef.current) {
+       return;
+     }
+diff --git a/node_modules/react-native-gesture-handler/src/handlers/gestures/GestureDetector.tsx b/node_modules/react-native-gesture-handler/src/handlers/gestures/GestureDetector.tsx
+index 1be80d7..8193630 100644
+--- a/node_modules/react-native-gesture-handler/src/handlers/gestures/GestureDetector.tsx
++++ b/node_modules/react-native-gesture-handler/src/handlers/gestures/GestureDetector.tsx
+@@ -68,6 +68,9 @@ export type GestureConfigReference = {
+   useReanimatedHook: boolean;
+ };
+ 
++const scheduleUpdate =
++  Platform.OS === 'web' ? requestAnimationFrame : setImmediate;
++
+ function convertToHandlerTag(ref: GestureRef): number {
+   if (typeof ref === 'number') {
+     return ref;
+@@ -149,7 +152,7 @@ function attachHandlers({
+ 
+   // use setImmediate to extract handlerTags, because all refs should be initialized
+   // when it's ran
+-  setImmediate(() => {
++  scheduleUpdate(() => {
+     if (!mountedRef.current) {
+       return;
+     }
+@@ -169,7 +172,7 @@ function attachHandlers({
+ 
+   // use setImmediate to extract handlerTags, because all refs should be initialized
+   // when it's ran
+-  setImmediate(() => {
++  scheduleUpdate(() => {
+     if (!mountedRef.current) {
+       return;
+     }

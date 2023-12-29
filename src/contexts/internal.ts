@@ -1,11 +1,9 @@
 import { createContext, RefObject } from 'react';
-import type {
-  PanGestureHandlerProps,
-  State,
-} from 'react-native-gesture-handler';
+import type { State } from 'react-native-gesture-handler';
 import type Animated from 'react-native-reanimated';
 import type {
   AnimateToPositionType,
+  BottomSheetGestureProps,
   BottomSheetProps,
 } from '../components/bottomSheet/types';
 import type {
@@ -18,15 +16,7 @@ import type {
 import type { Scrollable, ScrollableRef } from '../types';
 
 export interface BottomSheetInternalContextType
-  extends Pick<
-      PanGestureHandlerProps,
-      | 'activeOffsetY'
-      | 'activeOffsetX'
-      | 'failOffsetY'
-      | 'failOffsetX'
-      | 'waitFor'
-      | 'simultaneousHandlers'
-    >,
+  extends Partial<BottomSheetGestureProps>,
     Required<
       Pick<
         BottomSheetProps,

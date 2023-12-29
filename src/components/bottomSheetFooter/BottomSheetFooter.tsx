@@ -61,7 +61,7 @@ function BottomSheetFooterComponent({
       onLayout={handleContainerLayout}
       style={containerStyle}
     >
-      {typeof children === 'function' ? children() : children}
+      {children}
     </Animated.View>
   ) : null;
 }

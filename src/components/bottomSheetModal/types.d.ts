@@ -15,7 +15,7 @@ export interface BottomSheetModalProps
   /**
    * Modal name to help identify the modal for later on.
    * @type string
-   * @default nanoid generated unique key.
+   * @default generated unique key.
    */
   name?: string;
 

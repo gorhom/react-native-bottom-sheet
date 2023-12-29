@@ -65,8 +65,10 @@ const DetachedExample = () => {
       <Button label="Close" onPress={handleClosePress} />
       <BottomSheetModal
         ref={bottomSheetRef}
-        enableDynamicSizing={true}
-        bottomInset={safeBottomArea + 34}
+        snapPoints={animatedSnapPoints}
+        handleHeight={animatedHandleHeight}
+        contentHeight={animatedContentHeight}
+        bottomInset={safeBottomArea + 16}
         enablePanDownToClose={true}
         style={styles.sheetContainer}
         backgroundComponent={null}
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingTop: 12,
     paddingBottom: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
   },
   footer: {
     justifyContent: 'center',

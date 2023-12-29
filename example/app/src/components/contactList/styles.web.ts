@@ -9,10 +9,10 @@ export const styles = StyleSheet.create({
   sectionHeaderTitle: {
     fontSize: 16,
     textTransform: 'uppercase',
+    color: 'black',
   },
   container: {
     flex: 1,
-    paddingHorizontal: 16,
   },
   contentContainer: {
     paddingHorizontal: 16,

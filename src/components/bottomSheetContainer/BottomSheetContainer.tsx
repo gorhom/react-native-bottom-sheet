@@ -54,8 +54,7 @@ function BottomSheetContainerComponent({
             right: 0,
             bottom: Math.max(
               0,
-              WINDOW_HEIGHT -
-                ((pageY ?? 0) + height + (StatusBar.currentHeight ?? 0))
+              WINDOW_HEIGHT - ((pageY ?? 0) + height + (StatusBar.currentHeight ?? 0))
             ),
           };
         }

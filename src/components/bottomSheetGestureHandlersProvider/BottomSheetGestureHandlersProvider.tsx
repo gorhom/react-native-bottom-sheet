@@ -23,7 +23,7 @@ const BottomSheetGestureHandlersProvider = ({
   //#region hooks
   const { animatedContentGestureState, animatedHandleGestureState } =
     useBottomSheetInternal();
-  const { handleOnStart, handleOnActive, handleOnEnd } =
+  const { handleOnStart, handleOnChange, handleOnEnd, handleOnFinalize } =
     useGestureEventsHandlers();
   //#endregion
 
@@ -33,17 +33,9 @@ const BottomSheetGestureHandlersProvider = ({
     animatedContentGestureState,
     animatedGestureSource,
     handleOnStart,
-    handleOnActive,
-    handleOnEnd
-  );
-
-  const scrollablePanGestureHandler = useGestureHandler(
-    GESTURE_SOURCE.SCROLLABLE,
-    animatedContentGestureState,
-    animatedGestureSource,
-    handleOnStart,
-    handleOnActive,
-    handleOnEnd
+    handleOnChange,
+    handleOnEnd,
+    handleOnFinalize
   );
 
   const handlePanGestureHandler = useGestureHandler(
@@ -51,8 +43,9 @@ const BottomSheetGestureHandlersProvider = ({
     animatedHandleGestureState,
     animatedGestureSource,
     handleOnStart,
-    handleOnActive,
-    handleOnEnd
+    handleOnChange,
+    handleOnEnd,
+    handleOnFinalize
   );
   //#endregion
 
@@ -61,15 +54,9 @@ const BottomSheetGestureHandlersProvider = ({
     () => ({
       contentPanGestureHandler,
       handlePanGestureHandler,
-      scrollablePanGestureHandler,
       animatedGestureSource,
     }),
-    [
-      contentPanGestureHandler,
-      handlePanGestureHandler,
-      scrollablePanGestureHandler,
-      animatedGestureSource,
-    ]
+    [contentPanGestureHandler, handlePanGestureHandler, animatedGestureSource]
   );
   //#endregion
   return (

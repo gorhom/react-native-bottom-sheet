@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
+import { LayoutChangeEvent } from 'react-native';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import {
   INITIAL_HANDLE_HEIGHT,
@@ -51,7 +52,7 @@ export const useBottomSheetDynamicSnapPoints = (
       nativeEvent: {
         layout: { height },
       },
-    }: HandleContentLayoutProps) => {
+    }: LayoutChangeEvent) => {
       animatedContentHeight.value = height;
     },
     [animatedContentHeight]
