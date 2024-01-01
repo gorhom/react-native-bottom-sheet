@@ -1,6 +1,7 @@
+import { ShowcaseExampleScreenSectionType } from '@gorhom/showcase-template';
 import { Platform } from 'react-native';
 
-const screens = [];
+const screens: ShowcaseExampleScreenSectionType[] = [];
 
 //#region Basic Section
 const basicSection = {
