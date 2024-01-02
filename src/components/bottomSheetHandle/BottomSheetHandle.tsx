@@ -17,7 +17,6 @@ const BottomSheetHandleComponent = ({
   accessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
-  ...rest
 }: BottomSheetDefaultHandleProps) => {
   // styles
   const containerStyle = useMemo(
@@ -40,7 +39,6 @@ const BottomSheetHandleComponent = ({
       accessibilityRole={accessibilityRole ?? undefined}
       accessibilityLabel={accessibilityLabel ?? undefined}
       accessibilityHint={accessibilityHint ?? undefined}
-      {...rest}
     >
       <Animated.View style={indicatorStyle} />
       {children}

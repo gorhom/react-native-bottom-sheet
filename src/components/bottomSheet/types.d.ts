@@ -318,21 +318,6 @@ export interface BottomSheetProps
    */
   $modal?: boolean;
   //#endregion
-
-  // accessibility
-  /**
-   * Enables announcement of the snap position change on screen readers.
-   * @type boolean
-   * @default true
-   */
-  enableAccessibilityChangeAnnouncement?: boolean;
-  /**
-   * Callback on snap position change that announces the returned string on screen readers.
-   * @type string | ((positionInScreen: string) => string)
-   */
-  accessibilityPositionChangeAnnouncement?:
-    | string
-    | ((positionInScreen: string) => string);
 }
 
 export interface BottomSheetAnimationConfigs {

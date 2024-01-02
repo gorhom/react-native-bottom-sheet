@@ -41,7 +41,6 @@ const BottomSheetBackdropComponent = ({
   accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
-  ...rest
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
@@ -130,13 +129,18 @@ const BottomSheetBackdropComponent = ({
         accessible={_providedAccessible ?? undefined}
         accessibilityRole={_providedAccessibilityRole ?? undefined}
         accessibilityLabel={_providedAccessibilityLabel ?? undefined}
-        accessibilityHint={_providedAccessibilityHint ? _providedAccessibilityHint : `Tap to ${typeof pressBehavior === 'string' ? pressBehavior : 'move'} the Bottom Sheet`}
-        {...rest}
+        accessibilityHint={
+          _providedAccessibilityHint
+            ? _providedAccessibilityHint
+            : `Tap to ${
+                typeof pressBehavior === 'string' ? pressBehavior : 'move'
+              } the Bottom Sheet`
+        }
       >
         {children}
       </Animated.View>
-    )
-  }
+    );
+  };
   //#endregion
 
   return pressBehavior !== 'none' ? (
