@@ -1,3 +1,17 @@
+
+
+# [4.6.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.5.1...v4.6.0) (2024-01-03)
+
+
+### Bug Fixes
+
+* prevent updating backdrop state when unmounting ([#1657](https://github.com/gorhom/react-native-bottom-sheet/issues/1657))(by [@christophby](https://github.com/christophby)) ([8addf04](https://github.com/gorhom/react-native-bottom-sheet/commit/8addf04c29351d6c37300c1897ee4ba41e9f448d))
+
+
+### Features
+
+* added accessibility overrides support ([#1288](https://github.com/gorhom/react-native-bottom-sheet/issues/1288))(by @Mahmoud-SK) ([2dea730](https://github.com/gorhom/react-native-bottom-sheet/commit/2dea7301302ea149267a957921b692266fea08b7))
+
 ## Changelog
 
 ### [v4.5.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.5.0...v4.5.1) - 
