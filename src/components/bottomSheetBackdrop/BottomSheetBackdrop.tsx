@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { ViewProps } from 'react-native';
 import Animated, {
   interpolate,
@@ -44,6 +51,7 @@ const BottomSheetBackdropComponent = ({
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
+  const isMounted = useRef(false);
   //#endregion
 
   //#region defaults
@@ -75,7 +83,8 @@ const BottomSheetBackdropComponent = ({
   }, [snapToIndex, close, disappearsOnIndex, pressBehavior, onPress]);
   const handleContainerTouchability = useCallback(
     (shouldDisableTouchability: boolean) => {
-      setPointerEvents(shouldDisableTouchability ? 'none' : 'auto');
+      isMounted.current &&
+        setPointerEvents(shouldDisableTouchability ? 'none' : 'auto');
     },
     []
   );
@@ -121,6 +130,16 @@ const BottomSheetBackdropComponent = ({
     [disappearsOnIndex]
   );
 
+  // addressing updating the state after unmounting.
+  // [link](https://github.com/gorhom/react-native-bottom-sheet/issues/1376)
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  //#endregion
+
   const AnimatedView = (
     <Animated.View
       style={containerStyle}
@@ -139,7 +158,6 @@ const BottomSheetBackdropComponent = ({
       {children}
     </Animated.View>
   );
-  //#endregion
 
   return pressBehavior !== 'none' ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
