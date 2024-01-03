@@ -51,6 +51,7 @@ import {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
   ANIMATION_SOURCE,
+  SNAP_POINT_TYPE,
 } from '../../constants';
 import {
   animate,
@@ -74,6 +75,7 @@ import {
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   INITIAL_CONTAINER_OFFSET,
   INITIAL_VALUE,
+  DEFAULT_DYNAMIC_SIZING,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
@@ -104,6 +106,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
       enableOverDrag = DEFAULT_ENABLE_OVER_DRAG,
       enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
+      enableDynamicSizing = DEFAULT_DYNAMIC_SIZING,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
 
       // styles
@@ -122,12 +125,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       android_keyboardInputMode = DEFAULT_KEYBOARD_INPUT_MODE,
 
       // layout
-      handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
-      contentHeight: _providedContentHeight,
       containerOffset: _providedContainerOffset,
       topInset = 0,
       bottomInset = 0,
+      maxDynamicContentSize,
 
       // animated callback shared values
       animatedPosition: _providedAnimatedPosition,
@@ -181,17 +183,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedContainerOffset = useReactiveSharedValue(
       _providedContainerOffset ?? INITIAL_CONTAINER_OFFSET
     ) as Animated.SharedValue<Insets>;
-    const animatedHandleHeight = useReactiveSharedValue(
-      _providedHandleHeight ?? INITIAL_HANDLE_HEIGHT
+    const animatedHandleHeight = useReactiveSharedValue<number>(
+      INITIAL_HANDLE_HEIGHT
     );
     const animatedFooterHeight = useSharedValue(0);
-    const animatedSnapPoints = useNormalizedSnapPoints(
-      _providedSnapPoints,
-      animatedContainerHeight,
-      topInset,
-      bottomInset,
-      $modal
-    );
+    const animatedContentHeight = useSharedValue(INITIAL_CONTAINER_HEIGHT);
+    const [animatedSnapPoints, animatedDynamicSnapPointIndex] =
+      useNormalizedSnapPoints(
+        _providedSnapPoints,
+        animatedContainerHeight,
+        animatedContentHeight,
+        animatedHandleHeight,
+        enableDynamicSizing,
+        maxDynamicContentSize
+      );
     const animatedHighestSnapPoint = useDerivedValue(
       () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
     );
@@ -232,14 +237,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
 
       let isHandleHeightCalculated = false;
-      // handle height is provided.
-      if (
-        _providedHandleHeight !== null &&
-        _providedHandleHeight !== undefined &&
-        typeof _providedHandleHeight === 'number'
-      ) {
-        isHandleHeightCalculated = true;
-      }
       // handle component is null.
       if (handleComponent === null) {
         animatedHandleHeight.value = 0;
@@ -388,7 +385,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return SCROLLABLE_STATE.LOCKED;
     });
     // dynamic
-    const animatedContentHeight = useDerivedValue(() => {
+    const animatedContentHeightMax = useDerivedValue(() => {
       const keyboardHeightInContainer = animatedKeyboardHeightInContainer.value;
       const handleHeight = Math.max(0, animatedHandleHeight.value);
       let contentHeight = animatedSheetHeight.value - handleHeight;
@@ -590,7 +587,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
     const handleOnChange = useCallback(
-      function handleOnChange(index: number) {
+      function handleOnChange(index: number, position: number) {
         print({
           component: BottomSheet.name,
           method: handleOnChange.name,
@@ -601,10 +598,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         });
 
         if (_providedOnChange) {
-          _providedOnChange(index);
+          _providedOnChange(
+            index,
+            position,
+            index === animatedDynamicSnapPointIndex.value
+              ? SNAP_POINT_TYPE.DYNAMIC
+              : SNAP_POINT_TYPE.PROVIDED
+          );
         }
       },
-      [_providedOnChange, animatedCurrentIndex]
+      [_providedOnChange, animatedCurrentIndex, animatedDynamicSnapPointIndex]
     );
     const handleOnAnimate = useCallback(
       function handleOnAnimate(toPoint: number) {
@@ -854,9 +857,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         const nextPosition = normalizeSnapPoint(
           position,
-          animatedContainerHeight.value,
-          topInset,
-          bottomInset
+          animatedContainerHeight.value
         );
 
         /**
@@ -1101,6 +1102,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const internalContextVariables = useMemo(
       () => ({
         enableContentPanningGesture,
+        enableDynamicSizing,
         overDragResistanceFactor,
         enableOverDrag,
         enablePanDownToClose,
@@ -1168,6 +1170,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         overDragResistanceFactor,
         enableOverDrag,
         enablePanDownToClose,
+        enableDynamicSizing,
         _providedSimultaneousHandlers,
         _providedWaitFor,
         _providedActiveOffsetX,
@@ -1223,20 +1226,23 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const contentContainerAnimatedStyle = useAnimatedStyle(() => {
       /**
-       * if content height was provided, then we skip setting
-       * calculated height.
+       * if dynamic sizing is enabled, and content height
+       * is still not set, then we exit method.
        */
-      if (_providedContentHeight) {
+      if (
+        enableDynamicSizing &&
+        animatedContentHeight.value === INITIAL_CONTAINER_HEIGHT
+      ) {
         return {};
       }
 
       return {
         height: animate({
-          point: animatedContentHeight.value,
+          point: animatedContentHeightMax.value,
           configs: _providedAnimationConfigs,
         }),
       };
-    }, [animatedContentHeight, _providedContentHeight]);
+    }, [animatedContentHeightMax, enableDynamicSizing, animatedContentHeight]);
     const contentContainerStyle = useMemo(
       () => [styles.contentContainer, contentContainerAnimatedStyle],
       [contentContainerAnimatedStyle]
@@ -1620,7 +1626,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           });
 
           animatedCurrentIndex.value = _animatedIndex;
-          runOnJS(handleOnChange)(_animatedIndex);
+          runOnJS(handleOnChange)(_animatedIndex, _animatedPosition);
         }
 
         /**

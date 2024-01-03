@@ -11,6 +11,7 @@ import {
   useScrollHandler,
   useScrollableSetter,
   useBottomSheetInternal,
+  useStableCallback,
 } from '../../hooks';
 import {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
@@ -43,6 +44,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       onScroll,
       onScrollBeginDrag,
       onScrollEndDrag,
+      onContentSizeChange,
       ...rest
     }: any = props;
 
@@ -55,8 +57,11 @@ export function createBottomSheetScrollableComponent<T, P>(
         onScrollBeginDrag,
         onScrollEndDrag
       );
-    const { animatedFooterHeight, animatedScrollableState } =
-      useBottomSheetInternal();
+    const {
+      animatedFooterHeight,
+      animatedContentHeight,
+      animatedScrollableState,
+    } = useBottomSheetInternal();
     //#endregion
 
     //#region variables
@@ -78,6 +83,18 @@ export function createBottomSheetScrollableComponent<T, P>(
           .simultaneousWithExternalGesture(draggableGesture!)
           .shouldCancelWhenOutside(false),
       [draggableGesture]
+    );
+    //#endregion
+
+    //#region callbacks
+    const handleContentSizeChange = useStableCallback(
+      (contentWidth: number, contentHeight: number) => {
+        animatedContentHeight.value = contentHeight;
+
+        if (onContentSizeChange) {
+          onContentSizeChange(contentWidth, contentHeight);
+        }
+      }
     );
     //#endregion
 
@@ -126,6 +143,7 @@ export function createBottomSheetScrollableComponent<T, P>(
         style={containerStyle}
         onRefresh={onRefresh}
         onScroll={scrollHandler}
+        onContentSizeChange={handleContentSizeChange}
         ScrollableComponent={ScrollableComponent}
         refreshControl={refreshControl}
         {...rest}
