@@ -1,5 +1,12 @@
 
 
+# [5.0.0-alpha.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.5...v5.0.0-alpha.6) (2024-01-03)
+
+
+### Bug Fixes
+
+* fixed the backdrop tap gesture on web ([#1446](https://github.com/gorhom/react-native-bottom-sheet/issues/1446)) ([b0792de](https://github.com/gorhom/react-native-bottom-sheet/commit/b0792dea5ec605b449d40037cbecfd35bf0ff066))
+
 # [5.0.0-alpha.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.4...v5.0.0-alpha.5) (2024-01-03)
 
 
