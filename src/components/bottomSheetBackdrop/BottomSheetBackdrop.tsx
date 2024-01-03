@@ -69,16 +69,6 @@ const BottomSheetBackdropComponent = ({
   >(enableTouchThrough ? 'none' : 'auto');
   //#endregion
 
-  //#region effects
-  useEffect(() => {
-    // Without this we get "Warning: Can't perform a React state update on an unmounted component [...] in BottomSheetBackdrop"
-    isMounted.current = true;
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-  //#endregion
-
   //#region callbacks
   const handleOnPress = useCallback(() => {
     onPress?.();
@@ -140,6 +130,16 @@ const BottomSheetBackdropComponent = ({
     [disappearsOnIndex]
   );
 
+  // addressing updating the state after unmounting.
+  // [link](https://github.com/gorhom/react-native-bottom-sheet/issues/1376)
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  //#endregion
+
   const AnimatedView = (
     <Animated.View
       style={containerStyle}
@@ -158,7 +158,6 @@ const BottomSheetBackdropComponent = ({
       {children}
     </Animated.View>
   );
-  //#endregion
 
   return pressBehavior !== 'none' ? (
     <TapGestureHandler onGestureEvent={gestureHandler}>
