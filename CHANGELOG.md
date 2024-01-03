@@ -1,3 +1,22 @@
+
+
+# [5.0.0-alpha.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.4...v5.0.0-alpha.5) (2024-01-03)
+
+
+### Bug Fixes
+
+* allowed content max height be applied for dynamic sizing ([57c196c](https://github.com/gorhom/react-native-bottom-sheet/commit/57c196cfdf2f63622fb5ea8d6d32cf21b9dd9367))
+* dismiss all action for modals ([#1529](https://github.com/gorhom/react-native-bottom-sheet/issues/1529))(by [@david-gomes5](https://github.com/david-gomes5)) ([17269f1](https://github.com/gorhom/react-native-bottom-sheet/commit/17269f1f55b91f33cec24870ebe00f2510888a4b))
+* fixed position x index sequencing with container resizing ([#1675](https://github.com/gorhom/react-native-bottom-sheet/issues/1675)) ([f0ec705](https://github.com/gorhom/react-native-bottom-sheet/commit/f0ec705cd74ea6e31614ab12c0b4fdc097d3820d))
+* prevent updating backdrop state when unmounting ([#1657](https://github.com/gorhom/react-native-bottom-sheet/issues/1657))(by [@christophby](https://github.com/christophby)) ([d746d85](https://github.com/gorhom/react-native-bottom-sheet/commit/d746d85b92e2bdb4351ea4d3fde140e3199ac671))
+* **web:** use absolute positioning for BottomSheetContainer in web ([#1597](https://github.com/gorhom/react-native-bottom-sheet/issues/1597)) ([d6e3dc9](https://github.com/gorhom/react-native-bottom-sheet/commit/d6e3dc9b327b840895c875dcf016fb5c80a62915))
+
+
+### Features
+
+* added accessibility overrides support ([#1288](https://github.com/gorhom/react-native-bottom-sheet/issues/1288))(by @Mahmoud-SK) ([6203c18](https://github.com/gorhom/react-native-bottom-sheet/commit/6203c18acc9f8dc3a31af5bf5ad80e368deceb52))
+* added default dynamic sizing ([#1513](https://github.com/gorhom/react-native-bottom-sheet/issues/1513))(with @Eli-Nathan & [@ororsatti](https://github.com/ororsatti)) ([#1683](https://github.com/gorhom/react-native-bottom-sheet/issues/1683)) ([8017fb6](https://github.com/gorhom/react-native-bottom-sheet/commit/8017fb6b02088d3c66c64a8a23e0f63f22884d36))
+
 ## Changelog
 
 ### [v5.0.0-alpha.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.3...v5.0.0-alpha.4) - 
