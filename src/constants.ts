@@ -62,6 +62,11 @@ enum KEYBOARD_STATE {
   HIDDEN,
 }
 
+enum SNAP_POINT_TYPE {
+  PROVIDED = 0,
+  DYNAMIC,
+}
+
 const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
 const ANIMATION_DURATION = 250;
 
@@ -124,6 +129,7 @@ export {
   SCROLLABLE_TYPE,
   SCROLLABLE_STATE,
   KEYBOARD_STATE,
+  SNAP_POINT_TYPE,
   WINDOW_HEIGHT,
   WINDOW_WIDTH,
   SCREEN_HEIGHT,
