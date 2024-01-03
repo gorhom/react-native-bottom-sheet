@@ -2,22 +2,18 @@
   "git": {
     "push": true,
     "tagName": "v${version}",
-    "commitMessage": "chore: release v${version}",
-    "changelog": "auto-changelog --stdout --unreleased --template ./templates/changelog-template.hbs"
+    "commitMessage": "chore: release v${version}"
   },
   "github": {
-    "release": true,
-    "releaseNotes": "auto-changelog --stdout --unreleased --template ./templates/release-template.hbs"
+    "release": true
   },
   "npm": {
     "publish": false
   },
   "plugins": {
     "@release-it/conventional-changelog": {
-      "preset": "angular"
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
     }
-  },
-  "hooks": {
-    "after:bump": "auto-changelog -p --template ./templates/changelog-template.hbs"
   }
 }
