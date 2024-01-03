@@ -18,11 +18,15 @@ import type {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
 } from '../../constants';
-import type { GestureEventsHandlersHookType } from '../../types';
+import type {
+  GestureEventsHandlersHookType,
+  NullableAccessibilityProps,
+} from '../../types';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
-    Partial<BottomSheetGestureProps> {
+    Partial<BottomSheetGestureProps>,
+    Omit<NullableAccessibilityProps, 'accessibilityHint'> {
   //#region configuration
   /**
    * Initial snap point index, provide `-1` to initiate bottom sheet in closed state.

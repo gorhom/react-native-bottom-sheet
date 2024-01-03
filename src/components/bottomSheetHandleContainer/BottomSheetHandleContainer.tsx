@@ -134,12 +134,8 @@ function BottomSheetHandleContainerComponent({
     <GestureDetector gesture={panGesture}>
       <Animated.View
         key="BottomSheetHandleContainer"
-        accessible={true}
-        accessibilityRole="adjustable"
-        accessibilityLabel="Bottom Sheet handle"
-        accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
-        style={styles.container}
         onLayout={handleContainerLayout}
+        style={styles.container}
       >
         <HandleComponent
           animatedIndex={animatedIndex}
