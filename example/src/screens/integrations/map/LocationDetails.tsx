@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, ViewProps } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ShowcaseLabel, useShowcaseTheme } from '@gorhom/showcase-template';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Button } from '../../../components/button';
 import { Location } from '../../../types';
 
@@ -63,7 +64,7 @@ const LocationDetailsComponent = ({
     []
   );
   return (
-    <View style={containerStyle} onLayout={onLayout}>
+    <BottomSheetView style={containerStyle} onLayout={onLayout}>
       <View style={styles.headerContainer}>
         <View style={styles.headerContentContainer}>
           <ShowcaseLabel style={styles.name}>{name}</ShowcaseLabel>
@@ -106,7 +107,7 @@ const LocationDetailsComponent = ({
           onPress={() => {}}
         />
       </View>
-    </View>
+    </BottomSheetView>
   );
   //#endregion
 };

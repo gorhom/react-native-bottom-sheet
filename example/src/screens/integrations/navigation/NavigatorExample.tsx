@@ -103,6 +103,7 @@ const NavigatorExample = () => {
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
+        enableDynamicSizing={false}
         snapPoints={snapPoints}
         animateOnMount={true}
       >

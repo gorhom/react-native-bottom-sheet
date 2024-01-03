@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   forwardRef,
   useCallback,
@@ -26,7 +23,7 @@ export interface LocationDetailsBottomSheetMethods {
   present: (location: Location) => void;
 }
 
-const SNAP_POINTS = ['CONTENT_HEIGHT', '100%'];
+const SNAP_POINTS = ['100%'];
 
 export const LocationDetailsBottomSheet = forwardRef<
   LocationDetailsBottomSheetMethods,
@@ -42,12 +39,6 @@ export const LocationDetailsBottomSheet = forwardRef<
 
   //#region hooks
   const headerHeight = useHeaderHeight();
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(SNAP_POINTS);
   //#endregion
 
   //#region callbacks
@@ -78,9 +69,7 @@ export const LocationDetailsBottomSheet = forwardRef<
       ref={bottomSheetRef}
       key="PoiDetailsSheet"
       name="PoiDetailsSheet"
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
+      snapPoints={SNAP_POINTS}
       topInset={headerHeight}
       animatedIndex={index}
       animatedPosition={position}
@@ -90,7 +79,6 @@ export const LocationDetailsBottomSheet = forwardRef<
     >
       <LocationDetails
         onClose={handleCloseLocationDetails}
-        onLayout={handleContentLayout}
         {...(selectedLocation as Location)}
       />
     </BottomSheetModal>

@@ -1,6 +1,10 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { BottomSheetModal, useBottomSheetModal } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetHandleProps,
+  BottomSheetModal,
+  useBottomSheetModal,
+} from '@gorhom/bottom-sheet';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
 import { HeaderHandle } from '../../components/headerHandle';
@@ -58,12 +62,14 @@ const StackExample = () => {
 
   // renders
   const renderHeaderHandle = useCallback(
-    (title: string) => (props: any) =>
+    (title: string) => (props: BottomSheetHandleProps) =>
       <HeaderHandle {...props} children={title} />,
     []
   );
   const renderBottomSheetContent = useCallback(
-    onPress => <ContactList type="FlatList" onItemPress={onPress} count={6} />,
+    (onPress: () => void) => (
+      <ContactList type="FlatList" onItemPress={onPress} count={6} />
+    ),
     []
   );
   return (
@@ -81,6 +87,7 @@ const StackExample = () => {
         name="A"
         ref={bottomSheetModalARef}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         handleComponent={renderHeaderHandle('Modal A')}
         children={renderBottomSheetContent(handlePresentBPress)}
       />
@@ -89,6 +96,7 @@ const StackExample = () => {
         name="B"
         ref={bottomSheetModalBRef}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         handleComponent={renderHeaderHandle('Modal B')}
         children={renderBottomSheetContent(handlePresentCPress)}
       />
@@ -98,6 +106,7 @@ const StackExample = () => {
         ref={bottomSheetModalCRef}
         index={1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         enablePanDownToClose={false}
         handleComponent={renderHeaderHandle('Modal C')}
         children={renderBottomSheetContent(handleDismissCPress)}

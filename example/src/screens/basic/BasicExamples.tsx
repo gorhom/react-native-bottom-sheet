@@ -104,6 +104,7 @@ const createExampleScreen = ({ type, count = 25 }: ExampleScreenProps) =>
           animateOnMount={true}
           enableContentPanningGesture={enableContentPanningGesture}
           enableHandlePanningGesture={enableHandlePanningGesture}
+          enableDynamicSizing={false}
           onChange={handleSheetChange}
           onAnimate={handleSheetAnimate}
         >

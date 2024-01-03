@@ -11,6 +11,7 @@ const FirstRoute = () => {
     <View style={[styles.scene, styles.firstScene]}>
       <BottomSheet
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         activeOffsetY={[-1, 1]}
         failOffsetX={[-5, 5]}
         animateOnMount={true}

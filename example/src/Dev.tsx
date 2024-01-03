@@ -1,32 +1,44 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 const App = () => {
-  // ref
+  //#region ref
   const bottomSheetRef = useRef<BottomSheet>(null);
+  //#endregion
 
-  // variables
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
+  //#region hooks
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
+  //#endregion
 
-  // callbacks
+  //#region callbacks
   const handleSheetChanges = useCallback((index: number) => {
     // eslint-disable-next-line no-console
     console.log('handleSheetChanges', index);
   }, []);
+  //#endregion
+
+  //#region styles
+  const contentContainerStyle = useMemo(
+    () => ({
+      ...styles.contentContainer,
+      paddingBottom: bottomSafeArea,
+    }),
+    [bottomSafeArea]
+  );
+  //#endregion
 
   // renders
   return (
     <View style={styles.container}>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-      >
-        <View style={styles.contentContainer}>
+      <BottomSheet ref={bottomSheetRef} onChange={handleSheetChanges}>
+        <BottomSheetView style={contentContainerStyle}>
           <Text>Awesome 🎉</Text>
-        </View>
+        </BottomSheetView>
       </BottomSheet>
     </View>
   );
@@ -41,7 +53,13 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 200,
   },
 });
 
-export default App;
+export default () => (
+  <SafeAreaProvider>
+    <App />
+  </SafeAreaProvider>
+);

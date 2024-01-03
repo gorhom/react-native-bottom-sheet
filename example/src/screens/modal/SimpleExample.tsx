@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetHandleProps, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
 import { HeaderHandle } from '../../components/headerHandle';
@@ -52,7 +52,9 @@ export const SimpleExample = () => {
 
   // renders
   const renderHeaderHandle = useCallback(
-    props => <HeaderHandle {...props} children="Modal Example" />,
+    (props: BottomSheetHandleProps) => (
+      <HeaderHandle {...props} children="Modal Example" />
+    ),
     []
   );
   return (
@@ -79,6 +81,7 @@ export const SimpleExample = () => {
         snapPoints={snapPoints}
         enablePanDownToClose={enablePanDownToClose}
         enableDismissOnClose={enableDismissOnClose}
+        enableDynamicSizing={false}
         onDismiss={handleDismiss}
         onChange={handleChange}
         handleComponent={renderHeaderHandle}

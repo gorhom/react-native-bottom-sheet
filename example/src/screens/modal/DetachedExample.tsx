@@ -5,29 +5,24 @@ import {
   BottomSheetModal,
   BottomSheetView,
   BottomSheetFooter,
-  useBottomSheetDynamicSnapPoints,
+  BottomSheetHandleProps,
+  BottomSheetFooterProps,
 } from '@gorhom/bottom-sheet';
 import { Button } from '../../components/button';
 import { ContactItem } from '../../components/contactItem';
 import { HeaderHandle } from '../../components/headerHandle';
 import { withModalProvider } from './withModalProvider';
 import { createContactListMockData } from '../../utilities/createMockData';
+import { Contact } from '../../types';
 
 const DetachedExample = () => {
   // refs
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
   const data = useMemo(() => createContactListMockData(2), []);
 
   // hooks
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   const { bottom: safeBottomArea } = useSafeAreaInsets();
 
   // callbacks
@@ -43,11 +38,13 @@ const DetachedExample = () => {
 
   // renders
   const renderHeaderHandle = useCallback(
-    props => <HeaderHandle {...props} children="Detached Example" />,
+    (props: BottomSheetHandleProps) => (
+      <HeaderHandle {...props} children="Detached Example" />
+    ),
     []
   );
   const renderItem = useCallback(
-    (item, index) => (
+    (item: Contact, index: number) => (
       <ContactItem
         key={`${item.name}.${index}`}
         title={`${index}: ${item.name}`}
@@ -57,7 +54,7 @@ const DetachedExample = () => {
     []
   );
   const renderFooter = useCallback(
-    props => (
+    (props: BottomSheetFooterProps) => (
       <BottomSheetFooter {...props}>
         <View style={styles.footer}>
           <Text style={styles.footerText}>this is a footer!</Text>
@@ -73,9 +70,6 @@ const DetachedExample = () => {
       <Button label="Close" onPress={handleClosePress} />
       <BottomSheetModal
         ref={bottomSheetRef}
-        snapPoints={animatedSnapPoints}
-        handleHeight={animatedHandleHeight}
-        contentHeight={animatedContentHeight}
         bottomInset={safeBottomArea + 16}
         enablePanDownToClose={true}
         style={styles.sheetContainer}
@@ -87,7 +81,6 @@ const DetachedExample = () => {
         <BottomSheetView
           style={styles.contentContainerStyle}
           enableFooterMarginAdjustment={true}
-          onLayout={handleContentLayout}
         >
           {data.map(renderItem)}
         </BottomSheetView>

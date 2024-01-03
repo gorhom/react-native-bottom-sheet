@@ -4,6 +4,7 @@ import {
   BottomSheetModal,
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
+  BottomSheetHandleProps,
 } from '@gorhom/bottom-sheet';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
@@ -60,7 +61,9 @@ export const BackdropExample = () => {
   );
 
   const renderHeaderHandle = useCallback(
-    props => <HeaderHandle {...props} children="Modal With Backdrop Example" />,
+    (props: BottomSheetHandleProps) => (
+      <HeaderHandle {...props} children="Modal With Backdrop Example" />
+    ),
     []
   );
   return (
@@ -76,9 +79,10 @@ export const BackdropExample = () => {
       <BottomSheetModal
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        onDismiss={handleDismiss}
+        enableDynamicSizing={false}
         handleComponent={renderHeaderHandle}
         backdropComponent={renderBackdrop}
+        onDismiss={handleDismiss}
       >
         <ContactList type="View" count={5} />
       </BottomSheetModal>

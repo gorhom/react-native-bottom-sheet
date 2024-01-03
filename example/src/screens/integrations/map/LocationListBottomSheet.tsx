@@ -68,7 +68,7 @@ export const LocationListBottomSheet = forwardRef<
   );
 
   const renderItem = useCallback(
-    (item, index) => (
+    (item: Location, index: number) => (
       <TouchableOpacity
         key={`${item.name}.${index}`}
         onPress={() => onItemPress(item)}
@@ -89,6 +89,7 @@ export const LocationListBottomSheet = forwardRef<
       topInset={headerHeight}
       enableDismissOnClose={false}
       enablePanDownToClose={false}
+      enableDynamicSizing={false}
       animatedPosition={position}
       animatedIndex={index}
       backdropComponent={renderBackdrop}
