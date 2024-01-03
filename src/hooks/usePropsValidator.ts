@@ -14,7 +14,10 @@ export const usePropsValidator = ({
   enableDynamicSizing,
   topInset,
   bottomInset,
-}: BottomSheetProps) => {
+}: Pick<
+  BottomSheetProps,
+  'index' | 'snapPoints' | 'enableDynamicSizing' | 'topInset' | 'bottomInset'
+>) => {
   useMemo(() => {
     //#region snap points
     const _snapPoints = snapPoints

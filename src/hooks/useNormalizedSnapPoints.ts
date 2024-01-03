@@ -1,4 +1,5 @@
-import Animated, {
+import {
+  SharedValue,
   useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
@@ -23,12 +24,12 @@ import {
  */
 export const useNormalizedSnapPoints = (
   snapPoints: BottomSheetProps['snapPoints'],
-  containerHeight: Animated.SharedValue<number>,
-  contentHeight: Animated.SharedValue<number>,
-  handleHeight: Animated.SharedValue<number>,
+  containerHeight: SharedValue<number>,
+  contentHeight: SharedValue<number>,
+  handleHeight: SharedValue<number>,
   enableDynamicSizing: BottomSheetProps['enableDynamicSizing'],
   maxDynamicContentSize: BottomSheetProps['maxDynamicContentSize']
-): [Animated.SharedValue<number[]>, Animated.SharedValue<number>] => {
+): [SharedValue<number[]>, SharedValue<number>] => {
   const dynamicSnapPointIndex = useSharedValue<number>(-1);
   const normalizedSnapPoints = useDerivedValue(() => {
     // early exit, if container layout is not ready
@@ -87,7 +88,6 @@ export const useNormalizedSnapPoints = (
       _normalizedSnapPoints.indexOf(dynamicSnapPoint);
 
     return _normalizedSnapPoints;
-  }, [snapPoints]);
-
+  }, [snapPoints, enableDynamicSizing, maxDynamicContentSize]);
   return [normalizedSnapPoints, dynamicSnapPointIndex];
 };

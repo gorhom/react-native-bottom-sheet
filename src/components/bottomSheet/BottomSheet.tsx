@@ -89,10 +89,6 @@ type BottomSheet = BottomSheetMethods;
 
 const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
   function BottomSheet(props, ref) {
-    //#region validate props
-    usePropsValidator(props);
-    //#endregion
-
     //#region extract props
     const {
       // animations configurations
@@ -159,6 +155,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       footerComponent,
       children,
     } = props;
+    //#endregion
+
+    //#region validate props
+    usePropsValidator({
+      index: _providedIndex,
+      snapPoints: _providedSnapPoints,
+      enableDynamicSizing,
+      topInset,
+      bottomInset,
+    });
     //#endregion
 
     //#region layout variables
