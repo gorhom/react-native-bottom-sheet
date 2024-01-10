@@ -27,18 +27,18 @@ export const useNormalizedSnapPoints = (
   maxDynamicContentSize: BottomSheetProps['maxDynamicContentSize']
 ) => {
   const normalizedSnapPoints = useDerivedValue(() => {
-    // early exit, if container layout is not ready
-    const isContainerLayoutReady =
-      containerHeight.value !== INITIAL_CONTAINER_HEIGHT;
-    if (!isContainerLayoutReady) {
-      return [INITIAL_SNAP_POINT];
-    }
-
     const _snapPoints = snapPoints
       ? 'value' in snapPoints
         ? snapPoints.value
         : snapPoints
       : [];
+
+    // early exit, if container layout is not ready
+    const isContainerLayoutReady =
+      containerHeight.value !== INITIAL_CONTAINER_HEIGHT;
+    if (!isContainerLayoutReady) {
+      return new Array(_snapPoints.length || 1).fill(INITIAL_SNAP_POINT);
+    }
 
     let _normalizedSnapPoints = _snapPoints.map(snapPoint =>
       normalizeSnapPoint(snapPoint, containerHeight.value)
