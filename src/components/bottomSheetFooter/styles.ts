@@ -7,5 +7,6 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 9999,
+    pointerEvents: 'box-none',
   },
 });

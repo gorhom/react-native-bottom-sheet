@@ -12,16 +12,21 @@ import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
 import type { BottomSheetFooterProps } from '../bottomSheetFooter';
 import type {
+  SNAP_POINT_TYPE,
   ANIMATION_SOURCE,
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
 } from '../../constants';
-import type { GestureEventsHandlersHookType } from '../../types';
+import type {
+  GestureEventsHandlersHookType,
+  NullableAccessibilityProps,
+} from '../../types';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
-    Partial<BottomSheetGestureProps> {
+    Partial<BottomSheetGestureProps>,
+    Omit<NullableAccessibilityProps, 'accessibilityHint'> {
   //#region configuration
   /**
    * Initial snap point index, provide `-1` to initiate bottom sheet in closed state.
@@ -40,10 +45,7 @@ export interface BottomSheetProps
    * snapPoints={['%100']}
    * @type Array<string | number>
    */
-  snapPoints?:
-    | Array<string | number>
-    | SharedValue<Array<string | number>>
-    | Readonly<(string | number)[] | SharedValue<(string | number)[]>>;
+  snapPoints?: Array<string | number> | SharedValue<Array<string | number>>;
   /**
    * Defines how violently sheet has to be stopped while over dragging.
    * @type number
@@ -97,24 +99,12 @@ export interface BottomSheetProps
 
   //#region layout
   /**
-   * Handle height helps to calculate the internal container and sheet layouts,
-   * if `handleComponent` is provided, the library internally will calculate its layout,
-   * unless `handleHeight` is provided.
-   * @type number
-   */
-  handleHeight?: number | SharedValue<number>;
-  /**
    * Container height helps to calculate the internal sheet layouts,
    * if `containerHeight` not provided, the library internally will calculate it,
    * however this will cause an extra re-rendering.
    * @type number | SharedValue<number>;
    */
   containerHeight?: number | SharedValue<number>;
-  /**
-   * Content height helps dynamic snap points calculation.
-   * @type number | SharedValue<number>;
-   */
-  contentHeight?: number | SharedValue<number>;
   /**
    * Container offset helps to accurately detect container offsets.
    * @type SharedValue<number>;
@@ -249,7 +239,7 @@ export interface BottomSheetProps
    *
    * @type (index: number) => void;
    */
-  onChange?: (index: number) => void;
+  onChange?: (index: number, position: number, type: SNAP_POINT_TYPE) => void;
   /**
    * Callback when the sheet close.
    *

@@ -141,6 +141,7 @@ function BottomSheetHandleContainerComponent({
         accessibilityHint="Drag up or down to extend or minimize the Bottom Sheet"
         style={styles.container}
         onLayout={handleContainerLayout}
+        style={styles.container}
       >
         <HandleComponent
           animatedIndex={animatedIndex}

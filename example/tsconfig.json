@@ -1,0 +1,9 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@gorhom/bottom-sheet": ["../src/index"]
+    },
+  }
+}

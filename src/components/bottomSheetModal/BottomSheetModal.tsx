@@ -18,6 +18,7 @@ import {
 import type { BottomSheetModalMethods, BottomSheetMethods } from '../../types';
 import type { BottomSheetModalProps } from './types';
 import { id } from '../../utilities/id';
+import { SNAP_POINT_TYPE } from 'src/constants';
 
 type BottomSheetModal = BottomSheetModalMethods;
 
@@ -308,7 +309,11 @@ const BottomSheetModalComponent = forwardRef<
   },
   []);
   const handleBottomSheetOnChange = useCallback(
-    function handleBottomSheetOnChange(_index: number) {
+    function handleBottomSheetOnChange(
+      _index: number,
+      _position: number,
+      _type: SNAP_POINT_TYPE
+    ) {
       print({
         component: BottomSheetModal.name,
         method: handleBottomSheetOnChange.name,
@@ -320,7 +325,7 @@ const BottomSheetModalComponent = forwardRef<
       currentIndexRef.current = _index;
 
       if (_providedOnChange) {
-        _providedOnChange(_index);
+        _providedOnChange(_index, _position, _type);
       }
     },
     [_providedOnChange]
@@ -376,7 +381,7 @@ const BottomSheetModalComponent = forwardRef<
       handleOnUpdate={handlePortalRender}
       handleOnUnmount={handlePortalOnUnmount}
     >
-      <ContainerComponent>
+      <ContainerComponent key={key}>
         <BottomSheet
           {...bottomSheetProps}
           ref={bottomSheetRef}

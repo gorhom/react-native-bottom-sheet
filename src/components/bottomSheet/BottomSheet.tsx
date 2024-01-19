@@ -51,7 +51,7 @@ import {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
   ANIMATION_SOURCE,
-  WINDOW_HEIGHT
+  SNAP_POINT_TYPE,
 } from '../../constants';
 import {
   animate,
@@ -75,12 +75,10 @@ import {
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   INITIAL_CONTAINER_OFFSET,
   INITIAL_VALUE,
+  DEFAULT_DYNAMIC_SIZING,
   DEFAULT_ACCESSIBLE,
   DEFAULT_ACCESSIBILITY_LABEL,
   DEFAULT_ACCESSIBILITY_ROLE,
-  DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
-  DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
-  DEFAULT_DYNAMIC_SIZING,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
@@ -94,10 +92,6 @@ type BottomSheet = BottomSheetMethods;
 
 const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
   function BottomSheet(props, ref) {
-    //#region validate props
-    usePropsValidator(props);
-    //#endregion
-
     //#region extract props
     const {
       // animations configurations
@@ -130,9 +124,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       android_keyboardInputMode = DEFAULT_KEYBOARD_INPUT_MODE,
 
       // layout
-      handleHeight: _providedHandleHeight,
       containerHeight: _providedContainerHeight,
-      contentHeight: _providedContentHeight,
       containerOffset: _providedContainerOffset,
       topInset = 0,
       bottomInset = 0,
@@ -169,14 +161,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // accessibility
       accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
       accessibilityLabel:
-      _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
+        _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
       accessibilityRole:
-      _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
-      enableAccessibilityChangeAnnouncement:
-      _providedEnableAccessibilityChangeAnnouncement = DEFAULT_ENABLE_ACCESSIBILITY_CHANGE_ANNOUNCEMENT,
-      accessibilityPositionChangeAnnouncement:
-      _providedAccessibilityPositionChangeAnnouncement = DEFAULT_ACCESSIBILITY_POSITION_CHANGE_ANNOUNCEMENT,
+        _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
     } = props;
+    //#endregion
+
+    //#region validate props
+    usePropsValidator({
+      index: _providedIndex,
+      snapPoints: _providedSnapPoints,
+      enableDynamicSizing,
+      topInset,
+      bottomInset,
+    });
     //#endregion
 
     //#region layout variables
@@ -201,19 +199,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedContainerOffset = useReactiveSharedValue(
       _providedContainerOffset ?? INITIAL_CONTAINER_OFFSET
     ) as Animated.SharedValue<Insets>;
-    const animatedHandleHeight = useReactiveSharedValue(
-      _providedHandleHeight ?? INITIAL_HANDLE_HEIGHT
+    const animatedHandleHeight = useReactiveSharedValue<number>(
+      INITIAL_HANDLE_HEIGHT
     );
     const animatedFooterHeight = useSharedValue(0);
     const animatedContentHeight = useSharedValue(INITIAL_CONTAINER_HEIGHT);
-    const animatedSnapPoints = useNormalizedSnapPoints(
-      _providedSnapPoints,
-      animatedContainerHeight,
-      animatedContentHeight,
-      animatedHandleHeight,
-      enableDynamicSizing,
-      maxDynamicContentSize
-    );
+    const [animatedSnapPoints, animatedDynamicSnapPointIndex] =
+      useNormalizedSnapPoints(
+        _providedSnapPoints,
+        animatedContainerHeight,
+        animatedContentHeight,
+        animatedHandleHeight,
+        enableDynamicSizing,
+        maxDynamicContentSize
+      );
     const animatedHighestSnapPoint = useDerivedValue(
       () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
     );
@@ -254,14 +253,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
 
       let isHandleHeightCalculated = false;
-      // handle height is provided.
-      if (
-        _providedHandleHeight !== null &&
-        _providedHandleHeight !== undefined &&
-        typeof _providedHandleHeight === 'number'
-      ) {
-        isHandleHeightCalculated = true;
-      }
       // handle component is null.
       if (handleComponent === null) {
         animatedHandleHeight.value = 0;
@@ -612,7 +603,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
     const handleOnChange = useCallback(
-      function handleOnChange(index: number) {
+      function handleOnChange(index: number, position: number) {
         print({
           component: BottomSheet.name,
           method: handleOnChange.name,
@@ -623,7 +614,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         });
 
         if (_providedOnChange) {
-          _providedOnChange(index);
+          _providedOnChange(
+            index,
+            position,
+            index === animatedDynamicSnapPointIndex.value
+              ? SNAP_POINT_TYPE.DYNAMIC
+              : SNAP_POINT_TYPE.PROVIDED
+          );
         }
 
 
@@ -655,13 +652,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           );
         });
       },
-      [
-        _providedOnChange,
-        animatedCurrentIndex,
-        _providedEnableAccessibilityChangeAnnouncement,
-        _providedAccessibilityPositionChangeAnnouncement,
-        animatedSnapPoints,
-      ]
+      [_providedOnChange, animatedCurrentIndex, animatedDynamicSnapPointIndex]
     );
     const handleOnAnimate = useCallback(
       function handleOnAnimate(toPoint: number) {
@@ -740,9 +731,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           method: animateToPosition.name,
           params: {
             currentPosition: animatedPosition.value,
-            position,
+            nextPosition: position,
             velocity,
-            animatedContainerHeight: animatedContainerHeight.value,
+            source,
           },
         });
 
@@ -790,6 +781,47 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [handleOnAnimate, _providedAnimationConfigs]
     );
+    /**
+     * Set to position without animation.
+     *
+     * @param targetPosition position to be set.
+     */
+    const setToPosition = useWorkletCallback(function setToPosition(
+      targetPosition: number
+    ) {
+      if (
+        targetPosition === animatedPosition.value ||
+        targetPosition === undefined ||
+        (animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          targetPosition === animatedNextPosition.value)
+      ) {
+        return;
+      }
+
+      runOnJS(print)({
+        component: BottomSheet.name,
+        method: setToPosition.name,
+        params: {
+          currentPosition: animatedPosition.value,
+          targetPosition,
+        },
+      });
+
+      /**
+       * store next position
+       */
+      animatedNextPosition.value = targetPosition;
+      animatedNextPositionIndex.value =
+        animatedSnapPoints.value.indexOf(targetPosition);
+
+      stopAnimation();
+
+      /**
+       * set position.
+       */
+      animatedPosition.value = targetPosition;
+    },
+    []);
     //#endregion
 
     //#region public methods
@@ -1239,10 +1271,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const contentContainerAnimatedStyle = useAnimatedStyle(() => {
       /**
-       * if content height was provided, then we skip setting
-       * calculated height.
+       * if dynamic sizing is enabled, and content height
+       * is still not set, then we exit method.
        */
-      if (_providedContentHeight) {
+      if (
+        enableDynamicSizing &&
+        animatedContentHeight.value === INITIAL_CONTAINER_HEIGHT
+      ) {
         return {};
       }
 
@@ -1368,16 +1403,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animatedNextPositionIndex.value === -1 &&
           _previousContainerHeight !== containerHeight
         ) {
-          animationSource = ANIMATION_SOURCE.CONTAINER_RESIZE;
-          animationConfig = {
-            duration: 0,
-          };
-          animateToPosition(
-            containerHeight,
-            animationSource,
-            0,
-            animationConfig
-          );
+          setToPosition(containerHeight);
+          return;
         }
 
         if (
@@ -1418,13 +1445,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
           /**
            * if snap points changes because of the container height change,
-           * then we skip the snap animation by setting the duration to 0.
+           * then we set the new position without animation.
            */
           if (containerHeight !== _previousContainerHeight) {
-            animationSource = ANIMATION_SOURCE.CONTAINER_RESIZE;
-            animationConfig = {
-              duration: 0,
-            };
+            setToPosition(nextPosition);
+            return;
           }
         }
         animateToPosition(nextPosition, animationSource, 0, animationConfig);
@@ -1581,6 +1606,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }),
       ({
         _animatedIndex,
+        _animatedPosition,
         _animationState,
         _contentGestureState,
         _handleGestureState,
@@ -1589,6 +1615,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * exit the method if animation state is not stopped.
          */
         if (_animationState !== ANIMATION_STATE.STOPPED) {
+          return;
+        }
+
+        /**
+         * exit the method if index value is not synced with
+         * position value.
+         *
+         * [read more](https://github.com/gorhom/react-native-bottom-sheet/issues/1356)
+         */
+        if (
+          animatedNextPosition.value !== INITIAL_VALUE &&
+          animatedNextPositionIndex.value !== INITIAL_VALUE &&
+          (_animatedPosition !== animatedNextPosition.value ||
+            _animatedIndex !== animatedNextPositionIndex.value)
+        ) {
           return;
         }
 
@@ -1630,7 +1671,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           });
 
           animatedCurrentIndex.value = _animatedIndex;
-          runOnJS(handleOnChange)(_animatedIndex);
+          runOnJS(handleOnChange)(_animatedIndex, _animatedPosition);
         }
 
         /**
@@ -1714,6 +1755,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   accessible={false}
                   // accessibilityRole={_providedAccessibilityRole ?? undefined}
                   // accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+                  accessible={_providedAccessible ?? undefined}
+                  accessibilityRole={_providedAccessibilityRole ?? undefined}
+                  accessibilityLabel={_providedAccessibilityLabel ?? undefined}
                 >
                   <BottomSheetDraggableView
                     key="BottomSheetRootDraggableView"
