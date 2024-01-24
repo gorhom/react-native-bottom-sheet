@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import type { BottomSheetBackgroundProps } from './types';
 import { styles } from './styles';
 
@@ -9,7 +9,7 @@ const BottomSheetBackgroundComponent = ({
 }: BottomSheetBackgroundProps) => (
   <View
     pointerEvents={pointerEvents}
-    accessible={true}
+    accessible={Platform.OS === 'ios'? false: true}
     accessibilityRole="adjustable"
     accessibilityLabel="Bottom Sheet"
     style={[styles.container, style]}
