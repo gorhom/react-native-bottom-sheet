@@ -27,7 +27,7 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 ## Getting Started
 
-Check out [the documentation website](https://gorhom.github.io/react-native-bottom-sheet).
+Check out [the documentation website](https://ui.gorhom.dev/components/bottom-sheet).
 
 ## Versioning
 
