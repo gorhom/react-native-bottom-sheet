@@ -3,6 +3,7 @@
   "version": "4.6.1",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
   "main": "src/index.ts",
+  "source": "src/index.ts",
   "files": [
     "src",
     "lib",
