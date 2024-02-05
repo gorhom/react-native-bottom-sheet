@@ -1105,6 +1105,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
 
     useImperativeHandle(ref, () => ({
+      animatedIndex,
+      animatedPosition,
       snapToIndex: handleSnapToIndex,
       snapToPosition: handleSnapToPosition,
       expand: handleExpand,
