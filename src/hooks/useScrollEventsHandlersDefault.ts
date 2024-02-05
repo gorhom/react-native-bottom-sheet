@@ -26,9 +26,9 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     animatedAnimationState,
     animatedScrollableContentOffsetY: rootScrollableContentOffsetY,
     isScrollableLocked,
+    isScrollEnded,
   } = useBottomSheetInternal();
   const awaitingFirstScroll = useSharedValue(false);
-  const scrollEnded = useSharedValue(false);
   const _lockableScrollableContentOffsetY = useSharedValue(0);
 
   useAnimatedReaction(
@@ -74,7 +74,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
         }
 
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
-          if (!(preserveScrollMomentum && scrollEnded.value)) {
+          if (!(preserveScrollMomentum && isScrollEnded.value)) {
             const lockPosition = context.shouldLockInitialPosition
               ? context.initialContentOffsetY ?? 0
               : 0;
@@ -103,7 +103,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
         rootScrollableContentOffsetY.value = y;
         context.initialContentOffsetY = y;
         awaitingFirstScroll.value = true;
-        scrollEnded.value = false;
+        isScrollEnded.value = false;
 
         if (scrollBuffer) {
           if (y <= 0 && (
@@ -152,7 +152,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     useWorkletCallback(
       ({ contentOffset: { y }}, context) => {
         awaitingFirstScroll.value = false;
-        scrollEnded.value = true;
+        isScrollEnded.value = true;
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
           const lockPosition = context.shouldLockInitialPosition
             ? context.initialContentOffsetY ?? 0
@@ -181,7 +181,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     useWorkletCallback(
       ({ contentOffset: { y } }, context) => {
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
-          if (!(preserveScrollMomentum && scrollEnded.value)) {
+          if (!(preserveScrollMomentum && isScrollEnded.value)) {
             const lockPosition = context.shouldLockInitialPosition
               ? context.initialContentOffsetY ?? 0
               : 0;

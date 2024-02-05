@@ -19,6 +19,7 @@ export const useScrollable = () => {
   );
   const isScrollableRefreshable = useSharedValue<boolean>(false);
   const isScrollableLocked = useSharedValue<boolean>(true);
+  const isScrollEnded = useSharedValue<boolean>(true);
 
   // callbacks
   const setScrollableRef = useCallback((ref: ScrollableRef) => {
@@ -65,6 +66,7 @@ export const useScrollable = () => {
     animatedScrollableOverrideState,
     isScrollableRefreshable,
     isScrollableLocked,
+    isScrollEnded,
     setScrollableRef,
     removeScrollableRef,
   };
