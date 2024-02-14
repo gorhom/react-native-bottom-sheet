@@ -224,6 +224,11 @@ export interface BottomSheetFlashListMethods {
 
   getScrollableNode: () => any;
 
+  /**
+   * Recalculates viewable items.
+   */
+  updateViewableItems: () => void;
+
   // TODO: use `unknown` instead of `any` for Typescript >= 3.0
   setNativeProps: (props: { [key: string]: any }) => void;
 }
