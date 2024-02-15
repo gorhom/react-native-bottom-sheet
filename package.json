@@ -58,6 +58,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^4.3.8",
     "lint-staged": "^13.2.2",
+    "metro-react-native-babel-preset": "^0.77.0",
     "prettier": "^2.8.8",
     "react": "18.2.0",
     "react-native": "0.73.1",

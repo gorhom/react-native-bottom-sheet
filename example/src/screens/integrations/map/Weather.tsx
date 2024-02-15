@@ -54,7 +54,7 @@ const Weather = ({ animatedIndex, animatedPosition }: WeatherProps) => {
         },
       ],
     };
-  }, [height, screenHeight]);
+  }, [animatedIndex.value, animatedPosition.value, height, screenHeight]);
   const containerStyle = useMemo(
     () => [
       styles.container,
