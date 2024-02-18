@@ -13,17 +13,17 @@ A performant interactive bottom sheet with fully configurable options 🚀
 
 ## Features
 
-- Modal presentation view, [Bottom Sheet Modal](https://gorhom.github.io/react-native-bottom-sheet/modal).
+- Modal presentation view, [Bottom Sheet Modal](https://ui.gorhom.dev/components/bottom-sheet/modal).
 - Smooth gesture interactions & snapping animations.
-- Seamless [keyboard handling](https://gorhom.github.io/react-native-bottom-sheet/keyboard-handling) for iOS & Android.
-- Support [pull to refresh](https://gorhom.github.io/react-native-bottom-sheet/pull-to-refresh) for scrollables.
-- Support [FlatList](https://gorhom.github.io/react-native-bottom-sheet/components/bottomsheetflatlist), [SectionList](https://gorhom.github.io/react-native-bottom-sheet/components/bottomsheetsectionlist), [ScrollView](https://gorhom.github.io/react-native-bottom-sheet/components/bottomsheetscrollview) & [View](https://gorhom.github.io/react-native-bottom-sheet/components/bottomsheetview) scrolling interactions.
-- Support [React Navigation integration](https://gorhom.github.io/react-native-bottom-sheet/react-navigation-integration).
-- Compatible with `Reanimated` v1 & v2.
+- Seamless [keyboard handling](https://ui.gorhom.dev/components/bottom-sheet/keyboard-handling) for iOS & Android.
+- Support [pull to refresh](https://ui.gorhom.dev/components/bottom-sheet/pull-to-refresh) for scrollables.
+- Support [FlatList](https://ui.gorhom.dev/components/bottom-sheet/components/bottomsheetflatlist), [SectionList](https://ui.gorhom.dev/components/bottom-sheet/components/bottomsheetsectionlist), [ScrollView](https://ui.gorhom.dev/components/bottom-sheet/components/bottomsheetscrollview) & [View](https://ui.gorhom.dev/components/bottom-sheet/components/bottomsheetview) scrolling interactions.
+- Support [React Navigation integration](https://ui.gorhom.dev/components/bottom-sheet/react-navigation-integration).
+- Compatible with `Reanimated` v1-3.
 - Compatible with `Expo`.
 - Accessibility support.
 - Written in `TypeScript`.
-- [Read more](https://gorhom.github.io/react-native-bottom-sheet).
+- [Read more](https://ui.gorhom.dev/components/bottom-sheet).
 
 ## Getting Started
 
@@ -35,9 +35,11 @@ This library been written in 2 versions of `Reanimated`, and kept both implement
 
 - **`v2`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v2) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v2/CHANGELOG.md) : written with `Reanimated v1` & compatible with `Reanimated v2`.
 
-- **`v4`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md) : written with `Reanimated v2`.
+- **`v4`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v4) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v4/CHANGELOG.md) : written with `Reanimated v2`.
 
-> I highly recommend all `v3` users to upgrade to `v4` which provides more stability and all latest features.
+- **`v5`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md) : written with `Reanimated v3` & `Gesture Handler v2`.
+
+> I highly recommend to use `v5` which provides more stability with all latest features.
 
 ## Author
 
@@ -82,3 +84,4 @@ To keep this library maintained and up-to-date please consider [sponsoring it on
     <img height="18" alt="Mo Gorhom" src="./mogorhom-dark.png">
   </a>
 </p>
+s
