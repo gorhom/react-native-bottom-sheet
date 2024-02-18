@@ -105,6 +105,7 @@ const useBottomSheetDynamicSnapPoints = () => ({
 
 module.exports = {
   BottomSheetView: BottomSheetComponent,
+  BottomSheetTextInput: ReactNative.TextInput,
   BottomSheetScrollView: ReactNative.ScrollView,
   BottomSheetSectionList: ReactNative.SectionList,
   BottomSheetFlatList: ReactNative.FlatList,
