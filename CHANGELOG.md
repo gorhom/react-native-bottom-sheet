@@ -1,5 +1,12 @@
 
 
+## [4.6.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.6.0...v4.6.1) (2024-02-18)
+
+
+### Bug Fixes
+
+* added footer height to content height when using dynamic sizing ([#1725](https://github.com/gorhom/react-native-bottom-sheet/issues/1725)) ([1fdab02](https://github.com/gorhom/react-native-bottom-sheet/commit/1fdab024a1ad071b171483a0020236f3adc7bc69))
+
 # [4.6.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.5.1...v4.6.0) (2024-01-03)
 
 
