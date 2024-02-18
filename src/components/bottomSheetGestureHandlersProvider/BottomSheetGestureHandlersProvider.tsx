@@ -12,6 +12,7 @@ import { useSharedValue } from 'react-native-reanimated';
 const BottomSheetGestureHandlersProvider = ({
   gestureEventsHandlersHook:
     useGestureEventsHandlers = useGestureEventsHandlersDefault,
+  callBackToInterruptClose,
   children,
 }: BottomSheetGestureHandlersProviderProps) => {
   //#region variables
@@ -24,7 +25,7 @@ const BottomSheetGestureHandlersProvider = ({
   const { animatedContentGestureState, animatedHandleGestureState } =
     useBottomSheetInternal();
   const { handleOnStart, handleOnActive, handleOnEnd } =
-    useGestureEventsHandlers();
+    useGestureEventsHandlers(callBackToInterruptClose);
   //#endregion
 
   //#region gestures
