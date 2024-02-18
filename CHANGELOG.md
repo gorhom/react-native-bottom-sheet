@@ -1,5 +1,15 @@
 
 
+# [5.0.0-alpha.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.6...v5.0.0-alpha.7) (2024-02-18)
+
+
+### Bug Fixes
+
+* added BottomSheetTextInput to the mock file ([#1698](https://github.com/gorhom/react-native-bottom-sheet/issues/1698))(by [@ghorbani-m](https://github.com/ghorbani-m)) ([dee95e5](https://github.com/gorhom/react-native-bottom-sheet/commit/dee95e5b161d78b0aae34d85abea3d8042417892))
+* added footer height to content height when using dynamic sizing ([#1725](https://github.com/gorhom/react-native-bottom-sheet/issues/1725)) ([5009085](https://github.com/gorhom/react-native-bottom-sheet/commit/50090859f9e50932c641df5b0d6f91cc9f3b5bad))
+* added missing mock of Touchables ([#1700](https://github.com/gorhom/react-native-bottom-sheet/issues/1700))(by [@jaworek](https://github.com/jaworek)) ([a6f44c0](https://github.com/gorhom/react-native-bottom-sheet/commit/a6f44c01ef8f1b9154ce2313614daf075567f641))
+* added support for web without Babel/SWC ([#1741](https://github.com/gorhom/react-native-bottom-sheet/issues/1741))(by [@joshsmith](https://github.com/joshsmith)) ([d620494](https://github.com/gorhom/react-native-bottom-sheet/commit/d620494877e98f4331d8c0a1cb7d375abb06db60))
+
 # [5.0.0-alpha.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.5...v5.0.0-alpha.6) (2024-01-03)
 
 
