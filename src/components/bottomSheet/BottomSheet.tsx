@@ -195,7 +195,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return $modal
         ? _animatedContainerHeight.value - verticalInset
         : _animatedContainerHeight.value;
-    }, [$modal, topInset, bottomInset]);
+    }, [topInset, bottomInset, $modal, _animatedContainerHeight.value]);
     const animatedContainerOffset = useReactiveSharedValue(
       _providedContainerOffset ?? INITIAL_CONTAINER_OFFSET
     ) as Animated.SharedValue<Insets>;
@@ -214,7 +214,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         maxDynamicContentSize
       );
     const animatedHighestSnapPoint = useDerivedValue(
-      () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1]
+      () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1],
+      [animatedSnapPoints.value]
     );
     const animatedClosedPosition = useDerivedValue(() => {
       let closedPosition = animatedContainerHeight.value;
@@ -224,9 +225,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
 
       return closedPosition;
-    }, [$modal, detached, bottomInset]);
+    }, [animatedContainerHeight.value, $modal, detached, bottomInset]);
     const animatedSheetHeight = useDerivedValue(
-      () => animatedContainerHeight.value - animatedHighestSnapPoint.value
+      () => animatedContainerHeight.value - animatedHighestSnapPoint.value,
+      [animatedContainerHeight.value, animatedHighestSnapPoint.value]
     );
     const animatedCurrentIndex = useReactiveSharedValue(
       animateOnMount ? -1 : _providedIndex
@@ -274,7 +276,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isHandleHeightCalculated &&
         isSnapPointsNormalized
       );
-    });
+    }, [
+      _providedContainerHeight,
+      animatedContainerHeight.value,
+      animatedHandleHeight,
+      animatedSnapPoints.value,
+      handleComponent,
+    ]);
     const isInTemporaryPosition = useSharedValue(false);
     const isForcedClosing = useSharedValue(false);
 
@@ -399,7 +407,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
 
       return SCROLLABLE_STATE.LOCKED;
-    });
+    }, [
+      animatedAnimationState.value,
+      animatedKeyboardState.value,
+      animatedScrollableOverrideState.value,
+      animatedSheetState.value,
+    ]);
     // dynamic
     const animatedContentHeightMax = useDerivedValue(() => {
       const keyboardHeightInContainer = animatedKeyboardHeightInContainer.value;
@@ -513,7 +526,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
 
       return currentIndex;
-    }, [android_keyboardInputMode]);
+    }, [
+      android_keyboardInputMode,
+      animatedAnimationSource.value,
+      animatedAnimationState.value,
+      animatedContainerHeight.value,
+      animatedCurrentIndex.value,
+      animatedNextPositionIndex.value,
+      animatedPosition.value,
+      animatedSnapPoints.value,
+      isInTemporaryPosition.value,
+      isLayoutCalculated.value,
+    ]);
     //#endregion
 
     //#region private methods
@@ -1258,7 +1282,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           configs: _providedAnimationConfigs,
         }),
       };
-    }, [animatedContentHeightMax, enableDynamicSizing, animatedContentHeight]);
+    }, [
+      enableDynamicSizing,
+      animatedContentHeight.value,
+      animatedContentHeightMax.value,
+      _providedAnimationConfigs,
+    ]);
     const contentContainerStyle = useMemo(
       () => [styles.contentContainer, contentContainerAnimatedStyle],
       [contentContainerAnimatedStyle]
@@ -1277,7 +1306,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return {
         paddingBottom: animatedContainerHeight.value,
       };
-    }, [detached]);
+    }, [animatedContainerHeight.value, detached]);
     const contentMaskContainerStyle = useMemo(
       () => [styles.contentMaskContainer, contentMaskContainerAnimatedStyle],
       [contentMaskContainerAnimatedStyle]
@@ -1424,7 +1453,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           }
         }
         animateToPosition(nextPosition, animationSource, 0, animationConfig);
-      }
+      },
+      []
     );
 
     /**
@@ -1547,7 +1577,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (_providedAnimatedPosition) {
           _providedAnimatedPosition.value = _animatedPosition + topInset;
         }
-      }
+      },
+      []
     );
 
     /**
@@ -1559,7 +1590,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (_providedAnimatedIndex) {
           _providedAnimatedIndex.value = _animatedIndex;
         }
-      }
+      },
+      []
     );
 
     /**

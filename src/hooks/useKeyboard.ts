@@ -119,7 +119,8 @@ export const useKeyboard = () => {
       if (result && params.length > 0) {
         handleKeyboardEvent(params[0], params[1], params[2], params[3]);
       }
-    }
+    },
+    []
   );
   //#endregion
 

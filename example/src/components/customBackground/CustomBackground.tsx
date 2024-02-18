@@ -13,14 +13,17 @@ const CustomBackgroundComponent: React.FC<CustomBackgroundProps> = ({
   animatedIndex,
 }) => {
   //#region styles
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    // @ts-ignore
-    backgroundColor: interpolateColor(
-      animatedIndex.value,
-      [0, 1],
-      ['#ffffff', '#a8b5eb']
-    ),
-  }));
+  const containerAnimatedStyle = useAnimatedStyle(
+    () => ({
+      // @ts-ignore
+      backgroundColor: interpolateColor(
+        animatedIndex.value,
+        [0, 1],
+        ['#ffffff', '#a8b5eb']
+      ),
+    }),
+    [animatedIndex.value]
+  );
   const containerStyle = useMemo(
     () => [styles.container, style, containerAnimatedStyle],
     [style, containerAnimatedStyle]
