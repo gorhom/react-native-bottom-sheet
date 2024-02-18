@@ -12,23 +12,11 @@ yarn bootstrap
 
 While developing, you can run the [example app](/example/) to test your changes.
 
-To start the packager:
-
-```sh
-yarn example start
-```
-
-To run the example app on Android:
-
-```sh
-yarn example android
-```
-
-To run the example app on iOS:
-
-```sh
-yarn example android
-```
+| Description |[Bare](https://reactnative.dev/docs/environment-setup?guide=native) | [Expo](https://reactnative.dev/docs/environment-setup?guide=quickstart) |
+| --- | --- |--- |
+|**Start Packager** | `yarn example:bare start` | `yarn example:expo start`|
+|**Run on Android** | `yarn example:bare android` | `yarn example:expo android`|
+|**Run on iOS** | `yarn example:bare ios` | `yarn example:expo ios`|
 
 Make sure your code passes TypeScript and ESLint. Run the following to verify:
 

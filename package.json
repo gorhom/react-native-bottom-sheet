@@ -35,8 +35,9 @@
     "delete-debug-view": "rm -r ./lib/commonjs/components/bottomSheetDebugView && rm -r ./lib/module/components/bottomSheetDebugView && rm -r ./lib/typescript/components/bottomSheetDebugView",
     "delete-dts.js": "find ./lib/commonjs -name '*.d.js*' -delete && find ./lib/module -name '*.d.js*' -delete",
     "release": "rm -rf lib && yarn build && release-it",
-    "example": "yarn --cwd example",
-    "bootstrap": "yarn install && yarn example"
+    "example:bare": "yarn --cwd ./example/bare",
+    "example:expo": "yarn --cwd ./example/expo",
+    "bootstrap": "yarn install && yarn example:bare && yarn example:expo"
   },
   "dependencies": {
     "@gorhom/portal": "1.0.14",
