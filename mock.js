@@ -111,6 +111,10 @@ module.exports = {
   BottomSheetFlatList: ReactNative.FlatList,
   BottomSheetVirtualizedList: ReactNative.VirtualizedList,
 
+  TouchableOpacity: ReactNative.TouchableOpacity,
+  TouchableHighlight: ReactNative.TouchableHighlight,
+  TouchableWithoutFeedback: ReactNative.TouchableWithoutFeedback,
+
   BottomSheetModalProvider,
   BottomSheetModal,
   BottomSheetBackdrop,
