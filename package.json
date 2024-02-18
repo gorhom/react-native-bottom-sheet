@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/gorhom/react-native-bottom-sheet/issues"
   },
-  "homepage": "https://gorhom.github.io/react-native-bottom-sheet",
+  "homepage": "https://ui.gorhom.dev/components/bottom-sheet",
   "scripts": {
     "typescript": "tsc --skipLibCheck --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
