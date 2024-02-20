@@ -334,7 +334,14 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           if (destinationPoint === animatedPosition.value) {
             return;
           }
-
+          /**
+           * Handles the scenario where the bottom sheet is in the collapsed mode, 
+           * but the keyboard remains open. This occurs when the user drags from a <View> 
+           * and releases the finger while it's positioned over the keyboard.
+           */
+          if(destinationPoint === highestSnapPoint && animatedKeyboardState.value === KEYBOARD_STATE.SHOWN ){
+            runOnJS(dismissKeyboard)();
+          }
           const wasGestureHandledByScrollView =
             source === GESTURE_SOURCE.SCROLLABLE &&
             animatedScrollableContentOffsetY.value > 0;
