@@ -753,26 +753,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         runOnJS(handleOnAnimate)(position);
 
         /**
-         * force animation configs from parameters, if provided
+         * start animation
          */
-        if (configs !== undefined) {
-          animatedPosition.value = animate({
-            point: position,
-            configs,
-            velocity,
-            onComplete: animateToPositionCompleted,
-          });
-        } else {
-          /**
-           * use animationConfigs callback, if provided
-           */
-          animatedPosition.value = animate({
-            point: position,
-            velocity,
-            configs: _providedAnimationConfigs,
-            onComplete: animateToPositionCompleted,
-          });
-        }
+        animatedPosition.value = animate({
+          point: position,
+          configs: configs || _providedAnimationConfigs,
+          velocity,
+          onComplete: animateToPositionCompleted,
+        });
       },
       [handleOnAnimate, _providedAnimationConfigs]
     );
@@ -1332,7 +1320,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        let nextPosition;
+        let nextPosition: number;
         if (_providedIndex === -1) {
           nextPosition = animatedClosedPosition.value;
           animatedNextPositionIndex.value = -1;
@@ -1365,7 +1353,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         if (animateOnMount) {
-          animateToPosition(nextPosition, ANIMATION_SOURCE.MOUNT);
+          requestAnimationFrame(() => {
+            animateToPosition(nextPosition, ANIMATION_SOURCE.MOUNT);
+          });
         } else {
           animatedPosition.value = nextPosition;
         }
