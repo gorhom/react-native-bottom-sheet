@@ -77,8 +77,11 @@ export const useNormalizedSnapPoints = (
           : containerHeight.value
       );
 
-    // push dynamic snap point into the normalized snap points.
-    _normalizedSnapPoints.push(dynamicSnapPoint);
+    // push dynamic snap point into the normalized snap points,
+    // only if it does not exists in the provided list already.
+    if (!_normalizedSnapPoints.includes(dynamicSnapPoint)) {
+      _normalizedSnapPoints.push(dynamicSnapPoint);
+    }
 
     // sort all snap points.
     _normalizedSnapPoints = _normalizedSnapPoints.sort((a, b) => b - a);

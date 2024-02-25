@@ -21,6 +21,8 @@ const BottomSheetFlatListComponent = createBottomSheetScrollableComponent<
 
 const BottomSheetFlatList = memo(BottomSheetFlatListComponent);
 BottomSheetFlatList.displayName = 'BottomSheetFlatList';
+//@ts-ignore
+BottomSheetFlatList.$bottomSheetIntegrated = true;
 
 export default BottomSheetFlatList as <T>(
   props: BottomSheetFlatListProps<T>

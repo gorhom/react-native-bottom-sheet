@@ -21,6 +21,8 @@ const BottomSheetScrollViewComponent = createBottomSheetScrollableComponent<
 
 const BottomSheetScrollView = memo(BottomSheetScrollViewComponent);
 BottomSheetScrollView.displayName = 'BottomSheetScrollView';
+//@ts-ignore
+BottomSheetScrollView.$bottomSheetIntegrated = true;
 
 export default BottomSheetScrollView as (
   props: BottomSheetScrollViewProps

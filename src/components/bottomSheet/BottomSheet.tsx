@@ -168,13 +168,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region validate props
-    usePropsValidator({
-      index: _providedIndex,
-      snapPoints: _providedSnapPoints,
-      enableDynamicSizing,
-      topInset,
-      bottomInset,
-    });
+    if (__DEV__) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      usePropsValidator({
+        index: _providedIndex,
+        snapPoints: _providedSnapPoints,
+        enableDynamicSizing,
+        topInset,
+        bottomInset,
+        children,
+      });
+    }
     //#endregion
 
     //#region layout variables

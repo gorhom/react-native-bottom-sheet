@@ -24,6 +24,8 @@ const BottomSheetVirtualizedListComponent =
 
 const BottomSheetVirtualizedList = memo(BottomSheetVirtualizedListComponent);
 BottomSheetVirtualizedList.displayName = 'BottomSheetVirtualizedList';
+//@ts-ignore
+BottomSheetVirtualizedList.$bottomSheetIntegrated = true;
 
 export default BottomSheetVirtualizedList as <T>(
   props: BottomSheetVirtualizedListProps<T>
