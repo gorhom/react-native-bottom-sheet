@@ -17,17 +17,13 @@ interface AnimateParams {
 
 export const animate = ({
   point,
-  configs = undefined,
+  configs = ANIMATION_CONFIGS,
   velocity = 0,
   onComplete,
 }: AnimateParams) => {
   'worklet';
 
-  if (!configs) {
-    configs = ANIMATION_CONFIGS;
-  }
-
-  // Users might have an accessibililty setting to reduce motion turned on.
+  // Users might have an accessibility setting to reduce motion turned on.
   // This prevents the animation from running when presenting the sheet, which results in
   // the bottom sheet not even appearing so we need to override it to ensure the animation runs.
   configs.reduceMotion = ReduceMotion.Never;
