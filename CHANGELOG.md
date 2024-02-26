@@ -1,5 +1,14 @@
 
 
+# [5.0.0-alpha.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.7...v5.0.0-alpha.8) (2024-02-26)
+
+
+### Bug Fixes
+
+* added error message when dynamic sizing enabled with a wrong children type ([8b62dca](https://github.com/gorhom/react-native-bottom-sheet/commit/8b62dca06752a3c047162a693a75173a7c701e3e))
+* bottom sheet not appearing for users that have reduced motion turned on ([#1743](https://github.com/gorhom/react-native-bottom-sheet/issues/1743))(by [@fobos531](https://github.com/fobos531)) ([9b4ef4d](https://github.com/gorhom/react-native-bottom-sheet/commit/9b4ef4dabb7ce1f846ae90e2bab39fa9354ff125))
+* fixed the mount animation with reduce motion enabled ([#1560](https://github.com/gorhom/react-native-bottom-sheet/issues/1560), [#1674](https://github.com/gorhom/react-native-bottom-sheet/issues/1674)) ([6efd8ae](https://github.com/gorhom/react-native-bottom-sheet/commit/6efd8aeb0e312555fa77609869eedbf46a4a04b3))
+
 # [5.0.0-alpha.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.6...v5.0.0-alpha.7) (2024-02-18)
 
 
