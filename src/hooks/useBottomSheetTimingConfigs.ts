@@ -1,6 +1,17 @@
 import { useMemo } from 'react';
-import { type WithTimingConfig } from 'react-native-reanimated';
+import { EasingFunctionFactory, ReduceMotion } from 'react-native-reanimated';
 import { ANIMATION_DURATION, ANIMATION_EASING } from '../constants';
+import { EasingFunction } from 'react-native';
+
+/**
+ * this is needed to avoid TS4023
+ * https://github.com/microsoft/TypeScript/issues/5711
+ */
+interface TimingConfig {
+  duration?: number;
+  easing?: EasingFunction | EasingFunctionFactory;
+  reduceMotion?: ReduceMotion;
+}
 
 /**
  * Generate timing animation configs.
@@ -9,9 +20,9 @@ import { ANIMATION_DURATION, ANIMATION_EASING } from '../constants';
  * - duration: 250
  * @param configs overridable configs.
  */
-export const useBottomSheetTimingConfigs = (configs: WithTimingConfig) => {
+export const useBottomSheetTimingConfigs = (configs: TimingConfig) => {
   return useMemo(() => {
-    const _configs: WithTimingConfig = {
+    const _configs: TimingConfig = {
       easing: configs.easing || ANIMATION_EASING,
       duration: configs.duration || ANIMATION_DURATION,
       reduceMotion: configs.reduceMotion,
