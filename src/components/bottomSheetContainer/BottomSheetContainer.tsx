@@ -48,6 +48,7 @@ function BottomSheetContainerComponent({
 
       containerRef.current?.measure(
         (_x, _y, _width, _height, _pageX, pageY) => {
+          if (!containerOffset.value) return;
           containerOffset.value = {
             top: pageY ?? 0,
             left: 0,
