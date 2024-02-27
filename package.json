@@ -1,6 +1,6 @@
 {
   "name": "@gorhom/bottom-sheet",
-  "version": "4.5.1",
+  "version": "4.6.1",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/gorhom/react-native-bottom-sheet/issues"
   },
-  "homepage": "https://gorhom.github.io/react-native-bottom-sheet",
+  "homepage": "https://ui.gorhom.dev/components/bottom-sheet",
   "scripts": {
     "typescript": "tsc --skipLibCheck --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -46,7 +46,7 @@
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
     "@react-native-community/eslint-config": "^3.0.0",
-    "@release-it/conventional-changelog": "^7.0.1",
+    "@release-it/conventional-changelog": "^8.0.1",
     "@types/invariant": "^2.2.34",
     "@types/react": "17.0.2",
     "@types/react-native": "^0.67.7",
@@ -63,7 +63,7 @@
     "react-native-builder-bob": "^0.18.1",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.8.0",
-    "release-it": "^16.1.5",
+    "release-it": "^17.0.1",
     "typescript": "^4.2.4"
   },
   "peerDependencies": {

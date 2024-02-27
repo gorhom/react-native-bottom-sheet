@@ -105,10 +105,15 @@ const useBottomSheetDynamicSnapPoints = () => ({
 
 module.exports = {
   BottomSheetView: BottomSheetComponent,
+  BottomSheetTextInput: ReactNative.TextInput,
   BottomSheetScrollView: ReactNative.ScrollView,
   BottomSheetSectionList: ReactNative.SectionList,
   BottomSheetFlatList: ReactNative.FlatList,
   BottomSheetVirtualizedList: ReactNative.VirtualizedList,
+
+  TouchableOpacity: ReactNative.TouchableOpacity,
+  TouchableHighlight: ReactNative.TouchableHighlight,
+  TouchableWithoutFeedback: ReactNative.TouchableWithoutFeedback,
 
   BottomSheetModalProvider,
   BottomSheetModal,
