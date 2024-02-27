@@ -1,5 +1,12 @@
 
 
+# [5.0.0-alpha.9](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.8...v5.0.0-alpha.9) (2024-02-27)
+
+
+### Reverts
+
+* updated animate method parameter default value ([#1757](https://github.com/gorhom/react-native-bottom-sheet/issues/1757))(by [@jeongshin](https://github.com/jeongshin)) ([2784fa1](https://github.com/gorhom/react-native-bottom-sheet/commit/2784fa1415d461fd761f2bf29610bcbae1e0f8bb))
+
 # [5.0.0-alpha.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.7...v5.0.0-alpha.8) (2024-02-26)
 
 
