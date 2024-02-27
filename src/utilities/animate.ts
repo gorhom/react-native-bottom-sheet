@@ -17,11 +17,15 @@ interface AnimateParams {
 
 export const animate = ({
   point,
-  configs = ANIMATION_CONFIGS,
+  configs,
   velocity = 0,
   onComplete,
 }: AnimateParams) => {
   'worklet';
+
+  if (!configs) {
+    configs = ANIMATION_CONFIGS;
+  }
 
   // Users might have an accessibility setting to reduce motion turned on.
   // This prevents the animation from running when presenting the sheet, which results in
