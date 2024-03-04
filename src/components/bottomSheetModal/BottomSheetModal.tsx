@@ -52,6 +52,10 @@ const BottomSheetModalComponent = forwardRef<
 
     // components
     children: Content,
+
+    // Override default accessibility prop to ensure their content can be read by Voice Over (iOS screen reader)
+    accessible = null,
+
     ...bottomSheetProps
   } = props;
 
@@ -379,6 +383,7 @@ const BottomSheetModalComponent = forwardRef<
       <ContainerComponent key={key}>
         <BottomSheet
           {...bottomSheetProps}
+          accessible={accessible}
           ref={bottomSheetRef}
           key={key}
           index={index}
