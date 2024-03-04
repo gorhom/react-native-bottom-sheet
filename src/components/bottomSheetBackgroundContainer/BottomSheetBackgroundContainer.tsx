@@ -20,7 +20,7 @@ const BottomSheetBackgroundContainerComponent = ({
 
   return _providedBackgroundComponent === null ? null : (
     <BackgroundComponent
-      pointerEvents="none"
+      pointerEvents="box-none"
       animatedIndex={animatedIndex}
       animatedPosition={animatedPosition}
       style={backgroundStyle}

@@ -7,13 +7,7 @@ const BottomSheetBackgroundComponent = ({
   pointerEvents,
   style,
 }: BottomSheetBackgroundProps) => (
-  <View
-    pointerEvents={pointerEvents}
-    accessible={true}
-    accessibilityRole="adjustable"
-    accessibilityLabel="Bottom Sheet"
-    style={[styles.container, style]}
-  />
+  <View pointerEvents={pointerEvents} style={[styles.container, style]} />
 );
 
 const BottomSheetBackground = memo(BottomSheetBackgroundComponent);
