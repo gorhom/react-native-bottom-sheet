@@ -50,16 +50,16 @@
     "@types/react-native": "^0.67.7",
     "auto-changelog": "^2.4.0",
     "copyfiles": "^2.4.1",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^4.3.8",
-    "lint-staged": "^11.1.2",
-    "prettier": "^2.3.2",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
     "react": "~16.9.0",
     "react-native": "^0.62.2",
     "react-native-builder-bob": "^0.18.1",
-    "react-native-gesture-handler": "^1.10.3",
+    "react-native-gesture-handler": "^2.12.0",
     "react-native-reanimated": "^3.4.2",
     "release-it": "^17.0.1",
     "typescript": "^5.0.3"
@@ -70,8 +70,8 @@
     "@shopify/flash-list": "*",
     "react": "*",
     "react-native": "*",
-    "react-native-gesture-handler": ">=1.10.1",
-    "react-native-reanimated": ">=2.2.0"
+    "react-native-gesture-handler": ">=2.5.0",
+    "react-native-reanimated": ">=2.9.0"
   },
   "peerDependenciesMeta": {
     "@types/react-native": {
