@@ -713,9 +713,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           method: animateToPosition.name,
           params: {
             currentPosition: animatedPosition.value,
-            position,
+            nextPosition: position,
             velocity,
-            animatedContainerHeight: animatedContainerHeight.value,
+            source,
           },
         });
 
@@ -763,6 +763,47 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [handleOnAnimate, _providedAnimationConfigs]
     );
+    /**
+     * Set to position without animation.
+     *
+     * @param targetPosition position to be set.
+     */
+    const setToPosition = useWorkletCallback(function setToPosition(
+      targetPosition: number
+    ) {
+      if (
+        targetPosition === animatedPosition.value ||
+        targetPosition === undefined ||
+        (animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          targetPosition === animatedNextPosition.value)
+      ) {
+        return;
+      }
+
+      runOnJS(print)({
+        component: BottomSheet.name,
+        method: setToPosition.name,
+        params: {
+          currentPosition: animatedPosition.value,
+          targetPosition,
+        },
+      });
+
+      /**
+       * store next position
+       */
+      animatedNextPosition.value = targetPosition;
+      animatedNextPositionIndex.value =
+        animatedSnapPoints.value.indexOf(targetPosition);
+
+      stopAnimation();
+
+      /**
+       * set position.
+       */
+      animatedPosition.value = targetPosition;
+    },
+    []);
     //#endregion
 
     //#region public methods
@@ -1343,16 +1384,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animatedNextPositionIndex.value === -1 &&
           _previousContainerHeight !== containerHeight
         ) {
-          animationSource = ANIMATION_SOURCE.CONTAINER_RESIZE;
-          animationConfig = {
-            duration: 0,
-          };
-          animateToPosition(
-            containerHeight,
-            animationSource,
-            0,
-            animationConfig
-          );
+          setToPosition(containerHeight);
+          return;
         }
 
         if (
@@ -1393,13 +1426,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
           /**
            * if snap points changes because of the container height change,
-           * then we skip the snap animation by setting the duration to 0.
+           * then we set the new position without animation.
            */
           if (containerHeight !== _previousContainerHeight) {
-            animationSource = ANIMATION_SOURCE.CONTAINER_RESIZE;
-            animationConfig = {
-              duration: 0,
-            };
+            setToPosition(nextPosition);
+            return;
           }
         }
         animateToPosition(nextPosition, animationSource, 0, animationConfig);
@@ -1553,6 +1584,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }),
       ({
         _animatedIndex,
+        _animatedPosition,
         _animationState,
         _contentGestureState,
         _handleGestureState,
@@ -1561,6 +1593,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * exit the method if animation state is not stopped.
          */
         if (_animationState !== ANIMATION_STATE.STOPPED) {
+          return;
+        }
+
+        /**
+         * exit the method if index value is not synced with
+         * position value.
+         *
+         * [read more](https://github.com/gorhom/react-native-bottom-sheet/issues/1356)
+         */
+        if (
+          animatedNextPosition.value !== INITIAL_VALUE &&
+          animatedNextPositionIndex.value !== INITIAL_VALUE &&
+          (_animatedPosition !== animatedNextPosition.value ||
+            _animatedIndex !== animatedNextPositionIndex.value)
+        ) {
           return;
         }
 
