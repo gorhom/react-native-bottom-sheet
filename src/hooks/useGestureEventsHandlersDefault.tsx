@@ -31,6 +31,8 @@ const INITIAL_CONTEXT: GestureEventContextType = {
   isScrollablePositionLocked: false,
 };
 
+const dismissKeyboard = Keyboard.dismiss;
+
 const resetContext = (context: any) => {
   'worklet';
 
@@ -319,7 +321,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
               absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
             )
           ) {
-            runOnJS(Keyboard.dismiss)();
+            runOnJS(dismissKeyboard)();
           }
         }
 
