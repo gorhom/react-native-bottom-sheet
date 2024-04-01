@@ -64,6 +64,7 @@ function BottomSheetContainerComponent({
       print({
         component: BottomSheetContainer.displayName,
         method: 'handleContainerLayout',
+        category: 'layout',
         params: {
           height,
         },

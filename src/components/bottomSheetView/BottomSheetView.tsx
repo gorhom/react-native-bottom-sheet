@@ -75,6 +75,7 @@ function BottomSheetViewComponent({
       print({
         component: BottomSheetView.displayName,
         method: 'handleLayout',
+        category: 'layout',
         params: {
           height: event.nativeEvent.layout.height,
         },

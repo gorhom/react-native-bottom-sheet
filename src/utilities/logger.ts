@@ -1,28 +1,41 @@
 interface PrintOptions {
   component?: string;
+  category?: 'layout' | 'effect' | 'callback';
   method?: string;
   params?: Record<string, any> | string | number | boolean;
 }
 
 type Print = (options: PrintOptions) => void;
 
-let isLoggingEnabled = false;
+let _isLoggingEnabled = false;
+let _excludeCategories: PrintOptions['category'][] | undefined;
 
-const enableLogging = () => {
+const enableLogging = (excludeCategories?: PrintOptions['category'][]) => {
   if (!__DEV__) {
     console.warn('[BottomSheet] could not enable logging on production!');
     return;
   }
-  isLoggingEnabled = true;
+
+  _isLoggingEnabled = true;
+  _excludeCategories = excludeCategories;
 };
 
 let print: Print = () => {};
 
 if (__DEV__) {
-  print = ({ component, method, params }) => {
-    if (!isLoggingEnabled) {
+  print = ({ component, method, params, category }) => {
+    if (!_isLoggingEnabled) {
       return;
     }
+
+    if (
+      category &&
+      _excludeCategories &&
+      _excludeCategories.includes(category)
+    ) {
+      return;
+    }
+
     let message = '';
 
     if (typeof params === 'object') {

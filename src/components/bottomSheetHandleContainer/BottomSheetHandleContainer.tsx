@@ -116,6 +116,7 @@ function BottomSheetHandleContainerComponent({
       print({
         component: BottomSheetHandleContainer.displayName,
         method: 'handleContainerLayout',
+        category: 'layout',
         params: {
           height,
         },
