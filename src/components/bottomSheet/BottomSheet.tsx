@@ -1468,9 +1468,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => animatedSnapPoints.value,
       (result, previous) => {
         /**
-         * if values did not change, then we early exit the method.
+         * if values did not change, and did handle on mount animation
+         * then we early exit the method.
          */
-        if (JSON.stringify(result) === JSON.stringify(previous)) {
+        if (
+          JSON.stringify(result) === JSON.stringify(previous) &&
+          isAnimatedOnMount.value
+        ) {
           return;
         }
 
