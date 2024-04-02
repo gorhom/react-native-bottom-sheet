@@ -73,6 +73,7 @@ const KeyboardHandlingExample = () => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         keyboardBehavior={keyboardBehavior}
         keyboardBlurBehavior={keyboardBlurBehavior}
         handleComponent={SearchHandle}
