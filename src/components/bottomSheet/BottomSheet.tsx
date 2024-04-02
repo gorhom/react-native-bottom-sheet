@@ -748,7 +748,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * local states.
      */
     const getEvaluatedPosition = useWorkletCallback(
-      function getEvaluatedPosition() {
+      function getEvaluatedPosition(source: ANIMATION_SOURCE) {
         'worklet';
         const currentIndex = animatedCurrentIndex.value;
         const snapPoints = animatedSnapPoints.value;
@@ -760,6 +760,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * then we return the previous snap point.
          */
         if (
+          source === ANIMATION_SOURCE.KEYBOARD &&
           keyboardBlurBehavior === KEYBOARD_BLUR_BEHAVIOR.restore &&
           keyboardState === KEYBOARD_STATE.HIDDEN &&
           animatedContentGestureState.value !== State.ACTIVE &&
@@ -851,10 +852,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * Evaluate the bottom sheet position based based on a event source and other local states.
      */
     const evaluatePosition = useWorkletCallback(
-      (
+      function evaluatePosition(
         source: ANIMATION_SOURCE,
         animationConfigs?: WithSpringConfig | WithTimingConfig
-      ) => {
+      ) {
         /**
          * when evaluating the position while layout is not calculated, then we early exit till it is.
          */
@@ -862,7 +863,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        const proposedPosition = getEvaluatedPosition();
+        const proposedPosition = getEvaluatedPosition(source);
 
         /**
          * when evaluating the position while the mount animation not been handled,
@@ -948,7 +949,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animationConfigs
         );
       },
-      []
+      [getEvaluatedPosition, animateToPosition, setToPosition]
     );
     //#endregion
 
@@ -1528,6 +1529,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * if state is undetermined, then we early exit.
          */
         if (_keyboardState === KEYBOARD_STATE.UNDETERMINED) {
+          return;
+        }
+
+        /**
+         * if keyboard is hidden by customer gesture, then we early exit.
+         */
+        if (
+          _keyboardState === KEYBOARD_STATE.HIDDEN &&
+          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          animatedAnimationSource.value === ANIMATION_SOURCE.GESTURE
+        ) {
           return;
         }
 
