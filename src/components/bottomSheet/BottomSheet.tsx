@@ -1605,6 +1605,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region accessibility
+
+    /**
+     * General sheet accessibility actions for users with assistive devices.
+     */
     const accessibilityActions = useMemo(() => {
       return _accessibilityActions || [
         {name: 'increment', label: 'Expand the bottom sheet'},
@@ -1613,10 +1617,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         {name: 'activate', label: 'Close the bottom sheet'}
       ]
     }, []);
+
+    /**
+     * Connects the accessibility actions to bottom sheet functionality.
+     */
     const handleAccessibilityAction = useCallback((event: AccessibilityActionEvent) => {
       if (_onAccessibilityAction) {
         return _onAccessibilityAction(event);
       }
+
       switch (event.nativeEvent.actionName) {
         case 'increment':
           handleExpand();
