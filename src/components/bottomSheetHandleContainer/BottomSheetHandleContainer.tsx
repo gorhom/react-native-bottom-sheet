@@ -19,6 +19,8 @@ function BottomSheetHandleContainerComponent({
   handleComponent: _providedHandleComponent,
   handleStyle: _providedHandleStyle,
   handleIndicatorStyle: _providedIndicatorStyle,
+  accessibilityActions,
+  onAccessibilityAction
 }: BottomSheetHandleContainerProps) {
   //#region hooks
   const {
@@ -99,6 +101,8 @@ function BottomSheetHandleContainerComponent({
           animatedPosition={animatedPosition}
           style={_providedHandleStyle}
           indicatorStyle={_providedIndicatorStyle}
+          accessibilityActions={accessibilityActions}
+          onAccessibilityAction={onAccessibilityAction}
         />
       </Animated.View>
     </PanGestureHandler>

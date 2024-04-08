@@ -6,7 +6,7 @@ import React, {
   memo,
   useEffect,
 } from 'react';
-import { Platform } from 'react-native';
+import { Platform, AccessibilityActionEvent } from 'react-native';
 import invariant from 'invariant';
 import Animated, {
   useAnimatedReaction,
@@ -169,6 +169,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
       accessibilityRole:
         _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+      accessibilityActions: _accessibilityActions,
+      onAccessibilityAction: _onAccessibilityAction,
     } = props;
     //#endregion
 
@@ -1602,6 +1604,32 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     ]);
     //#endregion
 
+    //#region accessibility
+    const accessibilityActions = useMemo(() => {
+      return _accessibilityActions || [
+        {name: 'increment', label: 'Expand the bottom sheet'},
+        {name: 'decrement', label: 'Close the bottom sheet'},
+        {name: 'escape', label: 'Close the bottom sheet'},
+        {name: 'activate', label: 'Close the bottom sheet'}
+      ]
+    }, []);
+    const handleAccessibilityAction = useCallback((event: AccessibilityActionEvent) => {
+      if (_onAccessibilityAction) {
+        return _onAccessibilityAction(event);
+      }
+      switch (event.nativeEvent.actionName) {
+        case 'increment':
+          handleExpand();
+          break;
+        case 'decrement':
+        case 'activate':
+        case 'escape':
+          handleForceClose();
+          break;
+      }
+    }, [_onAccessibilityAction, handleExpand, handleForceClose]);
+    //#endregion
+
     // render
     print({
       component: BottomSheet.name,
@@ -1634,7 +1662,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               detached={detached}
               style={_providedContainerStyle}
             >
-              <Animated.View style={containerStyle}>
+              <Animated.View
+                style={containerStyle}
+                onAccessibilityEscape={handleForceClose}
+                accessibilityActions={accessibilityActions}
+                onAccessibilityAction={handleAccessibilityAction}
+              >
                 <BottomSheetBackgroundContainer
                   key="BottomSheetBackgroundContainer"
                   animatedIndex={animatedIndex}
@@ -1675,6 +1708,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   handleComponent={handleComponent}
                   handleStyle={_providedHandleStyle}
                   handleIndicatorStyle={_providedHandleIndicatorStyle}
+                  accessibilityActions={accessibilityActions}
+                  onAccessibilityAction={handleAccessibilityAction}
                 />
               </Animated.View>
               {/* <BottomSheetDebugView
