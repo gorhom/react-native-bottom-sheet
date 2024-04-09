@@ -49,6 +49,7 @@ const BottomSheetModalComponent = forwardRef<
 
     // callbacks
     onChange: _providedOnChange,
+    onLog: log,
 
     // components
     children: Content,
@@ -97,11 +98,12 @@ const BottomSheetModalComponent = forwardRef<
     forcedDismissed.current = false;
   }, []);
   const unmount = useCallback(
-    function unmount() {
+    function unmount(reason: string) {
       print({
         component: BottomSheetModal.name,
         method: unmount.name,
       });
+      log && log('unmount with reason ' + reason);
       const _mounted = mounted.current;
 
       // reset variables
@@ -195,7 +197,7 @@ const BottomSheetModalComponent = forwardRef<
     [key, stackBehavior, mountSheet]
   );
   const handleDismiss = useCallback<BottomSheetModalMethods['dismiss']>(
-    function handleDismiss(animationConfigs) {
+    function handleDismiss(animationConfigs, reason) {
       print({
         component: BottomSheetModal.name,
         method: handleDismiss.name,
@@ -215,7 +217,7 @@ const BottomSheetModalComponent = forwardRef<
         minimized.current ||
         (currentIndexRef.current === -1 && enablePanDownToClose)
       ) {
-        unmount();
+        unmount(reason);
         return;
       }
       willUnmountSheet(key);
@@ -271,7 +273,7 @@ const BottomSheetModalComponent = forwardRef<
 
   //#region callbacks
   const handlePortalOnUnmount = useCallback(
-    function handlePortalOnUnmount() {
+    function handlePortalOnUnmount(reason) {
       print({
         component: BottomSheetModal.name,
         method: handlePortalOnUnmount.name,
@@ -291,7 +293,7 @@ const BottomSheetModalComponent = forwardRef<
       forcedDismissed.current = true;
 
       if (minimized.current) {
-        unmount();
+        unmount('handlePortalOnUnmount ' + reason);
         return;
       }
       willUnmountSheet(key);
@@ -326,7 +328,7 @@ const BottomSheetModalComponent = forwardRef<
     [_providedOnChange]
   );
   const handleBottomSheetOnClose = useCallback(
-    function handleBottomSheetOnClose() {
+    function handleBottomSheetOnClose(reason) {
       print({
         component: BottomSheetModal.name,
         method: handleBottomSheetOnClose.name,
@@ -341,7 +343,7 @@ const BottomSheetModalComponent = forwardRef<
       }
 
       if (enableDismissOnClose) {
-        unmount();
+        unmount('handleBottomSheetOnClose ' + reason);
       }
     },
     [enableDismissOnClose, unmount]
