@@ -1,4 +1,7 @@
-import Animated, { useAnimatedGestureHandler } from 'react-native-reanimated';
+import Animated, {
+  runOnJS,
+  useAnimatedGestureHandler,
+} from 'react-native-reanimated';
 import {
   State,
   PanGestureHandlerGestureEvent,
@@ -8,6 +11,7 @@ import type {
   GestureEventContextType,
   GestureEventHandlerCallbackType,
 } from '../types';
+import { BottomSheetGestureCallbacks } from 'src/components/bottomSheetGestureHandlersProvider/types';
 
 const resetContext = (context: any) => {
   'worklet';
@@ -23,8 +27,11 @@ export const useGestureHandler = (
   gestureSource: Animated.SharedValue<GESTURE_SOURCE>,
   handleOnStart: GestureEventHandlerCallbackType,
   handleOnActive: GestureEventHandlerCallbackType,
-  handleOnEnd: GestureEventHandlerCallbackType
+  handleOnEnd: GestureEventHandlerCallbackType,
+  callbacks: BottomSheetGestureCallbacks
 ): ((event: PanGestureHandlerGestureEvent) => void) => {
+  const { onDragStart = () => {}, onDragEnd = () => {} } = callbacks;
+
   const gestureHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
     GestureEventContextType
@@ -38,6 +45,7 @@ export const useGestureHandler = (
           gestureSource.value = type;
 
           handleOnStart(type, payload, context);
+          runOnJS(onDragStart)();
           return;
         }
 
@@ -57,6 +65,7 @@ export const useGestureHandler = (
         gestureSource.value = GESTURE_SOURCE.UNDETERMINED;
 
         handleOnEnd(type, payload, context);
+        runOnJS(onDragEnd)();
         resetContext(context);
       },
       onCancel: (payload, context) => {
@@ -67,6 +76,7 @@ export const useGestureHandler = (
         state.value = payload.state;
         gestureSource.value = GESTURE_SOURCE.UNDETERMINED;
 
+        runOnJS(onDragEnd)();
         resetContext(context);
       },
       onFail: (payload, context) => {
@@ -77,6 +87,7 @@ export const useGestureHandler = (
         state.value = payload.state;
         gestureSource.value = GESTURE_SOURCE.UNDETERMINED;
 
+        runOnJS(onDragEnd)();
         resetContext(context);
       },
       onFinish: (payload, context) => {
@@ -87,6 +98,7 @@ export const useGestureHandler = (
         state.value = payload.state;
         gestureSource.value = GESTURE_SOURCE.UNDETERMINED;
 
+        runOnJS(onDragEnd)();
         resetContext(context);
       },
     },

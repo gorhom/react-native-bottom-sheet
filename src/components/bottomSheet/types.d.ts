@@ -21,6 +21,7 @@ import type {
   GestureEventsHandlersHookType,
   NullableAccessibilityProps,
 } from '../../types';
+import { BottomSheetGestureCallbacks } from '../bottomSheetGestureHandlersProvider/types';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
@@ -35,7 +36,8 @@ export interface BottomSheetProps
         | 'simultaneousHandlers'
       >
     >,
-    Omit<NullableAccessibilityProps, 'accessibilityHint'> {
+    Omit<NullableAccessibilityProps, 'accessibilityHint'>,
+    BottomSheetGestureCallbacks {
   //#region configuration
   /**
    * Initial snap point index, provide `-1` to initiate bottom sheet in closed state.

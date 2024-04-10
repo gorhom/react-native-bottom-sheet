@@ -13,6 +13,8 @@ const BottomSheetGestureHandlersProvider = ({
   gestureEventsHandlersHook:
     useGestureEventsHandlers = useGestureEventsHandlersDefault,
   children,
+  onDragStart,
+  onDragEnd,
 }: BottomSheetGestureHandlersProviderProps) => {
   //#region variables
   const animatedGestureSource = useSharedValue<GESTURE_SOURCE>(
@@ -27,6 +29,14 @@ const BottomSheetGestureHandlersProvider = ({
     useGestureEventsHandlers();
   //#endregion
 
+  const gestureCallbacks = useMemo(
+    () => ({
+      onDragStart,
+      onDragEnd,
+    }),
+    [onDragEnd, onDragStart]
+  );
+
   //#region gestures
   const contentPanGestureHandler = useGestureHandler(
     GESTURE_SOURCE.CONTENT,
@@ -34,7 +44,8 @@ const BottomSheetGestureHandlersProvider = ({
     animatedGestureSource,
     handleOnStart,
     handleOnActive,
-    handleOnEnd
+    handleOnEnd,
+    gestureCallbacks
   );
 
   const scrollablePanGestureHandler = useGestureHandler(
@@ -43,7 +54,8 @@ const BottomSheetGestureHandlersProvider = ({
     animatedGestureSource,
     handleOnStart,
     handleOnActive,
-    handleOnEnd
+    handleOnEnd,
+    gestureCallbacks
   );
 
   const handlePanGestureHandler = useGestureHandler(
@@ -52,7 +64,8 @@ const BottomSheetGestureHandlersProvider = ({
     animatedGestureSource,
     handleOnStart,
     handleOnActive,
-    handleOnEnd
+    handleOnEnd,
+    gestureCallbacks
   );
   //#endregion
 
