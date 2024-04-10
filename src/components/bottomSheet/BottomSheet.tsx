@@ -1611,10 +1611,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      */
     const accessibilityActions = useMemo(() => {
       return _accessibilityActions || [
-        {name: 'increment', label: 'Expand the bottom sheet'},
-        {name: 'decrement', label: 'Close the bottom sheet'},
-        {name: 'escape', label: 'Close the bottom sheet'},
-        {name: 'activate', label: 'Close the bottom sheet'}
+        { name: 'increment' },
+        { name: 'decrement' },
+        { name: 'escape' },
+        { name: 'activate', label: 'Close'}
       ]
     }, []);
 
@@ -1719,7 +1719,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   handleIndicatorStyle={_providedHandleIndicatorStyle}
                   accessibilityActions={accessibilityActions}
                   onAccessibilityAction={handleAccessibilityAction}
-                />
+                  />
               </Animated.View>
               {/* <BottomSheetDebugView
                 values={{
