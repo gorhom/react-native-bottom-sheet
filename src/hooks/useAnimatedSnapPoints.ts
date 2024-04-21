@@ -22,14 +22,14 @@ import {
  * @param maxDynamicContentSize
  * @returns {Animated.SharedValue<number[]>}
  */
-export const useNormalizedSnapPoints = (
+export const useAnimatedSnapPoints = (
   snapPoints: BottomSheetProps['snapPoints'],
   containerHeight: SharedValue<number>,
   contentHeight: SharedValue<number>,
   handleHeight: SharedValue<number>,
   enableDynamicSizing: BottomSheetProps['enableDynamicSizing'],
   maxDynamicContentSize: BottomSheetProps['maxDynamicContentSize']
-): [SharedValue<number[]>, SharedValue<number>] => {
+): [SharedValue<number[]>, SharedValue<number>, SharedValue<boolean>] => {
   const dynamicSnapPointIndex = useSharedValue<number>(-1);
   const normalizedSnapPoints = useDerivedValue(() => {
     // early exit, if container layout is not ready
@@ -100,5 +100,34 @@ export const useNormalizedSnapPoints = (
     maxDynamicContentSize,
     dynamicSnapPointIndex,
   ]);
-  return [normalizedSnapPoints, dynamicSnapPointIndex];
+
+  const hasDynamicSnapPoint = useDerivedValue(() => {
+    /**
+     * if dynamic sizing is enabled, then we return true.
+     */
+    if (enableDynamicSizing) {
+      return true;
+    }
+
+    // extract snap points from provided props
+    const _snapPoints = snapPoints
+      ? 'value' in snapPoints
+        ? snapPoints.value
+        : snapPoints
+      : [];
+
+    /**
+     * if any of the snap points provided is a string, then we return true.
+     */
+    if (
+      _snapPoints.length &&
+      _snapPoints.find(snapPoint => typeof snapPoint === 'string')
+    ) {
+      return true;
+    }
+
+    return false;
+  });
+
+  return [normalizedSnapPoints, dynamicSnapPointIndex, hasDynamicSnapPoint];
 };

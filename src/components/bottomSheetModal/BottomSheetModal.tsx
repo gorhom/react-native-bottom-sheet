@@ -317,6 +317,7 @@ const BottomSheetModalComponent = forwardRef<
       print({
         component: BottomSheetModal.name,
         method: handleBottomSheetOnChange.name,
+        category: 'callback',
         params: {
           minimized: minimized.current,
           forcedDismissed: forcedDismissed.current,
@@ -335,6 +336,7 @@ const BottomSheetModalComponent = forwardRef<
       print({
         component: BottomSheetModal.name,
         method: handleBottomSheetOnClose.name,
+        category: 'callback',
         params: {
           minimized: minimized.current,
           forcedDismissed: forcedDismissed.current,
