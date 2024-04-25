@@ -665,7 +665,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
 
-        animatedCurrentIndex.value = animatedNextPosition.value;
+        animatedCurrentIndex.value = animatedNextPositionIndex.value;
         animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
         animatedAnimationState.value = ANIMATION_STATE.STOPPED;
         animatedNextPosition.value = INITIAL_VALUE;
