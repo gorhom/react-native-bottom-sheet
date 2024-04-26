@@ -665,7 +665,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           },
         });
 
-        animatedCurrentIndex.value = animatedNextPositionIndex.value;
         animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
         animatedAnimationState.value = ANIMATION_STATE.STOPPED;
         animatedNextPosition.value = INITIAL_VALUE;
@@ -1362,6 +1361,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             animatedNextPositionIndex.value !== -1
               ? snapPoints[animatedNextPositionIndex.value]
               : animatedNextPosition.value;
+        } else if (animatedAnimationState.value === ANIMATION_STATE.STOPPED) {
+          nextPosition = snapPoints[animatedIndex.value]
         } else if (animatedCurrentIndex.value === -1) {
           nextPosition = animatedClosedPosition.value;
         } else if (isInTemporaryPosition.value) {
