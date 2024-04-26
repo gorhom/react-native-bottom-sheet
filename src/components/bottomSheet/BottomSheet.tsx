@@ -1361,7 +1361,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             animatedNextPositionIndex.value !== -1
               ? snapPoints[animatedNextPositionIndex.value]
               : animatedNextPosition.value;
-        } else if (animatedAnimationState.value === ANIMATION_STATE.STOPPED) {
+        } else if (animatedAnimationState.value === ANIMATION_STATE.STOPPED && animatedIndex.value % 1 === 0) {
           nextPosition = snapPoints[animatedIndex.value]
         } else if (animatedCurrentIndex.value === -1) {
           nextPosition = animatedClosedPosition.value;
