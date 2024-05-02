@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
+import { findNodeHandle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
-import { getRefNativeTag } from '../utilities/getRefNativeTag';
 import { SCROLLABLE_TYPE } from '../constants';
 import type { Scrollable } from '../types';
 
@@ -31,7 +31,7 @@ export const useScrollableSetter = (
     isContentHeightFixed.value = false;
 
     // set current scrollable ref
-    const id = getRefNativeTag(ref);
+    const id = findNodeHandle(ref.current);
     if (id) {
       setScrollableRef({
         id: id,
