@@ -1,5 +1,12 @@
 
 
+## [4.6.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.6.2...v4.6.3) (2024-05-19)
+
+
+### Bug Fixes
+
+* bottom sheet not appearing for users that have reduced motion turned on ([#1743](https://github.com/gorhom/react-native-bottom-sheet/issues/1743))(by [@fobos531](https://github.com/fobos531)) ([ab1cce2](https://github.com/gorhom/react-native-bottom-sheet/commit/ab1cce20389d3a678ff108d6e175128e272fa7c2))
+
 ## [4.6.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.6.1...v4.6.2) (2024-05-19)
 
 
