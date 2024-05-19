@@ -176,7 +176,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         enableDynamicSizing,
         topInset,
         bottomInset,
-        children,
       });
     }
     //#endregion

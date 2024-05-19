@@ -14,15 +14,9 @@ export const usePropsValidator = ({
   enableDynamicSizing,
   topInset,
   bottomInset,
-  children,
 }: Pick<
   BottomSheetProps,
-  | 'index'
-  | 'snapPoints'
-  | 'enableDynamicSizing'
-  | 'topInset'
-  | 'bottomInset'
-  | 'children'
+  'index' | 'snapPoints' | 'enableDynamicSizing' | 'topInset' | 'bottomInset'
 >) => {
   useMemo(() => {
     //#region snap points
@@ -84,18 +78,4 @@ export const usePropsValidator = ({
 
     // animations
   }, [index, snapPoints, topInset, bottomInset, enableDynamicSizing]);
-
-  useMemo(() => {
-    invariant(
-      (enableDynamicSizing &&
-        children &&
-        // @ts-ignore
-        children.type &&
-        // @ts-ignore
-        children.type.$bottomSheetIntegrated) ||
-        !enableDynamicSizing,
-      `'enableDynamicSizing' is enabled but children type is not integrated with the library !` +
-        ` expected children types are\n- BottomSheetView\n- BottomSheetFlatList\n- BottomSheetScrollView\n- BottomSheetSectionList\n- BottomSheetVirtualizedList`
-    );
-  }, [enableDynamicSizing, children]);
 };

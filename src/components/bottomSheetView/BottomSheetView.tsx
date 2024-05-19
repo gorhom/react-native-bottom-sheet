@@ -99,7 +99,5 @@ function BottomSheetViewComponent({
 
 const BottomSheetView = memo(BottomSheetViewComponent);
 BottomSheetView.displayName = 'BottomSheetView';
-//@ts-ignore
-BottomSheetView.$bottomSheetIntegrated = true;
 
 export default BottomSheetView;

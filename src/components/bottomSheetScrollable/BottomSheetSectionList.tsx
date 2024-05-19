@@ -22,8 +22,6 @@ const BottomSheetSectionListComponent = createBottomSheetScrollableComponent<
 
 const BottomSheetSectionList = memo(BottomSheetSectionListComponent);
 BottomSheetSectionList.displayName = 'BottomSheetSectionList';
-//@ts-ignore
-BottomSheetSectionList.$bottomSheetIntegrated = true;
 
 export default BottomSheetSectionList as <ItemT, SectionT = DefaultSectionT>(
   props: BottomSheetSectionListProps<ItemT, SectionT>
