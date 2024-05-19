@@ -1,5 +1,17 @@
 
 
+# [5.0.0-alpha.10](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.9...v5.0.0-alpha.10) (2024-05-19)
+
+
+### Bug Fixes
+
+* **BottomSheetContainer:** cannot add new property 'value' ([#1808](https://github.com/gorhom/react-native-bottom-sheet/issues/1808))(by @MoritzCooks) ([ccd6bb5](https://github.com/gorhom/react-native-bottom-sheet/commit/ccd6bb540884f35fb9c0dcd5527ed8bac0c1be91))
+
+
+### Reverts
+
+* **8b62dca:** added error message when dynamic sizing enabled with a wrong children type ([5714c1c](https://github.com/gorhom/react-native-bottom-sheet/commit/5714c1c850b66da9c9a0e8d08522a66076b35793))
+
 # [5.0.0-alpha.9](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.8...v5.0.0-alpha.9) (2024-02-27)
 
 
