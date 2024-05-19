@@ -1,5 +1,13 @@
 
 
+## [4.6.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.6.1...v4.6.2) (2024-05-19)
+
+
+### Bug Fixes
+
+* **BottomSheetContainer:** cannot add new property 'value' ([#1808](https://github.com/gorhom/react-native-bottom-sheet/issues/1808))(by @MoritzCooks) ([e294d1c](https://github.com/gorhom/react-native-bottom-sheet/commit/e294d1ca59ff14f8b990cc52389151c131a95510))
+* use function instead of component for BottomSheetModal ([#1750](https://github.com/gorhom/react-native-bottom-sheet/issues/1750))(by @Kerumen) ([6cfc99f](https://github.com/gorhom/react-native-bottom-sheet/commit/6cfc99ffa89339364b206b942486a7995d7ed8ab))
+
 ## [4.6.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.6.0...v4.6.1) (2024-02-18)
 
 
