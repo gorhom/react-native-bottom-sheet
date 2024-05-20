@@ -77,7 +77,7 @@ import {
   DEFAULT_DYNAMIC_SIZING,
   DEFAULT_ACCESSIBLE,
   DEFAULT_ACCESSIBILITY_LABEL,
-  DEFAULT_ACCESSIBILITY_ROLE
+  DEFAULT_ACCESSIBILITY_ROLE,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
@@ -151,6 +151,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       onChange: _providedOnChange,
       onClose: _providedOnClose,
       onAnimate: _providedOnAnimate,
+      onDragStart,
+      onDragEnd,
 
       // private
       $modal = false,
@@ -1617,6 +1619,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         <BottomSheetInternalProvider value={internalContextVariables}>
           <BottomSheetGestureHandlersProvider
             gestureEventsHandlersHook={gestureEventsHandlersHook}
+            onDragStart={onDragStart}
+            onDragEnd={onDragEnd}
           >
             <BottomSheetBackdropContainer
               key="BottomSheetBackdropContainer"
