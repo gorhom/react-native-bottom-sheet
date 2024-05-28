@@ -4,8 +4,6 @@ import {
   withTiming,
   withSpring,
   AnimationCallback,
-  // @ts-ignore
-  ReduceMotion,
 } from 'react-native-reanimated';
 import { ANIMATION_CONFIGS, ANIMATION_METHOD } from '../constants';
 
@@ -26,14 +24,6 @@ export const animate = ({
 
   if (!configs) {
     configs = ANIMATION_CONFIGS;
-  }
-
-  // Users might have an accessibililty setting to reduce motion turned on.
-  // This prevents the animation from running when presenting the sheet, which results in
-  // the bottom sheet not even appearing so we need to override it to ensure the animation runs.
-  if (ReduceMotion) {
-    // @ts-ignore
-    configs.reduceMotion = ReduceMotion.Never;
   }
 
   // detect animation type
