@@ -1,0 +1,1 @@
+{"version":3,"file":"ScrollableContainer.d.ts","sourceRoot":"","sources":["../../../../src/components/bottomSheetScrollable/ScrollableContainer.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAqB,MAAM,OAAO,CAAC;AAC1C,OAAO,EAEL,mBAAmB,EACpB,MAAM,8BAA8B,CAAC;AAEtC,UAAU,wBAAwB;IAChC,aAAa,EAAE,mBAAmB,CAAC;IACnC,mBAAmB,EAAE,GAAG,CAAC;CAC1B;AAED,eAAO,MAAM,mBAAmB,sFAW/B,CAAC"}
