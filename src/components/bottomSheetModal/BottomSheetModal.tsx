@@ -18,6 +18,7 @@ import {
 import type { BottomSheetModalMethods, BottomSheetMethods } from '../../types';
 import type { BottomSheetModalProps } from './types';
 import { id } from '../../utilities/id';
+import { SHEET_STATE } from 'src/constants';
 
 type BottomSheetModal = BottomSheetModalMethods;
 
@@ -170,6 +171,12 @@ const BottomSheetModalComponent = forwardRef<
         return;
       }
       bottomSheetRef.current?.forceClose(...args);
+    },
+    []
+  );
+  const handleGetState = useCallback<BottomSheetMethods['getState']>(
+    () => {
+      return bottomSheetRef.current?.getState() || SHEET_STATE.CLOSED
     },
     []
   );
@@ -357,6 +364,7 @@ const BottomSheetModalComponent = forwardRef<
     collapse: handleCollapse,
     close: handleClose,
     forceClose: handleForceClose,
+    getState: handleGetState,
     // modal methods
     dismiss: handleDismiss,
     present: handlePresent,
