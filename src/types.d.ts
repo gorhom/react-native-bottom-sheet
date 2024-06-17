@@ -76,6 +76,16 @@ export interface BottomSheetMethods {
    * @see {WithTimingConfig}
    */
   forceClose: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
+  /**
+   * Returns current state of BottomSheet.
+   * @see {SHEET_STATE}
+   * CLOSED - 0
+   * OPENED - 1
+   * EXTENDED - 2
+   * OVER_EXTENDED - 3
+   * FILL_PARENT - 4
+   */
+  getState: () => SHEET_STATE;
 }
 export interface BottomSheetModalMethods extends BottomSheetMethods {
   /**
