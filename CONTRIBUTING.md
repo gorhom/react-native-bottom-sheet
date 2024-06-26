@@ -12,23 +12,31 @@ yarn bootstrap
 
 While developing, you can run the [example app](/example/) to test your changes.
 
-To start the packager:
+### To start the bare react-native example app:
 
 ```sh
-yarn example start
+yarn example pod && yarn example ios
 ```
 
-To run the example app on Android:
-
-```sh
-yarn example android
-```
-
-To run the example app on iOS:
+or:
 
 ```sh
 yarn example android
 ```
+
+### To start the example app in Expo Go:
+
+```sh
+yarn example:expo ios
+```
+
+or:
+
+```sh
+yarn example:expo android
+```
+
+### Before committing:
 
 Make sure your code passes TypeScript and ESLint. Run the following to verify:
 
@@ -80,7 +88,10 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn test`: run unit tests with Jest.
 - `yarn example start`: start the Metro server for the example app.
 - `yarn example android`: run the example app on Android.
+- `yarn example:pod`: install pods for the example app.
 - `yarn example ios`: run the example app on iOS.
+- `yarn example:expo ios`: run the example app in Expo Go on iOS.
+- `yarn example:expo android`: run the example app in Expo Go on Android.
 
 ### Sending a pull request
 
