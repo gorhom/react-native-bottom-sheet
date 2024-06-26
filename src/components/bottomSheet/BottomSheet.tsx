@@ -89,9 +89,9 @@ Animated.addWhitelistedUIProps({
   decelerationRate: true,
 });
 
-type BottomSheet = BottomSheetMethods;
+type BottomSheetT = BottomSheetMethods;
 
-const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
+const BottomSheetComponent = forwardRef<BottomSheetT, BottomSheetProps>(
   function BottomSheet(props, ref) {
     //#region validate props
     usePropsValidator(props);

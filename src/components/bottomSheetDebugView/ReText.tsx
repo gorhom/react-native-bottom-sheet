@@ -19,8 +19,8 @@ const ReText = (props: TextProps) => {
     typeof _providedValue === 'number'
       ? _providedValue
       : typeof _providedValue.value === 'number'
-      ? _providedValue.value.toFixed(2)
-      : _providedValue.value
+        ? _providedValue.value.toFixed(2)
+        : _providedValue.value
   );
   const animatedProps = useAnimatedProps(() => {
     return {

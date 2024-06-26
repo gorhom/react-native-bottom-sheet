@@ -31,8 +31,8 @@
     "@babel/core": "^7.20.0",
     "@babel/runtime": "^7.20.0",
     "@types/faker": "^4.1.12",
-    "@types/react": "^17.0.35",
+    "@types/react": "~18.2.79",
     "@types/react-native": "^0.73.0",
-    "typescript": "^4.2.4"
+    "typescript": "^5.2.2"
   }
 }
