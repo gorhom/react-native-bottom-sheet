@@ -46,8 +46,8 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@react-native/eslint-config": "0.74.84",
     "@react-native/babel-preset": "^0.74.84",
+    "@react-native/eslint-config": "0.74.84",
     "@release-it/conventional-changelog": "^8.0.1",
     "@types/invariant": "^2.2.34",
     "@types/react": "~18.2.79",
