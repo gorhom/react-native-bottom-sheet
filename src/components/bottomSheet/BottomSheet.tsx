@@ -77,7 +77,7 @@ import {
   DEFAULT_DYNAMIC_SIZING,
   DEFAULT_ACCESSIBLE,
   DEFAULT_ACCESSIBILITY_LABEL,
-  DEFAULT_ACCESSIBILITY_ROLE
+  DEFAULT_ACCESSIBILITY_ROLE,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
@@ -87,9 +87,9 @@ Animated.addWhitelistedUIProps({
   decelerationRate: true,
 });
 
-type BottomSheet = BottomSheetMethods;
+type BottomSheetT = BottomSheetMethods;
 
-const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
+const BottomSheetComponent = forwardRef<BottomSheetT, BottomSheetProps>(
   function BottomSheet(props, ref) {
     //#region validate props
     usePropsValidator(props);

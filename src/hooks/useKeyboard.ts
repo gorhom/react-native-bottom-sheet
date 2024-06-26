@@ -56,8 +56,8 @@ export const useKeyboard = () => {
         state === KEYBOARD_STATE.SHOWN
           ? height
           : height === 0
-          ? keyboardHeight.value
-          : height;
+            ? keyboardHeight.value
+            : height;
       keyboardAnimationDuration.value = duration;
       keyboardAnimationEasing.value = easing;
       keyboardState.value = state;

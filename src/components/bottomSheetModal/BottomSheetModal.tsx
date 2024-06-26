@@ -19,7 +19,7 @@ import type { BottomSheetModalMethods, BottomSheetMethods } from '../../types';
 import type { BottomSheetModalProps } from './types';
 import { id } from '../../utilities/id';
 
-type BottomSheetModal = BottomSheetModalMethods;
+type BottomSheetModalT = BottomSheetModalMethods;
 
 const INITIAL_STATE: {
   mount: boolean;
@@ -30,7 +30,7 @@ const INITIAL_STATE: {
 };
 
 const BottomSheetModalComponent = forwardRef<
-  BottomSheetModal,
+  BottomSheetModalT,
   BottomSheetModalProps
 >(function BottomSheetModal(props, ref) {
   const {
@@ -305,8 +305,7 @@ const BottomSheetModalComponent = forwardRef<
     if (mounted.current) {
       render();
     }
-  },
-  []);
+  }, []);
   const handleBottomSheetOnChange = useCallback(
     function handleBottomSheetOnChange(_index: number) {
       print({
@@ -389,9 +388,7 @@ const BottomSheetModalComponent = forwardRef<
           containerOffset={containerOffset}
           onChange={handleBottomSheetOnChange}
           onClose={handleBottomSheetOnClose}
-          children={
-            typeof Content === 'function' ? Content({ data }) : Content
-          }
+          children={typeof Content === 'function' ? Content({ data }) : Content}
           $modal={true}
         />
       </ContainerComponent>
