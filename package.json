@@ -35,8 +35,9 @@
     "delete-debug-view": "rm -r ./lib/commonjs/components/bottomSheetDebugView && rm -r ./lib/module/components/bottomSheetDebugView && rm -r ./lib/typescript/components/bottomSheetDebugView",
     "delete-dts.js": "find ./lib/commonjs -name '*.d.js*' -delete && find ./lib/module -name '*.d.js*' -delete",
     "release": "rm -rf lib && yarn build && release-it",
-    "example": "yarn --cwd example",
-    "bootstrap": "yarn install && yarn example"
+    "example": "yarn --cwd example/bare",
+    "example:expo": "yarn --cwd example/expo",
+    "bootstrap": "yarn install && yarn example && yarn example:expo"
   },
   "dependencies": {
     "@gorhom/portal": "1.0.14",
@@ -45,26 +46,28 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@react-native-community/eslint-config": "^3.0.0",
+    "@react-native-community/eslint-config": "^3.2.0",
+    "@react-native/babel-preset": "^0.74.84",
     "@release-it/conventional-changelog": "^8.0.1",
     "@types/invariant": "^2.2.34",
-    "@types/react": "17.0.2",
-    "@types/react-native": "^0.67.7",
+    "@types/react": "18.3.3",
+    "@types/react-native": "^0.73.0",
     "auto-changelog": "^2.4.0",
     "copyfiles": "^2.4.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-ft-flow": "^3.0.10",
     "eslint-plugin-prettier": "^3.4.0",
     "husky": "^4.3.8",
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
-    "react": "~16.9.0",
-    "react-native": "^0.62.2",
+    "react": "18.2.0",
+    "react-native": "^0.74.2",
     "react-native-builder-bob": "^0.18.1",
     "react-native-gesture-handler": "^1.10.3",
-    "react-native-reanimated": "^2.8.0",
+    "react-native-reanimated": "~3.10.1",
     "release-it": "^17.0.1",
-    "typescript": "^4.2.4"
+    "typescript": "^5.5.2"
   },
   "peerDependencies": {
     "@types/react": "*",
