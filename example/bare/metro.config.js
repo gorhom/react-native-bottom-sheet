@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 const escape = require('escape-string-regexp');
 
@@ -23,7 +24,7 @@ const modules = [
   }),
 ];
 
-module.exports = {
+const config = {
   projectRoot: __dirname,
   watchFolders: [root],
 
@@ -33,10 +34,17 @@ module.exports = {
       new RegExp(`^${escape(path.join(app, 'node_modules'))}\\/.*$`),
     ]),
 
-    extraNodeModules: modules.reduce((acc, name) => {
-      acc[name] = path.join(__dirname, 'node_modules', name);
-      return acc;
-    }, {}),
+    extraNodeModules: {
+      ...modules.reduce((acc, name) => {
+        acc[name] = path.join(__dirname, 'node_modules', name);
+        return acc;
+      }, {}),
+      '@gorhom/bottom-sheet': path.resolve(__dirname, '../../src/index'),
+      '@gorhom/bottom-sheet-example-app': path.resolve(
+        __dirname,
+        '../app/src/index'
+      ),
+    },
   },
 
   transformer: {
@@ -48,3 +56,5 @@ module.exports = {
     }),
   },
 };
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);

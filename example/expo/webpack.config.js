@@ -21,6 +21,12 @@ module.exports = async function (env, argv) {
     use: 'babel-loader',
   });
 
+  // Use expo-crypto instead of node.js crypto
+  config.resolve.fallback = {
+    ...config.resolve.fallback,
+    crypto: require.resolve('expo-crypto'),
+  };
+
   // We need to make sure that only one version is loaded for peerDependencies
   // So we alias them to the versions in example's node_modules
   Object.assign(config.resolve.alias, {
