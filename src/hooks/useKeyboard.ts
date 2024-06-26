@@ -42,7 +42,12 @@ export const useKeyboard = () => {
 
   //#region worklets
   const handleKeyboardEvent = useWorkletCallback(
-    (state, height, duration, easing) => {
+    (
+      state: KEYBOARD_STATE,
+      height: number,
+      duration: number,
+      easing: KeyboardEventEasing
+    ) => {
       if (state === KEYBOARD_STATE.SHOWN && !shouldHandleKeyboardEvents.value) {
         /**
          * if the keyboard event was fired before the `onFocus` on TextInput,
@@ -56,8 +61,8 @@ export const useKeyboard = () => {
         state === KEYBOARD_STATE.SHOWN
           ? height
           : height === 0
-          ? keyboardHeight.value
-          : height;
+            ? keyboardHeight.value
+            : height;
       keyboardAnimationDuration.value = duration;
       keyboardAnimationEasing.value = easing;
       keyboardState.value = state;
