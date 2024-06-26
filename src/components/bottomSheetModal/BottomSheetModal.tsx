@@ -71,7 +71,7 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region refs
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheetMethods>(null);
   const currentIndexRef = useRef(!animateOnMount ? index : -1);
   const restoreIndexRef = useRef(-1);
   const minimized = useRef(false);

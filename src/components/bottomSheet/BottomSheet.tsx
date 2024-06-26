@@ -89,7 +89,7 @@ Animated.addWhitelistedUIProps({
   decelerationRate: true,
 });
 
-type BottomSheetT = BottomSheetMethods;
+export type BottomSheetT = BottomSheetMethods;
 
 const BottomSheetComponent = forwardRef<BottomSheetT, BottomSheetProps>(
   function BottomSheet(props, ref) {

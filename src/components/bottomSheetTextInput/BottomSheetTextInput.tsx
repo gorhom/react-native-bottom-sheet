@@ -48,7 +48,7 @@ const BottomSheetTextInputComponent = forwardRef<
       ref={ref}
       onFocus={handleOnFocus}
       onBlur={handleOnBlur}
-      {...rest}
+      {...(rest as Partial<TextInput>)}
     />
   );
 });
