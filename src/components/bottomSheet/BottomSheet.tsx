@@ -15,7 +15,7 @@ import Animated, {
   useDerivedValue,
   runOnJS,
   interpolate,
-  Extrapolate,
+  Extrapolation,
   runOnUI,
   cancelAnimation,
   useWorkletCallback,
@@ -486,7 +486,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             animatedPosition.value,
             adjustedSnapPoints,
             adjustedSnapPointsIndexes,
-            Extrapolate.CLAMP
+            Extrapolation.CLAMP
           )
         : -1;
 
