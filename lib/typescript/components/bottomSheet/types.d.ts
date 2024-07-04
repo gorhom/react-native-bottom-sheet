@@ -17,6 +17,7 @@ import type {
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
+  SHEET_STATE,
 } from '../../constants';
 import type {
   GestureEventsHandlersHookType,
@@ -239,7 +240,11 @@ export interface BottomSheetProps
    *
    * @type (index: number) => void;
    */
-  onChange?: (index: number, position: number, type: SNAP_POINT_TYPE) => void;
+  onChange?: (
+    index: SHEET_STATE,
+    position: number,
+    type: SNAP_POINT_TYPE
+  ) => void;
   /**
    * Callback when the sheet close.
    *
