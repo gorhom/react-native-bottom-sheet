@@ -94,6 +94,7 @@ const SCROLLABLE_DECELERATION_RATE_MAPPER = {
 
 const MODAL_STACK_BEHAVIOR = {
   replace: 'replace',
+  replaceAndDismiss: 'replace-and-dismiss',
   push: 'push',
 };
 

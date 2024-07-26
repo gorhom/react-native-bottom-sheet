@@ -45,18 +45,17 @@ const BottomSheetModalProviderWrapper = ({
       }
 
       /**
-       * Minimize the current sheet if:
+       * Dismiss or minimize the current sheet if:
        * - it exists.
        * - it is not unmounting.
        * - stack behavior is 'replace'.
        */
       const currentMountedSheet = _sheetsQueue[_sheetsQueue.length - 1];
-      if (
-        currentMountedSheet &&
-        !currentMountedSheet.willUnmount &&
-        stackBehavior === MODAL_STACK_BEHAVIOR.replace
-      ) {
-        currentMountedSheet.ref?.current?.minimize();
+      if (currentMountedSheet && !currentMountedSheet.willUnmount) {
+        if (stackBehavior === MODAL_STACK_BEHAVIOR.replaceAndDismiss) {
+          currentMountedSheet.ref?.current?.dismiss();
+        } else if (stackBehavior === MODAL_STACK_BEHAVIOR.replace)
+          currentMountedSheet.ref?.current?.minimize();
       }
 
       /**
