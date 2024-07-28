@@ -799,7 +799,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         if (
           keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
-          keyboardState === KEYBOARD_STATE.SHOWN
+          keyboardState === KEYBOARD_STATE.SHOWN &&
+          // ensure that this logic does not run on android
+          // with resize input mode
+          !(
+            Platform.OS === 'android' &&
+            android_keyboardInputMode === 'adjustResize'
+          )
         ) {
           isInTemporaryPosition.value = true;
           const keyboardHeightInContainer =
@@ -895,7 +901,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
            * when evaluating the position while the bottom sheet is
            * closing, then we force closing the bottom sheet with no animation.
            */
-          if (animatedNextPositionIndex.value === -1) {
+          if (
+            animatedNextPositionIndex.value === -1 &&
+            !isInTemporaryPosition.value
+          ) {
             setToPosition(animatedClosedPosition.value);
             return;
           }
@@ -907,7 +916,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
            */
           if (animatedNextPositionIndex.value !== animatedCurrentIndex.value) {
             animateToPosition(
-              animatedNextPosition.value,
+              animatedSnapPoints.value[animatedNextPositionIndex.value],
               source,
               undefined,
               animationConfigs
@@ -1566,6 +1575,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             : Math.abs(_keyboardHeight - animatedContainerOffset.value.bottom);
 
         /**
+         * if platform is android and the input mode is resize, then exit the method
+         */
+        if (
+          Platform.OS === 'android' &&
+          android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize
+        ) {
+          animatedKeyboardHeightInContainer.value = 0;
+
+          if (keyboardBehavior === KEYBOARD_BEHAVIOR.interactive) {
+            return;
+          }
+        }
+
+        /**
          * if user is interacting with sheet, then exit the method
          */
         const hasActiveGesture =
@@ -1584,18 +1607,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           _keyboardState === KEYBOARD_STATE.HIDDEN &&
           keyboardBlurBehavior === KEYBOARD_BLUR_BEHAVIOR.none
         ) {
-          return;
-        }
-
-        /**
-         * if platform is android and the input mode is resize, then exit the method
-         */
-        if (
-          Platform.OS === 'android' &&
-          keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
-          android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize
-        ) {
-          animatedKeyboardHeightInContainer.value = 0;
           return;
         }
 
