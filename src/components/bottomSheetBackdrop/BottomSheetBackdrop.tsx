@@ -48,6 +48,7 @@ const BottomSheetBackdropComponent = ({
   accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
+  ...rest
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
@@ -154,6 +155,7 @@ const BottomSheetBackdropComponent = ({
               typeof pressBehavior === 'string' ? pressBehavior : 'move'
             } the Bottom Sheet`
       }
+      {...rest}
     >
       {children}
     </Animated.View>
