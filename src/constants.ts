@@ -1,5 +1,6 @@
 import { Dimensions, Platform } from 'react-native';
-import Animated, { Easing } from 'react-native-reanimated';
+// @ts-expect-error Module '"react-native-reanimated"' has no exported member 'ReduceMotion'
+import Animated, { Easing, ReduceMotion } from 'react-native-reanimated';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
@@ -72,11 +73,13 @@ const ANIMATION_CONFIGS_IOS = {
   overshootClamping: true,
   restDisplacementThreshold: 10,
   restSpeedThreshold: 10,
+  ...(ReduceMotion ? { reduceMotion: ReduceMotion.Never } : {}),
 };
 
 const ANIMATION_CONFIGS_ANDROID = {
   duration: ANIMATION_DURATION,
   easing: ANIMATION_EASING,
+  ...(ReduceMotion ? { reduceMotion: ReduceMotion.Never } : {}),
 };
 
 const ANIMATION_CONFIGS =

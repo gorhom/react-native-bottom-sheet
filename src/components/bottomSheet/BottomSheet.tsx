@@ -21,6 +21,8 @@ import Animated, {
   useWorkletCallback,
   WithSpringConfig,
   WithTimingConfig,
+  // @ts-expect-error Module '"react-native-reanimated"' has no exported member 'ReduceMotion'
+  ReduceMotion,
 } from 'react-native-reanimated';
 import { State } from 'react-native-gesture-handler';
 import {
@@ -77,7 +79,7 @@ import {
   DEFAULT_DYNAMIC_SIZING,
   DEFAULT_ACCESSIBLE,
   DEFAULT_ACCESSIBILITY_LABEL,
-  DEFAULT_ACCESSIBILITY_ROLE
+  DEFAULT_ACCESSIBILITY_ROLE,
 } from './constants';
 import type { BottomSheetMethods, Insets } from '../../types';
 import type { BottomSheetProps, AnimateToPositionType } from './types';
@@ -98,8 +100,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region extract props
     const {
       // animations configurations
-      animationConfigs: _providedAnimationConfigs,
-
+      animationConfigs,
       // configurations
       index: _providedIndex = 0,
       snapPoints: _providedSnapPoints,
@@ -170,6 +171,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       accessibilityRole:
         _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
     } = props;
+    //#endregion
+
+    //#region animations configurations
+    const _providedAnimationConfigs = useMemo(() => {
+      if (!animationConfigs) {
+        return undefined;
+      }
+
+      if (ReduceMotion) {
+        // @ts-expect-error Property 'reduceMotion' does not exist on type 'WithSpringConfig | WithTimingConfig'.
+        animationConfigs.reduceMotion = ReduceMotion.Never;
+      }
+
+      return animationConfigs;
+    }, [animationConfigs]);
     //#endregion
 
     //#region layout variables
@@ -722,6 +738,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * force animation configs from parameters, if provided
          */
         if (configs !== undefined) {
+          if (ReduceMotion) {
+            // @ts-expect-error Property 'reduceMotion' does not exist on type 'WithSpringConfig | WithTimingConfig'.
+            configs.reduceMotion = ReduceMotion.Never;
+          }
           animatedPosition.value = animate({
             point: position,
             configs,
