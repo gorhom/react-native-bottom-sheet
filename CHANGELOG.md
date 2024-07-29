@@ -1,5 +1,14 @@
 
 
+## [4.6.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.6.3...v4.6.4) (2024-07-29)
+
+
+### Bug Fixes
+
+* add missing rest props to backdrop component ([#1895](https://github.com/gorhom/react-native-bottom-sheet/issues/1895))(by [@hraschan](https://github.com/hraschan)) ([6b99810](https://github.com/gorhom/react-native-bottom-sheet/commit/6b99810cb9f3a9b11159c27737ef7e4355b105b3))
+* assigning to read-only property 'reduceMotion' ([#1848](https://github.com/gorhom/react-native-bottom-sheet/issues/1848))(by [@pafry7](https://github.com/pafry7)) ([efd4e92](https://github.com/gorhom/react-native-bottom-sheet/commit/efd4e92b647825aeaf5ca983e43d1a21d620ecfe)), closes [/github.com/software-mansion/react-native-reanimated/issues/5430#issuecomment-1831453991](https://github.com//github.com/software-mansion/react-native-reanimated/issues/5430/issues/issuecomment-1831453991)
+* replace getRefNativeTag with findNodeHandle ([#1823](https://github.com/gorhom/react-native-bottom-sheet/issues/1823))(by @AndreiCalazans) ([b906f5e](https://github.com/gorhom/react-native-bottom-sheet/commit/b906f5e67afdb823b7c31a9a929e757fc35222a2))
+
 ## [4.6.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.6.2...v4.6.3) (2024-05-19)
 
 
