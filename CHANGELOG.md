@@ -1,5 +1,13 @@
 
 
+# [5.0.0-alpha.11](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.10...v5.0.0-alpha.11) (2024-07-29)
+
+
+### Bug Fixes
+
+* **1887:** updated the keyboard handling for Android with keyboard input mode resize ([08db4ab](https://github.com/gorhom/react-native-bottom-sheet/commit/08db4ab4b0058955e9ee2d55f87da8fefb5390ad))
+* replace getRefNativeTag with findNodeHandle ([#1823](https://github.com/gorhom/react-native-bottom-sheet/issues/1823))(by @AndreiCalazans) ([866b4ee](https://github.com/gorhom/react-native-bottom-sheet/commit/866b4ee570fc345d59053561c26af67144e8fd6f))
+
 # [5.0.0-alpha.10](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0-alpha.9...v5.0.0-alpha.10) (2024-05-19)
 
 
