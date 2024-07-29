@@ -1,8 +1,8 @@
 import { useEffect, useRef, TouchEvent } from 'react';
+import { findNodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 import { ANIMATION_STATE, SCROLLABLE_STATE } from '../constants';
-import { getRefNativeTag } from '../utilities/getRefNativeTag';
 import type { Scrollable } from '../types';
 
 export type ScrollEventContextType = {
@@ -12,7 +12,7 @@ export type ScrollEventContextType = {
 
 export const useScrollHandler = () => {
   //#region refs
-  const scrollableRef = useRef<Scrollable>();
+  const scrollableRef = useRef<Scrollable>(null);
   //#endregion
 
   //#region variables
@@ -29,7 +29,7 @@ export const useScrollHandler = () => {
 
   //#region effects
   useEffect(() => {
-    const element = getRefNativeTag(scrollableRef) as any;
+    const element = findNodeHandle(scrollableRef.current) as any;
 
     var scrollOffset = 0;
     var supportsPassive = false;
