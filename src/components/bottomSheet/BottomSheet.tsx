@@ -1073,6 +1073,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ]
     );
 
+    const handleGetState = useCallback(
+      function handleGetState() {
+        return animatedSheetState.value
+      },
+      [
+        animatedSheetState
+      ]
+    );
+
     useImperativeHandle(ref, () => ({
       snapToIndex: handleSnapToIndex,
       snapToPosition: handleSnapToPosition,
@@ -1080,6 +1089,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       collapse: handleCollapse,
       close: handleClose,
       forceClose: handleForceClose,
+      getState: handleGetState,
     }));
     //#endregion
 
@@ -1178,6 +1188,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         collapse: handleCollapse,
         close: handleClose,
         forceClose: handleForceClose,
+        getState: handleGetState
       }),
       [
         animatedIndex,
@@ -1188,6 +1199,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         handleCollapse,
         handleClose,
         handleForceClose,
+        handleGetState
       ]
     );
     //#endregion
