@@ -58,8 +58,9 @@ const StackExample = () => {
 
   // renders
   const renderHeaderHandle = useCallback(
-    (title: string) => (props: any) =>
-      <HeaderHandle {...props} children={title} />,
+    (title: string) => (props: any) => (
+      <HeaderHandle {...props} children={title} />
+    ),
     []
   );
   const renderBottomSheetContent = useCallback(

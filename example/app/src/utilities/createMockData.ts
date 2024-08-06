@@ -1,4 +1,4 @@
-import Faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { Dimensions } from 'react-native';
 import type { Contact, Location } from '../types';
 
@@ -6,19 +6,19 @@ const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 export const createContactListMockData = (count: number = 20): Contact[] => {
   return new Array(count).fill(0).map(() => ({
-    name: `${Faker.name.firstName()} ${Faker.name.lastName()}`,
-    address: `${Faker.address.city()}, ${Faker.address.country()}`,
-    jobTitle: Faker.name.jobTitle(),
+    name: `${faker.person.firstName()} ${faker.person.lastName()}`,
+    address: `${faker.location.city()}, ${faker.location.country()}`,
+    jobTitle: faker.person.jobTitle(),
   }));
 };
 
 export const createContactSectionsMockData = (count: number = 20) => {
   return new Array(Math.round(count / 4)).fill(0).map(() => ({
-    title: Faker.address.country(),
+    title: faker.location.country(),
     data: new Array(Math.round(count / 4)).fill(0).map(() => ({
-      name: `${Faker.name.firstName()} ${Faker.name.lastName()}`,
-      address: `${Faker.address.city()}, ${Faker.address.country()}`,
-      jobTitle: Faker.name.jobTitle(),
+      name: `${faker.person.firstName()} ${faker.person.lastName()}`,
+      address: `${faker.location.city()}, ${faker.location.country()}`,
+      jobTitle: faker.person.jobTitle(),
     })),
   }));
 };
@@ -37,12 +37,17 @@ export const createLocationListMockData = (count: number = 50): Location[] => {
       ],
     },
     ...new Array(count).fill(0).map((_, index) => ({
-      id: Faker.random.alphaNumeric(6),
-      name: `${Faker.address.city()}`,
-      address: `${Faker.address.state()}, ${Faker.address.country()}`,
+      id: faker.string.alphanumeric(6),
+      name: `${faker.location.city()}`,
+      address: `${faker.location.state()}, ${faker.location.country()}`,
       photos: Array(5)
         .fill(0)
-        .map((__, _index) => Faker.image.city(SCREEN_WIDTH + index + _index)),
+        .map((__, _index) =>
+          faker.image.urlLoremFlickr({
+            category: 'city',
+            width: SCREEN_WIDTH + index + _index,
+          })
+        ),
     })),
   ];
 };

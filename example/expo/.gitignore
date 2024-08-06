@@ -1,5 +1,4 @@
 node_modules/
-.expo/
 dist/
 npm-debug.*
 *.jks
@@ -12,3 +11,9 @@ web-build/
 
 # macOS
 .DS_Store
+
+# Expo
+.expo/*
+bin/Exponent.app
+/android
+/ios
