@@ -16,6 +16,7 @@
     "react-native",
     "ios",
     "android",
+    "web",
     "bottom-sheet",
     "bottomsheet",
     "reanimated",
