@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { StyleProp, StyleSheet, Text, ViewStyle } from 'react-native';
 import { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
 import Animated, {
-  Extrapolate,
+  Extrapolation,
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
@@ -28,7 +28,7 @@ const CustomHandleComponent: React.FC<CustomHandleProps> = ({
         animatedIndex.value,
         [0, 1, 2],
         [-1, 0, 1],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP
       ),
     [animatedIndex.value]
   );
@@ -41,7 +41,7 @@ const CustomHandleComponent: React.FC<CustomHandleProps> = ({
       animatedIndex.value,
       [1, 2],
       [20, 0],
-      Extrapolate.CLAMP
+      Extrapolation.CLAMP
     );
     return {
       borderTopLeftRadius: borderTopRadius,
@@ -60,7 +60,7 @@ const CustomHandleComponent: React.FC<CustomHandleProps> = ({
       animatedIndex.value,
       [0, 1, 2],
       [toRad(-30), 0, toRad(30)],
-      Extrapolate.CLAMP
+      Extrapolation.CLAMP
     );
     return {
       transform: transformOrigin(
@@ -86,7 +86,7 @@ const CustomHandleComponent: React.FC<CustomHandleProps> = ({
       animatedIndex.value,
       [0, 1, 2],
       [toRad(30), 0, toRad(-30)],
-      Extrapolate.CLAMP
+      Extrapolation.CLAMP
     );
     return {
       transform: transformOrigin(
