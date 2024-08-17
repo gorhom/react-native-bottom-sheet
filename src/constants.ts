@@ -100,6 +100,7 @@ const SCROLLABLE_DECELERATION_RATE_MAPPER = {
 const MODAL_STACK_BEHAVIOR = {
   replace: 'replace',
   push: 'push',
+  switch: 'switch',
 };
 
 const KEYBOARD_BEHAVIOR = {

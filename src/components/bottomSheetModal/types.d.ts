@@ -21,10 +21,11 @@ export interface BottomSheetModalProps
 
   /**
    * Defines the stack behavior when modal mount.
-   * - `push` it will mount the modal on top of current modal.
-   * - `replace` it will minimize the current modal then mount the modal.
-   * @type `push` | `replace`
-   * @default replace
+   * - `push` it will mount the modal on top of the current one.
+   * - `switch` it will minimize the current modal then mount the new one.
+   * - `replace` it will dismiss the current modal then mount the new one.
+   * @type `push` | `switch` | `replace`
+   * @default switch
    */
   stackBehavior?: BottomSheetModalStackBehavior;
 

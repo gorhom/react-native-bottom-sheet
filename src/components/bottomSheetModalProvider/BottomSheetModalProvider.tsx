@@ -50,13 +50,19 @@ const BottomSheetModalProviderWrapper = ({
        * - it is not unmounting.
        * - stack behavior is 'replace'.
        */
+
+      /**
+       * Handle switch or replace stack behaviors, if:
+       * - a modal is currently presented.
+       * - it is not unmounting
+       */
       const currentMountedSheet = _sheetsQueue[_sheetsQueue.length - 1];
-      if (
-        currentMountedSheet &&
-        !currentMountedSheet.willUnmount &&
-        stackBehavior === MODAL_STACK_BEHAVIOR.replace
-      ) {
-        currentMountedSheet.ref?.current?.minimize();
+      if (currentMountedSheet && !currentMountedSheet.willUnmount) {
+        if (stackBehavior === MODAL_STACK_BEHAVIOR.replace) {
+          currentMountedSheet.ref?.current?.dismiss();
+        } else if (stackBehavior === MODAL_STACK_BEHAVIOR.switch) {
+          currentMountedSheet.ref?.current?.minimize();
+        }
       }
 
       /**
