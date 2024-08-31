@@ -1,5 +1,4 @@
 import { Dimensions, Platform } from 'react-native';
-// @ts-expect-error Module '"react-native-reanimated"' has no exported member 'ReduceMotion'
 import Animated, { Easing, ReduceMotion } from 'react-native-reanimated';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
