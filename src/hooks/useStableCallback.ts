@@ -1,5 +1,6 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
+// biome-ignore lint: to be addressed!
 type Callback = (...args: any[]) => any;
 /**
  * Provide a stable version of useCallback
@@ -8,12 +9,15 @@ type Callback = (...args: any[]) => any;
 export const useStableCallback = (callback: Callback) => {
   const callbackRef = useRef<Callback>();
   const memoCallback = useCallback(
+    // biome-ignore lint: to be addressed!
     (...args: any) => callbackRef.current && callbackRef.current(...args),
     []
   );
   useEffect(() => {
     callbackRef.current = callback;
-    return () => (callbackRef.current = undefined);
+    return () => {
+      callbackRef.current = undefined;
+    };
   });
   return memoCallback;
 };

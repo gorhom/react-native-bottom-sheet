@@ -6,7 +6,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ViewProps } from 'react-native';
+import type { ViewProps } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -14,18 +15,17 @@ import Animated, {
   runOnJS,
   Extrapolation,
 } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useBottomSheet } from '../../hooks';
 import {
-  DEFAULT_OPACITY,
+  DEFAULT_ACCESSIBILITY_HINT,
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ACCESSIBLE,
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
+  DEFAULT_OPACITY,
   DEFAULT_PRESS_BEHAVIOR,
-  DEFAULT_ACCESSIBLE,
-  DEFAULT_ACCESSIBILITY_ROLE,
-  DEFAULT_ACCESSIBILITY_LABEL,
-  DEFAULT_ACCESSIBILITY_HINT,
 } from './constants';
 import { styles } from './styles';
 import type { BottomSheetDefaultBackdropProps } from './types';
@@ -88,7 +88,7 @@ const BottomSheetBackdropComponent = ({
 
   //#region tap gesture
   const tapHandler = useMemo(() => {
-    let gesture = Gesture.Tap().onEnd(() => {
+    const gesture = Gesture.Tap().onEnd(() => {
       runOnJS(handleOnPress)();
     });
     return gesture;

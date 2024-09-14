@@ -4,24 +4,25 @@ import React, {
   useImperativeHandle,
   useMemo,
 } from 'react';
-import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
-import { BottomSheetDraggableContext } from '../../contexts/gesture';
-import {
-  useScrollHandler,
-  useScrollableSetter,
-  useBottomSheetInternal,
-  useStableCallback,
-} from '../../hooks';
+import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATE,
-  SCROLLABLE_TYPE,
+  type SCROLLABLE_TYPE,
 } from '../../constants';
+import { BottomSheetDraggableContext } from '../../contexts/gesture';
+import {
+  useBottomSheetInternal,
+  useScrollHandler,
+  useScrollableSetter,
+  useStableCallback,
+} from '../../hooks';
 import { ScrollableContainer } from './ScrollableContainer';
 
 export function createBottomSheetScrollableComponent<T, P>(
   type: SCROLLABLE_TYPE,
+  // biome-ignore lint: to be addressed!
   ScrollableComponent: any
 ) {
   return forwardRef<T, P>((props, ref) => {
@@ -46,6 +47,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       onScrollEndDrag,
       onContentSizeChange,
       ...rest
+      // biome-ignore lint: to be addressed!
     }: any = props;
 
     //#region hooks
@@ -65,6 +67,10 @@ export function createBottomSheetScrollableComponent<T, P>(
     } = useBottomSheetInternal();
     //#endregion
 
+    if (!draggableGesture) {
+      throw "'Scrollable' cannot be used out of the BottomSheet!";
+    }
+
     //#region variables
     const scrollableAnimatedProps = useAnimatedProps(
       () => ({
@@ -81,7 +87,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       () =>
         Gesture.Native()
           // @ts-ignore
-          .simultaneousWithExternalGesture(draggableGesture!)
+          .simultaneousWithExternalGesture(draggableGesture)
           .shouldCancelWhenOutside(false),
       [draggableGesture]
     );

@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, StyleSheet } from 'react-native';
+import { type LayoutChangeEvent, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
-import type { BottomSheetViewProps } from './types';
 import { print } from '../../utilities';
+import type { BottomSheetViewProps } from './types';
 
 function BottomSheetViewComponent({
   focusHook: useFocusHook = useEffect,

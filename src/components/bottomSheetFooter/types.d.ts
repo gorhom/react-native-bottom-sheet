@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ViewStyle } from 'react-native';
+import type { ViewStyle } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
 export interface BottomSheetFooterProps {

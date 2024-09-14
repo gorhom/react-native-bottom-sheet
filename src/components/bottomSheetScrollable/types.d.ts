@@ -6,15 +6,15 @@ import type {
   RefObject,
 } from 'react';
 import type {
-  VirtualizedListProps,
-  ScrollViewProps,
   FlatListProps,
+  NodeHandle,
+  ScrollResponderMixin,
+  ScrollViewComponent,
+  ScrollViewProps,
   SectionListProps,
   SectionListScrollParams,
   View,
-  ScrollViewComponent,
-  NodeHandle,
-  ScrollResponderMixin,
+  VirtualizedListProps,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { ScrollEventsHandlersHookType } from '../../types';
@@ -87,6 +87,7 @@ export interface BottomSheetFlatListMethods {
    */
   scrollToItem: (params: {
     animated?: boolean | null;
+    // biome-ignore lint: to be addressed!
     item: any;
     viewPosition?: number;
   }) => void;
@@ -125,9 +126,10 @@ export interface BottomSheetFlatListMethods {
     | null
     | undefined;
 
+  // biome-ignore lint: to be addressed!
   getScrollableNode: () => any;
 
-  // TODO: use `unknown` instead of `any` for Typescript >= 3.0
+  // biome-ignore lint: to be addressed!
   setNativeProps: (props: { [key: string]: any }) => void;
 }
 //#endregion
@@ -177,9 +179,10 @@ export interface BottomSheetScrollViewMethods {
    */
   getScrollResponder(): ScrollResponderMixin;
 
+  // biome-ignore lint: to be addressed!
   getScrollableNode(): any;
 
-  // Undocumented
+  // biome-ignore lint: to be addressed!
   getInnerViewNode(): any;
 
   /**
@@ -198,7 +201,7 @@ export interface BottomSheetScrollViewMethods {
 //#endregion
 
 //#region SectionList
-type BottomSheetSectionListProps<ItemT, SectionT> = Omit<
+export type BottomSheetSectionListProps<ItemT, SectionT> = Omit<
   Animated.AnimateProps<SectionListProps<ItemT, SectionT>>,
   'decelerationRate' | 'scrollEventThrottle'
 > &
@@ -259,6 +262,7 @@ export interface BottomSheetVirtualizedListMethods {
   }) => void;
   scrollToItem: (params: {
     animated?: boolean;
+    // biome-ignore lint: to be addressed!
     item: any;
     viewPosition?: number;
   }) => void;

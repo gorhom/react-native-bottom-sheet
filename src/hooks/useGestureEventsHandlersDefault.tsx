@@ -4,7 +4,6 @@ import {
   useSharedValue,
   useWorkletCallback,
 } from 'react-native-reanimated';
-import { useBottomSheetInternal } from './useBottomSheetInternal';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
@@ -13,11 +12,12 @@ import {
   WINDOW_HEIGHT,
 } from '../constants';
 import type {
-  GestureEventsHandlersHookType,
   GestureEventHandlerCallbackType,
+  GestureEventsHandlersHookType,
 } from '../types';
 import { clamp } from '../utilities/clamp';
 import { snapPoint } from '../utilities/snapPoint';
+import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 type GestureEventContextType = {
   initialPosition: number;
@@ -33,6 +33,7 @@ const INITIAL_CONTEXT: GestureEventContextType = {
 
 const dismissKeyboard = Keyboard.dismiss;
 
+// biome-ignore lint: to be addressed!
 const resetContext = (context: any) => {
   'worklet';
   Object.keys(context).map(key => {

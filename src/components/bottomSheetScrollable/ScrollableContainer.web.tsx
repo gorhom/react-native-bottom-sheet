@@ -1,24 +1,25 @@
-import React, { forwardRef, useCallback } from 'react';
+import React, { type ComponentProps, forwardRef, useCallback } from 'react';
 import {
   GestureDetector,
-  SimultaneousGesture,
+  type SimultaneousGesture,
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
 interface ScrollableContainerProps {
   nativeGesture: SimultaneousGesture;
+  // biome-ignore lint/suspicious/noExplicitAny: 🤷‍♂️
   ScrollableComponent: any;
 }
 
 export const ScrollableContainer = forwardRef<
-  any,
-  ScrollableContainerProps & { animatedProps: any }
+  never,
+  ScrollableContainerProps & { animatedProps: never }
 >(function ScrollableContainer(
   { nativeGesture, ScrollableComponent, animatedProps, ...rest },
   ref
 ) {
   const renderScrollComponent = useCallback(
-    (props: any) => (
+    (props: ComponentProps<typeof Animated.ScrollView>) => (
       <Animated.ScrollView {...props} animatedProps={animatedProps} />
     ),
     [animatedProps]

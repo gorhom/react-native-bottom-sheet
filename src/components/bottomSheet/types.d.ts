@@ -1,27 +1,27 @@
 import type React from 'react';
-import type { ViewStyle, Insets, StyleProp } from 'react-native';
+import type { Insets, StyleProp, ViewStyle } from 'react-native';
+import type { PanGesture } from 'react-native-gesture-handler';
 import type {
-  SharedValue,
   AnimateStyle,
+  SharedValue,
   WithSpringConfig,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import type { PanGesture } from 'react-native-gesture-handler';
-import type { BottomSheetHandleProps } from '../bottomSheetHandle';
-import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
-import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
-import type { BottomSheetFooterProps } from '../bottomSheetFooter';
 import type {
-  SNAP_POINT_TYPE,
   ANIMATION_SOURCE,
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
+  SNAP_POINT_TYPE,
 } from '../../constants';
 import type {
   GestureEventsHandlersHookType,
   NullableAccessibilityProps,
 } from '../../types';
+import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
+import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
+import type { BottomSheetFooterProps } from '../bottomSheetFooter';
+import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,

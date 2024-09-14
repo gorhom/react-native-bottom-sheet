@@ -7,11 +7,7 @@
   "types": "lib/typescript/index.d.ts",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "files": [
-    "src",
-    "lib",
-    "mock.js"
-  ],
+  "files": ["src", "lib", "mock.js"],
   "keywords": [
     "react-native",
     "ios",
@@ -31,7 +27,7 @@
   "homepage": "https://ui.gorhom.dev/components/bottom-sheet",
   "scripts": {
     "typescript": "tsc --skipLibCheck --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint": "biome lint --error-on-warnings ./src",
     "build": "bob build && yarn copy-dts && yarn delete-dts.js && yarn delete-debug-view",
     "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" lib/typescript",
     "delete-debug-view": "rm -r ./lib/commonjs/components/bottomSheetDebugView && rm -r ./lib/module/components/bottomSheetDebugView && rm -r ./lib/typescript/components/bottomSheetDebugView",
@@ -47,19 +43,14 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
-    "@react-native/eslint-config": "^0.72.2",
     "@release-it/conventional-changelog": "^8.0.1",
     "@types/invariant": "^2.2.34",
     "@types/react": "18.2.45",
     "@types/react-native": "0.73.0",
     "copyfiles": "^2.4.1",
-    "eslint": "^8.21.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^4.3.8",
     "lint-staged": "^13.2.2",
     "metro-react-native-babel-preset": "^0.77.0",
-    "prettier": "^2.8.8",
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-builder-bob": "^0.23.2",
@@ -87,10 +78,6 @@
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
-    "targets": [
-      "commonjs",
-      "module",
-      "typescript"
-    ]
+    "targets": ["commonjs", "module", "typescript"]
   }
 }

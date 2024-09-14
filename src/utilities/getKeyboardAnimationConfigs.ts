@@ -1,5 +1,5 @@
-import { Easing } from 'react-native-reanimated';
 import type { KeyboardEventEasing } from 'react-native';
+import { Easing } from 'react-native-reanimated';
 
 export const getKeyboardAnimationConfigs = (
   easing: KeyboardEventEasing,

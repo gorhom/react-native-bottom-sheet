@@ -1,15 +1,19 @@
 import type React from 'react';
 import type {
+  AccessibilityProps,
   FlatList,
-  ScrollView,
-  SectionList,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  AccessibilityProps,
+  ScrollView,
+  SectionList,
 } from 'react-native';
 import type {
   GestureEventPayload,
+  GestureStateChangeEvent,
+  GestureUpdateEvent,
+  PanGestureChangeEventPayload,
   PanGestureHandlerEventPayload,
+  State,
 } from 'react-native-gesture-handler';
 import type {
   SharedValue,
@@ -82,7 +86,7 @@ export interface BottomSheetModalMethods extends BottomSheetMethods {
    * Mount and present the bottom sheet modal to the initial snap point.
    * @param data to be passed to the modal.
    */
-  present: (data?: any) => void;
+  present: (data?: never) => void;
   /**
    * Close and unmount the bottom sheet modal.
    * @param animationConfigs snap animation configs.
@@ -150,8 +154,8 @@ export type GestureEventsHandlersHookType = () => {
 
 export type GestureHandlersHookType = (
   source: GESTURE_SOURCE,
-  state: Animated.SharedValue<State>,
-  gestureSource: Animated.SharedValue<GESTURE_SOURCE>,
+  state: SharedValue<State>,
+  gestureSource: SharedValue<GESTURE_SOURCE>,
   onStart: GestureEventHandlerCallbackType,
   onChange: GestureEventHandlerCallbackType,
   onEnd: GestureEventHandlerCallbackType,
@@ -161,7 +165,9 @@ export type GestureHandlersHookType = (
     event: GestureStateChangeEvent<PanGestureHandlerEventPayload>
   ) => void;
   handleOnChange: (
-    event: GestureStateChangeEvent<PanGestureHandlerEventPayload>
+    event: GestureUpdateEvent<
+      PanGestureHandlerEventPayload & PanGestureChangeEventPayload
+    >
   ) => void;
   handleOnEnd: (
     event: GestureStateChangeEvent<PanGestureHandlerEventPayload>
@@ -171,7 +177,7 @@ export type GestureHandlersHookType = (
   ) => void;
 };
 
-type ScrollEventHandlerCallbackType<C = any> = (
+type ScrollEventHandlerCallbackType<C = never> = (
   payload: NativeScrollEvent,
   context: C
 ) => void;

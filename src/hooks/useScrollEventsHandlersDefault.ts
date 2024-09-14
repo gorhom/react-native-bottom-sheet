@@ -1,10 +1,10 @@
 import { scrollTo, useWorkletCallback } from 'react-native-reanimated';
-import { useBottomSheetInternal } from './useBottomSheetInternal';
 import { ANIMATION_STATE, SCROLLABLE_STATE, SHEET_STATE } from '../constants';
 import type {
-  ScrollEventsHandlersHookType,
   ScrollEventHandlerCallbackType,
+  ScrollEventsHandlersHookType,
 } from '../types';
+import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 export type ScrollEventContextType = {
   initialContentOffsetY: number;
@@ -40,7 +40,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
 
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
           const lockPosition = context.shouldLockInitialPosition
-            ? context.initialContentOffsetY ?? 0
+            ? (context.initialContentOffsetY ?? 0)
             : 0;
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
@@ -87,7 +87,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
       ({ contentOffset: { y } }, context) => {
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
           const lockPosition = context.shouldLockInitialPosition
-            ? context.initialContentOffsetY ?? 0
+            ? (context.initialContentOffsetY ?? 0)
             : 0;
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);
@@ -112,7 +112,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
       ({ contentOffset: { y } }, context) => {
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
           const lockPosition = context.shouldLockInitialPosition
-            ? context.initialContentOffsetY ?? 0
+            ? (context.initialContentOffsetY ?? 0)
             : 0;
           // @ts-ignore
           scrollTo(scrollableRef, 0, lockPosition, false);

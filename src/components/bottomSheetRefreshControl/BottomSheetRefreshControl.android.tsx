@@ -1,13 +1,13 @@
 import React, { memo, useContext, useMemo } from 'react';
-import { RefreshControl, RefreshControlProps } from 'react-native';
+import { RefreshControl, type RefreshControlProps } from 'react-native';
 import {
   Gesture,
   GestureDetector,
-  SimultaneousGesture,
+  type SimultaneousGesture,
 } from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps } from 'react-native-reanimated';
-import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import { SCROLLABLE_STATE } from '../../constants';
+import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import { useBottomSheetInternal } from '../../hooks';
 
 const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
@@ -26,6 +26,10 @@ function BottomSheetRefreshControlComponent({
   const { animatedScrollableState } = useBottomSheetInternal();
   //#endregion
 
+  if (!draggableGesture) {
+    throw "'BottomSheetRefreshControl' cannot be used out of the BottomSheet!";
+  }
+
   //#region variables
   const animatedProps = useAnimatedProps(
     () => ({
@@ -33,15 +37,14 @@ function BottomSheetRefreshControlComponent({
     }),
     [animatedScrollableState.value]
   );
-  const gesture = useMemo(
-    () =>
-      Gesture.Simultaneous(
-        Gesture.Native().shouldCancelWhenOutside(false),
-        scrollableGesture,
-        draggableGesture!
-      ),
-    [draggableGesture, scrollableGesture]
-  );
+
+  const gesture = useMemo(() => {
+    return Gesture.Simultaneous(
+      Gesture.Native().shouldCancelWhenOutside(false),
+      scrollableGesture,
+      draggableGesture
+    );
+  }, [draggableGesture, scrollableGesture]);
   //#endregion
 
   // render

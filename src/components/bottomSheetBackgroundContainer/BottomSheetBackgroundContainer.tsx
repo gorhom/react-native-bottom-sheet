@@ -1,8 +1,8 @@
 import React, { memo, useMemo } from 'react';
-import BottomSheetBackground from '../bottomSheetBackground';
-import type { BottomSheetBackgroundContainerProps } from './types';
-import { styles } from './styles';
 import { StyleSheet } from 'react-native';
+import BottomSheetBackground from '../bottomSheetBackground';
+import { styles } from './styles';
+import type { BottomSheetBackgroundContainerProps } from './types';
 
 const BottomSheetBackgroundContainerComponent = ({
   animatedIndex,

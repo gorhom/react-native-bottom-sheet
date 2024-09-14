@@ -4,9 +4,9 @@ import {
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { useScrollEventsHandlersDefault } from './useScrollEventsHandlersDefault';
-import { workletNoop as noop } from '../utilities';
 import type { Scrollable, ScrollableEvent } from '../types';
+import { workletNoop as noop } from '../utilities';
+import { useScrollEventsHandlersDefault } from './useScrollEventsHandlersDefault';
 
 export const useScrollHandler = (
   useScrollEventsHandlers = useScrollEventsHandlersDefault,

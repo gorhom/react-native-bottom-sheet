@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import type React from 'react';
+import { useCallback, useEffect } from 'react';
 import { findNodeHandle } from 'react-native';
-import Animated from 'react-native-reanimated';
-import { useBottomSheetInternal } from './useBottomSheetInternal';
-import { SCROLLABLE_TYPE } from '../constants';
+import type Animated from 'react-native-reanimated';
+import type { SCROLLABLE_TYPE } from '../constants';
 import type { Scrollable } from '../types';
+import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 export const useScrollableSetter = (
   ref: React.RefObject<Scrollable>,

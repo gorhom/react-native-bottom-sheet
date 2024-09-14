@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
-import Animated, {
-  cancelAnimation,
-  makeMutable,
-} from 'react-native-reanimated';
+import type Animated from 'react-native-reanimated';
+import { cancelAnimation, makeMutable } from 'react-native-reanimated';
 import type { Primitive } from '../types';
 
 export const useReactiveSharedValue = <T>(

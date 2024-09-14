@@ -1,17 +1,20 @@
+import { PortalProvider } from '@gorhom/portal';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useSharedValue } from 'react-native-reanimated';
-import { PortalProvider } from '@gorhom/portal';
-import {
-  BottomSheetModalProvider,
-  BottomSheetModalInternalProvider,
-} from '../../contexts';
-import BottomSheetContainer from '../bottomSheetContainer';
 import { MODAL_STACK_BEHAVIOR } from '../../constants';
+import {
+  BottomSheetModalInternalProvider,
+  BottomSheetModalProvider,
+} from '../../contexts';
 import {
   INITIAL_CONTAINER_HEIGHT,
   INITIAL_CONTAINER_OFFSET,
 } from '../bottomSheet/constants';
-import type { BottomSheetModalStackBehavior } from '../bottomSheetModal';
+import BottomSheetContainer from '../bottomSheetContainer';
+import type {
+  BottomSheetModalPrivateMethods,
+  BottomSheetModalStackBehavior,
+} from '../bottomSheetModal';
 import type {
   BottomSheetModalProviderProps,
   BottomSheetModalRef,
@@ -31,7 +34,11 @@ const BottomSheetModalProviderWrapper = ({
 
   //#region private methods
   const handleMountSheet = useCallback(
-    (key: string, ref: any, stackBehavior: BottomSheetModalStackBehavior) => {
+    (
+      key: string,
+      ref: React.RefObject<BottomSheetModalPrivateMethods>,
+      stackBehavior: BottomSheetModalStackBehavior
+    ) => {
       const _sheetsQueue = sheetsQueueRef.current.slice();
       const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
       const sheetOnTop = sheetIndex === _sheetsQueue.length - 1;
@@ -191,7 +198,6 @@ const BottomSheetModalProviderWrapper = ({
         <BottomSheetContainer
           containerOffset={animatedContainerOffset}
           containerHeight={animatedContainerHeight}
-          children={null}
         />
         <PortalProvider>{children}</PortalProvider>
       </BottomSheetModalInternalProvider>

@@ -1,10 +1,10 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent } from 'react-native';
+import type { LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { KEYBOARD_STATE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
-import type { BottomSheetDefaultFooterProps } from './types';
 import { styles } from './styles';
+import type { BottomSheetDefaultFooterProps } from './types';
 
 function BottomSheetFooterComponent({
   animatedFooterPosition,

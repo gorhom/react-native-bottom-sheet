@@ -1,8 +1,7 @@
-import { memo } from 'react';
+import { type ComponentProps, memo } from 'react';
 import {
-  DefaultSectionT,
+  type DefaultSectionT,
   SectionList as RNSectionList,
-  SectionListProps as RNSectionListProps,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
@@ -13,11 +12,13 @@ import type {
 } from './types';
 
 const AnimatedSectionList =
-  Animated.createAnimatedComponent<RNSectionListProps<any>>(RNSectionList);
+  Animated.createAnimatedComponent<ComponentProps<typeof RNSectionList>>(
+    RNSectionList
+  );
 
 const BottomSheetSectionListComponent = createBottomSheetScrollableComponent<
   BottomSheetSectionListMethods,
-  BottomSheetSectionListProps<any, DefaultSectionT>
+  BottomSheetSectionListProps<never, DefaultSectionT>
 >(SCROLLABLE_TYPE.SECTIONLIST, AnimatedSectionList);
 
 const BottomSheetSectionList = memo(BottomSheetSectionListComponent);

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { TextProps as RNTextProps, TextInput } from 'react-native';
+import { type TextProps as RNTextProps, TextInput } from 'react-native';
 import Animated, {
   useAnimatedReaction,
   useDerivedValue,
@@ -22,8 +22,8 @@ const ReText = (props: TextProps) => {
       typeof _providedValue === 'number'
         ? _providedValue
         : typeof _providedValue.value === 'number'
-        ? _providedValue.value.toFixed(2)
-        : _providedValue.value;
+          ? _providedValue.value.toFixed(2)
+          : _providedValue.value;
 
     return `${text}: ${value}`;
   }, [_providedValue, text]);

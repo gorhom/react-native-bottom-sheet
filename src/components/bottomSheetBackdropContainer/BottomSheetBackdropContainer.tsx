@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import type { BottomSheetBackdropContainerProps } from './types';
 import { styles } from './styles';
+import type { BottomSheetBackdropContainerProps } from './types';
 
 const BottomSheetBackdropContainerComponent = ({
   animatedIndex,

@@ -1,11 +1,9 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, RefObject } from 'react';
 import type { BottomSheetModalPrivateMethods } from '../bottomSheetModal';
 
 export interface BottomSheetModalRef {
   key: string;
-  ref: {
-    current: BottomSheetModalPrivateMethods;
-  };
+  ref: RefObject<BottomSheetModalPrivateMethods>;
   willUnmount: boolean;
 }
 

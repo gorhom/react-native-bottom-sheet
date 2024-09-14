@@ -1,10 +1,10 @@
 import {
-  WithSpringConfig,
-  WithTimingConfig,
-  withTiming,
-  withSpring,
-  AnimationCallback,
+  type AnimationCallback,
   ReduceMotion,
+  type WithSpringConfig,
+  type WithTimingConfig,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import { ANIMATION_CONFIGS, ANIMATION_METHOD } from '../constants';
 
@@ -40,11 +40,11 @@ export const animate = ({
 
   if (type === ANIMATION_METHOD.TIMING) {
     return withTiming(point, configs as WithTimingConfig, onComplete);
-  } else {
-    return withSpring(
-      point,
-      Object.assign({ velocity }, configs) as WithSpringConfig,
-      onComplete
-    );
   }
+
+  return withSpring(
+    point,
+    Object.assign({ velocity }, configs) as WithSpringConfig,
+    onComplete
+  );
 };

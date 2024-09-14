@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import {
   Keyboard,
-  KeyboardEvent,
-  KeyboardEventEasing,
-  KeyboardEventName,
+  type KeyboardEvent,
+  type KeyboardEventEasing,
+  type KeyboardEventName,
   Platform,
 } from 'react-native';
 import {
@@ -37,7 +37,8 @@ export const useKeyboard = () => {
   const keyboardAnimationEasing =
     useSharedValue<KeyboardEventEasing>('keyboard');
   const keyboardAnimationDuration = useSharedValue(500);
-  const temporaryCachedKeyboardEvent = useSharedValue<any>([]);
+  // biome-ignore lint: to be addressed!
+  const temporaryCachedKeyboardEvent = useSharedValue<any[]>([]);
   //#endregion
 
   //#region worklets
@@ -61,8 +62,8 @@ export const useKeyboard = () => {
         state === KEYBOARD_STATE.SHOWN
           ? height
           : height === 0
-          ? keyboardHeight.value
-          : height;
+            ? keyboardHeight.value
+            : height;
       keyboardAnimationDuration.value = duration;
       keyboardAnimationEasing.value = easing;
       keyboardState.value = state;

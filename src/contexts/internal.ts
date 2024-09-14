@@ -1,4 +1,4 @@
-import { createContext, RefObject } from 'react';
+import { type RefObject, createContext } from 'react';
 import type { State } from 'react-native-gesture-handler';
 import type Animated from 'react-native-reanimated';
 import type {

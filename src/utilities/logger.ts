@@ -2,7 +2,7 @@ interface PrintOptions {
   component?: string;
   category?: 'layout' | 'effect' | 'callback';
   method?: string;
-  params?: Record<string, any> | string | number | boolean;
+  params?: Record<string, unknown> | string | number | boolean;
 }
 
 type Print = (options: PrintOptions) => void;
@@ -45,7 +45,7 @@ if (__DEV__) {
     } else {
       message = `${params ?? ''}`;
     }
-    // eslint-disable-next-line no-console
+    // biome-ignore lint/suspicious/noConsole: used for debugging
     console.log(`[${[component, method].filter(Boolean).join('::')}]`, message);
   };
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import type Animated from 'react-native-reanimated';
 import ReText from './ReText';
 import { styles } from './styles';
 

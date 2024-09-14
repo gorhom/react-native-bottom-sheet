@@ -1,9 +1,10 @@
-import Animated, { useWorkletCallback } from 'react-native-reanimated';
 import {
+  type GestureStateChangeEvent,
+  type PanGestureHandlerEventPayload,
   State,
-  GestureStateChangeEvent,
-  PanGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
+import type Animated from 'react-native-reanimated';
+import { useWorkletCallback } from 'react-native-reanimated';
 import { GESTURE_SOURCE } from '../constants';
 import type {
   GestureEventHandlerCallbackType,
