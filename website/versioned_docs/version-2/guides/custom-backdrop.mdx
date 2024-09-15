@@ -1,0 +1,64 @@
+---
+id: custom-backdrop
+title: Custom Backdrop
+description: Bottom Sheet custom backdrop.
+image: /img/bottom-sheet-preview.gif
+slug: /custom-backdrop
+hide_table_of_contents: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To add a backdrop to your sheet you will need to pass the prop `backdropComponent` to the `BottomSheet` component.
+
+When you provide your own backdrop component, it will receive these animated props `animatedIndex` & `animatedPosition` that indicates the position and the index of the sheet.
+
+You can extend your custom backdrop props interface with the provided `BottomSheetBackdropProps` interface to expose `animatedIndex` & `animatedPosition` into your own interface.
+
+### Example
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Video from '@theme/Video';
+
+<Video
+  title="React Native Bottom Sheet Custom Backdrop"
+  url={useBaseUrl('video/bottom-sheet-custom-backdrop-preview.mp4')}
+/>
+
+Here is an example of a custom backdrop component:
+
+```tsx
+import React, { useMemo } from 'react';
+import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
+import Animated, { Extrapolate, interpolate } from 'react-native-reanimated';
+
+const CustomBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
+  // animated variables
+  const animatedOpacity = useMemo(
+    () =>
+      interpolate(animatedIndex, {
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedIndex]
+  );
+
+  // styles
+  const containerStyle = useMemo(
+    () => [
+      style,
+      {
+        backgroundColor: '#a8b5eb',
+        opacity: animatedOpacity,
+      },
+    ],
+    [style, animatedOpacity]
+  );
+
+  return <Animated.View style={containerStyle} />;
+};
+
+export default CustomBackdrop;
+```

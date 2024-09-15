@@ -8,9 +8,9 @@
     "indentStyle": "space",
     "lineEnding": "lf",
     "lineWidth": 80,
-    "ignore": ["**/.github", "**/lib", "**/.expo"]
+    "ignore": ["**/.github", "**/lib", "**/.expo", "**/website"]
   },
-  "organizeImports": { "enabled": true },
+  "organizeImports": { "enabled": true, "ignore": ["**/website"] },
   "linter": {
     "enabled": true,
     "rules": {
@@ -73,7 +73,7 @@
         "useValidTypeof": "warn"
       }
     },
-    "ignore": ["**/node_modules/", "**/lib", "**/.expo"]
+    "ignore": ["**/node_modules/", "**/lib", "**/.expo", "**/website"]
   },
   "javascript": {
     "jsxRuntime": "reactClassic",
@@ -100,6 +100,12 @@
     ]
   },
   "files": {
-    "ignore": ["**/node_modules/", "**/lib", "**/.expo", "./example"]
+    "ignore": [
+      "**/node_modules/",
+      "**/lib",
+      "**/.expo",
+      "**/example",
+      "**/website"
+    ]
   }
 }
