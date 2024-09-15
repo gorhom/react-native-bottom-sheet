@@ -1,0 +1,69 @@
+{
+  "bottom-sheet": [
+    {
+      "type": "category",
+      "label": "Bottom Sheet",
+      "link": {
+        "type": "doc",
+        "id": "index"
+      },
+      "items": [
+        "usage",
+        "props",
+        "methods",
+        "hooks",
+        "scrollables",
+        {
+          "type": "category",
+          "label": "Components",
+          "items": [
+            "components/bottomsheetview",
+            "components/bottomsheetscrollview",
+            "components/bottomsheetflatlist",
+            "components/bottomsheetsectionlist",
+            "components/bottomsheetvirtualizedlist",
+            "components/bottomsheetbackdrop",
+            "components/bottomsheetfooter",
+            "components/bottomsheettextinput"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "value": "<hr class='margin-vert--md margin-horiz--md' />",
+      "defaultStyle": false
+    },
+    {
+      "type": "category",
+      "label": "Bottom Sheet Modal",
+      "link": {
+        "type": "doc",
+        "id": "modal/index"
+      },
+      "items": ["modal/usage", "modal/props", "modal/methods", "modal/hooks"]
+    },
+    {
+      "type": "html",
+      "value": "<hr class='margin-vert--md margin-horiz--md' />",
+      "defaultStyle": false
+    },
+    {
+      "type": "category",
+      "label": "Guides",
+      "items": [
+        "guides/custom-handle",
+        "guides/custom-backdrop",
+        "guides/custom-background",
+        "guides/custom-footer",
+        "guides/detach-modal",
+        "guides/keyboard-handling",
+        "guides/pull-to-refresh",
+        "guides/adding-shadow",
+        "guides/react-navigation-integration"
+      ]
+    },
+    "troubleshooting",
+    "faq"
+  ]
+}

@@ -1,0 +1,76 @@
+---
+id: keyboard-handling
+title: Keyboard Handling
+description: Keyboard handling with Bottom Sheet.
+image: /img/bottom-sheet-preview.gif
+slug: /keyboard-handling
+hide_table_of_contents: true
+---
+
+Keyboard handling is one of the main feature of `BottomSheet v4`, thanks to the effort of the community to spot issues, test and help to debug the implementation on both platform `iOS` & `Android`.
+
+To handle the keyboard appearance, I have simplified the approach by creating a pre-integrated `TextInput` called [BottomSheetTextInput](./components/bottomsheettextinput), which communicate internally to react to the keyboard appearance.
+
+Also I have introduce two props to allow users to customize the handling, [keyboardBehavior](./props#keyboardbehavior), [keyboardBlurBehavior](./props#keyboardblurbehavior) and [android_keyboardInputMode](./props#android_keyboardinputmode) that is only for `Android`.
+
+:::tip
+To use custom `TextInput`, you will need to copy the `handleOnFocus` and `handleOnBlur` from [BottomSheetTextInput](https://github.com/gorhom/react-native-bottom-sheet/blob/master/src/components/bottomSheetTextInput/BottomSheetTextInput.tsx) into your own component.
+:::
+
+### Example
+
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Video from "@theme/Video";
+
+<Video
+  title="React Native Bottom Sheet Keyboard Handling"
+  url={useBaseUrl("video/bottom-sheet-keyboard-handling-preview.mp4")}
+/>
+
+Here is an example of a simple keyboard handling:
+
+```tsx
+import React, { useMemo } from "react";
+import { View, StyleSheet } from "react-native";
+import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+
+const App = () => {
+  // variables
+  const snapPoints = useMemo(() => ["25%"], []);
+
+  // renders
+  return (
+    <View style={styles.container}>
+      <BottomSheet snapPoints={snapPoints}>
+        <View style={styles.contentContainer}>
+          <BottomSheetTextInput value="Awesome 🎉" style={styles.textInput} />
+        </View>
+      </BottomSheet>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: "grey",
+  },
+  textInput: {
+    alignSelf: "stretch",
+    marginHorizontal: 12,
+    marginBottom: 12,
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: "grey",
+    color: "white",
+    textAlign: "center",
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+});
+
+export default App;
+```

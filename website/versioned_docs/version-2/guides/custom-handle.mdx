@@ -1,0 +1,167 @@
+---
+id: custom-handle
+title: Custom Handle
+description: Bottom Sheet custom handle.
+image: /img/bottom-sheet-preview.gif
+slug: /custom-handle
+hide_table_of_contents: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To override the default handle, you will need to pass the prop `handleComponent` to the `BottomSheet` component.
+
+When you provide your own handle component, it will receive these animated props `animatedIndex` & `animatedPosition` that indicates the position and the index of the sheet.
+
+You can extend your custom handle props interface with the provided `BottomSheetHandleProps` interface to expose `animatedIndex` & `animatedPosition` into your own interface.
+
+### Example
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Video from '@theme/Video';
+
+<Video
+  title="React Native Bottom Sheet Custom Handle"
+  url={useBaseUrl('video/bottom-sheet-custom-handle-preview.mp4')}
+/>
+
+Here is an example of a custom handle component, but first you will need to install `Redash`:
+
+> [Redash](https://github.com/wcandillon/react-native-redash): The React Native Reanimated and Gesture Handler Toolbelt.
+
+```bash
+yarn add react-native-redash
+```
+
+```tsx
+import React, { useMemo } from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
+import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
+import { transformOrigin, toRad } from 'react-native-redash';
+
+interface HandleProps extends BottomSheetHandleProps {}
+
+const Handle: React.FC<HandleProps> = ({ animatedIndex }) => {
+  //#region animations
+  const borderTopRadius = useMemo(
+    () =>
+      interpolate(animatedIndex, {
+        inputRange: [1, 2],
+        outputRange: [20, 0],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedIndex]
+  );
+  const indicatorTransformOriginY = useMemo(
+    () =>
+      interpolate(animatedIndex, {
+        inputRange: [0, 1, 2],
+        outputRange: [-1, 0, 1],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedIndex]
+  );
+  const leftIndicatorRotate = useMemo(
+    () =>
+      interpolate(animatedIndex, {
+        inputRange: [0, 1, 2],
+        outputRange: [toRad(-30), 0, toRad(30)],
+        extrapolate: Extrapolate.CLAMP,
+      }),
+    [animatedIndex]
+  );
+  const rightIndicatorRotate = interpolate(animatedIndex, {
+    inputRange: [0, 1, 2],
+    outputRange: [toRad(30), 0, toRad(-30)],
+    extrapolate: Extrapolate.CLAMP,
+  });
+  //#endregion
+
+  //#region styles
+  const containerStyle = useMemo(
+    () => [
+      styles.header,
+      {
+        borderTopLeftRadius: borderTopRadius,
+        borderTopRightRadius: borderTopRadius,
+      },
+    ],
+    [borderTopRadius]
+  );
+  const leftIndicatorStyle = useMemo(
+    () => ({
+      ...styles.indicator,
+      ...styles.leftIndicator,
+      transform: transformOrigin(
+        { x: 0, y: indicatorTransformOriginY },
+        {
+          rotate: leftIndicatorRotate,
+          translateX: -5,
+        }
+      ),
+    }),
+    [indicatorTransformOriginY, leftIndicatorRotate]
+  );
+  const rightIndicatorStyle = useMemo(
+    () => ({
+      ...styles.indicator,
+      ...styles.rightIndicator,
+      transform: transformOrigin(
+        { x: 0, y: indicatorTransformOriginY },
+        {
+          rotate: rightIndicatorRotate,
+          translateX: 5,
+        }
+      ),
+    }),
+    [indicatorTransformOriginY, rightIndicatorRotate]
+  );
+  //#endregion
+
+  // render
+  return (
+    <Animated.View style={containerStyle}>
+      <Animated.View style={leftIndicatorStyle} />
+      <Animated.View style={rightIndicatorStyle} />
+    </Animated.View>
+  );
+};
+
+export default Handle;
+
+const styles = StyleSheet.create({
+  header: {
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    paddingVertical: 14,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: -20,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
+  },
+  indicator: {
+    position: 'absolute',
+    width: 10,
+    height: 4,
+    backgroundColor: '#999',
+  },
+  leftIndicator: {
+    borderTopStartRadius: 2,
+    borderBottomStartRadius: 2,
+  },
+  rightIndicator: {
+    borderTopEndRadius: 2,
+    borderBottomEndRadius: 2,
+  },
+});
+```

@@ -1,0 +1,178 @@
+---
+id: custom-handle
+title: Custom Handle
+description: Bottom Sheet custom handle.
+image: /img/bottom-sheet-preview.gif
+slug: /custom-handle
+hide_table_of_contents: true
+---
+
+To override the default handle, you will need to pass the prop `handleComponent` to the `BottomSheet` component.
+
+When you provide your own handle component, it will receive these animated props `animatedIndex` & `animatedPosition` that indicates the position and the index of the sheet.
+
+You can extend your custom handle props interface with the provided `BottomSheetHandleProps` interface to expose `animatedIndex` & `animatedPosition` into your own interface.
+
+### Example
+
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Video from "@theme/Video";
+
+<Video
+  title="React Native Bottom Sheet Custom Handle"
+  url={useBaseUrl("video/bottom-sheet-custom-handle-preview.mp4")}
+/>
+
+Here is an example of a custom handle component, but first you will need to install `Redash`:
+
+> [Redash](https://github.com/wcandillon/react-native-redash): The React Native Reanimated and Gesture Handler Toolbelt.
+
+```bash
+yarn add react-native-redash
+```
+
+```tsx
+import React, { useMemo } from "react";
+import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import { BottomSheetHandleProps } from "@gorhom/bottom-sheet";
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+  useDerivedValue,
+} from "react-native-reanimated";
+import { toRad } from "react-native-redash";
+
+// @ts-ignore
+export const transformOrigin = ({ x, y }, ...transformations) => {
+  "worklet";
+  return [
+    { translateX: x },
+    { translateY: y },
+    ...transformations,
+    { translateX: x * -1 },
+    { translateY: y * -1 },
+  ];
+};
+
+interface HandleProps extends BottomSheetHandleProps {
+  style?: StyleProp<ViewStyle>;
+}
+
+const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
+  //#region animations
+  const indicatorTransformOriginY = useDerivedValue(() =>
+    interpolate(animatedIndex.value, [0, 1, 2], [-1, 0, 1], Extrapolate.CLAMP)
+  );
+  //#endregion
+
+  //#region styles
+  const containerStyle = useMemo(() => [styles.header, style], [style]);
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+    const borderTopRadius = interpolate(
+      animatedIndex.value,
+      [1, 2],
+      [20, 0],
+      Extrapolate.CLAMP
+    );
+    return {
+      borderTopLeftRadius: borderTopRadius,
+      borderTopRightRadius: borderTopRadius,
+    };
+  });
+  const leftIndicatorStyle = useMemo(
+    () => ({
+      ...styles.indicator,
+      ...styles.leftIndicator,
+    }),
+    []
+  );
+  const leftIndicatorAnimatedStyle = useAnimatedStyle(() => {
+    const leftIndicatorRotate = interpolate(
+      animatedIndex.value,
+      [0, 1, 2],
+      [toRad(-30), 0, toRad(30)],
+      Extrapolate.CLAMP
+    );
+    return {
+      transform: transformOrigin(
+        { x: 0, y: indicatorTransformOriginY.value },
+        {
+          rotate: `${leftIndicatorRotate}rad`,
+        },
+        {
+          translateX: -5,
+        }
+      ),
+    };
+  });
+  const rightIndicatorStyle = useMemo(
+    () => ({
+      ...styles.indicator,
+      ...styles.rightIndicator,
+    }),
+    []
+  );
+  const rightIndicatorAnimatedStyle = useAnimatedStyle(() => {
+    const rightIndicatorRotate = interpolate(
+      animatedIndex.value,
+      [0, 1, 2],
+      [toRad(30), 0, toRad(-30)],
+      Extrapolate.CLAMP
+    );
+    return {
+      transform: transformOrigin(
+        { x: 0, y: indicatorTransformOriginY.value },
+        {
+          rotate: `${rightIndicatorRotate}rad`,
+        },
+        {
+          translateX: 5,
+        }
+      ),
+    };
+  });
+  //#endregion
+
+  // render
+  return (
+    <Animated.View
+      style={[containerStyle, containerAnimatedStyle]}
+      renderToHardwareTextureAndroid={true}
+    >
+      <Animated.View style={[leftIndicatorStyle, leftIndicatorAnimatedStyle]} />
+      <Animated.View
+        style={[rightIndicatorStyle, rightIndicatorAnimatedStyle]}
+      />
+    </Animated.View>
+  );
+};
+
+export default Handle;
+
+const styles = StyleSheet.create({
+  header: {
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#fff",
+  },
+  indicator: {
+    position: "absolute",
+    width: 10,
+    height: 4,
+    backgroundColor: "#999",
+  },
+  leftIndicator: {
+    borderTopStartRadius: 2,
+    borderBottomStartRadius: 2,
+  },
+  rightIndicator: {
+    borderTopEndRadius: 2,
+    borderBottomEndRadius: 2,
+  },
+});
+```

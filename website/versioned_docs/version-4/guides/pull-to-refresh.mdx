@@ -1,0 +1,91 @@
+---
+id: pull-to-refresh
+title: Pull To Refresh
+description: Pull To Refresh with Bottom Sheet.
+image: /img/bottom-sheet-preview.gif
+slug: /pull-to-refresh
+hide_table_of_contents: true
+---
+
+Pull to refresh feature is enabled by default, and it will be activated on the top snap point provided. All you need to do is to provide `refreshing` & `onRefresh` to any of the [Scrollables](./scrollables).
+
+:::note
+
+Currently `refreshControl` is not supported, feel free to contribute to enable it ❤️
+
+:::
+
+### Example
+
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Video from "@theme/Video";
+
+<Video
+  title="React Native Bottom Sheet Pull to Refresh"
+  url={useBaseUrl("video/bottom-sheet-pull-to-refresh-preview.mp4")}
+/>
+
+Here is an example of a simple pull to refresh:
+
+```tsx
+import React, { useCallback, useMemo } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+
+const App = () => {
+  // variables
+  const data = useMemo(
+    () =>
+      Array(50)
+        .fill(0)
+        .map((_, index) => `index-${index}`),
+    []
+  );
+  const snapPoints = useMemo(() => ["25%", "50%"], []);
+
+  // callbacks
+  const handleRefresh = useCallback(() => {
+    console.log("handleRefresh");
+  }, []);
+
+  // render
+  const renderItem = useCallback(
+    ({ item }) => (
+      <View style={styles.itemContainer}>
+        <Text>{item}</Text>
+      </View>
+    ),
+    []
+  );
+  return (
+    <View style={styles.container}>
+      <BottomSheet snapPoints={snapPoints}>
+        <BottomSheetFlatList
+          data={data}
+          keyExtractor={(i) => i}
+          renderItem={renderItem}
+          contentContainerStyle={styles.contentContainer}
+          refreshing={false}
+          onRefresh={handleRefresh}
+        />
+      </BottomSheet>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    backgroundColor: "white",
+  },
+  itemContainer: {
+    padding: 6,
+    margin: 6,
+    backgroundColor: "#eee",
+  },
+});
+
+export default App;
+```

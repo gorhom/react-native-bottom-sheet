@@ -1,0 +1,69 @@
+---
+id: custom-background
+title: Custom Background
+description: Bottom Sheet custom background.
+image: /img/bottom-sheet-preview.gif
+slug: /custom-background
+hide_table_of_contents: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+To override the default background, you will need to pass the prop `backgroundComponent` to the `BottomSheet` component.
+
+When you provide your own background component, it will receive these animated props `animatedIndex` & `animatedPosition` that indicates the position and the index of the sheet.
+
+You can extend your custom background props interface with the provided `BottomSheetBackgroundProps` interface to expose `animatedIndex` & `animatedPosition` into your own interface.
+
+### Example
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Video from '@theme/Video';
+
+<Video
+  title="React Native Bottom Sheet Custom Background"
+  url={useBaseUrl('video/bottom-sheet-custom-background-preview.mp4')}
+/>
+
+Here is an example of a custom background component:
+
+```tsx
+import React, { useMemo } from 'react';
+import { BottomSheetBackgroundProps } from '@gorhom/bottom-sheet';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  interpolateColors,
+} from 'react-native-reanimated';
+
+const CustomBackground = ({
+  animatedIndex,
+  style,
+}: BottomSheetBackgroundProps) => {
+  // animated variables
+  const animatedBackground = useMemo(
+    () =>
+      interpolateColors(animatedIndex, {
+        inputRange: [0, 1],
+        outputColorRange: ['#fff', '#a8b5eb'],
+      }),
+    [animatedIndex]
+  );
+
+  // styles
+  const containerStyle = useMemo(
+    () => [
+      style,
+      {
+        backgroundColor: animatedBackground,
+      },
+    ],
+    [style, animatedBackground]
+  );
+
+  return <Animated.View style={containerStyle} />;
+};
+
+export default CustomBackground;
+```
