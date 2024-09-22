@@ -1,11 +1,9 @@
 import React, { type FC, forwardRef } from 'react';
-import {
-  GestureDetector,
-  type SimultaneousGesture,
-} from 'react-native-gesture-handler';
+import type { SimultaneousGesture } from 'react-native-gesture-handler';
+import { BottomSheetDraggableScrollable } from './BottomSheetDraggableScrollable';
 
 interface ScrollableContainerProps {
-  nativeGesture: SimultaneousGesture;
+  nativeGesture?: SimultaneousGesture;
   // biome-ignore lint/suspicious/noExplicitAny: 🤷‍♂️
   ScrollableComponent: FC<any>;
 }
@@ -16,9 +14,9 @@ export const ScrollableContainer = forwardRef<never, ScrollableContainerProps>(
     ref
   ) {
     return (
-      <GestureDetector gesture={nativeGesture}>
+      <BottomSheetDraggableScrollable scrollableGesture={nativeGesture}>
         <ScrollableComponent ref={ref} {...rest} />
-      </GestureDetector>
+      </BottomSheetDraggableScrollable>
     );
   }
 );

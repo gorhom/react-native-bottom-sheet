@@ -64,10 +64,11 @@ export function createBottomSheetScrollableComponent<T, P>(
       animatedContentHeight,
       animatedScrollableState,
       enableDynamicSizing,
+      enableContentPanningGesture,
     } = useBottomSheetInternal();
     //#endregion
 
-    if (!draggableGesture) {
+    if (!draggableGesture && enableContentPanningGesture) {
       throw "'Scrollable' cannot be used out of the BottomSheet!";
     }
 
@@ -83,12 +84,14 @@ export function createBottomSheetScrollableComponent<T, P>(
       [animatedScrollableState, showsVerticalScrollIndicator]
     );
 
-    const nativeGesture = useMemo(
+    const scrollableGesture = useMemo(
       () =>
-        Gesture.Native()
-          // @ts-ignore
-          .simultaneousWithExternalGesture(draggableGesture)
-          .shouldCancelWhenOutside(false),
+        draggableGesture
+          ? Gesture.Native()
+              // @ts-ignore
+              .simultaneousWithExternalGesture(draggableGesture)
+              .shouldCancelWhenOutside(false)
+          : undefined,
       [draggableGesture]
     );
     //#endregion
@@ -144,7 +147,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     return (
       <ScrollableContainer
         ref={scrollableRef}
-        nativeGesture={nativeGesture}
+        nativeGesture={scrollableGesture}
         animatedProps={scrollableAnimatedProps}
         overScrollMode={overScrollMode}
         keyboardDismissMode={keyboardDismissMode}

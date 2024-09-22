@@ -379,6 +379,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     ]);
     const animatedScrollableState = useDerivedValue(() => {
       /**
+       * if user had disabled content panning gesture, then we unlock
+       * the scrollable state.
+       */
+      if (!enableContentPanningGesture) {
+        return SCROLLABLE_STATE.UNLOCKED;
+      }
+
+      /**
        * if scrollable override state is set, then we just return its value.
        */
       if (
@@ -414,6 +422,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       return SCROLLABLE_STATE.LOCKED;
     }, [
+      enableContentPanningGesture,
       animatedAnimationState.value,
       animatedKeyboardState.value,
       animatedScrollableOverrideState.value,
@@ -1821,6 +1830,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         },
       });
     }
+
+    const DraggableView = enableContentPanningGesture
+      ? BottomSheetDraggableView
+      : Animated.View;
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetInternalProvider value={internalContextVariables}>
@@ -1858,7 +1871,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   accessibilityRole={_providedAccessibilityRole ?? undefined}
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
                 >
-                  <BottomSheetDraggableView
+                  <DraggableView
                     key="BottomSheetRootDraggableView"
                     style={contentContainerStyle}
                   >
@@ -1869,7 +1882,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                         footerComponent={footerComponent}
                       />
                     )}
-                  </BottomSheetDraggableView>
+                  </DraggableView>
                 </Animated.View>
                 <BottomSheetHandleContainer
                   key="BottomSheetHandleContainer"

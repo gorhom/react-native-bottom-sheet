@@ -1,9 +1,7 @@
 import React, { type ComponentProps, forwardRef, useCallback } from 'react';
-import {
-  GestureDetector,
-  type SimultaneousGesture,
-} from 'react-native-gesture-handler';
+import type { SimultaneousGesture } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
+import { BottomSheetDraggableScrollable } from './BottomSheetDraggableScrollable';
 
 interface ScrollableContainerProps {
   nativeGesture: SimultaneousGesture;
@@ -25,12 +23,12 @@ export const ScrollableContainer = forwardRef<
     [animatedProps]
   );
   return (
-    <GestureDetector gesture={nativeGesture}>
+    <BottomSheetDraggableScrollable scrollableGesture={nativeGesture}>
       <ScrollableComponent
         ref={ref}
         {...rest}
         renderScrollComponent={renderScrollComponent}
       />
-    </GestureDetector>
+    </BottomSheetDraggableScrollable>
   );
 });

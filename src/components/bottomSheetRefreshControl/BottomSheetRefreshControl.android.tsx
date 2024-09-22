@@ -23,10 +23,11 @@ function BottomSheetRefreshControlComponent({
 }: BottomSheetRefreshControlProps) {
   //#region hooks
   const draggableGesture = useContext(BottomSheetDraggableContext);
-  const { animatedScrollableState } = useBottomSheetInternal();
+  const { animatedScrollableState, enableContentPanningGesture } =
+    useBottomSheetInternal();
   //#endregion
 
-  if (!draggableGesture) {
+  if (!draggableGesture && enableContentPanningGesture) {
     throw "'BottomSheetRefreshControl' cannot be used out of the BottomSheet!";
   }
 
@@ -38,24 +39,40 @@ function BottomSheetRefreshControlComponent({
     [animatedScrollableState.value]
   );
 
-  const gesture = useMemo(() => {
-    return Gesture.Simultaneous(
-      Gesture.Native().shouldCancelWhenOutside(false),
-      scrollableGesture,
+  const gesture = useMemo(
+    () =>
       draggableGesture
-    );
-  }, [draggableGesture, scrollableGesture]);
+        ? Gesture.Native()
+            // @ts-ignore
+            .simultaneousWithExternalGesture(
+              draggableGesture,
+              scrollableGesture
+            )
+            .shouldCancelWhenOutside(true)
+        : undefined,
+    [draggableGesture, scrollableGesture]
+  );
+
   //#endregion
 
   // render
+  if (gesture) {
+    return (
+      <GestureDetector gesture={gesture}>
+        <AnimatedRefreshControl
+          {...rest}
+          onRefresh={onRefresh}
+          animatedProps={animatedProps}
+        />
+      </GestureDetector>
+    );
+  }
   return (
-    <GestureDetector gesture={gesture}>
-      <AnimatedRefreshControl
-        {...rest}
-        onRefresh={onRefresh}
-        animatedProps={animatedProps}
-      />
-    </GestureDetector>
+    <AnimatedRefreshControl
+      {...rest}
+      onRefresh={onRefresh}
+      animatedProps={animatedProps}
+    />
   );
 }
 
