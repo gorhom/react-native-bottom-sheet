@@ -1,3 +1,4 @@
+import { State } from 'react-native-gesture-handler';
 import { scrollTo, useWorkletCallback } from 'react-native-reanimated';
 import { ANIMATION_STATE, SCROLLABLE_STATE, SHEET_STATE } from '../constants';
 import type {
@@ -20,13 +21,14 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     animatedSheetState,
     animatedScrollableState,
     animatedAnimationState,
+    animatedHandleGestureState,
     animatedScrollableContentOffsetY: rootScrollableContentOffsetY,
   } = useBottomSheetInternal();
 
   //#region callbacks
   const handleOnScroll: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useWorkletCallback(
-      (_, context) => {
+      ({ contentOffset: { y } }, context) => {
         /**
          * if sheet position is extended or fill parent, then we reset
          * `shouldLockInitialPosition` value to false.
@@ -36,6 +38,15 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           animatedSheetState.value === SHEET_STATE.FILL_PARENT
         ) {
           context.shouldLockInitialPosition = false;
+        }
+
+        /**
+         * if handle gesture state is active, then we capture the offset y position
+         * and lock the scrollable with it.
+         */
+        if (animatedHandleGestureState.value === State.ACTIVE) {
+          context.shouldLockInitialPosition = true;
+          context.initialContentOffsetY = y;
         }
 
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
@@ -94,6 +105,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           scrollableContentOffsetY.value = lockPosition;
           return;
         }
+
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
@@ -119,6 +131,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           scrollableContentOffsetY.value = 0;
           return;
         }
+
         if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
           scrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
