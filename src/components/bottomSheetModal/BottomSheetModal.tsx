@@ -44,6 +44,7 @@ const BottomSheetModalComponent = forwardRef<
     stackBehavior = DEFAULT_STACK_BEHAVIOR,
     enableDismissOnClose = DEFAULT_ENABLE_DISMISS_ON_CLOSE,
     onDismiss: _providedOnDismiss,
+    onAnimate: _providedOnAnimate,
 
     // bottom sheet props
     index = 0,
@@ -78,6 +79,7 @@ const BottomSheetModalComponent = forwardRef<
   //#region refs
   const bottomSheetRef = useRef<BottomSheet>(null);
   const currentIndexRef = useRef(!animateOnMount ? index : -1);
+  const nextIndexRef = useRef<number | null>(null);
   const restoreIndexRef = useRef(-1);
   const minimized = useRef(false);
   const forcedDismissed = useRef(false);
@@ -225,16 +227,27 @@ const BottomSheetModalComponent = forwardRef<
           },
         });
       }
+
+      const animating = nextIndexRef.current != null;
+
       /**
-       * if modal is already been dismiss, we exit the method.
+       * early exit, if not minimized, it is in closed position and not animating
        */
-      if (currentIndexRef.current === -1 && minimized.current === false) {
+      if (
+        currentIndexRef.current === -1 &&
+        minimized.current === false &&
+        !animating
+      ) {
         return;
       }
 
+      /**
+       * unmount and early exit, if minimized or it is in closed position and not animating
+       */
       if (
-        minimized.current ||
-        (currentIndexRef.current === -1 && enablePanDownToClose)
+        !animating &&
+        (minimized.current ||
+          (currentIndexRef.current === -1 && enablePanDownToClose))
       ) {
         unmount();
         return;
@@ -355,12 +368,23 @@ const BottomSheetModalComponent = forwardRef<
         });
       }
       currentIndexRef.current = _index;
+      nextIndexRef.current = null;
 
       if (_providedOnChange) {
         _providedOnChange(_index, _position, _type);
       }
     },
     [_providedOnChange]
+  );
+  const handleBottomSheetOnAnimate = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      nextIndexRef.current = toIndex;
+
+      if (_providedOnAnimate) {
+        _providedOnAnimate(fromIndex, toIndex);
+      }
+    },
+    [_providedOnAnimate]
   );
   // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const handleBottomSheetOnClose = useCallback(
@@ -429,6 +453,7 @@ const BottomSheetModalComponent = forwardRef<
           containerOffset={containerOffset}
           onChange={handleBottomSheetOnChange}
           onClose={handleBottomSheetOnClose}
+          onAnimate={handleBottomSheetOnAnimate}
           $modal={true}
         >
           {typeof Content === 'function' ? <Content data={data} /> : Content}

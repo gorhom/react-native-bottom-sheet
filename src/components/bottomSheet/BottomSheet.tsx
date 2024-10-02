@@ -615,14 +615,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region animation
     const stopAnimation = useWorkletCallback(() => {
       cancelAnimation(animatedPosition);
-      isForcedClosing.value = false;
       animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
       animatedAnimationState.value = ANIMATION_STATE.STOPPED;
     }, [animatedPosition, animatedAnimationState, animatedAnimationSource]);
     const animateToPositionCompleted = useWorkletCallback(
       function animateToPositionCompleted(isFinished?: boolean) {
-        isForcedClosing.value = false;
-
         if (!isFinished) {
           return;
         }
@@ -642,6 +639,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (animatedAnimationSource.value === ANIMATION_SOURCE.MOUNT) {
           isAnimatedOnMount.value = true;
         }
+
+        isForcedClosing.value = false;
 
         // reset values
         animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
@@ -678,7 +677,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        stopAnimation();
+        // stop animation if it is running
+        if (animatedAnimationState.value === ANIMATION_STATE.RUNNING) {
+          stopAnimation();
+        }
 
         /**
          * set animation state to running, and source
@@ -883,6 +885,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         source: ANIMATION_SOURCE,
         animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
+        /**
+         * if a force closing is running and source not from user, then we early exit
+         */
+        if (isForcedClosing.value && source !== ANIMATION_SOURCE.USER) {
+          return;
+        }
         /**
          * when evaluating the position while layout is not calculated, then we early exit till it is.
          */
