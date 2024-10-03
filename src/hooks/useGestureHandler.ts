@@ -1,9 +1,11 @@
 import {
   type GestureStateChangeEvent,
+  type GestureUpdateEvent,
+  type PanGestureChangeEventPayload,
   type PanGestureHandlerEventPayload,
   State,
 } from 'react-native-gesture-handler';
-import type Animated from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
 import { useWorkletCallback } from 'react-native-reanimated';
 import { GESTURE_SOURCE } from '../constants';
 import type {
@@ -13,8 +15,8 @@ import type {
 
 export const useGestureHandler: GestureHandlersHookType = (
   source: GESTURE_SOURCE,
-  state: Animated.SharedValue<State>,
-  gestureSource: Animated.SharedValue<GESTURE_SOURCE>,
+  state: SharedValue<State>,
+  gestureSource: SharedValue<GESTURE_SOURCE>,
   onStart: GestureEventHandlerCallbackType,
   onChange: GestureEventHandlerCallbackType,
   onEnd: GestureEventHandlerCallbackType,
@@ -32,7 +34,11 @@ export const useGestureHandler: GestureHandlersHookType = (
   );
 
   const handleOnChange = useWorkletCallback(
-    (event: GestureStateChangeEvent<PanGestureHandlerEventPayload>) => {
+    (
+      event: GestureUpdateEvent<
+        PanGestureHandlerEventPayload & PanGestureChangeEventPayload
+      >
+    ) => {
       if (gestureSource.value !== source) {
         return;
       }

@@ -1,8 +1,5 @@
 import { type ComponentProps, memo } from 'react';
-import {
-  FlatList as RNFlatList,
-  type FlatListProps as RNFlatListProps,
-} from 'react-native';
+import { FlatList as RNFlatList } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
 import { createBottomSheetScrollableComponent } from './createBottomSheetScrollableComponent';

@@ -45,8 +45,8 @@ function BottomSheetRefreshControlComponent({
         ? Gesture.Native()
             // @ts-ignore
             .simultaneousWithExternalGesture(
-              draggableGesture,
-              scrollableGesture
+              ...draggableGesture.toGestureArray(),
+              ...scrollableGesture.toGestureArray()
             )
             .shouldCancelWhenOutside(true)
         : undefined,
