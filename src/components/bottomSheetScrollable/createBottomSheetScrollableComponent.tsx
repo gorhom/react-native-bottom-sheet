@@ -19,6 +19,7 @@ import {
   useStableCallback,
 } from '../../hooks';
 import { ScrollableContainer } from './ScrollableContainer';
+import { useBottomSheetContentSizeSetter } from './useBottomSheetContentSizeSetter';
 
 export function createBottomSheetScrollableComponent<T, P>(
   type: SCROLLABLE_TYPE,
@@ -61,11 +62,13 @@ export function createBottomSheetScrollableComponent<T, P>(
       );
     const {
       animatedFooterHeight,
-      animatedContentHeight,
       animatedScrollableState,
-      enableDynamicSizing,
       enableContentPanningGesture,
     } = useBottomSheetInternal();
+
+    const { setContentSize } = useBottomSheetContentSizeSetter(
+      enableFooterMarginAdjustment
+    );
     //#endregion
 
     if (!draggableGesture && enableContentPanningGesture) {
@@ -99,11 +102,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#region callbacks
     const handleContentSizeChange = useStableCallback(
       (contentWidth: number, contentHeight: number) => {
-        if (enableDynamicSizing) {
-          animatedContentHeight.value =
-            contentHeight +
-            (enableFooterMarginAdjustment ? animatedFooterHeight.value : 0);
-        }
+        setContentSize(contentHeight);
 
         if (onContentSizeChange) {
           onContentSizeChange(contentWidth, contentHeight);
@@ -158,6 +157,17 @@ export function createBottomSheetScrollableComponent<T, P>(
         onRefresh={onRefresh}
         onScroll={scrollHandler}
         onContentSizeChange={handleContentSizeChange}
+        // onLayout={e => {
+        //   window.requestAnimationFrame(() => {
+        //     console.log(
+        //       'XX test',
+        //       e.nativeEvent.target.clientHeight,
+        //       e.nativeEvent.target.scrollHeight
+        //     );
+        //     window.dispatchEvent(new Event('resize'));
+        //   });
+        // }}
+        setContentSize={setContentSize}
         ScrollableComponent={ScrollableComponent}
         refreshControl={refreshControl}
         {...rest}
