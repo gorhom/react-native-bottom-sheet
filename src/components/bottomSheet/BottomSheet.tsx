@@ -237,7 +237,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     const animatedPosition = useSharedValue(INITIAL_POSITION);
     const animatedNextPosition = useSharedValue(INITIAL_VALUE);
-    const animatedNextPositionIndex = useSharedValue(0);
+    const animatedNextPositionIndex = useSharedValue(INITIAL_VALUE);
 
     // conditional
     const isAnimatedOnMount = useSharedValue(false);
