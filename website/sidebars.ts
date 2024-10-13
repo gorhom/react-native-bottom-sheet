@@ -36,6 +36,7 @@ const sidebars: SidebarsConfig = {
             'components/bottomsheetview',
             'components/bottomsheetscrollview',
             'components/bottomsheetflatlist',
+            'components/bottomsheetflashlist',
             'components/bottomsheetsectionlist',
             'components/bottomsheetvirtualizedlist',
             'components/bottomsheetbackdrop',
