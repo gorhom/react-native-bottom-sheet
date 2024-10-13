@@ -1,4 +1,4 @@
-import { ShowcaseExampleScreenSectionType } from '@gorhom/showcase-template';
+import type { ShowcaseExampleScreenSectionType } from '@gorhom/showcase-template';
 import { Platform } from 'react-native';
 
 const screens: ShowcaseExampleScreenSectionType[] = [];
@@ -162,6 +162,11 @@ if (Platform.OS !== 'web') {
           headerTintColor: 'black',
           headerTransparent: true,
         },
+      },
+      {
+        name: 'FlashList',
+        slug: 'Integrations/FlashList',
+        getScreen: () => require('./integrations/flashlist').default,
       },
     ],
     collapsed: true,

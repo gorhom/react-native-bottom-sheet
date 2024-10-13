@@ -27,7 +27,7 @@ export function createBottomSheetScrollableComponent<T, P>(
   ScrollableComponent: any
 ) {
   return forwardRef<T, P>((props, ref) => {
-    // props
+    //#region props
     const {
       // hooks
       focusHook,
@@ -50,6 +50,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       ...rest
       // biome-ignore lint: to be addressed!
     }: any = props;
+    //#endregion
 
     //#region hooks
     const draggableGesture = useContext(BottomSheetDraggableContext);
@@ -65,7 +66,6 @@ export function createBottomSheetScrollableComponent<T, P>(
       animatedScrollableState,
       enableContentPanningGesture,
     } = useBottomSheetInternal();
-
     const { setContentSize } = useBottomSheetContentSizeSetter(
       enableFooterMarginAdjustment
     );
@@ -157,16 +157,6 @@ export function createBottomSheetScrollableComponent<T, P>(
         onRefresh={onRefresh}
         onScroll={scrollHandler}
         onContentSizeChange={handleContentSizeChange}
-        // onLayout={e => {
-        //   window.requestAnimationFrame(() => {
-        //     console.log(
-        //       'XX test',
-        //       e.nativeEvent.target.clientHeight,
-        //       e.nativeEvent.target.scrollHeight
-        //     );
-        //     window.dispatchEvent(new Event('resize'));
-        //   });
-        // }}
         setContentSize={setContentSize}
         ScrollableComponent={ScrollableComponent}
         refreshControl={refreshControl}
