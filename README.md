@@ -11,14 +11,15 @@ A performant interactive bottom sheet with fully configurable options 🚀
 ---
 
 ## Features
-
+- ⭐️ Support React Native Web, [read more](https://gorhom.dev/react-native-bottom-sheet/web-support).
+- ⭐️ Dynamic Sizing, [read more](https://gorhom.dev/react-native-bottom-sheet/dynamic-sizing).
+- ⭐️ Support FlashList, [read more](https://gorhom.dev/react-native-bottom-sheet/components/bottomsheetflashlist).
 - Modal presentation view, [Bottom Sheet Modal](https://gorhom.dev/react-native-bottom-sheet/modal).
 - Smooth gesture interactions & snapping animations.
-- Seamless [keyboard handling](https://gorhom.dev/react-native-bottom-sheet/keyboard-handling).
-- Support React Native Web 🔥
+- Seamless [keyboard handling](https://gorhom.dev/react-native-bottom-sheet/keyboard-handling) for iOS & Android.
 - Support [pull to refresh](https://gorhom.dev/react-native-bottom-sheet/pull-to-refresh) for scrollables.
-- Support [FlatList](https://gorhom.dev/react-native-bottom-sheet/components/bottomsheetflatlist), [SectionList](https://gorhom.dev/react-native-bottom-sheet/components/bottomsheetsectionlist), [ScrollView](https://gorhom.dev/react-native-bottom-sheet/components/bottomsheetscrollview) & [View](https://gorhom.dev/react-native-bottom-sheet/components/bottomsheetview) scrolling interactions.
-- Support [React Navigation integration](https://gorhom.dev/react-native-bottom-sheet/react-navigation-integration).
+- Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions, [read more](https://gorhom.dev/react-native-bottom-sheet/scrollables).
+- Support `React Navigation` Integration, [read more](https://gorhom.dev/react-native-bottom-sheet/react-navigation-integration).
 - Compatible with `Reanimated` v1-3.
 - Compatible with `Expo`.
 - Accessibility support.

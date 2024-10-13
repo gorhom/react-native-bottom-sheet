@@ -69,6 +69,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Guides',
       items: [
+        'guides/web-support',
         'guides/dynamic-sizing',
         'guides/custom-handle',
         'guides/custom-backdrop',

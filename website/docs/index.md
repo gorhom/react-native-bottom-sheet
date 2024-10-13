@@ -30,13 +30,14 @@ import Video from "@theme/Video";
 
 ## Features
 
-- Support React Native Web 🔥.
+- ⭐️ Support React Native Web, [read more](./web-support).
+- ⭐️ Dynamic Sizing, [read more](./dynamic-sizing).
+- ⭐️ Support FlashList, [read more](./components/bottomsheetflashlist).
 - Modal presentation view, [Bottom Sheet Modal](./modal).
-- Dynamic Sizing 📏, [read more](./dynamic-sizing).
 - Smooth gesture interactions & snapping animations.
 - Seamless [keyboard handling](./keyboard-handling) for iOS & Android.
 - Support [pull to refresh](./pull-to-refresh) for scrollables.
-- Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions. [read more](./scrollables).
+- Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions, [read more](./scrollables).
 - Support `React Navigation` Integration, [read more](./react-navigation-integration).
 - Compatible with `Reanimated` v1-3.
 - Accessibility support.
