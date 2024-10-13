@@ -6,8 +6,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!\n
-        **Please note that issues that do not follow the template may be closed.**\n
+        Thanks for taking the time to fill out this bug report!
+
+        ⚠️ **Please note that issues that do not follow the template will be closed.**
         ## Environment Info
   - type: dropdown
     id: version
@@ -48,7 +49,8 @@ body:
   - type: dropdown
     id: platform
     attributes:
-      label: What platform\s this bug is occurring on?
+      label: Platforms
+      description: What platform\s this bug is occurring on?
       multiple: true
       options:
         - iOS
@@ -61,7 +63,7 @@ body:
     id: what-happened
     attributes:
       label: What happened?
-      description: Please provide a clear and concise description of what the bug is?
+      description: Please provide a clear and concise description of what the bug is? Include screenshots or gifs if needed.
       placeholder: Tell us what happened?
     validations:
       required: true
@@ -71,6 +73,8 @@ body:
     attributes:
       label: Reproduction steps
       description: You must provide a clear list of steps and code to reproduce the problem.
+      placeholder: ex. - drag the bottom sheet...
+      value: "- "
     validations:
       required: true
 
@@ -79,7 +83,7 @@ body:
     attributes:
       label: Reproduction sample
       description: You must provide a reproduction sample code using **Expo Snack** [issue reproduction template](https://snack.expo.dev/@gorhom/bottom-sheet---issue-reproduction-template)
-      placeholder: ex. email@example.com
+      placeholder: ex. https://snack.expo.dev/@gorhom/bottom-sheet---issue-reproduction-template
     validations:
       required: true
 
