@@ -93,7 +93,7 @@ Enable dynamic sizing for content view and scrollable content size.
 
 | type    | default | required |
 | ------- | ------- | -------- |
-| boolean | false   | NO       |
+| boolean | true    | NO       |
 
 :::caution
 

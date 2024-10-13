@@ -1,0 +1,35 @@
+---
+id: dynamic-sizing
+title: Dynamic Sizing
+sidebar_label: ⭐️ Dynamic Sizing
+description: Bottom Sheet dynamic sizing.
+image: /img/bottom-sheet-preview.gif
+slug: /dynamic-sizing
+hide_table_of_contents: true
+---
+
+Dynamic Sizing is one of the powerful feature that `v5` introduces, where the library internally managed to calculate static views and list content size height and set it as the bottom sheet content height.
+
+:::info
+
+The mechanism was introduce previously with [useBottomSheetDynamicSnapPoints](https://gorhom.dev/react-native-bottom-sheet/v4/hooks#usebottomsheetdynamicsnappoints) hook which been deprecated with the new release.
+
+:::
+
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Video from "@theme/Video";
+
+<Video
+  title="React Native Bottom Sheet Dynamic Sizing"
+  url={useBaseUrl("video/bottom-sheet-dynamic-sizing-preview.mp4")}
+/>
+
+### Usage 
+
+In order to enable the dynamic sizing to work properly, you would need to follow these rules:
+
+1. Use the pre-configured [Scrollables](./scrollables) views, including the static view [BottomSheetView](./components/bottomsheetview).
+2. In order to prevent the bottom sheet a exceeding certain height, you will need to set [`maxDynamicContentSize`](./props#maxdynamiccontentsize) prop.
+
+And remember, you can always disable the feature if its not needed by overriding the prop [`enableDynamicSizing`](./props#enabledynamicsizing) with `false`.
+

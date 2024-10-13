@@ -32,51 +32,6 @@ const SheetContent = () => {
 }
 ```
 
-## useBottomSheetDynamicSnapPoints
-
-A hook to simplify handling dynamic snap points, it will take an initial snap points with a placeholder for content height `CONTENT_HEIGHT` that will be replaced once the content is measured and will return:
-
-- `animatedSnapPoints`: to provided to BottomSheet or BottomSheetModal.
-- `animatedHandleHeight`: an animated handle height callback node.
-- `animatedContentHeight`: an animated content height.
-- `handleContentLayout`: onLayout callback to be set on BottomSheetView component.
-
-```tsx
-import React from 'react';
-import BottomSheet, {
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
-
-const App = () => {
-  const initialSnapPoints = useMemo(() => ['25%', 'CONTENT_HEIGHT'], []);
-
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
-
-  return (
-    //... other views
-    <BottomSheet
-      ref={bottomSheetRef}
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
-    >
-      <BottomSheetView
-        style={contentContainerStyle}
-        onLayout={handleContentLayout}
-      >
-        //... views to be measured
-      </BottomSheetView>
-    </BottomSheet>
-    //... other views
-  );
-};
-```
-
 ## useBottomSheetSpringConfigs
 
 Generate animation spring configs.
