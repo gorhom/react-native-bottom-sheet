@@ -24,12 +24,13 @@ Modal name to help identify the modal for later on.
 
 Defines the stack behavior when modal mounts.
 
-- `push` it will mount the modal on top of current modal.
-- `replace` it will minimize the current modal then mount the modal.
+- `push` it will mount the modal on top of the current one.
+- `switch` it will minimize the current modal then mount the new one.
+- `replace` it will dismiss the current modal then mount the new one.
 
 | type                | default   | required |
 | ------------------- | --------- | -------- |
-| 'push' \| 'replace' | 'replace' | NO       |
+| 'push' \| 'switch' \| 'replace' | 'switch' | NO       |
 
 ### enableDismissOnClose
 
