@@ -83,10 +83,9 @@ export interface BottomSheetProps
    */
   enablePanDownToClose?: boolean;
   /**
-   * Enable dynamic sizing for content view and scrollable
-   * content size.
+   * Enable dynamic sizing for content view and scrollable content size.
    * @type boolean
-   * @default false
+   * @default true
    */
   enableDynamicSizing?: boolean;
   /**
