@@ -1,5 +1,13 @@
 
 
+## [5.0.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.1...v5.0.2) (2024-10-14)
+
+
+### Bug Fixes
+
+* **#1035,#1043:** updated default animatedNextPositionIndex to INITIAL_VALUE ([#1960](https://github.com/gorhom/react-native-bottom-sheet/issues/1960))(by [@dfalling](https://github.com/dfalling)) ([1cf3e41](https://github.com/gorhom/react-native-bottom-sheet/commit/1cf3e4167f2ffacf36c7abebb527f79048754121)), closes [#1035](https://github.com/gorhom/react-native-bottom-sheet/issues/1035) [#1043](https://github.com/gorhom/react-native-bottom-sheet/issues/1043)
+* **#1968:** moved the flashlist optional import into the component body ([ab33e21](https://github.com/gorhom/react-native-bottom-sheet/commit/ab33e2132f8e6fdb4a3c36e34c0f2ff04e09f11f)), closes [#1968](https://github.com/gorhom/react-native-bottom-sheet/issues/1968)
+
 ## [5.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0...v5.0.1) (2024-10-14)
 
 
