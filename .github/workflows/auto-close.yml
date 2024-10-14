@@ -15,8 +15,8 @@ env:
 
 jobs:
   autoclose:
+    if: ${{ !contains(github.event.issue.body, 'snack.expo.dev') && !contains(github.event.issue.body, 'gorhom.dev')}}
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.body, 'snack.expo.dev') != 'true'
     permissions:
       issues: write
     steps:
