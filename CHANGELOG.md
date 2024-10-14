@@ -1,5 +1,12 @@
 
 
+## [5.0.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.0...v5.0.1) (2024-10-14)
+
+
+### Bug Fixes
+
+* removed redundant dependency ([3ffc7f7](https://github.com/gorhom/react-native-bottom-sheet/commit/3ffc7f70e8769fc1ecc39754111754b53d12bff8))
+
 # [5.0.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v4.6.4...v5.0.0) (2024-10-13)
 
 ### Features
@@ -50,4 +57,3 @@
 * updated react native and other deps (#1412) ([`549e461`](https://github.com/gorhom/react-native-bottom-sheet/commit/549e461530a91e1d7c95a5178bd2238ebf84df86))
 * fixed types (#1123)(by @stropho) ([`b440964`](https://github.com/gorhom/react-native-bottom-sheet/commit/b44096451d4fed81be7f08b0edf638e4a1c42ccd))
 * updated reanimated to v3 (#1324) ([`4829316`](https://github.com/gorhom/react-native-bottom-sheet/commit/4829316beeff95c9e2efa5fbfdfcf7ef37b4af60))
-
