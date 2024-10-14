@@ -85,6 +85,10 @@ This feature is enabled by default, Read more about [FlashList](/components/bott
 
 The bottom sheet has multiple events that trigger its snapping to positions, whether a change in a snap point value, container height or the keyboard appearance. Since the introduction of keyboard handling in `v4` there has been multiple issues reported regarding the bottom sheet snapping to a wrong position or sometimes not even reacting to resizing events. With this release, I have refactored the whole snapping mechanism from the scratch and built it working backward from the edge cases such as: content resizing, container resizing and keyboard appearance.
 
+## Migration
+
+As the introduction of the [Dynamic Sizing](/dynamic-sizing), many might find their bottom sheets heights changes as it is enabled by default. To avoid such issues while migrating to **v5**, I recommend disabling it by setting the prop `enableDynamicSizing` to `false`, then try to figure out whether to use it or limit the dynamic content height by setting the prop `maxDynamicContentSize`.
+
 ## Breaking Changes
 
 - Updated Gesture Handler to **v2**
