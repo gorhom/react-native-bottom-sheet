@@ -16,7 +16,7 @@ env:
 jobs:
   autoclose:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.body, 'snack.expo.dev') != 'true'
+    if: {{ !contains(github.event.issue.body, 'snack.expo.dev') }}
     permissions:
       issues: write
     steps:
