@@ -37,7 +37,6 @@
     "bootstrap": "yarn install && yarn example"
   },
   "dependencies": {
-    "@docusaurus/theme-search-algolia": "^3.5.2",
     "@gorhom/portal": "1.0.14",
     "invariant": "^2.2.4"
   },
