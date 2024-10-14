@@ -9,24 +9,25 @@ import type {
   BottomSheetScrollableProps,
 } from './types';
 
-let FlashList: React.FC;
-
+let FlashList: {
+  FlashList: React.FC;
+};
+// since FlashList is not a dependency for the library
+// we try to import it using metro optional import
 try {
-  FlashList = require('@shopify/flash-list').FlashList as never;
-} catch (_) {
-  throw 'You need to install FlashList first, `yarn install @shopify/flash-list`';
-}
+  FlashList = require('@shopify/flash-list') as never;
+} catch (_) {}
 
 export type BottomSheetFlashListProps<T> = Omit<
   Animated.AnimateProps<FlashListProps<T>>,
   'decelerationRate' | 'onScroll' | 'scrollEventThrottle'
 > &
   BottomSheetScrollableProps & {
-    ref?: Ref<typeof FlashList>;
+    ref?: Ref<React.FC>;
   };
 
 const BottomSheetFlashListComponent = forwardRef<
-  typeof FlashList,
+  React.FC,
   // biome-ignore lint/suspicious/noExplicitAny: to be addressed
   BottomSheetFlashListProps<any>
 >((props, ref) => {
@@ -39,6 +40,12 @@ const BottomSheetFlashListComponent = forwardRef<
     // biome-ignore lint: to be addressed!
   }: any = props;
   //#endregion
+
+  useMemo(() => {
+    if (!FlashList) {
+      throw 'You need to install FlashList first, `yarn install @shopify/flash-list`';
+    }
+  }, []);
 
   //#region render
   const renderScrollComponent = useMemo(
@@ -61,7 +68,7 @@ const BottomSheetFlashListComponent = forwardRef<
     [focusHook, scrollEventsHandlersHook, enableFooterMarginAdjustment]
   );
   return (
-    <FlashList
+    <FlashList.FlashList
       ref={ref}
       renderScrollComponent={renderScrollComponent}
       {...rest}
