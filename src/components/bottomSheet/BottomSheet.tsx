@@ -22,6 +22,7 @@ import Animated, {
   useWorkletCallback,
   type WithSpringConfig,
   type WithTimingConfig,
+  ReduceMotion,
 } from 'react-native-reanimated';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import {
@@ -94,8 +95,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region extract props
     const {
       // animations configurations
-      animationConfigs: _providedAnimationConfigs,
-
+      animationConfigs,
       // configurations
       index: _providedIndex = 0,
       snapPoints: _providedSnapPoints,
@@ -177,6 +177,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         bottomInset,
       });
     }
+    //#endregion
+
+    //#region animations configurations
+    const _providedAnimationConfigs = useMemo(() => {
+      if (!animationConfigs) {
+        return undefined;
+      }
+     
+      animationConfigs.reduceMotion = ReduceMotion.Never;
+
+      return animationConfigs;
+    }, [animationConfigs]);
     //#endregion
 
     //#region layout variables
@@ -708,6 +720,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * fire `onAnimate` callback
          */
         runOnJS(handleOnAnimate)(animatedNextPositionIndex.value);
+
+        if (configs !== undefined) {
+          configs.reduceMotion = ReduceMotion.Never;
+        }
 
         /**
          * start animation
