@@ -43,7 +43,7 @@ export interface BottomSheetModalProps
    * @type React.ComponentType
    * @default undefined
    */
-  containerComponent?: React.FC;
+  containerComponent?: React.ComponentType<React.PropsWithChildren>;
 
   // callbacks
   /**
