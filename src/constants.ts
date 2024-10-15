@@ -1,6 +1,6 @@
 import { Dimensions, Platform } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import { Easing } from 'react-native-reanimated';
+import { Easing, ReduceMotion } from 'react-native-reanimated';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
@@ -78,11 +78,13 @@ const ANIMATION_CONFIGS_IOS = {
   overshootClamping: true,
   restDisplacementThreshold: 10,
   restSpeedThreshold: 10,
+  reduceMotion: ReduceMotion.Never,
 };
 
 const ANIMATION_CONFIGS_ANDROID = {
   duration: ANIMATION_DURATION,
   easing: ANIMATION_EASING,
+  reduceMotion: ReduceMotion.Never,
 };
 
 const ANIMATION_CONFIGS =

@@ -1,6 +1,5 @@
 import {
   type AnimationCallback,
-  ReduceMotion,
   type WithSpringConfig,
   type WithTimingConfig,
   withSpring,
@@ -26,11 +25,6 @@ export const animate = ({
   if (!configs) {
     configs = ANIMATION_CONFIGS;
   }
-
-  // Users might have an accessibility setting to reduce motion turned on.
-  // This prevents the animation from running when presenting the sheet, which results in
-  // the bottom sheet not even appearing so we need to override it to ensure the animation runs.
-  configs.reduceMotion = ReduceMotion.Never;
 
   // detect animation type
   const type =
