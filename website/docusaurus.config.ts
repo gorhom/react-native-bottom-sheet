@@ -80,7 +80,7 @@ const config: Config = {
     image: 'img/preview.gif',
 
     colorMode: {
-      defaultMode: 'light',
+      defaultMode: 'dark',
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
