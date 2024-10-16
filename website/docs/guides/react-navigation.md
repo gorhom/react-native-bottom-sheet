@@ -7,7 +7,7 @@ slug: /react-navigation-integration
 hide_table_of_contents: true
 ---
 
-One of the main goal of this library, is to allow user to fully integrate a stack navigator in the bottom sheet. This integration allow lots of opportunities for a native-like experience in your app 😇
+One of the main goal of this library, is to allow user to fully integrate a stack navigator in the bottom sheet. This integration allows lots of opportunities for a native-like experience in your app 😇
 
 However, there are some tricks has to be follow to enable both libraries to work together seamlessly.
 
