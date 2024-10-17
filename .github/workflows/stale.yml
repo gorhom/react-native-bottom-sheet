@@ -28,3 +28,4 @@ jobs:
         exempt-assignees: 'gorhom'
         exempt-issue-labels: 'sponsor'
         exempt-pr-labels: 'sponsor'
+        any-of-labels: 'not-following-issue-template'
