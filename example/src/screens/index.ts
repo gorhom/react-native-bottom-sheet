@@ -60,9 +60,9 @@ const modalSection = {
       getScreen: () => require('./modal/StackExample').default,
     },
     {
-      name: 'Dynamic Snap Point',
-      slug: 'Modal/DynamicSnapPointExample',
-      getScreen: () => require('./modal/DynamicSnapPointExample').default,
+      name: 'Dynamic Sizing',
+      slug: 'Modal/DynamicSizingExample',
+      getScreen: () => require('./modal/DynamicSizingExample').default,
     },
     {
       name: 'Detached',
@@ -100,9 +100,9 @@ const advancedSection = {
       getScreen: () => require('./advanced/BackdropExample').default,
     },
     {
-      name: 'Dynamic Snap Point',
-      slug: 'Advanced/DynamicSnapPointExample',
-      getScreen: () => require('./advanced/DynamicSnapPointExample').default,
+      name: 'Dynamic Sizing',
+      slug: 'Advanced/DynamicSizingExample',
+      getScreen: () => require('./advanced/DynamicSizingExample').default,
     },
     {
       name: 'Shadow',
