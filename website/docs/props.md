@@ -25,7 +25,7 @@ Points for the bottom sheet to snap to, **points should be sorted from bottom to
 | Array\<number\|string> \| SharedValue\<Array\<string \| number>> | YES\*    |
 
 :::caution
-This prop is required unless you set `enableDynamicSizing` to `true`.
+This prop is required if you set `enableDynamicSizing` to `false` (it's `true` by default). 
 :::
 :::caution
 String values should be a percentage.
