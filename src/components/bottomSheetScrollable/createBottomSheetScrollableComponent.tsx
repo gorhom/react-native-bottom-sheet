@@ -66,9 +66,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       animatedScrollableState,
       enableContentPanningGesture,
     } = useBottomSheetInternal();
-    const { setContentSize } = useBottomSheetContentSizeSetter(
-      enableFooterMarginAdjustment
-    );
+    const { setContentSize } = useBottomSheetContentSizeSetter();
     //#endregion
 
     if (!draggableGesture && enableContentPanningGesture) {

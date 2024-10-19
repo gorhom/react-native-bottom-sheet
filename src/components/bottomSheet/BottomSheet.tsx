@@ -212,6 +212,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedContainerHeight,
         animatedContentHeight,
         animatedHandleHeight,
+        animatedFooterHeight,
         enableDynamicSizing,
         maxDynamicContentSize
       );

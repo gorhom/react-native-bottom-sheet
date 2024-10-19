@@ -18,6 +18,7 @@ import { normalizeSnapPoint } from '../utilities';
  * @param containerHeight BottomSheetContainer height.
  * @param contentHeight content size.
  * @param handleHeight handle size.
+ * @param footerHeight footer size.
  * @param enableDynamicSizing
  * @param maxDynamicContentSize
  * @returns {Animated.SharedValue<number[]>}
@@ -27,6 +28,7 @@ export const useAnimatedSnapPoints = (
   containerHeight: SharedValue<number>,
   contentHeight: SharedValue<number>,
   handleHeight: SharedValue<number>,
+  footerHeight: SharedValue<number>,
   enableDynamicSizing: BottomSheetProps['enableDynamicSizing'],
   maxDynamicContentSize: BottomSheetProps['maxDynamicContentSize']
 ): [SharedValue<number[]>, SharedValue<number>, SharedValue<boolean>] => {
@@ -71,7 +73,7 @@ export const useAnimatedSnapPoints = (
     const dynamicSnapPoint =
       containerHeight.value -
       Math.min(
-        contentHeight.value + handleHeight.value,
+        contentHeight.value + handleHeight.value + footerHeight.value,
         maxDynamicContentSize !== undefined
           ? maxDynamicContentSize
           : containerHeight.value
@@ -92,11 +94,12 @@ export const useAnimatedSnapPoints = (
 
     return _normalizedSnapPoints;
   }, [
-    containerHeight.value,
     snapPoints,
+    containerHeight,
+    handleHeight,
+    contentHeight,
+    footerHeight,
     enableDynamicSizing,
-    handleHeight.value,
-    contentHeight.value,
     maxDynamicContentSize,
     dynamicSnapPointIndex,
   ]);
