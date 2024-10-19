@@ -11,6 +11,7 @@ Here is a simple usage of the **Bottom Sheet Modal**, with non-scrollable conten
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   BottomSheetModal,
   BottomSheetView,
@@ -20,9 +21,6 @@ import {
 const App = () => {
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -35,7 +33,7 @@ const App = () => {
   // renders
   return (
     <BottomSheetModalProvider>
-      <View style={styles.container}>
+      <GestureHandlerRootView style={styles.container}>
         <Button
           onPress={handlePresentModalPress}
           title="Present Modal"
@@ -43,15 +41,13 @@ const App = () => {
         />
         <BottomSheetModal
           ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
           <BottomSheetView style={styles.contentContainer}>
             <Text>Awesome 🎉</Text>
           </BottomSheetView>
         </BottomSheetModal>
-      </View>
+      </GestureHandlerRootView>
     </BottomSheetModalProvider>
   );
 };

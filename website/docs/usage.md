@@ -11,6 +11,7 @@ Here is a simple usage of the **Bottom Sheet**, with non-scrollable content. For
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 const App = () => {
@@ -24,7 +25,7 @@ const App = () => {
 
   // renders
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <BottomSheet
         ref={bottomSheetRef}
         onChange={handleSheetChanges}
@@ -33,18 +34,18 @@ const App = () => {
           <Text>Awesome 🎉</Text>
         </BottomSheetView>
       </BottomSheet>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
     backgroundColor: 'grey',
   },
   contentContainer: {
     flex: 1,
+    padding: 36,
     alignItems: 'center',
   },
 });

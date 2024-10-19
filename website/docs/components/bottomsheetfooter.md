@@ -40,6 +40,7 @@ Component to be placed in the footer.
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetFooter } from '@gorhom/bottom-sheet';
 
 const App = () => {
@@ -61,7 +62,7 @@ const App = () => {
     []
   );
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -72,7 +73,7 @@ const App = () => {
           <Text>Awesome 🎉</Text>
         </View>
       </BottomSheet>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 

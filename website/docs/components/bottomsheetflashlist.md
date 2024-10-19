@@ -27,6 +27,7 @@ This needed when bottom sheet used with multiple scrollables to allow bottom she
 ```tsx
 import React, { useCallback, useRef, useMemo } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetFlashList } from "@gorhom/bottom-sheet";
 
 
@@ -63,7 +64,7 @@ const App = () => {
     );
   }, []);
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
       <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} />
       <Button title="Close" onPress={() => handleClosePress()} />
@@ -79,7 +80,7 @@ const App = () => {
           estimatedItemSize={43.3}
         />
       </BottomSheet>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 

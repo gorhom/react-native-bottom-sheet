@@ -87,7 +87,8 @@ Pressing the backdrop will call the `onPress` function, it will be called before
 ```tsx
 import React, { useCallback, useMemo, useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import BottomSheet, { BottomSheetView, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 
 const App = () => {
 	// ref
@@ -113,19 +114,20 @@ const App = () => {
 		[]
 	);
 	return (
-		<View style={styles.container}>
+		<GestureHandlerRootView style={styles.container}>
 			<BottomSheet
 				ref={bottomSheetRef}
 				index={1}
 				snapPoints={snapPoints}
 				backdropComponent={renderBackdrop}
+        enableDynamicSizing={false}
 				onChange={handleSheetChanges}
 			>
-				<View style={styles.contentContainer}>
+				<BottomSheetView style={styles.contentContainer}>
 					<Text>Awesome 🎉</Text>
-				</View>
+				</BottomSheetView>
 			</BottomSheet>
-		</View>
+		</GestureHandlerRootView>
 	);
 };
 

@@ -26,6 +26,7 @@ This needed when bottom sheet used with multiple scrollables to allow bottom she
 ```tsx
 import React, { useCallback, useRef, useMemo } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 const App = () => {
@@ -48,7 +49,7 @@ const App = () => {
 
   // render
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
       <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
       <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} />
@@ -56,13 +57,14 @@ const App = () => {
       <BottomSheet
         ref={sheetRef}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         onChange={handleSheetChange}
       >
-        <BottomSheetView>
+        <BottomSheetView style={styles.contentContainer}>
           <Text>Awesome 🔥</Text>
         </BottomSheetView>
       </BottomSheet>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 
@@ -70,6 +72,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 200,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 36,
+    alignItems: 'center',
   },
 });
 

@@ -18,7 +18,8 @@ Inherits `TextInputProps` from `react-native`.
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import BottomSheet, { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import BottomSheet, { BottomSheetView, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 const App = () => {
   // ref
@@ -34,20 +35,21 @@ const App = () => {
 
   // renders
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
         keyboardBehavior="fillParent"
+        enableDynamicSizing={false}
         onChange={handleSheetChanges}
       >
         <BottomSheetTextInput style={styles.input} />
-        <View style={styles.contentContainer}>
+        <BottomSheetView style={styles.contentContainer}>
           <Text>Awesome 🎉</Text>
-        </View>
+        </BottomSheetView>
       </BottomSheet>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 

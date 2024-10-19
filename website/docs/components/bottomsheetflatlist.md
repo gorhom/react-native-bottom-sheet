@@ -34,6 +34,7 @@ These props will be ignored if they were passed, because of the internal integra
 ```tsx
 import React, { useCallback, useRef, useMemo } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 
 const App = () => {
@@ -71,7 +72,7 @@ const App = () => {
     []
   );
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
       <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
       <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} />
@@ -79,6 +80,7 @@ const App = () => {
       <BottomSheet
         ref={sheetRef}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         onChange={handleSheetChange}
       >
         <BottomSheetFlatList
@@ -88,7 +90,7 @@ const App = () => {
           contentContainerStyle={styles.contentContainer}
         />
       </BottomSheet>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 
