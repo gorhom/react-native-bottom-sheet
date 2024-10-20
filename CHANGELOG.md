@@ -1,5 +1,15 @@
 
 
+## [5.0.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.2...v5.0.3) (2024-10-20)
+
+
+### Bug Fixes
+
+* added children type to containerComponent prop type ([#1971](https://github.com/gorhom/react-native-bottom-sheet/issues/1971))(by @Nodonisko) ([203e52f](https://github.com/gorhom/react-native-bottom-sheet/commit/203e52fa5be3e167522776f184d79511bdf35344))
+* dynamic sizing with detached static views ([b72e275](https://github.com/gorhom/react-native-bottom-sheet/commit/b72e27519c36671d84973f8b0b9cd1f8a7a8b8c1))
+* fixed dynamic scrollables content size with footer in place ([ace0da7](https://github.com/gorhom/react-native-bottom-sheet/commit/ace0da7475d68d4f27d386ead9f71c2eb19fbe31))
+* updated reduce motion handling, to respeact user setting and allow overriding ([1ef05c7](https://github.com/gorhom/react-native-bottom-sheet/commit/1ef05c7fee821c356220452ccf61d33d29483c00))
+
 ## [5.0.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.1...v5.0.2) (2024-10-14)
 
 
