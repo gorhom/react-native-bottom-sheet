@@ -3,6 +3,7 @@ import type { Insets, StyleProp, ViewStyle } from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
   AnimateStyle,
+  ReduceMotion,
   SharedValue,
   WithSpringConfig,
   WithTimingConfig,
@@ -94,6 +95,16 @@ export interface BottomSheetProps
    * @default true
    */
   animateOnMount?: boolean;
+  /**
+   * To override the user reduce motion setting.
+   * - `ReduceMotion.System`: if the `Reduce motion` accessibility setting is enabled on the device, disable the animation.
+   * - `ReduceMotion.Always`: disable the animation, even if `Reduce motion` accessibility setting is not enabled.
+   * - `ReduceMotion.Never`: enable the animation, even if `Reduce motion` accessibility setting is enabled.
+   * @type ReduceMotion
+   * @see https://docs.swmansion.com/react-native-reanimated/docs/guides/accessibility
+   * @default ReduceMotion.System
+   */
+  overrideReduceMotion?: ReduceMotion;
   //#endregion
 
   //#region layout

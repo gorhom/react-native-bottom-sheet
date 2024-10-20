@@ -1,6 +1,6 @@
 import {
   type AnimationCallback,
-  ReduceMotion,
+  type ReduceMotion,
   type WithSpringConfig,
   type WithTimingConfig,
   withSpring,
@@ -12,6 +12,7 @@ interface AnimateParams {
   point: number;
   velocity?: number;
   configs?: WithSpringConfig | WithTimingConfig;
+  overrideReduceMotion?: ReduceMotion;
   onComplete?: AnimationCallback;
 }
 
@@ -19,6 +20,7 @@ export const animate = ({
   point,
   configs,
   velocity = 0,
+  overrideReduceMotion,
   onComplete,
 }: AnimateParams) => {
   'worklet';
@@ -30,7 +32,11 @@ export const animate = ({
   // Users might have an accessibility setting to reduce motion turned on.
   // This prevents the animation from running when presenting the sheet, which results in
   // the bottom sheet not even appearing so we need to override it to ensure the animation runs.
-  configs.reduceMotion = ReduceMotion.Never;
+  // configs.reduceMotion = ReduceMotion.Never;
+
+  if (overrideReduceMotion) {
+    configs.reduceMotion = overrideReduceMotion;
+  }
 
   // detect animation type
   const type =

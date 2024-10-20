@@ -22,8 +22,9 @@ import Animated, {
   useWorkletCallback,
   type WithSpringConfig,
   type WithTimingConfig,
+  useReducedMotion,
+  ReduceMotion,
 } from 'react-native-reanimated';
-// import BottomSheetDebugView from '../bottomSheetDebugView';
 import {
   ANIMATION_SOURCE,
   ANIMATION_STATE,
@@ -56,6 +57,7 @@ import {
 import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetContainer from '../bottomSheetContainer';
+// import BottomSheetDebugView from '../bottomSheetDebugView';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetFooterContainer from '../bottomSheetFooterContainer/BottomSheetFooterContainer';
 import BottomSheetGestureHandlersProvider from '../bottomSheetGestureHandlersProvider';
@@ -106,6 +108,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enablePanDownToClose = DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
       enableDynamicSizing = DEFAULT_DYNAMIC_SIZING,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
+      overrideReduceMotion: _providedOverrideReduceMotion,
 
       // styles
       style: _providedStyle,
@@ -318,6 +321,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       shouldHandleKeyboardEvents,
     } = useKeyboard();
     const animatedKeyboardHeightInContainer = useSharedValue(0);
+    const userReduceMotionSetting = useReducedMotion();
+    const reduceMotion = useMemo(() => {
+      return !_providedOverrideReduceMotion ||
+        _providedOverrideReduceMotion === ReduceMotion.System
+        ? userReduceMotionSetting
+        : _providedOverrideReduceMotion === ReduceMotion.Always;
+    }, [userReduceMotionSetting, _providedOverrideReduceMotion]);
     //#endregion
 
     //#region state/dynamic variables
@@ -640,9 +650,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           isAnimatedOnMount.value = true;
         }
 
-        isForcedClosing.value = false;
-
         // reset values
+        isForcedClosing.value = false;
         animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
         animatedAnimationState.value = ANIMATION_STATE.STOPPED;
         animatedNextPosition.value = INITIAL_VALUE;
@@ -717,10 +726,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           point: position,
           configs: configs || _providedAnimationConfigs,
           velocity,
+          overrideReduceMotion: _providedOverrideReduceMotion,
           onComplete: animateToPositionCompleted,
         });
       },
-      [handleOnAnimate, _providedAnimationConfigs]
+      [
+        handleOnAnimate,
+        _providedAnimationConfigs,
+        _providedOverrideReduceMotion,
+      ]
     );
     /**
      * Set to position without animation.
@@ -963,6 +977,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animatedAnimationState.value !== ANIMATION_STATE.RUNNING &&
           animatedCurrentIndex.value === -1
         ) {
+          /**
+           * early exit if reduce motion is enabled and index is out of sync with position.
+           */
+          if (
+            reduceMotion &&
+            animatedSnapPoints.value[animatedIndex.value] !==
+              animatedPosition.value
+          ) {
+            return;
+          }
           setToPosition(animatedClosedPosition.value);
           return;
         }
@@ -987,7 +1011,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           animationConfigs
         );
       },
-      [getEvaluatedPosition, animateToPosition, setToPosition]
+      [getEvaluatedPosition, animateToPosition, setToPosition, reduceMotion]
     );
     //#endregion
 
@@ -1469,12 +1493,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         height: animate({
           point: animatedContentHeightMax.value,
           configs: _providedAnimationConfigs,
+          overrideReduceMotion: _providedOverrideReduceMotion,
         }),
       };
     }, [
       enableDynamicSizing,
       animatedContentHeight.value,
       animatedContentHeightMax.value,
+      _providedOverrideReduceMotion,
       _providedAnimationConfigs,
     ]);
     const contentContainerStyle = useMemo(
@@ -1772,6 +1798,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         /**
+         * exit the method if the animated index is out of sync with the
+         * animated position. this happened when the user enable reduce
+         * motion setting only.
+         */
+        if (
+          reduceMotion &&
+          _animatedIndex === animatedCurrentIndex.value &&
+          animatedSnapPoints.value[_animatedIndex] !== _animatedPosition
+        ) {
+          return;
+        }
+
+        /**
          * if the index is not equal to the current index,
          * than the sheet position had changed and we trigger
          * the `onChange` callback.
@@ -1811,7 +1850,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           runOnJS(_providedOnClose)();
         }
       },
-      [handleOnChange, _providedOnClose]
+      [reduceMotion, handleOnChange, _providedOnClose]
     );
 
     /**

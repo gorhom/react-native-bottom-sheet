@@ -109,6 +109,18 @@ This will initially mount the sheet closed and when it's mounted and calculated 
 | ------- | ------- | -------- |
 | boolean | true    | NO       |
 
+### overrideReduceMotion
+
+To override the user reduce motion accessibility setting, [read more](https://docs.swmansion.com/react-native-reanimated/docs/guides/accessibility).
+
+- `ReduceMotion.System`: if the `Reduce motion` accessibility setting is enabled on the device, disable the animation.
+- `ReduceMotion.Always`: disable the animation, even if `Reduce motion` accessibility setting is not enabled.
+- `ReduceMotion.Never`: enable the animation, even if `Reduce motion` accessibility setting is enabled.
+
+| type    | default | required |
+| ------- | ------- | -------- |
+| ReduceMotion | ReduceMotion.System    | NO       |
+
 ## Styles
 
 ### style
