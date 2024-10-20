@@ -1,45 +1,53 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
+  BottomSheetFooter,
+  type BottomSheetFooterProps,
+  type BottomSheetHandleProps,
   BottomSheetModal,
   BottomSheetView,
-  BottomSheetFooter,
-  BottomSheetHandleProps,
-  BottomSheetFooterProps,
 } from '@gorhom/bottom-sheet';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '../../components/button';
 import { ContactItem } from '../../components/contactItem';
 import { HeaderHandle } from '../../components/headerHandle';
-import { withModalProvider } from './withModalProvider';
+import type { Contact } from '../../types';
 import { createContactListMockData } from '../../utilities/createMockData';
-import { Contact } from '../../types';
+import { withModalProvider } from './withModalProvider';
+
+const DATA = createContactListMockData(4);
 
 const DetachedExample = () => {
   // refs
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
+  // state
+  const [count, setCount] = useState(2);
+
   // variables
-  const data = useMemo(() => createContactListMockData(2), []);
+  const data = useMemo(() => DATA.slice(0, count), [count]);
 
   // hooks
   const { bottom: safeBottomArea } = useSafeAreaInsets();
 
   // callbacks
   const handlePresentPress = useCallback(() => {
-    bottomSheetRef.current!.present();
+    bottomSheetRef.current?.present();
   }, []);
   const handleDismissPress = useCallback(() => {
-    bottomSheetRef.current!.dismiss();
+    bottomSheetRef.current?.dismiss();
   }, []);
   const handleClosePress = useCallback(() => {
     bottomSheetRef.current?.close();
+  }, []);
+  const handleResizePress = useCallback(() => {
+    setCount(state => (state === 2 ? 4 : 2));
   }, []);
 
   // renders
   const renderHeaderHandle = useCallback(
     (props: BottomSheetHandleProps) => (
-      <HeaderHandle {...props} children="Detached Example" />
+      <HeaderHandle {...props}>Detached Example</HeaderHandle>
     ),
     []
   );
@@ -56,12 +64,15 @@ const DetachedExample = () => {
   const renderFooter = useCallback(
     (props: BottomSheetFooterProps) => (
       <BottomSheetFooter {...props}>
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>this is a footer!</Text>
-        </View>
+        <Button
+          label="Resize"
+          style={styles.footer}
+          labelStyle={styles.footerText}
+          onPress={handleResizePress}
+        />
       </BottomSheetFooter>
     ),
-    []
+    [handleResizePress]
   );
   return (
     <View style={styles.container}>
@@ -117,7 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 12,
-    padding: 12,
+    padding: 6,
     marginBottom: 12,
     borderRadius: 24,
     backgroundColor: '#80f',

@@ -1,7 +1,7 @@
-import React from 'react';
 import { ShowcaseApp } from '@gorhom/showcase-template';
+import React from 'react';
+import { description, version } from '../../package.json';
 import { screens } from './screens';
-import { version, description } from '../../package.json';
 
 const author = {
   username: 'Mo Gorhom',

@@ -1495,6 +1495,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           configs: _providedAnimationConfigs,
           overrideReduceMotion: _providedOverrideReduceMotion,
         }),
+        overflow: 'hidden',
       };
     }, [
       enableDynamicSizing,
@@ -1923,13 +1924,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                     style={contentContainerStyle}
                   >
                     {children}
-
-                    {footerComponent && (
-                      <BottomSheetFooterContainer
-                        footerComponent={footerComponent}
-                      />
-                    )}
                   </DraggableView>
+                  {footerComponent && (
+                    <BottomSheetFooterContainer
+                      footerComponent={footerComponent}
+                    />
+                  )}
                 </Animated.View>
                 <BottomSheetHandleContainer
                   key="BottomSheetHandleContainer"
@@ -1961,10 +1961,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   animatedPosition,
                   // animatedHandleGestureState,
                   // animatedContentGestureState,
-                  // animatedContainerHeight,
-                  // animatedSheetHeight,
-                  // animatedHandleHeight,
-                  // animatedContentHeight,
+                  animatedContainerHeight,
+                  animatedSheetHeight,
+                  animatedHandleHeight,
+                  animatedContentHeight,
+                  animatedFooterHeight,
                   // // keyboardHeight,
                   // isLayoutCalculated,
                   // isContentHeightFixed,
