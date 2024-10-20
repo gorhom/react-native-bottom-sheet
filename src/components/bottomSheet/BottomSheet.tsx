@@ -200,7 +200,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return $modal
         ? _animatedContainerHeight.value - verticalInset
         : _animatedContainerHeight.value;
-    }, [topInset, bottomInset, $modal, _animatedContainerHeight.value]);
+    }, [topInset, bottomInset, $modal, _animatedContainerHeight]);
     const animatedContainerOffset = useReactiveSharedValue(
       _providedContainerOffset ?? INITIAL_CONTAINER_OFFSET
     ) as Animated.SharedValue<Insets>;
@@ -221,7 +221,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       );
     const animatedHighestSnapPoint = useDerivedValue(
       () => animatedSnapPoints.value[animatedSnapPoints.value.length - 1],
-      [animatedSnapPoints.value]
+      [animatedSnapPoints]
     );
     const animatedClosedPosition = useDerivedValue(() => {
       let closedPosition = animatedContainerHeight.value;
@@ -231,10 +231,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       }
 
       return closedPosition;
-    }, [animatedContainerHeight.value, $modal, detached, bottomInset]);
+    }, [animatedContainerHeight, $modal, detached, bottomInset]);
     const animatedSheetHeight = useDerivedValue(
       () => animatedContainerHeight.value - animatedHighestSnapPoint.value,
-      [animatedContainerHeight.value, animatedHighestSnapPoint.value]
+      [animatedContainerHeight, animatedHighestSnapPoint]
     );
     const animatedCurrentIndex = useReactiveSharedValue(
       animateOnMount ? -1 : _providedIndex
@@ -1522,7 +1522,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return {
         paddingBottom: animatedContainerHeight.value,
       };
-    }, [animatedContainerHeight.value, detached]);
+    }, [animatedContainerHeight, detached]);
     const contentMaskContainerStyle = useMemo(
       () => [styles.contentMaskContainer, contentMaskContainerAnimatedStyle],
       [contentMaskContainerAnimatedStyle]
@@ -1581,7 +1581,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         evaluatePosition(ANIMATION_SOURCE.SNAP_POINT_CHANGE);
       },
-      [isLayoutCalculated.value, animatedSnapPoints.value]
+      [isLayoutCalculated, animatedSnapPoints]
     );
 
     /**

@@ -116,7 +116,7 @@ export function createBottomSheetScrollableComponent<T, P>(
           ? animatedFooterHeight.value
           : 0,
       }),
-      [animatedFooterHeight.value, enableFooterMarginAdjustment]
+      [animatedFooterHeight, enableFooterMarginAdjustment]
     );
     const containerStyle = useMemo(() => {
       return enableFooterMarginAdjustment
