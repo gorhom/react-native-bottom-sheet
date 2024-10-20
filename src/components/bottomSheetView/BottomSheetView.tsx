@@ -1,5 +1,9 @@
 import React, { memo, useEffect, useCallback, useMemo } from 'react';
-import { type LayoutChangeEvent, StyleSheet } from 'react-native';
+import {
+  type LayoutChangeEvent,
+  StyleSheet,
+  type ViewStyle,
+} from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
@@ -25,21 +29,22 @@ function BottomSheetViewComponent({
   //#endregion
 
   //#region styles
-  const flattenStyle = useMemo(() => StyleSheet.flatten(style), [style]);
+  const flattenStyle = useMemo<ViewStyle | undefined>(
+    () => StyleSheet.flatten(style),
+    [style]
+  );
   const containerStyle = useAnimatedStyle(() => {
     if (!enableFooterMarginAdjustment) {
-      return flattenStyle;
+      return flattenStyle ?? {};
     }
 
     const marginBottom =
-      typeof flattenStyle.marginBottom === 'number'
+      typeof flattenStyle?.marginBottom === 'number'
         ? flattenStyle.marginBottom
         : 0;
 
-    // console.log(paddingBottom, animatedFooterHeight.value);
-
     return {
-      ...flattenStyle,
+      ...(flattenStyle ?? {}),
       marginBottom: marginBottom + animatedFooterHeight.value,
     };
   }, [flattenStyle, enableFooterMarginAdjustment, animatedFooterHeight]);
