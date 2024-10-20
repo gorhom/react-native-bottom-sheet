@@ -1,5 +1,13 @@
 
 
+## [5.0.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.3...v5.0.4) (2024-10-20)
+
+
+### Bug Fixes
+
+* **#1983:** updated shared values access as hook dependancies ([ae41b2d](https://github.com/gorhom/react-native-bottom-sheet/commit/ae41b2da650d2be614d840fbdfe1d29db6d7a575)), closes [#1983](https://github.com/gorhom/react-native-bottom-sheet/issues/1983)
+* **#1987:** updated provided style handling for bottom sheet view ([4c8ae25](https://github.com/gorhom/react-native-bottom-sheet/commit/4c8ae252b8ec0bb420b60f8314cc7f04ed12b519)), closes [#1987](https://github.com/gorhom/react-native-bottom-sheet/issues/1987)
+
 ## [5.0.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.2...v5.0.3) (2024-10-20)
 
 
