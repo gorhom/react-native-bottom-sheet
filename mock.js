@@ -109,6 +109,7 @@ module.exports = {
   BottomSheetScrollView: ReactNative.ScrollView,
   BottomSheetSectionList: ReactNative.SectionList,
   BottomSheetFlatList: ReactNative.FlatList,
+  BottomSheetFlashList: ReactNative.FlatList,
   BottomSheetVirtualizedList: ReactNative.VirtualizedList,
 
   TouchableOpacity: ReactNative.TouchableOpacity,
