@@ -10,7 +10,7 @@ export type ScrollEventContextType = {
   shouldLockInitialPosition: boolean;
 };
 
-export const useScrollHandler = () => {
+export const useScrollHandler = (_, onScroll) => {
   //#region refs
   const scrollableRef = useRef<Scrollable>(null);
   //#endregion
@@ -168,7 +168,7 @@ export const useScrollHandler = () => {
   //#endregion
 
   return {
-    scrollHandler: undefined,
+    scrollHandler: onScroll,
     scrollableRef,
     scrollableContentOffsetY,
   };
