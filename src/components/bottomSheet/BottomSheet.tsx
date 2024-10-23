@@ -284,9 +284,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       );
     }, [
       _providedContainerHeight,
-      animatedContainerHeight.value,
+      animatedContainerHeight,
       animatedHandleHeight,
-      animatedSnapPoints.value,
+      animatedSnapPoints,
       handleComponent,
     ]);
     const isInTemporaryPosition = useSharedValue(false);
@@ -433,10 +433,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return SCROLLABLE_STATE.LOCKED;
     }, [
       enableContentPanningGesture,
-      animatedAnimationState.value,
-      animatedKeyboardState.value,
-      animatedScrollableOverrideState.value,
-      animatedSheetState.value,
+      animatedAnimationState,
+      animatedKeyboardState,
+      animatedScrollableOverrideState,
+      animatedSheetState,
     ]);
     // dynamic
     const animatedContentHeightMax = useDerivedValue(() => {
@@ -553,15 +553,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return currentIndex;
     }, [
       android_keyboardInputMode,
-      animatedAnimationSource.value,
-      animatedAnimationState.value,
-      animatedContainerHeight.value,
-      animatedCurrentIndex.value,
-      animatedNextPositionIndex.value,
-      animatedPosition.value,
-      animatedSnapPoints.value,
-      isInTemporaryPosition.value,
-      isLayoutCalculated.value,
+      animatedAnimationSource,
+      animatedAnimationState,
+      animatedContainerHeight,
+      animatedCurrentIndex,
+      animatedNextPositionIndex,
+      animatedPosition,
+      animatedSnapPoints,
+      isInTemporaryPosition,
+      isLayoutCalculated,
     ]);
     //#endregion
 
@@ -1499,8 +1499,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       };
     }, [
       enableDynamicSizing,
-      animatedContentHeight.value,
-      animatedContentHeightMax.value,
+      animatedContentHeight,
+      animatedContentHeightMax,
       _providedOverrideReduceMotion,
       _providedAnimationConfigs,
     ]);
@@ -1867,17 +1867,24 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    if (__DEV__) {
-      print({
-        component: BottomSheet.name,
-        method: 'render',
-        params: {
-          animatedSnapPoints: animatedSnapPoints.value,
-          animatedCurrentIndex: animatedCurrentIndex.value,
-          providedIndex: _providedIndex,
-        },
-      });
-    }
+    useEffect(() => {
+      if (__DEV__) {
+        print({
+          component: BottomSheet.name,
+          method: 'render',
+          params: {
+            animatedSnapPoints: animatedSnapPoints.value,
+            animatedCurrentIndex: animatedCurrentIndex.value,
+            providedIndex: _providedIndex,
+          },
+        });
+      }
+    }, [
+      BottomSheet.name,
+      animatedSnapPoints,
+      animatedCurrentIndex,
+      _providedIndex,
+    ]);
 
     const DraggableView = enableContentPanningGesture
       ? BottomSheetDraggableView
