@@ -1867,25 +1867,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    useEffect(() => {
-      if (__DEV__) {
-        print({
-          component: BottomSheet.name,
-          method: 'render',
-          params: {
-            animatedSnapPoints: animatedSnapPoints.value,
-            animatedCurrentIndex: animatedCurrentIndex.value,
-            providedIndex: _providedIndex,
-          },
-        });
-      }
-    }, [
-      BottomSheet.name,
-      animatedSnapPoints,
-      animatedCurrentIndex,
-      _providedIndex,
-    ]);
-
     const DraggableView = enableContentPanningGesture
       ? BottomSheetDraggableView
       : Animated.View;
