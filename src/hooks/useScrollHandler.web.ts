@@ -2,7 +2,7 @@ import { type TouchEvent, useEffect, useRef } from 'react';
 import { findNodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { ANIMATION_STATE, SCROLLABLE_STATE } from '../constants';
-import type { Scrollable } from '../types';
+import type { Scrollable, ScrollableEvent } from '../types';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 export type ScrollEventContextType = {
@@ -10,7 +10,7 @@ export type ScrollEventContextType = {
   shouldLockInitialPosition: boolean;
 };
 
-export const useScrollHandler = () => {
+export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
   //#region refs
   const scrollableRef = useRef<Scrollable>(null);
   //#endregion
@@ -168,7 +168,7 @@ export const useScrollHandler = () => {
   //#endregion
 
   return {
-    scrollHandler: undefined,
+    scrollHandler: onScroll,
     scrollableRef,
     scrollableContentOffsetY,
   };
