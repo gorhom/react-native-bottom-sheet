@@ -1,5 +1,13 @@
 
 
+## [5.0.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.4...v5.0.5) (2024-10-26)
+
+
+### Bug Fixes
+
+* **#1983:** updated shared values access as hook dependancies ([#1992](https://github.com/gorhom/react-native-bottom-sheet/issues/1992))(by [@pinpong](https://github.com/pinpong)) ([9757bd2](https://github.com/gorhom/react-native-bottom-sheet/commit/9757bd251cba67cf26489640f20fd1557b1a426e)), closes [#1983](https://github.com/gorhom/react-native-bottom-sheet/issues/1983) [#1983](https://github.com/gorhom/react-native-bottom-sheet/issues/1983)
+* added BottomSheetFlashList mock ([#1988](https://github.com/gorhom/react-native-bottom-sheet/issues/1988))(by @Fadikk367) ([13c7d47](https://github.com/gorhom/react-native-bottom-sheet/commit/13c7d47beae6f2451968d30e862f0ea49b7199b6))
+
 ## [5.0.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.3...v5.0.4) (2024-10-20)
 
 
