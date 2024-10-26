@@ -32,23 +32,23 @@ const App = () => {
 
   // renders
   return (
-    <BottomSheetModalProvider>
       <GestureHandlerRootView style={styles.container}>
-        <Button
-          onPress={handlePresentModalPress}
-          title="Present Modal"
-          color="black"
-        />
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          onChange={handleSheetChanges}
-        >
-          <BottomSheetView style={styles.contentContainer}>
-            <Text>Awesome 🎉</Text>
-          </BottomSheetView>
+        <BottomSheetModalProvider>
+          <Button
+            onPress={handlePresentModalPress}
+            title="Present Modal"
+            color="black"
+          />
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            onChange={handleSheetChanges}
+          >
+            <BottomSheetView style={styles.contentContainer}>
+              <Text>Awesome 🎉</Text>
+            </BottomSheetView>
         </BottomSheetModal>
-      </GestureHandlerRootView>
-    </BottomSheetModalProvider>
+        </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 };
 
