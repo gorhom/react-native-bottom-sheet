@@ -27,6 +27,8 @@ const KEYBOARD_EVENT_MAPPER = {
   }) as KeyboardEventName,
 };
 
+const DEBOUNCE_TIME = 100; // ms
+
 export const useKeyboard = () => {
   //#region variables
   const shouldHandleKeyboardEvents = useSharedValue(false);
@@ -37,8 +39,8 @@ export const useKeyboard = () => {
   const keyboardAnimationEasing =
     useSharedValue<KeyboardEventEasing>('keyboard');
   const keyboardAnimationDuration = useSharedValue(500);
-  // biome-ignore lint: to be addressed!
   const temporaryCachedKeyboardEvent = useSharedValue<any[]>([]);
+  const debounceTimer = useSharedValue<number | null>(null);
   //#endregion
 
   //#region worklets
@@ -50,24 +52,27 @@ export const useKeyboard = () => {
       easing: KeyboardEventEasing
     ) => {
       if (state === KEYBOARD_STATE.SHOWN && !shouldHandleKeyboardEvents.value) {
-        /**
-         * if the keyboard event was fired before the `onFocus` on TextInput,
-         * then we cache the input, and wait till the `shouldHandleKeyboardEvents`
-         * to be updated then fire this function again.
-         */
         temporaryCachedKeyboardEvent.value = [state, height, duration, easing];
         return;
       }
-      keyboardHeight.value =
-        state === KEYBOARD_STATE.SHOWN
-          ? height
-          : height === 0
+
+      if (debounceTimer.value !== null) {
+        clearTimeout(debounceTimer.value);
+      }
+
+      debounceTimer.value = setTimeout(() => {
+        keyboardHeight.value =
+          state === KEYBOARD_STATE.SHOWN
+            ? height
+            : height === 0
             ? keyboardHeight.value
             : height;
-      keyboardAnimationDuration.value = duration;
-      keyboardAnimationEasing.value = easing;
-      keyboardState.value = state;
-      temporaryCachedKeyboardEvent.value = [];
+        keyboardAnimationDuration.value = duration;
+        keyboardAnimationEasing.value = easing;
+        keyboardState.value = state;
+        temporaryCachedKeyboardEvent.value = [];
+        debounceTimer.value = null;
+      }, DEBOUNCE_TIME);
     },
     []
   );
@@ -108,11 +113,6 @@ export const useKeyboard = () => {
     };
   }, [handleKeyboardEvent]);
 
-  /**
-   * This reaction is needed to handle the issue with multiline text input.
-   *
-   * @link https://github.com/gorhom/react-native-bottom-sheet/issues/411
-   */
   useAnimatedReaction(
     () => shouldHandleKeyboardEvents.value,
     result => {
