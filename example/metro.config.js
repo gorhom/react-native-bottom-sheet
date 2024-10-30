@@ -1,6 +1,9 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config');
-const path = require('path');
+const path = require('node:path');
+const {
+  wrapWithReanimatedMetroConfig,
+} = require('react-native-reanimated/metro-config');
 
 // Find the project and workspace directories
 const projectRoot = __dirname;
@@ -15,4 +18,4 @@ config.resolver.nodeModulesPaths = [path.resolve(projectRoot, 'node_modules')];
 
 config.resolver.disableHierarchicalLookup = true;
 
-module.exports = config;
+module.exports = wrapWithReanimatedMetroConfig(config);
