@@ -679,7 +679,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         if (
-          position === animatedPosition.value ||
           position === undefined ||
           (animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
             position === animatedNextPosition.value)
@@ -690,6 +689,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         // stop animation if it is running
         if (animatedAnimationState.value === ANIMATION_STATE.RUNNING) {
           stopAnimation();
+        }
+
+        if (position === animatedPosition.value) {
+          return;
         }
 
         /**
