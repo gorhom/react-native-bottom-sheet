@@ -1,5 +1,15 @@
 
 
+## [5.0.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.5...v5.0.6) (2024-11-17)
+
+
+### Bug Fixes
+
+* clipped views when keyboard is closing ([2320a81](https://github.com/gorhom/react-native-bottom-sheet/commit/2320a81f95e696e22debe5a823740f51fadae0f6))
+* removed keyboard height setting from hide event ([61473b5](https://github.com/gorhom/react-native-bottom-sheet/commit/61473b56c3389e5ac9edfeb1dc4b93907e3b5d05))
+* updated useStableCallback to set callback in ref without useEffect ([#2010](https://github.com/gorhom/react-native-bottom-sheet/issues/2010))(by [@pavel-krasnov](https://github.com/pavel-krasnov)) ([e898859](https://github.com/gorhom/react-native-bottom-sheet/commit/e89885936391f5ce106983d8aac814bcb422e82c))
+* useStableCallback implementation ([87a73c5](https://github.com/gorhom/react-native-bottom-sheet/commit/87a73c59b83ef0b3868c12403a467ea3aebf0dd5))
+
 ## [5.0.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.4...v5.0.5) (2024-10-26)
 
 
