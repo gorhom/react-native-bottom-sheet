@@ -1,6 +1,6 @@
 import { type RefObject, createContext } from 'react';
 import type { State } from 'react-native-gesture-handler';
-import type Animated from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
 import type {
   AnimateToPositionType,
   BottomSheetGestureProps,
@@ -28,32 +28,32 @@ export interface BottomSheetInternalContextType
       >
     > {
   // animated states
-  animatedAnimationState: Animated.SharedValue<ANIMATION_STATE>;
-  animatedSheetState: Animated.SharedValue<SHEET_STATE>;
-  animatedScrollableState: Animated.SharedValue<SCROLLABLE_STATE>;
-  animatedKeyboardState: Animated.SharedValue<KEYBOARD_STATE>;
-  animatedContentGestureState: Animated.SharedValue<State>;
-  animatedHandleGestureState: Animated.SharedValue<State>;
+  animatedAnimationState: SharedValue<ANIMATION_STATE>;
+  animatedSheetState: SharedValue<SHEET_STATE>;
+  animatedScrollableState: SharedValue<SCROLLABLE_STATE>;
+  animatedKeyboardState: SharedValue<KEYBOARD_STATE>;
+  animatedContentGestureState: SharedValue<State>;
+  animatedHandleGestureState: SharedValue<State>;
 
   // animated values
-  animatedSnapPoints: Animated.SharedValue<number[]>;
-  animatedPosition: Animated.SharedValue<number>;
-  animatedIndex: Animated.SharedValue<number>;
-  animatedContainerHeight: Animated.SharedValue<number>;
-  animatedContentHeight: Animated.SharedValue<number>;
-  animatedHighestSnapPoint: Animated.SharedValue<number>;
-  animatedClosedPosition: Animated.SharedValue<number>;
-  animatedFooterHeight: Animated.SharedValue<number>;
-  animatedHandleHeight: Animated.SharedValue<number>;
-  animatedKeyboardHeight: Animated.SharedValue<number>;
-  animatedKeyboardHeightInContainer: Animated.SharedValue<number>;
-  animatedScrollableType: Animated.SharedValue<SCROLLABLE_TYPE>;
-  animatedScrollableContentOffsetY: Animated.SharedValue<number>;
-  animatedScrollableOverrideState: Animated.SharedValue<SCROLLABLE_STATE>;
-  isScrollableRefreshable: Animated.SharedValue<boolean>;
-  isContentHeightFixed: Animated.SharedValue<boolean>;
-  isInTemporaryPosition: Animated.SharedValue<boolean>;
-  shouldHandleKeyboardEvents: Animated.SharedValue<boolean>;
+  animatedSnapPoints: SharedValue<number[]>;
+  animatedPosition: SharedValue<number>;
+  animatedIndex: SharedValue<number>;
+  animatedContainerHeight: SharedValue<number>;
+  animatedContentHeight: SharedValue<number>;
+  animatedHighestSnapPoint: SharedValue<number>;
+  animatedClosedPosition: SharedValue<number>;
+  animatedFooterHeight: SharedValue<number>;
+  animatedHandleHeight: SharedValue<number>;
+  animatedKeyboardHeight: SharedValue<number>;
+  animatedKeyboardHeightInContainer: SharedValue<number>;
+  animatedScrollableType: SharedValue<SCROLLABLE_TYPE>;
+  animatedScrollableContentOffsetY: SharedValue<number>;
+  animatedScrollableOverrideState: SharedValue<SCROLLABLE_STATE>;
+  isScrollableRefreshable: SharedValue<boolean>;
+  isContentHeightFixed: SharedValue<boolean>;
+  isInTemporaryPosition: SharedValue<boolean>;
+  shouldHandleKeyboardEvents: SharedValue<boolean>;
 
   // methods
   stopAnimation: () => void;

@@ -1,13 +1,14 @@
 import React, { useRef } from 'react';
 import { type TextProps as RNTextProps, TextInput } from 'react-native';
 import Animated, {
+  type SharedValue,
   useAnimatedReaction,
   useDerivedValue,
 } from 'react-native-reanimated';
 
 interface TextProps {
   text: string;
-  value: Animated.SharedValue<number | boolean> | number;
+  value: SharedValue<number | boolean> | number;
   style?: Animated.AnimateProps<RNTextProps>['style'];
 }
 

@@ -21,7 +21,7 @@ import { normalizeSnapPoint } from '../utilities';
  * @param footerHeight footer size.
  * @param enableDynamicSizing
  * @param maxDynamicContentSize
- * @returns {Animated.SharedValue<number[]>}
+ * @returns {SharedValue<number[]>}
  */
 export const useAnimatedSnapPoints = (
   snapPoints: BottomSheetProps['snapPoints'],

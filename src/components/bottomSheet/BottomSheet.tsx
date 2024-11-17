@@ -22,6 +22,7 @@ import Animated, {
   useWorkletCallback,
   type WithSpringConfig,
   type WithTimingConfig,
+  type SharedValue,
   useReducedMotion,
   ReduceMotion,
 } from 'react-native-reanimated';
@@ -203,7 +204,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }, [topInset, bottomInset, $modal, _animatedContainerHeight]);
     const animatedContainerOffset = useReactiveSharedValue(
       _providedContainerOffset ?? INITIAL_CONTAINER_OFFSET
-    ) as Animated.SharedValue<Insets>;
+    ) as SharedValue<Insets>;
     const animatedHandleHeight = useReactiveSharedValue<number>(
       INITIAL_HANDLE_HEIGHT
     );
