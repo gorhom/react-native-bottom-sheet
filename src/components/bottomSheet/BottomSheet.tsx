@@ -7,7 +7,7 @@ import React, {
   memo,
   useEffect,
 } from 'react';
-import { Platform } from 'react-native';
+import { type Insets, Platform } from 'react-native';
 import { State } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedReaction,
@@ -48,7 +48,7 @@ import {
   useReactiveSharedValue,
   useScrollable,
 } from '../../hooks';
-import type { BottomSheetMethods, Insets } from '../../types';
+import type { BottomSheetMethods } from '../../types';
 import {
   animate,
   getKeyboardAnimationConfigs,
@@ -204,7 +204,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }, [topInset, bottomInset, $modal, _animatedContainerHeight]);
     const animatedContainerOffset = useReactiveSharedValue(
       _providedContainerOffset ?? INITIAL_CONTAINER_OFFSET
-    ) as SharedValue<Insets>;
+    ) as SharedValue<Required<Insets>>;
     const animatedHandleHeight = useReactiveSharedValue<number>(
       INITIAL_HANDLE_HEIGHT
     );
@@ -388,7 +388,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       isInTemporaryPosition,
       keyboardBehavior,
     ]);
-    const animatedScrollableState = useDerivedValue(() => {
+    const animatedScrollableState = useDerivedValue<SCROLLABLE_STATE>(() => {
       /**
        * if user had disabled content panning gesture, then we unlock
        * the scrollable state.

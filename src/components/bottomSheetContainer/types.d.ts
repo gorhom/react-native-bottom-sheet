@@ -8,7 +8,7 @@ export interface BottomSheetContainerProps
     Pick<BottomSheetProps, 'topInset' | 'bottomInset' | 'detached'>
   > {
   containerHeight: SharedValue<number>;
-  containerOffset: SharedValue<Insets>;
+  containerOffset: SharedValue<Required<Insets>>;
   shouldCalculateHeight?: boolean;
   style?: StyleProp<ViewStyle>;
   children?: ReactNode;
