@@ -1496,7 +1496,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           configs: _providedAnimationConfigs,
           overrideReduceMotion: _providedOverrideReduceMotion,
         }),
-        overflow: 'hidden',
       };
     }, [
       enableDynamicSizing,
@@ -1951,10 +1950,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   // animatedHandleGestureState,
                   // animatedContentGestureState,
                   animatedContainerHeight,
+                  animatedContentHeightMax,
                   animatedSheetHeight,
                   animatedHandleHeight,
                   animatedContentHeight,
                   animatedFooterHeight,
+                  animatedKeyboardHeight,
+                  animatedKeyboardHeightInContainer,
                   // // keyboardHeight,
                   // isLayoutCalculated,
                   // isContentHeightFixed,
