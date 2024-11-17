@@ -81,12 +81,14 @@ export interface BottomSheetMethods {
    */
   forceClose: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
 }
-export interface BottomSheetModalMethods extends BottomSheetMethods {
+
+// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+export interface BottomSheetModalMethods<T = any> extends BottomSheetMethods {
   /**
    * Mount and present the bottom sheet modal to the initial snap point.
    * @param data to be passed to the modal.
    */
-  present: (data?: never) => void;
+  present: (data?: T) => void;
   /**
    * Close and unmount the bottom sheet modal.
    * @param animationConfigs snap animation configs.

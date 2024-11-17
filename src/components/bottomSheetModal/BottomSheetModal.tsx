@@ -22,22 +22,22 @@ import {
 import type {
   BottomSheetModalPrivateMethods,
   BottomSheetModalProps,
+  BottomSheetModalState,
 } from './types';
 
-type BottomSheetModal = BottomSheetModalMethods;
-
-const INITIAL_STATE: {
-  mount: boolean;
-  data?: never;
-} = {
+const INITIAL_STATE: BottomSheetModalState = {
   mount: false,
   data: undefined,
 };
 
-const BottomSheetModalComponent = forwardRef<
-  BottomSheetModal,
-  BottomSheetModalProps
->(function BottomSheetModal(props, ref) {
+// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+type BottomSheetModal<T = any> = BottomSheetModalMethods<T>;
+
+// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+function BottomSheetModalComponent<T = any>(
+  props: BottomSheetModalProps<T>,
+  ref: React.ForwardedRef<BottomSheetModal<T>>
+) {
   const {
     // modal props
     name,
@@ -62,7 +62,8 @@ const BottomSheetModalComponent = forwardRef<
   } = props;
 
   //#region state
-  const [{ mount, data }, setState] = useState(INITIAL_STATE);
+  const [{ mount, data }, setState] =
+    useState<BottomSheetModalState<T>>(INITIAL_STATE);
   //#endregion
 
   //#region hooks
@@ -190,7 +191,7 @@ const BottomSheetModalComponent = forwardRef<
   // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   // biome-ignore lint/correctness/useExhaustiveDependencies(ref): ref is a stable object
   const handlePresent = useCallback(
-    function handlePresent(_data?: never) {
+    function handlePresent(_data?: T) {
       requestAnimationFrame(() => {
         setState({
           mount: true,
@@ -461,9 +462,20 @@ const BottomSheetModalComponent = forwardRef<
       </ContainerComponent>
     </Portal>
   ) : null;
-});
+}
 
-const BottomSheetModal = memo(BottomSheetModalComponent);
-BottomSheetModal.displayName = 'BottomSheetModal';
+const BottomSheetModal = memo(forwardRef(BottomSheetModalComponent)) as <
+  // biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+  T = any,
+>(
+  props: BottomSheetModalProps<T> & {
+    ref?: React.ForwardedRef<BottomSheetModal<T>>;
+  }
+) => ReturnType<typeof BottomSheetModalComponent>;
+(
+  BottomSheetModal as React.MemoExoticComponent<
+    typeof BottomSheetModalComponent
+  >
+).displayName = 'BottomSheetModal';
 
 export default BottomSheetModal;

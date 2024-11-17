@@ -11,7 +11,8 @@ export interface BottomSheetModalPrivateMethods {
 
 export type BottomSheetModalStackBehavior = keyof typeof MODAL_STACK_BEHAVIOR;
 
-export interface BottomSheetModalProps
+// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+export interface BottomSheetModalProps<T = any>
   extends Omit<BottomSheetProps, 'containerHeight' | 'onClose'> {
   /**
    * Modal name to help identify the modal for later on.
@@ -56,5 +57,11 @@ export interface BottomSheetModalProps
    * A scrollable node or normal view.
    * @type React.ReactNode[] | React.ReactNode | (({ data: any }?) => React.ReactElement)
    */
-  children: React.FC<{ data?: never }> | React.ReactNode[] | React.ReactNode;
+  children: React.FC<{ data?: T }> | React.ReactNode[] | React.ReactNode;
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+export interface BottomSheetModalState<T = any> {
+  mount: boolean;
+  data: T | undefined;
 }
