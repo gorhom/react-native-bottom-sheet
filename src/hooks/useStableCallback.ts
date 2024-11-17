@@ -1,23 +1,25 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 // biome-ignore lint: to be addressed!
-type Callback = (...args: any[]) => any;
+type Callback<T> = (...args: T[]) => any;
+
 /**
- * Provide a stable version of useCallback
- * https://gist.github.com/JakeCoxon/c7ebf6e6496f8468226fd36b596e1985
+ * Provide a stable version of useCallback.
  */
-export const useStableCallback = (callback: Callback) => {
-  const callbackRef = useRef<Callback>();
-  callbackRef.current = callback;
-  const memoCallback = useCallback(
-    // biome-ignore lint: to be addressed!
-    (...args: any) => callbackRef.current && callbackRef.current(...args),
-    []
-  );
+export function useStableCallback<T>(callback: Callback<T>) {
+  const callbackRef = useRef<Callback<T>>();
+
+  useLayoutEffect(() => {
+    callbackRef.current = callback;
+  });
+
   useEffect(() => {
     return () => {
       callbackRef.current = undefined;
     };
-  });
-  return memoCallback;
-};
+  }, []);
+
+  return useCallback<Callback<T>>((...args) => {
+    return callbackRef.current?.(...args);
+  }, []);
+}
