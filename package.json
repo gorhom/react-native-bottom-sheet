@@ -46,7 +46,6 @@
     "@release-it/conventional-changelog": "^8.0.1",
     "@types/invariant": "^2.2.34",
     "@types/react": "~18.3.12",
-    "@types/react-native": "~0.73.0",
     "copyfiles": "^2.4.1",
     "husky": "^4.3.8",
     "lint-staged": "^13.2.2",
@@ -61,7 +60,6 @@
   },
   "peerDependencies": {
     "@types/react": "*",
-    "@types/react-native": "*",
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=2.16.1",
