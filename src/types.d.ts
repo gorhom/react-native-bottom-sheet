@@ -195,4 +195,33 @@ export interface NullableAccessibilityProps extends AccessibilityProps {
   accessibilityLabel?: AccessibilityProps['accessibilityLabel'] | null;
   accessibilityHint?: AccessibilityProps['accessibilityHint'] | null;
   accessibilityRole?: AccessibilityProps['accessibilityRole'] | null;
+  /**
+   * Additional accessibility props
+   *
+   * @link https://reactnative.dev/docs/accessibility
+  */
+  accessibilityAdditionalProps?: {
+    accessibilityState?: AccessibilityProps['accessibilityState'];
+    accessibilityValue?: AccessibilityProps['accessibilityValue'];
+    /**
+     * iOS Only features
+     * @link https://reactnative.dev/docs/accessibility
+     * @platform iOS
+    */
+    onAccessibilityTap?:  AccessibilityProps['onAccessibilityTap'];
+    accessibilityLanguage?:  AccessibilityProps['accessibilityLanguage'];
+    accessibilityIgnoresInvertColors?:  AccessibilityProps['accessibilityIgnoresInvertColors'];
+    accessibilityViewIsModal?:  AccessibilityProps['accessibilityViewIsModal'];
+    accessibilityElementsHidden?:  AccessibilityProps['accessibilityElementsHidden'];
+    onAccessibilityEscape?:  AccessibilityProps['onAccessibilityEscape'];
+    onMagicTap?:  AccessibilityProps['onMagicTap'];
+    /**
+     * Android Only features
+     * @link https://reactnative.dev/docs/accessibility
+     * @platform Android
+    */
+    accessibilityLabelledBy?: AccessibilityProps['accessibilityLabelledBy'];
+    accessibilityLiveRegion?: AccessibilityProps['accessibilityLiveRegion'];
+    importantForAccessibility?: AccessibilityProps['importantForAccessibility'];
+  },
 }
