@@ -9,8 +9,8 @@ slug: /usage
 Here is a simple usage of the **Bottom Sheet**, with non-scrollable content. For more scrollable usage please read [Scrollables](./scrollables).
 
 ```tsx
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { Text, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
