@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
   memo,
   useEffect,
+  useRef,
 } from 'react';
 import { type Insets, Platform } from 'react-native';
 import { State } from 'react-native-gesture-handler';
@@ -1854,14 +1855,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [reduceMotion, handleOnChange, _providedOnClose]
     );
 
+    /** 
+     * Remember previously provided index, so that we don't cause
+     * unnecessary handleSnapToIndex
+     */
+    const previousProvidedIndex = useRef(_providedIndex)
+
     /**
      * React to `index` prop to snap the sheet to the new position.
      *
      * @alias onIndexChange
      */
     useEffect(() => {
-      if (isAnimatedOnMount.value) {
+      if (isAnimatedOnMount.value && previousProvidedIndex.current !== _providedIndex) {
         handleSnapToIndex(_providedIndex);
+        previousProvidedIndex.current = _providedIndex
       }
     }, [_providedIndex, isAnimatedOnMount, handleSnapToIndex]);
     //#endregion
