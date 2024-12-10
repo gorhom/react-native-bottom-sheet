@@ -7,7 +7,11 @@
   "types": "lib/typescript/index.d.ts",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "files": ["src", "lib", "mock.js"],
+  "files": [
+    "src",
+    "lib",
+    "mock.js"
+  ],
   "keywords": [
     "react-native",
     "ios",
@@ -34,7 +38,9 @@
     "delete-dts.js": "find ./lib/commonjs -name '*.d.js*' -delete && find ./lib/module -name '*.d.js*' -delete",
     "release": "rm -rf lib && yarn build && release-it",
     "example": "yarn --cwd example",
-    "bootstrap": "yarn install && yarn example"
+    "example-next": "yarn --cwd example-next",
+    "example-webpack": "yarn --cwd example-webpack",
+    "bootstrap": "yarn install && yarn example && yarn example-next && yarn example-webpack"
   },
   "dependencies": {
     "@gorhom/portal": "1.0.14",
@@ -78,6 +84,11 @@
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
-    "targets": ["commonjs", "module", "typescript"]
-  }
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

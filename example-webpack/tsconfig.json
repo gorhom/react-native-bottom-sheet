@@ -1,0 +1,10 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "incremental": true,
+    "module": "esnext",
+    "jsx": "preserve",
+    "types": ["react-native"],
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}
