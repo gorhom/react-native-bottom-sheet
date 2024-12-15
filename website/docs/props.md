@@ -89,7 +89,7 @@ Enable pan down gesture to close the sheet.
 
 ### enableDynamicSizing
 
-Enable dynamic sizing for content view and scrollable content size.
+Enable dynamic sizing for content view and scrollable content size. [read more](https://gorhom.dev/react-native-bottom-sheet/dynamic-sizing).
 
 | type    | default | required |
 | ------- | ------- | -------- |
