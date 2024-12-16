@@ -1,0 +1,6 @@
+declare const DEFAULT_ACCESSIBLE = false;
+declare const DEFAULT_ACCESSIBILITY_ROLE: undefined;
+declare const DEFAULT_ACCESSIBILITY_LABEL: undefined;
+declare const DEFAULT_ACCESSIBILITY_HINT: undefined;
+export { DEFAULT_ACCESSIBLE, DEFAULT_ACCESSIBILITY_ROLE, DEFAULT_ACCESSIBILITY_LABEL, DEFAULT_ACCESSIBILITY_HINT, };
+//# sourceMappingURL=constants.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"useScrollable.d.ts","sourceRoot":"","sources":["../../../src/hooks/useScrollable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,SAAS,EAAuB,MAAM,OAAO,CAAC;AAG5D,OAAO,EAAE,gBAAgB,EAAE,eAAe,EAAE,MAAM,cAAc,CAAC;AACjE,OAAO,KAAK,EAAE,UAAU,EAAE,aAAa,EAAE,MAAM,UAAU,CAAC;AAE1D,eAAO,MAAM,aAAa;;;;;;4BAgBmB,aAAa;+BAcV,SAAS,CAAC,UAAU,CAAC;CAgCpE,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"names":["createContext","BottomSheetContext","BottomSheetProvider","Provider"],"sourceRoot":"../../../src","sources":["contexts/external.ts"],"mappings":";;AAAA,SAASA,aAAa,QAAQ,OAAO;AAGrC,OAAO,MAAMC,kBAAkB,gBAAGD,aAAa,CAE7C,IAAI,CAAC;AAEP,OAAO,MAAME,mBAAmB,GAAGD,kBAAkB,CAACE,QAAQ","ignoreList":[]}

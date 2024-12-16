@@ -1,0 +1,1 @@
+{"version":3,"file":"useScrollHandler.web.d.ts","sourceRoot":"","sources":["../../../src/hooks/useScrollHandler.web.ts"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAE,UAAU,EAAE,eAAe,EAAE,MAAM,UAAU,CAAC;AAG5D,MAAM,MAAM,sBAAsB,GAAG;IACnC,qBAAqB,EAAE,MAAM,CAAC;IAC9B,yBAAyB,EAAE,OAAO,CAAC;CACpC,CAAC;AAEF,eAAO,MAAM,gBAAgB,MAAO,KAAK,aAAa,eAAe;;;;CAkKpE,CAAC"}

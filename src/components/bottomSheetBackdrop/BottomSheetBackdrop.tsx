@@ -146,9 +146,7 @@ const BottomSheetBackdropComponent = ({
       accessibilityHint={
         _providedAccessibilityHint
           ? _providedAccessibilityHint
-          : `Tap to ${
-              typeof pressBehavior === 'string' ? pressBehavior : 'move'
-            } the Bottom Sheet`
+          : undefined
       }
     >
       {children}
