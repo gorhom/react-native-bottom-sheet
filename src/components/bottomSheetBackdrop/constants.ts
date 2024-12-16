@@ -4,10 +4,10 @@ const DEFAULT_DISAPPEARS_ON_INDEX = 0;
 const DEFAULT_ENABLE_TOUCH_THROUGH = false;
 const DEFAULT_PRESS_BEHAVIOR = 'close' as const;
 
-const DEFAULT_ACCESSIBLE = true;
-const DEFAULT_ACCESSIBILITY_ROLE = 'button';
-const DEFAULT_ACCESSIBILITY_LABEL = 'Bottom sheet backdrop';
-const DEFAULT_ACCESSIBILITY_HINT = 'Tap to close the bottom sheet';
+const DEFAULT_ACCESSIBLE = false;
+const DEFAULT_ACCESSIBILITY_ROLE = '';
+const DEFAULT_ACCESSIBILITY_LABEL = '';
+const DEFAULT_ACCESSIBILITY_HINT = '';
 
 export {
   DEFAULT_OPACITY,
