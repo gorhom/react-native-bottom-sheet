@@ -1450,9 +1450,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         collapse: handleCollapse,
         close: handleClose,
         forceClose: handleForceClose,
-        getSnapPoints: () => {
-          return animatedSnapPoints.value
-        }
       }),
       [
         animatedIndex,
