@@ -792,6 +792,24 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         const snapPoints = animatedSnapPoints.value;
         const keyboardState = animatedKeyboardState.value;
         const highestSnapPoint = animatedHighestSnapPoint.value;
+        const currentPosition = animatedPosition.value;
+        const closedPosition = animatedClosedPosition.value;
+
+        /**
+         * Handle initial mount and dynamic content changes during mount
+         */
+        if (!isAnimatedOnMount.value || source === ANIMATION_SOURCE.MOUNT) {
+          const position = snapPoints[_providedIndex];
+          return position;
+        }
+
+        // Only maintain closed state if we're actually closed and not trying to open
+        const isCurrentlyClosed = currentPosition >= closedPosition;
+        if (source === ANIMATION_SOURCE.SNAP_POINT_CHANGE && 
+            isCurrentlyClosed && 
+            _providedIndex === -1) {
+          return closedPosition;
+        }
 
         /**
          * if the keyboard blur behavior is restore and keyboard is hidden,
@@ -849,7 +867,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           isInTemporaryPosition.value = true;
           const keyboardHeightInContainer =
             animatedKeyboardHeightInContainer.value;
-          return Math.max(0, highestSnapPoint - keyboardHeightInContainer);
+          const nextPosition = Math.max(0, highestSnapPoint - keyboardHeightInContainer);
+          return nextPosition;
         }
 
         /**
@@ -857,23 +876,65 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * the current position.
          */
         if (isInTemporaryPosition.value) {
-          return animatedPosition.value;
+          return currentPosition;
         }
 
         /**
-         * if the bottom sheet did not animate on mount,
-         * then we return the provided index or the closed position.
+         * Handle dynamic content changes after mount
          */
-        if (!isAnimatedOnMount.value) {
-          return _providedIndex === -1
-            ? animatedClosedPosition.value
-            : snapPoints[_providedIndex];
+        if (source === ANIMATION_SOURCE.SNAP_POINT_CHANGE) {
+          // If we're trying to open the sheet, use the target snap point
+          if (_providedIndex !== -1) {
+            const targetPosition = snapPoints[_providedIndex];
+            return targetPosition;
+          }
+
+          // Find the closest snap point to current position
+          let closestPoint = highestSnapPoint;
+          let minDistance = Math.abs(currentPosition - highestSnapPoint);
+          
+          for (const point of snapPoints) {
+            const distance = Math.abs(currentPosition - point);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestPoint = point;
+            }
+          }
+          
+          return closestPoint;
         }
 
         /**
-         * return the current index position.
+         * return the current index position or fallback to closest point
          */
-        return snapPoints[currentIndex];
+        const position = snapPoints[currentIndex];
+        
+        if (position === undefined) {
+          // If sheet was closed and should stay closed
+          if (currentPosition >= closedPosition && _providedIndex === -1) {
+            return closedPosition;
+          }
+          
+          // Use provided index if available
+          if (_providedIndex !== -1) {
+            return snapPoints[_providedIndex];
+          }
+          
+          // Find closest snap point as fallback
+          let closestPoint = highestSnapPoint;
+          let minDistance = Math.abs(currentPosition - highestSnapPoint);
+          
+          for (const point of snapPoints) {
+            const distance = Math.abs(currentPosition - point);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestPoint = point;
+            }
+          }
+          return closestPoint;
+        }
+        
+        return position;
       },
       [
         animatedContentGestureState,
@@ -884,6 +945,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedKeyboardState,
         animatedPosition,
         animatedSnapPoints,
+        animatedClosedPosition,
         isInTemporaryPosition,
         isAnimatedOnMount,
         keyboardBehavior,
@@ -931,9 +993,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               undefined,
               animationConfigs
             );
+            // Only set isAnimatedOnMount to true after animation starts
+            if (source === ANIMATION_SOURCE.MOUNT) {
+              isAnimatedOnMount.value = true;
+            }
           } else {
             setToPosition(proposedPosition);
-            isAnimatedOnMount.value = true;
+            // Only set isAnimatedOnMount to true after position is set
+            if (source === ANIMATION_SOURCE.MOUNT) {
+              isAnimatedOnMount.value = true;
+            }
           }
           return;
         }
