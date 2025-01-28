@@ -993,9 +993,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               undefined,
               animationConfigs
             );
-            // Only set isAnimatedOnMount to true after animation starts
+            // Only set isAnimatedOnMount to true after animation completes
             if (source === ANIMATION_SOURCE.MOUNT) {
-              isAnimatedOnMount.value = true;
+              return;
             }
           } else {
             setToPosition(proposedPosition);
