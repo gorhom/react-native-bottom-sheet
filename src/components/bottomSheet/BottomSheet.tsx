@@ -245,7 +245,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedNextPositionIndex = useSharedValue(INITIAL_VALUE);
 
     // conditional
-    const isAnimatedOnMount = useSharedValue(false);
+    const isAnimatedOnMount = useSharedValue(
+      !animateOnMount || _providedIndex === -1
+    );
     const isContentHeightFixed = useSharedValue(false);
     const isLayoutCalculated = useDerivedValue(() => {
       let isContainerHeightCalculated = false;
@@ -674,6 +676,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             params: {
               currentPosition: animatedPosition.value,
               nextPosition: position,
+              source,
             },
           });
         }
