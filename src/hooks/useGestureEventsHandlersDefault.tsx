@@ -59,6 +59,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       overDragResistanceFactor,
       isInTemporaryPosition,
       isScrollableRefreshable,
+      enableBlurKeyboardOnGesture,
       animateToPosition,
       stopAnimation,
     } = useBottomSheetInternal();
@@ -73,6 +74,16 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       function handleOnStart(__, _) {
         // cancel current animation
         stopAnimation();
+
+        let initialKeyboardState = animatedKeyboardState.value;
+        // blur the keyboard when user start dragging the bottom sheet
+        if (
+          enableBlurKeyboardOnGesture &&
+          initialKeyboardState === KEYBOARD_STATE.SHOWN
+        ) {
+          initialKeyboardState = KEYBOARD_STATE.HIDDEN;
+          runOnJS(dismissKeyboard)();
+        }
 
         // store current animated position
         context.value = {
@@ -94,6 +105,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       },
       [
         stopAnimation,
+        enableBlurKeyboardOnGesture,
         animatedPosition,
         animatedKeyboardState,
         animatedScrollableContentOffsetY,

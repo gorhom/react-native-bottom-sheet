@@ -69,6 +69,7 @@ import {
   DEFAULT_ACCESSIBLE,
   DEFAULT_ANIMATE_ON_MOUNT,
   DEFAULT_DYNAMIC_SIZING,
+  DEFAULT_ENABLE_BLUR_KEYBOARD_ON_GESTURE,
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
   DEFAULT_ENABLE_OVER_DRAG,
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
@@ -125,6 +126,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       keyboardBehavior = DEFAULT_KEYBOARD_BEHAVIOR,
       keyboardBlurBehavior = DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
       android_keyboardInputMode = DEFAULT_KEYBOARD_INPUT_MODE,
+      enableBlurKeyboardOnGesture = DEFAULT_ENABLE_BLUR_KEYBOARD_ON_GESTURE,
 
       // layout
       containerHeight: _providedContainerHeight,
@@ -1393,6 +1395,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         activeOffsetY: _providedActiveOffsetY,
         failOffsetX: _providedFailOffsetX,
         failOffsetY: _providedFailOffsetY,
+        enableBlurKeyboardOnGesture,
         animateToPosition,
         stopAnimation,
         setScrollableRef,
@@ -1428,6 +1431,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         enableOverDrag,
         enablePanDownToClose,
         enableDynamicSizing,
+        enableBlurKeyboardOnGesture,
         _providedSimultaneousHandlers,
         _providedWaitFor,
         _providedActiveOffsetX,

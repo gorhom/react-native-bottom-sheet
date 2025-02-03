@@ -1,12 +1,12 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {
-  SearchHandle,
-  SEARCH_HANDLE_HEIGHT,
-} from '../../components/searchHandle';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
+import {
+  SEARCH_HANDLE_HEIGHT,
+  SearchHandle,
+} from '../../components/searchHandle';
 
 const KeyboardHandlingExample = () => {
   // state
@@ -16,6 +16,7 @@ const KeyboardHandlingExample = () => {
   const [keyboardBlurBehavior, setKeyboardBlurBehavior] = useState<
     'none' | 'restore'
   >('none');
+  const [blurKeyboardOnGesture, setBlurKeyboardOnGesture] = useState(false);
 
   // hooks
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -46,6 +47,9 @@ const KeyboardHandlingExample = () => {
       }
     });
   }, []);
+  const handleToggleBlurKeyboardOnGesture = useCallback(() => {
+    setBlurKeyboardOnGesture(state => !state);
+  }, []);
   const handleExpandPress = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);
@@ -67,6 +71,10 @@ const KeyboardHandlingExample = () => {
         label={`Toggle Keyboard Blur Behavior: ${keyboardBlurBehavior}`}
         onPress={handleToggleKeyboardBlurBehavior}
       />
+      <Button
+        label={`Toggle Blur Keyboard On Gesture: ${blurKeyboardOnGesture}`}
+        onPress={handleToggleBlurKeyboardOnGesture}
+      />
       <Button label="Expand" onPress={handleExpandPress} />
       <Button label="Collapse" onPress={handleCollapsePress} />
       <Button label="Close" onPress={handleClosePress} />
@@ -76,6 +84,7 @@ const KeyboardHandlingExample = () => {
         enableDynamicSizing={false}
         keyboardBehavior={keyboardBehavior}
         keyboardBlurBehavior={keyboardBlurBehavior}
+        enableBlurKeyboardOnGesture={blurKeyboardOnGesture}
         handleComponent={SearchHandle}
       >
         <ContactList count={12} type="FlatList" />
