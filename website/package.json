@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@docusaurus/core": "3.5.2",
-    "@docusaurus/plugin-google-gtag": "^3.5.2",
+    "@docusaurus/plugin-google-gtag": "3.5.2",
     "@docusaurus/preset-classic": "3.5.2",
     "@gorhom/docusaurus-preset": "*",
     "@gorhom/docusaurus-theme": "*",
@@ -33,11 +33,7 @@
     "typescript": "~5.5.2"
   },
   "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.5%", "not dead", "not op_mini all"],
     "development": [
       "last 3 chrome version",
       "last 3 firefox version",
