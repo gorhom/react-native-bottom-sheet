@@ -47,6 +47,7 @@ import {
   usePropsValidator,
   useReactiveSharedValue,
   useScrollable,
+  useStableCallback,
 } from '../../hooks';
 import type { BottomSheetMethods } from '../../types';
 import {
@@ -1022,68 +1023,56 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region public methods
-    // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheet.name): used for debug only
-    const handleSnapToIndex = useCallback(
-      function handleSnapToIndex(
-        index: number,
-        animationConfigs?: WithSpringConfig | WithTimingConfig
+    const handleSnapToIndex = useStableCallback(function handleSnapToIndex(
+      index: number,
+      animationConfigs?: WithSpringConfig | WithTimingConfig
+    ) {
+      const snapPoints = animatedSnapPoints.value;
+      invariant(
+        index >= -1 && index <= snapPoints.length - 1,
+        `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
+          snapPoints.length - 1
+        }`
+      );
+      if (__DEV__) {
+        print({
+          component: BottomSheet.name,
+          method: handleSnapToIndex.name,
+          params: {
+            index,
+          },
+        });
+      }
+
+      const nextPosition = snapPoints[index];
+
+      /**
+       * exit method if :
+       * - layout is not calculated.
+       * - already animating to next position.
+       * - sheet is forced closing.
+       */
+      if (
+        !isLayoutCalculated.value ||
+        index === animatedNextPositionIndex.value ||
+        nextPosition === animatedNextPosition.value ||
+        isForcedClosing.value
       ) {
-        const snapPoints = animatedSnapPoints.value;
-        invariant(
-          index >= -1 && index <= snapPoints.length - 1,
-          `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
-            snapPoints.length - 1
-          }`
-        );
-        if (__DEV__) {
-          print({
-            component: BottomSheet.name,
-            method: handleSnapToIndex.name,
-            params: {
-              index,
-            },
-          });
-        }
+        return;
+      }
 
-        const nextPosition = snapPoints[index];
+      /**
+       * reset temporary position boolean.
+       */
+      isInTemporaryPosition.value = false;
 
-        /**
-         * exit method if :
-         * - layout is not calculated.
-         * - already animating to next position.
-         * - sheet is forced closing.
-         */
-        if (
-          !isLayoutCalculated.value ||
-          index === animatedNextPositionIndex.value ||
-          nextPosition === animatedNextPosition.value ||
-          isForcedClosing.value
-        ) {
-          return;
-        }
-
-        /**
-         * reset temporary position boolean.
-         */
-        isInTemporaryPosition.value = false;
-
-        runOnUI(animateToPosition)(
-          nextPosition,
-          ANIMATION_SOURCE.USER,
-          0,
-          animationConfigs
-        );
-      },
-      [
-        animateToPosition,
-        isLayoutCalculated,
-        isInTemporaryPosition,
-        isForcedClosing,
-        animatedSnapPoints,
-        animatedNextPosition,
-        animatedNextPositionIndex,
-      ]
-    );
+      runOnUI(animateToPosition)(
+        nextPosition,
+        ANIMATION_SOURCE.USER,
+        0,
+        animationConfigs
+      );
+    });
     const handleSnapToPosition = useWorkletCallback(
       function handleSnapToPosition(
         position: number | string,
@@ -1867,10 +1856,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * @alias onIndexChange
      */
     useEffect(() => {
-      if (isAnimatedOnMount.value) {
-        handleSnapToIndex(_providedIndex);
+      // early exit, if animate on mount is set and it did not animate yet.
+      if (animateOnMount && !isAnimatedOnMount.value) {
+        return;
       }
-    }, [_providedIndex, isAnimatedOnMount, handleSnapToIndex]);
+
+      handleSnapToIndex(_providedIndex);
+    }, [animateOnMount, _providedIndex, isAnimatedOnMount, handleSnapToIndex]);
     //#endregion
 
     // render
