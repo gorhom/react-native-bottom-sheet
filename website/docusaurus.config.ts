@@ -1,6 +1,6 @@
-import { themes as prismThemes } from 'prism-react-renderer';
-import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import type { Config } from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
 
 const config: Config = {
   title: 'React Native Bottom Sheet',
@@ -124,6 +124,10 @@ const config: Config = {
       contextualSearch: true,
     },
   } satisfies Preset.ThemeConfig,
+
+  future: {
+    experimental_faster: true,
+  },
 };
 
 export default config;
