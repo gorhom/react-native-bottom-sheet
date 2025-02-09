@@ -982,7 +982,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         if (
           animatedAnimationState.value !== ANIMATION_STATE.RUNNING &&
-          animatedCurrentIndex.value === -1
+          animatedCurrentIndex.value === -1 && animatedNextPositionIndex.value === -1
         ) {
           /**
            * early exit if reduce motion is enabled and index is out of sync with position.
