@@ -1,5 +1,12 @@
 
 
+## [5.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.0...v5.1.1) (2025-02-09)
+
+
+### Bug Fixes
+
+* **#2043:** handle unnecessary invocation of index side effect ([#2073](https://github.com/gorhom/react-native-bottom-sheet/issues/2073))(inspired by @IslamRustamov) ([2164c02](https://github.com/gorhom/react-native-bottom-sheet/commit/2164c02e63177f9ac69acc05722c85e8d55cd931)), closes [#2043](https://github.com/gorhom/react-native-bottom-sheet/issues/2043)
+
 # [5.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.6...v5.1.0) (2025-02-06)
 
 
