@@ -24,7 +24,7 @@ Here is an example of a simple detach modal:
 ```tsx
 import React, { useMemo, useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 const App = () => {
   // ref
@@ -45,9 +45,9 @@ const App = () => {
         detached={true}
         style={styles.sheetContainer}
       >
-        <View style={styles.contentContainer}>
+        <BottomSheetView style={styles.contentContainer}>
           <Text>Awesome 🎉</Text>
-        </View>
+        </BottomSheetView>
       </BottomSheet>
     </View>
   );
