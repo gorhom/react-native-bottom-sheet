@@ -13,11 +13,11 @@ const BottomSheetDraggableViewComponent = ({
   refreshControlGestureRef,
   style,
   children,
+  enabled = true,
   ...rest
 }: BottomSheetDraggableViewProps) => {
   //#region hooks
   const {
-    enableContentPanningGesture,
     simultaneousHandlers: _providedSimultaneousHandlers,
     waitFor,
     activeOffsetX,
@@ -56,7 +56,7 @@ const BottomSheetDraggableViewComponent = ({
   ]);
   const draggableGesture = useMemo(() => {
     let gesture = Gesture.Pan()
-      .enabled(enableContentPanningGesture)
+      .enabled(enabled)
       .shouldCancelWhenOutside(false)
       .runOnJS(false)
       .onStart(contentPanGestureHandler.handleOnStart)
@@ -94,7 +94,7 @@ const BottomSheetDraggableViewComponent = ({
   }, [
     activeOffsetX,
     activeOffsetY,
-    enableContentPanningGesture,
+    enabled,
     failOffsetX,
     failOffsetY,
     simultaneousHandlers,
