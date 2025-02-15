@@ -1,5 +1,24 @@
 
 
+## [5.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.0...v5.1.1) (2025-02-09)
+
+
+### Bug Fixes
+
+* **#2043:** handle unnecessary invocation of index side effect ([#2073](https://github.com/gorhom/react-native-bottom-sheet/issues/2073))(inspired by @IslamRustamov) ([2164c02](https://github.com/gorhom/react-native-bottom-sheet/commit/2164c02e63177f9ac69acc05722c85e8d55cd931)), closes [#2043](https://github.com/gorhom/react-native-bottom-sheet/issues/2043)
+
+# [5.1.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.6...v5.1.0) (2025-02-06)
+
+
+### Bug Fixes
+
+* **#2129:** fixed initial isAnimatedOnMount value ([0850cb8](https://github.com/gorhom/react-native-bottom-sheet/commit/0850cb864819f79189592cb66c2b6d179957ba61))
+
+
+### Features
+
+* added enableBlurKeyboardOnGesture prop to handle blurring keyboard on gesture ([1c31aca](https://github.com/gorhom/react-native-bottom-sheet/commit/1c31acad50a7c171548ea7f4594a4d1d563cf40f))
+
 ## [5.0.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.0.5...v5.0.6) (2024-11-17)
 
 

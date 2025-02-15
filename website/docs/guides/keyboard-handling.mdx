@@ -11,7 +11,7 @@ Keyboard handling is one of the main feature of `BottomSheet v4`, thanks to the 
 
 To handle the keyboard appearance, I have simplified the approach by creating a pre-integrated `TextInput` called [BottomSheetTextInput](./components/bottomsheettextinput), which communicate internally to react to the keyboard appearance.
 
-Also I have introduce two props to allow users to customize the handling, [keyboardBehavior](./props#keyboardbehavior), [keyboardBlurBehavior](./props#keyboardblurbehavior) and [android_keyboardInputMode](./props#android_keyboardinputmode) that is only for `Android`.
+Also I have introduce two props to allow users to customize the handling, [keyboardBehavior](./props#keyboardbehavior), [keyboardBlurBehavior](./props#keyboardblurbehavior), [enableBlurKeyboardOnGesture](./props#enableblurkeyboardongesture) and [android_keyboardInputMode](./props#android_keyboardinputmode) that is only for `Android`.
 
 :::tip
 To use custom `TextInput`, you will need to copy the `handleOnFocus` and `handleOnBlur` from [BottomSheetTextInput](https://github.com/gorhom/react-native-bottom-sheet/blob/master/src/components/bottomSheetTextInput/BottomSheetTextInput.tsx) into your own component.

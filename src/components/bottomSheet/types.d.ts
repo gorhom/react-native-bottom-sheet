@@ -162,6 +162,11 @@ export interface BottomSheetProps
    */
   keyboardBlurBehavior?: keyof typeof KEYBOARD_BLUR_BEHAVIOR;
   /**
+   * Enable blurring the keyboard when user start to drag the bottom sheet.
+   * @default false
+   */
+  enableBlurKeyboardOnGesture?: boolean;
+  /**
    * Defines keyboard input mode for Android only.
    * @link {https://developer.android.com/guide/topics/manifest/activity-element#wsoft}
    * @type `adjustPan` | `adjustResize`
