@@ -18,19 +18,25 @@ const BottomSheetTextInputComponent = forwardRef<
   //#region callbacks
   const handleOnFocus = useCallback(
     (args: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      shouldHandleKeyboardEvents.value = true;
-      if (onFocus) {
-        onFocus(args);
+      if (!shouldHandleKeyboardEvents.value) {
+        // Schedule the update to avoid immediate work on the UI thread
+        requestAnimationFrame(() => {
+          shouldHandleKeyboardEvents.value = true;
+        });
       }
+      onFocus?.(args);
     },
     [onFocus, shouldHandleKeyboardEvents]
   );
+
   const handleOnBlur = useCallback(
     (args: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      shouldHandleKeyboardEvents.value = false;
-      if (onBlur) {
-        onBlur(args);
+      if (shouldHandleKeyboardEvents.value) {
+        requestAnimationFrame(() => {
+          shouldHandleKeyboardEvents.value = false;
+        });
       }
+      onBlur?.(args);
     },
     [onBlur, shouldHandleKeyboardEvents]
   );
