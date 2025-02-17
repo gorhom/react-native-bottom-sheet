@@ -2,7 +2,8 @@
   "git": {
     "push": true,
     "tagName": "v${version}",
-    "commitMessage": "chore: release v${version}"
+    "commitMessage": "chore: release v${version}",
+    "commitArgs": "--no-verify"
   },
   "github": {
     "release": true
