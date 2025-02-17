@@ -44,7 +44,7 @@
     "@biomejs/biome": "^1.9.4",
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
-    "@release-it/conventional-changelog": "^8.0.1",
+    "@release-it/conventional-changelog": "^10.0.0",
     "@types/invariant": "^2.2.34",
     "@types/react": "~18.3.12",
     "@types/react-native": "~0.73.0",
