@@ -1,0 +1,1 @@
+{"version":3,"file":"BottomSheetFlatList.d.ts","sourceRoot":"","sources":["../../../../src/components/bottomSheetScrollable/BottomSheetFlatList.tsx"],"names":[],"mappings":"AAKA,OAAO,KAAK,EACV,0BAA0B,EAC1B,wBAAwB,EACzB,MAAM,SAAS,CAAC;AAYjB,QAAA,MAAM,mBAAmB,0LAAqC,CAAC;wBAGzB,CAAC,CAAC,EACtC,KAAK,EAAE,wBAAwB,CAAC,CAAC,CAAC,KAC/B,UAAU,CAAC,OAAO,mBAAmB,CAAC;AAF3C,wBAE4C"}
