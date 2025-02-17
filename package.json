@@ -1,13 +1,17 @@
 {
   "name": "@gorhom/bottom-sheet",
-  "version": "5.1.2",
+  "version": "5.1.3",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "files": ["src", "lib", "mock.js"],
+  "files": [
+    "src",
+    "lib",
+    "mock.js"
+  ],
   "keywords": [
     "react-native",
     "ios",
@@ -79,7 +83,11 @@
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
-    "targets": ["commonjs", "module", "typescript"]
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
   },
   "packageManager": "yarn@4.5.3+sha512.3003a14012e2987072d244c720506549c1aab73ee728208f1b2580a9fd67b92d61ba6b08fe93f6dce68fd771e3af1e59a0afa28dd242dd0940d73b95fedd4e90"
 }
