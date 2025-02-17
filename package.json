@@ -1,6 +1,6 @@
 {
   "name": "@gorhom/bottom-sheet",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -41,6 +41,7 @@
     "invariant": "^2.2.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
     "@release-it/conventional-changelog": "^8.0.1",
@@ -68,10 +69,10 @@
     "react-native-reanimated": ">=3.16.0"
   },
   "peerDependenciesMeta": {
-    "@types/react-native": {
+    "@types/react": {
       "optional": true
     },
-    "@types/react": {
+    "@types/react-native": {
       "optional": true
     }
   },
@@ -79,5 +80,6 @@
     "source": "src",
     "output": "lib",
     "targets": ["commonjs", "module", "typescript"]
-  }
+  },
+  "packageManager": "yarn@4.5.3+sha512.3003a14012e2987072d244c720506549c1aab73ee728208f1b2580a9fd67b92d61ba6b08fe93f6dce68fd771e3af1e59a0afa28dd242dd0940d73b95fedd4e90"
 }
