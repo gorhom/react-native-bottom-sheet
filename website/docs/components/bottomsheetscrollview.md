@@ -52,10 +52,10 @@ const App = () => {
   const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
   // callbacks
-  const handleSheetChange = useCallback((index) => {
+  const handleSheetChange = useCallback((index: number) => {
     console.log("handleSheetChange", index);
   }, []);
-  const handleSnapPress = useCallback((index) => {
+  const handleSnapPress = useCallback((index: number) => {
     sheetRef.current?.snapToIndex(index);
   }, []);
   const handleClosePress = useCallback(() => {
@@ -64,7 +64,7 @@ const App = () => {
 
   // render
   const renderItem = useCallback(
-    (item) => (
+    (item: string) => (
       <View key={item} style={styles.itemContainer}>
         <Text>{item}</Text>
       </View>
@@ -73,10 +73,12 @@ const App = () => {
   );
   return (
     <GestureHandlerRootView style={styles.container}>
+      <View style={styles.buttonView}>
       <Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
       <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
       <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} />
       <Button title="Close" onPress={() => handleClosePress()} />
+      </View>
       <BottomSheet
         ref={sheetRef}
         index={1}
@@ -99,6 +101,9 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     backgroundColor: "white",
+  },
+  buttonView: {
+    overflow: 'hidden'
   },
   itemContainer: {
     padding: 6,
