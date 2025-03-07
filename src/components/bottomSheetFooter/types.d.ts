@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { ViewStyle } from 'react-native';
+import type { AccessibilityProps, ViewStyle } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
 export interface BottomSheetFooterProps {
@@ -9,6 +9,12 @@ export interface BottomSheetFooterProps {
    * @type SharedValue<number>
    */
   animatedFooterPosition: SharedValue<number>;
+
+  /**
+   * When true, indicates that the Footer is an accessibility element.
+   * By default, all the touchable elements are accessible.
+   */
+  accessible: AccessibilityProps['accessible'];
 }
 
 export interface BottomSheetDefaultFooterProps extends BottomSheetFooterProps {

@@ -7,6 +7,7 @@ import { styles } from './styles';
 import type { BottomSheetDefaultFooterProps } from './types';
 
 function BottomSheetFooterComponent({
+  accessible,
   animatedFooterPosition,
   bottomInset = 0,
   style,
@@ -56,7 +57,11 @@ function BottomSheetFooterComponent({
   //#endregion
 
   return children !== null ? (
-    <Animated.View onLayout={handleContainerLayout} style={containerStyle}>
+    <Animated.View
+      accessible={accessible}
+      onLayout={handleContainerLayout}
+      style={containerStyle}
+    >
       {children}
     </Animated.View>
   ) : null;

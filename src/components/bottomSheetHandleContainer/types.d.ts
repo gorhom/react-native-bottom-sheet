@@ -1,6 +1,7 @@
 import type { PanGestureHandlerProperties } from 'react-native-gesture-handler';
 import type { SharedValue } from 'react-native-reanimated';
 import type { useInteractivePanGestureHandlerConfigs } from '../../hooks/useGestureHandler';
+import type { NullableAccessibilityProps } from '../../types';
 import type { BottomSheetProps } from '../bottomSheet';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 
@@ -20,6 +21,7 @@ export interface BottomSheetHandleContainerProps
       | 'overDragResistanceFactor'
       | 'keyboardBehavior'
     >,
-    BottomSheetHandleProps {
+    BottomSheetHandleProps,
+    Pick<NullableAccessibilityProps, 'accessible'> {
   handleHeight: SharedValue<number>;
 }

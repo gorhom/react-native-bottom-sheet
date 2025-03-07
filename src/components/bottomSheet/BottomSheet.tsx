@@ -1883,6 +1883,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             />
             <BottomSheetContainer
               key="BottomSheetContainer"
+              accessible={_providedAccessible ?? undefined}
               shouldCalculateHeight={!$modal}
               containerHeight={_animatedContainerHeight}
               containerOffset={animatedContainerOffset}
@@ -1891,9 +1892,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               detached={detached}
               style={_providedContainerStyle}
             >
-              <Animated.View style={containerStyle}>
+              <Animated.View
+                accessible={_providedAccessible ?? undefined}
+                style={containerStyle}
+              >
                 <BottomSheetBackgroundContainer
                   key="BottomSheetBackgroundContainer"
+                  accessible={_providedAccessible ?? undefined}
                   animatedIndex={animatedIndex}
                   animatedPosition={animatedPosition}
                   backgroundComponent={backgroundComponent}
@@ -1907,6 +1912,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
                 >
                   <DraggableView
+                    accessible={_providedAccessible ?? undefined}
                     key="BottomSheetRootDraggableView"
                     style={contentContainerStyle}
                   >
@@ -1914,12 +1920,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   </DraggableView>
                   {footerComponent && (
                     <BottomSheetFooterContainer
+                      accessible={_providedAccessible ?? undefined}
                       footerComponent={footerComponent}
                     />
                   )}
                 </Animated.View>
                 <BottomSheetHandleContainer
                   key="BottomSheetHandleContainer"
+                  accessible={_providedAccessible ?? undefined}
                   animatedIndex={animatedIndex}
                   animatedPosition={animatedPosition}
                   handleHeight={animatedHandleHeight}

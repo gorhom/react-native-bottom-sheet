@@ -7,12 +7,16 @@ import {
   useBottomSheetInternal,
 } from '../../hooks';
 import { print } from '../../utilities';
-import { DEFAULT_ENABLE_HANDLE_PANNING_GESTURE } from '../bottomSheet/constants';
+import {
+  DEFAULT_ACCESSIBLE,
+  DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
+} from '../bottomSheet/constants';
 import BottomSheetHandle from '../bottomSheetHandle';
 import { styles } from './styles';
 import type { BottomSheetHandleContainerProps } from './types';
 
 function BottomSheetHandleContainerComponent({
+  accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
   animatedIndex,
   animatedPosition,
   simultaneousHandlers: _internalSimultaneousHandlers,
@@ -138,10 +142,12 @@ function BottomSheetHandleContainerComponent({
     <GestureDetector gesture={panGesture}>
       <Animated.View
         key="BottomSheetHandleContainer"
+        accessible={_providedAccessible ?? undefined}
         onLayout={handleContainerLayout}
         style={styles.container}
       >
         <HandleComponent
+          accessible={_providedAccessible ?? undefined}
           animatedIndex={animatedIndex}
           animatedPosition={animatedPosition}
           style={_providedHandleStyle}
