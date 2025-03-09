@@ -104,7 +104,6 @@ const BottomSheetBackdropComponent = ({
         [0, 0, opacity],
         Extrapolation.CLAMP
       ),
-      flex: 1,
     }),
     [animatedIndex, appearsOnIndex, disappearsOnIndex, opacity]
   );
