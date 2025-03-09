@@ -1534,6 +1534,25 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         animatedContainerHeightDidChange.value = result !== previous;
+
+        /**
+         * When user close the bottom sheet while the keyboard open on Android with
+         * software keyboard layout mode set to resize, the close position would be
+         * set to the container height - the keyboard height, and when the keyboard
+         * closes, the container height and here we restart the animation again.
+         *
+         * [read more](https://github.com/gorhom/react-native-bottom-sheet/issues/2163)
+         */
+        if (
+          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          animatedAnimationSource.value === ANIMATION_SOURCE.GESTURE &&
+          animatedNextPositionIndex.value === -1
+        ) {
+          animateToPosition(
+            animatedClosedPosition.value,
+            ANIMATION_SOURCE.GESTURE
+          );
+        }
       }
     );
 
