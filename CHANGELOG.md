@@ -1,5 +1,13 @@
 
 
+## [5.1.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.1...v5.1.2) (2025-03-09)
+
+
+### Bug Fixes
+
+* **#2163:** restart closing animation when container height get updated ([4ed9f3c](https://github.com/gorhom/react-native-bottom-sheet/commit/4ed9f3cb542316a984893efa2025ca5384ffe89a)), closes [#2163](https://github.com/gorhom/react-native-bottom-sheet/issues/2163)
+* **#2177:** set absolute fill to backdrop default style ([979ba7c](https://github.com/gorhom/react-native-bottom-sheet/commit/979ba7ce0b9d69abfaefd169ee692bf818fa4d0d)), closes [#2177](https://github.com/gorhom/react-native-bottom-sheet/issues/2177)
+
 ## [5.1.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.0...v5.1.1) (2025-02-09)
 
 
