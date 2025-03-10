@@ -157,7 +157,7 @@ export default CustomFooter;
 ```tsx title="App.tsx"
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import CustomFooter from './CustomFooter';
 
 const App = () => {
@@ -172,9 +172,9 @@ const App = () => {
         snapPoints={snapPoints}
         footerComponent={CustomFooter}
       >
-        <View style={styles.contentContainer}>
+        <BottomSheetView style={styles.contentContainer}>
           <Text>Awesome 🎉</Text>
-        </View>
+        </BottomSheetView>
       </BottomSheet>
     </View>
   );

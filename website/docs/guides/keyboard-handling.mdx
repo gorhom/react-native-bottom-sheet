@@ -32,7 +32,7 @@ Here is an example of a simple keyboard handling:
 ```tsx
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
-import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
 
 const App = () => {
   // variables
@@ -42,9 +42,9 @@ const App = () => {
   return (
     <View style={styles.container}>
       <BottomSheet snapPoints={snapPoints}>
-        <View style={styles.contentContainer}>
+        <BottomSheetView style={styles.contentContainer}>
           <BottomSheetTextInput value="Awesome 🎉" style={styles.textInput} />
-        </View>
+        </BottomSheetView>
       </BottomSheet>
     </View>
   );
