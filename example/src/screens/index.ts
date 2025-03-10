@@ -114,6 +114,11 @@ const advancedSection = {
       slug: 'Advanced/FooterExample',
       getScreen: () => require('./advanced/FooterExample').default,
     },
+    {
+      name: 'DraggableView',
+      slug: 'Advanced/DraggableViewExample',
+      getScreen: () => require('./advanced/DraggableViewExample').default,
+    },
   ],
 };
 if (Platform.OS !== 'web') {
