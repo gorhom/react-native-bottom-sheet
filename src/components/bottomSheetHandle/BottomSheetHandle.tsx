@@ -40,7 +40,10 @@ const BottomSheetHandleComponent = ({
       accessibilityLabel={accessibilityLabel ?? undefined}
       accessibilityHint={accessibilityHint ?? undefined}
     >
-      <Animated.View style={indicatorStyle} />
+      <Animated.View
+        accessible={accessible ?? undefined}
+        style={indicatorStyle}
+      />
       {children}
     </Animated.View>
   );

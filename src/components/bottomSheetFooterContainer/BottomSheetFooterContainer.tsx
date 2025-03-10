@@ -2,9 +2,11 @@ import React, { memo } from 'react';
 import { useDerivedValue } from 'react-native-reanimated';
 import { KEYBOARD_STATE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
+import { DEFAULT_ACCESSIBLE } from '../bottomSheet/constants';
 import type { BottomSheetFooterContainerProps } from './types';
 
 const BottomSheetFooterContainerComponent = ({
+  accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
   footerComponent: FooterComponent,
 }: BottomSheetFooterContainerProps) => {
   //#region hooks
@@ -46,7 +48,12 @@ const BottomSheetFooterContainerComponent = ({
   ]);
   //#endregion
 
-  return <FooterComponent animatedFooterPosition={animatedFooterPosition} />;
+  return (
+    <FooterComponent
+      accessible={_providedAccessible ?? undefined}
+      animatedFooterPosition={animatedFooterPosition}
+    />
+  );
 };
 
 const BottomSheetFooterContainer = memo(BottomSheetFooterContainerComponent);

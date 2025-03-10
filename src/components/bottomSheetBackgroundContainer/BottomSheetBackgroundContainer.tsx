@@ -1,10 +1,12 @@
 import React, { memo, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
+import { DEFAULT_ACCESSIBLE } from '../bottomSheet/constants';
 import BottomSheetBackground from '../bottomSheetBackground';
 import { styles } from './styles';
 import type { BottomSheetBackgroundContainerProps } from './types';
 
 const BottomSheetBackgroundContainerComponent = ({
+  accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
   animatedIndex,
   animatedPosition,
   backgroundComponent: _providedBackgroundComponent,
@@ -20,6 +22,7 @@ const BottomSheetBackgroundContainerComponent = ({
 
   return _providedBackgroundComponent === null ? null : (
     <BackgroundComponent
+      accessible={_providedAccessible ?? undefined}
       pointerEvents="none"
       animatedIndex={animatedIndex}
       animatedPosition={animatedPosition}

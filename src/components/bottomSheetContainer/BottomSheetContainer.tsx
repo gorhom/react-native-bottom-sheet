@@ -8,10 +8,12 @@ import {
 } from 'react-native';
 import { WINDOW_HEIGHT } from '../../constants';
 import { print } from '../../utilities';
+import { DEFAULT_ACCESSIBLE } from '../bottomSheet/constants';
 import { styles } from './styles';
 import type { BottomSheetContainerProps } from './types';
 
 function BottomSheetContainerComponent({
+  accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
   containerHeight,
   containerOffset,
   topInset = 0,
@@ -80,6 +82,7 @@ function BottomSheetContainerComponent({
   //#region render
   return (
     <View
+      accessible={_providedAccessible ?? undefined}
       ref={containerRef}
       pointerEvents="box-none"
       onLayout={shouldCalculateHeight ? handleContainerLayout : undefined}
