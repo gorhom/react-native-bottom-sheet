@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from 'react';
+import React, { useMemo, memo, forwardRef } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { BottomSheetDraggableContext } from '../../contexts/gesture';
@@ -8,13 +8,13 @@ import {
 } from '../../hooks';
 import type { BottomSheetDraggableViewProps } from './types';
 
-const BottomSheetDraggableViewComponent = ({
+const BottomSheetDraggableViewComponent = forwardRef<Animated.View, BottomSheetDraggableViewProps>(({
   nativeGestureRef,
   refreshControlGestureRef,
   style,
   children,
   ...rest
-}: BottomSheetDraggableViewProps) => {
+}, forwardedRef) => {
   //#region hooks
   const {
     enableContentPanningGesture,
@@ -109,13 +109,13 @@ const BottomSheetDraggableViewComponent = ({
   return (
     <GestureDetector gesture={draggableGesture}>
       <BottomSheetDraggableContext.Provider value={draggableGesture}>
-        <Animated.View style={style} {...rest}>
+        <Animated.View ref={forwardedRef} style={style} {...rest}>
           {children}
         </Animated.View>
       </BottomSheetDraggableContext.Provider>
     </GestureDetector>
   );
-};
+});
 
 const BottomSheetDraggableView = memo(BottomSheetDraggableViewComponent);
 BottomSheetDraggableView.displayName = 'BottomSheetDraggableView';

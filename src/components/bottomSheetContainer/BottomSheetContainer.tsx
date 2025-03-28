@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
+import React, { forwardRef, memo, useCallback, useMemo, useRef } from 'react';
 import {
   type LayoutChangeEvent,
   StatusBar,
@@ -10,8 +10,9 @@ import { WINDOW_HEIGHT } from '../../constants';
 import { print } from '../../utilities';
 import { styles } from './styles';
 import type { BottomSheetContainerProps } from './types';
+import { useCombinedRef } from 'src/hooks';
 
-function BottomSheetContainerComponent({
+const BottomSheetContainerComponent = forwardRef<View, BottomSheetContainerProps>(({
   containerHeight,
   containerOffset,
   topInset = 0,
@@ -20,8 +21,9 @@ function BottomSheetContainerComponent({
   detached,
   style,
   children,
-}: BottomSheetContainerProps) {
+}, forwardedRef) => {
   const containerRef = useRef<View>(null);
+  const ref = useCombinedRef(containerRef, forwardedRef)
   //#region styles
   const containerStyle = useMemo<StyleProp<ViewStyle>>(
     () => [
@@ -80,7 +82,7 @@ function BottomSheetContainerComponent({
   //#region render
   return (
     <View
-      ref={containerRef}
+      ref={ref}
       pointerEvents="box-none"
       onLayout={shouldCalculateHeight ? handleContainerLayout : undefined}
       style={containerStyle}
@@ -89,7 +91,7 @@ function BottomSheetContainerComponent({
     </View>
   );
   //#endregion
-}
+});
 
 const BottomSheetContainer = memo(BottomSheetContainerComponent);
 BottomSheetContainer.displayName = 'BottomSheetContainer';

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useCallback, useMemo } from 'react';
+import React, { memo, useEffect, useCallback, useMemo, forwardRef } from 'react';
 import {
   type LayoutChangeEvent,
   StyleSheet,
@@ -10,14 +10,14 @@ import { useBottomSheetInternal } from '../../hooks';
 import { print } from '../../utilities';
 import type { BottomSheetViewProps } from './types';
 
-function BottomSheetViewComponent({
+const BottomSheetViewComponent = forwardRef<Animated.View, BottomSheetViewProps>(({
   focusHook: useFocusHook = useEffect,
   enableFooterMarginAdjustment = false,
   onLayout,
   style,
   children,
   ...rest
-}: BottomSheetViewProps) {
+}, forwardedRef) => {
   //#region hooks
   const {
     animatedScrollableContentOffsetY,
@@ -85,11 +85,11 @@ function BottomSheetViewComponent({
 
   //render
   return (
-    <Animated.View {...rest} onLayout={handleLayout} style={containerStyle}>
+    <Animated.View ref={forwardedRef} {...rest} onLayout={handleLayout} style={containerStyle}>
       {children}
     </Animated.View>
   );
-}
+})
 
 const BottomSheetView = memo(BottomSheetViewComponent);
 BottomSheetView.displayName = 'BottomSheetView';
