@@ -51,7 +51,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
     }
 
     function handleOnTouchMove(event: TouchEvent) {
-      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
+      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED && event.cancelable) {
         return event.preventDefault();
       }
 
@@ -61,7 +61,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
         const touchY = event.touches[0].clientY;
         const touchYDelta = touchY - lastTouchY;
 
-        if (touchYDelta > 0) {
+        if (touchYDelta > 0 && event.cancelable) {
           return event.preventDefault();
         }
       }
@@ -92,7 +92,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
         animatedScrollableContentOffsetY.value = Math.max(0, scrollOffset);
       }
 
-      if (scrollOffset <= 0) {
+      if (scrollOffset <= 0 && event.cancelable) {
         event.preventDefault();
         event.stopPropagation();
         return false;
