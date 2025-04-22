@@ -7,6 +7,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { WINDOW_HEIGHT } from '../../constants';
+import { INITIAL_CONTAINER_HEIGHT } from '../bottomSheet/constants';
 import { print } from '../../utilities';
 import { styles } from './styles';
 import type { BottomSheetContainerProps } from './types';
@@ -44,7 +45,7 @@ function BottomSheetContainerComponent({
         layout: { height },
       },
     }: LayoutChangeEvent) {
-      containerHeight.value = height;
+      containerHeight.value = height || INITIAL_CONTAINER_HEIGHT;
 
       containerRef.current?.measure(
         (_x, _y, _width, _height, _pageX, pageY) => {
