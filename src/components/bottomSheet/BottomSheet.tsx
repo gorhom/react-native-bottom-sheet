@@ -1921,7 +1921,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 <Animated.View
                   pointerEvents="box-none"
                   style={contentMaskContainerStyle}
-                  accessible={_providedAccessible ?? undefined}
+                  accessible={Platform.OS ==='ios' ? false: true}
                   accessibilityRole={_providedAccessibilityRole ?? undefined}
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
                 >
