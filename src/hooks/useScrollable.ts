@@ -1,5 +1,5 @@
 import { type RefObject, useCallback, useRef } from 'react';
-import { type NodeHandle, findNodeHandle } from 'react-native';
+import { type NodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { SCROLLABLE_STATE, SCROLLABLE_TYPE } from '../constants';
 import type { Scrollable, ScrollableRef } from '../types';
@@ -38,7 +38,7 @@ export const useScrollable = () => {
     // find node handle id
     let id: NodeHandle | null;
     try {
-      id = findNodeHandle(ref.current);
+      id = ref.current;
     } catch {
       return;
     }

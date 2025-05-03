@@ -1,5 +1,4 @@
 import { type TouchEvent, useEffect, useRef } from 'react';
-import { findNodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { ANIMATION_STATE, SCROLLABLE_STATE } from '../constants';
 import type { Scrollable, ScrollableEvent } from '../types';
@@ -30,7 +29,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
   //#region effects
   useEffect(() => {
     // biome-ignore lint: to be addressed!
-    const element = findNodeHandle(scrollableRef.current) as any;
+    const element = scrollableRef.current as any;
 
     let scrollOffset = 0;
     let supportsPassive = false;
