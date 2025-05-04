@@ -1,5 +1,12 @@
 
 
+## [5.1.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.2...v5.1.3) (2025-05-04)
+
+
+### Bug Fixes
+
+* **#2237:** updated findNodeHandle for web to support React 19 ([47a95f5](https://github.com/gorhom/react-native-bottom-sheet/commit/47a95f517ab5b4680d0f5a45b09464911aafd35e)), closes [#2237](https://github.com/gorhom/react-native-bottom-sheet/issues/2237)
+
 ## [5.1.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.1...v5.1.2) (2025-03-09)
 
 
