@@ -1,5 +1,12 @@
 
 
+## [5.1.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.3...v5.1.4) (2025-05-04)
+
+
+### Bug Fixes
+
+* **#2237:** fixed recursive loop in findNodeHandle.web (by @TNAJanssen) ([3556ba8](https://github.com/gorhom/react-native-bottom-sheet/commit/3556ba8e1445a78dfc6cfc93997500d52a03368e))
+
 ## [5.1.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.2...v5.1.3) (2025-05-04)
 
 
