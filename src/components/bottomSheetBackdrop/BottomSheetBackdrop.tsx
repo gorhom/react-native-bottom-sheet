@@ -1,4 +1,5 @@
 import React, {
+  forwardRef,
   memo,
   useCallback,
   useEffect,
@@ -30,7 +31,7 @@ import {
 import { styles } from './styles';
 import type { BottomSheetDefaultBackdropProps } from './types';
 
-const BottomSheetBackdropComponent = ({
+const BottomSheetBackdropComponent = forwardRef<Animated.View, BottomSheetDefaultBackdropProps>(({
   animatedIndex,
   opacity: _providedOpacity,
   appearsOnIndex: _providedAppearsOnIndex,
@@ -44,7 +45,7 @@ const BottomSheetBackdropComponent = ({
   accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
-}: BottomSheetDefaultBackdropProps) => {
+}) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
   const isMounted = useRef(false);
@@ -159,7 +160,7 @@ const BottomSheetBackdropComponent = ({
   ) : (
     AnimatedView
   );
-};
+});
 
 const BottomSheetBackdrop = memo(BottomSheetBackdropComponent);
 BottomSheetBackdrop.displayName = 'BottomSheetBackdrop';

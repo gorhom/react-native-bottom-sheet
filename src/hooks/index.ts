@@ -21,3 +21,4 @@ export { usePropsValidator } from './usePropsValidator';
 export { useAnimatedSnapPoints } from './useAnimatedSnapPoints';
 export { useReactiveSharedValue } from './useReactiveSharedValue';
 export { useBottomSheetGestureHandlers } from './useBottomSheetGestureHandlers';
+export { useCombinedRef } from "./useCombinedRef";

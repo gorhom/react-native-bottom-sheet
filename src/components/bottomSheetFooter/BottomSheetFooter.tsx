@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { forwardRef, memo, useCallback, useMemo } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { KEYBOARD_STATE } from '../../constants';
@@ -6,12 +6,12 @@ import { useBottomSheetInternal } from '../../hooks';
 import { styles } from './styles';
 import type { BottomSheetDefaultFooterProps } from './types';
 
-function BottomSheetFooterComponent({
+const BottomSheetFooterComponent = forwardRef<Animated.View, BottomSheetDefaultFooterProps>(({
   animatedFooterPosition,
   bottomInset = 0,
   style,
   children,
-}: BottomSheetDefaultFooterProps) {
+}, forwardedRef) => {
   //#region hooks
   const { animatedFooterHeight, animatedKeyboardState } =
     useBottomSheetInternal();
@@ -56,11 +56,11 @@ function BottomSheetFooterComponent({
   //#endregion
 
   return children !== null ? (
-    <Animated.View onLayout={handleContainerLayout} style={containerStyle}>
+    <Animated.View ref={forwardedRef} onLayout={handleContainerLayout} style={containerStyle}>
       {children}
     </Animated.View>
   ) : null;
-}
+});
 
 const BottomSheetFooter = memo(BottomSheetFooterComponent);
 BottomSheetFooter.displayName = 'BottomSheetFooter';

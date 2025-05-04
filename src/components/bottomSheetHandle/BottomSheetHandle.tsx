@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { forwardRef, memo, useMemo } from 'react';
 import Animated from 'react-native-reanimated';
 import {
   DEFAULT_ACCESSIBILITY_HINT,
@@ -9,7 +9,7 @@ import {
 import { styles } from './styles';
 import type { BottomSheetDefaultHandleProps } from './types';
 
-const BottomSheetHandleComponent = ({
+const BottomSheetHandleComponent = forwardRef<Animated.View, BottomSheetDefaultHandleProps>(({
   style,
   indicatorStyle: _indicatorStyle,
   children,
@@ -17,7 +17,7 @@ const BottomSheetHandleComponent = ({
   accessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
-}: BottomSheetDefaultHandleProps) => {
+}, forwardedRef) => {
   // styles
   const containerStyle = useMemo(
     () => [styles.container, ...[Array.isArray(style) ? style : [style]]],
@@ -34,6 +34,7 @@ const BottomSheetHandleComponent = ({
   // render
   return (
     <Animated.View
+      ref={forwardedRef}
       style={containerStyle}
       accessible={accessible ?? undefined}
       accessibilityRole={accessibilityRole ?? undefined}
@@ -44,7 +45,7 @@ const BottomSheetHandleComponent = ({
       {children}
     </Animated.View>
   );
-};
+});
 
 const BottomSheetHandle = memo(BottomSheetHandleComponent);
 BottomSheetHandle.displayName = 'BottomSheetHandle';

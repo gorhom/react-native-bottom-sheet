@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { View } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import ReText from './ReText';
@@ -8,7 +8,7 @@ interface BottomSheetDebugViewProps {
   values: Record<string, SharedValue<number | boolean> | number>;
 }
 
-const BottomSheetDebugView = ({ values }: BottomSheetDebugViewProps) => {
+const BottomSheetDebugView = forwardRef<View, BottomSheetDebugViewProps>(({ values }) => {
   return (
     <View pointerEvents="none" style={styles.container}>
       {Object.keys(values).map(key => (
@@ -21,6 +21,6 @@ const BottomSheetDebugView = ({ values }: BottomSheetDebugViewProps) => {
       ))}
     </View>
   );
-};
+});
 
 export default BottomSheetDebugView;
