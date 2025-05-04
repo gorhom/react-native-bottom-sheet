@@ -11,7 +11,7 @@ export function findNodeHandle(
     | React.ComponentClass<any>
 ) {
   try {
-    return findNodeHandle(componentOrHandle);
+    return _findNodeHandle(componentOrHandle);
   } catch {
     // @ts-ignore
     return componentOrHandle.getNativeScrollRef();
