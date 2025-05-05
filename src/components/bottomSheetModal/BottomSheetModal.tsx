@@ -379,11 +379,16 @@ function BottomSheetModalComponent<T = any>(
     [_providedOnChange]
   );
   const handleBottomSheetOnAnimate = useCallback(
-    (fromIndex: number, toIndex: number) => {
+    (
+      fromIndex: number,
+      toIndex: number,
+      fromPosition: number,
+      toPosition: number
+    ) => {
       nextIndexRef.current = toIndex;
 
       if (_providedOnAnimate) {
-        _providedOnAnimate(fromIndex, toIndex);
+        _providedOnAnimate(fromIndex, toIndex, fromPosition, toPosition);
       }
     },
     [_providedOnAnimate]
