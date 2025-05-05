@@ -372,7 +372,7 @@ type onChange = (index: number) => void;
 Callback when the sheet about to animate to a new position.
 
 ```ts
-type onAnimate = (fromIndex: number, toIndex: number) => void;
+type onAnimate = (fromIndex: number, toIndex: number, fromPosition: number, toPosition: number) => void;
 ```
 
 | type     | default | required |

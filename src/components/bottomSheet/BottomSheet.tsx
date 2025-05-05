@@ -603,7 +603,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     );
     // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheet.name): used for debug only
     const handleOnAnimate = useCallback(
-      function handleOnAnimate(targetIndex: number) {
+      function handleOnAnimate(targetIndex: number, targetPosition: number) {
         if (__DEV__) {
           print({
             component: BottomSheet.name,
@@ -621,10 +621,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         if (targetIndex !== animatedCurrentIndex.value) {
-          _providedOnAnimate(animatedCurrentIndex.value, targetIndex);
+          _providedOnAnimate(
+            animatedCurrentIndex.value,
+            targetIndex,
+            animatedPosition.value,
+            targetPosition
+          );
         }
       },
-      [_providedOnAnimate, animatedCurrentIndex]
+      [_providedOnAnimate, animatedCurrentIndex, animatedPosition]
     );
     //#endregion
 
@@ -724,7 +729,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * fire `onAnimate` callback
          */
-        runOnJS(handleOnAnimate)(animatedNextPositionIndex.value);
+        runOnJS(handleOnAnimate)(animatedNextPositionIndex.value, position);
 
         /**
          * start animation
