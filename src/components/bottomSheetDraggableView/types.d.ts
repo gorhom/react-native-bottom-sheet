@@ -6,4 +6,5 @@ export type BottomSheetDraggableViewProps = RNViewProps & {
   nativeGestureRef?: Exclude<GestureRef, number>;
   refreshControlGestureRef?: Exclude<GestureRef, number>;
   children: ReactNode[] | ReactNode;
+  enabled?: boolean
 };
