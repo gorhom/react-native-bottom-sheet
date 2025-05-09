@@ -1,0 +1,73 @@
+---
+id: detach-modal
+title: Detach Modal
+description: Bottom Sheet custom footer.
+image: /img/bottom-sheet-preview.gif
+slug: /detach-modal
+hide_table_of_contents: true
+---
+
+To create a detach modal, you will need to pass the prop `detach={true}` to the `BottomSheet` or `BottomSheetModal`, along side with `bottomInset` to push the sheet from the bottom.
+
+### Example
+
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Video from "@theme/Video";
+
+<Video
+  title="React Native Bottom Sheet Detach Modal"
+  url={useBaseUrl("video/bottom-sheet-detach-preview.mp4")}
+/>
+
+Here is an example of a simple detach modal:
+
+```tsx
+import React, { useMemo, useRef } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import BottomSheet from "@gorhom/bottom-sheet";
+
+const App = () => {
+  // ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ["25%"], []);
+
+  // renders
+  return (
+    <View style={styles.container}>
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        // add bottom inset to elevate the sheet
+        bottomInset={46}
+        // set `detached` to true
+        detached={true}
+        style={styles.sheetContainer}
+      >
+        <View style={styles.contentContainer}>
+          <Text>Awesome 🎉</Text>
+        </View>
+      </BottomSheet>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: "grey",
+  },
+  sheetContainer: {
+    // add horizontal space
+    marginHorizontal: 24,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+});
+
+export default App;
+```

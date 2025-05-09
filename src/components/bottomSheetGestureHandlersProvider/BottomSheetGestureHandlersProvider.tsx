@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
+import { useSharedValue } from 'react-native-reanimated';
 import { GESTURE_SOURCE } from '../../constants';
+import { BottomSheetGestureHandlersContext } from '../../contexts';
 import {
-  useGestureHandler,
   useBottomSheetInternal,
   useGestureEventsHandlersDefault,
+  useGestureHandler,
 } from '../../hooks';
-import { BottomSheetGestureHandlersContext } from '../../contexts';
 import type { BottomSheetGestureHandlersProviderProps } from './types';
-import { useSharedValue } from 'react-native-reanimated';
 
 const BottomSheetGestureHandlersProvider = ({
   gestureEventsHandlersHook:

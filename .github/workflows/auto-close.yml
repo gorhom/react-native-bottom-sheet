@@ -1,0 +1,28 @@
+name: Auto Close Issue Workflow
+
+on:
+  issues:
+    types: 
+      - opened
+      - reopened
+      - edited
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NUMBER: ${{ github.event.issue.number }}
+  USER: ${{ github.event.issue.user.login }}
+  REPO: "gorhom/react-native-bottom-sheet"
+
+jobs:
+  autoclose:
+    if: ${{ !contains(github.event.issue.body, 'snack.expo.dev') && !contains(github.event.issue.body, 'gorhom.dev')}}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Close Issue
+        run: gh issue close "$NUMBER" --comment "Hello @$USER :wave:, this issue is being automatically closed and locked because it does not follow the issue template." --repo "$REPO"
+      - name: Label Issue
+        run: gh issue edit "$NUMBER" --add-label "invalid" --repo "$REPO"
+      - name: Lock Issue
+        run: gh issue lock "$NUMBER" -r "spam" --repo "$REPO"

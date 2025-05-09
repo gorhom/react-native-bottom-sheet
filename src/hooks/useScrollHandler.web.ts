@@ -1,18 +1,18 @@
-import { useEffect, useRef, TouchEvent } from 'react';
+import { type TouchEvent, useEffect, useRef } from 'react';
 import { useSharedValue } from 'react-native-reanimated';
-import { useBottomSheetInternal } from './useBottomSheetInternal';
 import { ANIMATION_STATE, SCROLLABLE_STATE } from '../constants';
-import { getRefNativeTag } from '../utilities/getRefNativeTag';
-import type { Scrollable } from '../types';
+import type { Scrollable, ScrollableEvent } from '../types';
+import { findNodeHandle } from '../utilities/findNodeHandle.web';
+import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 export type ScrollEventContextType = {
   initialContentOffsetY: number;
   shouldLockInitialPosition: boolean;
 };
 
-export const useScrollHandler = () => {
+export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
   //#region refs
-  const scrollableRef = useRef<Scrollable>();
+  const scrollableRef = useRef<Scrollable>(null);
   //#endregion
 
   //#region variables
@@ -29,18 +29,20 @@ export const useScrollHandler = () => {
 
   //#region effects
   useEffect(() => {
-    const element = getRefNativeTag(scrollableRef) as any;
+    // biome-ignore lint: to be addressed!
+    const element = findNodeHandle(scrollableRef.current) as any;
+    let scrollOffset = 0;
+    let supportsPassive = false;
+    let maybePrevent = false;
+    let lastTouchY = 0;
 
-    var scrollOffset = 0;
-    var supportsPassive = false;
-    var maybePrevent = false;
-    var lastTouchY = 0;
-
-    var initialContentOffsetY = 0;
-    var shouldLockInitialPosition = false;
+    let initialContentOffsetY = 0;
+    const shouldLockInitialPosition = false;
 
     function handleOnTouchStart(event: TouchEvent) {
-      if (event.touches.length !== 1) return;
+      if (event.touches.length !== 1) {
+        return;
+      }
 
       initialContentOffsetY = element.scrollTop;
       lastTouchY = event.touches[0].clientY;
@@ -69,7 +71,7 @@ export const useScrollHandler = () => {
     function handleOnTouchEnd() {
       if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
         const lockPosition = shouldLockInitialPosition
-          ? initialContentOffsetY ?? 0
+          ? (initialContentOffsetY ?? 0)
           : 0;
         element.scroll({
           top: 0,
@@ -101,11 +103,12 @@ export const useScrollHandler = () => {
       // @ts-ignore
       window.addEventListener('test', null, {
         // @ts-ignore
+        // biome-ignore lint: to be addressed
         get passive() {
           supportsPassive = true;
         },
       });
-    } catch (e) {}
+    } catch (_e) {}
 
     element.addEventListener(
       'touchstart',
@@ -164,7 +167,7 @@ export const useScrollHandler = () => {
   //#endregion
 
   return {
-    scrollHandler: undefined,
+    scrollHandler: onScroll,
     scrollableRef,
     scrollableContentOffsetY,
   };

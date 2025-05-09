@@ -1,0 +1,196 @@
+---
+id: custom-footer
+title: Custom Footer
+description: Bottom Sheet custom footer.
+image: /img/bottom-sheet-preview.gif
+slug: /custom-footer
+hide_table_of_contents: true
+---
+
+To create a custom footer, you will need to use the pre-built component [BottomSheetFooter](./components/bottomsheetfooter) to wrap your footer component, the `BottomSheetFooter` will help in positioning your component at the bottom of the `BottomSheet` and will react to `Keyboard` appearance too.
+
+When you provide your own footer component, it will receive this animated prop `animatedFooterPosition`, which is a calculated animated position for the footer.
+
+You can extend your custom footer props interface with the provided `BottomSheetFooterProps` interface to expose `animatedFooterPosition` into your own interface.
+
+### Example
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Video from '@theme/Video';
+
+<Video
+  title="React Native Bottom Sheet Custom Footer"
+  url={useBaseUrl('video/bottom-sheet-footer-preview.mp4')}
+/>
+
+Here is an example of a custom footer component but first you will need to install `Redash`:
+
+> [Redash](https://github.com/wcandillon/react-native-redash): The React Native Reanimated and Gesture Handler Toolbelt.
+
+```tsx title="CustomFooter.tsx"
+import React, { useCallback, useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+import {
+  BottomSheetFooter,
+  BottomSheetFooterProps,
+  useBottomSheet,
+} from '@gorhom/bottom-sheet';
+import { RectButton } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
+import { toRad } from 'react-native-redash';
+
+const AnimatedRectButton = Animated.createAnimatedComponent(RectButton);
+
+// inherent the `BottomSheetFooterProps` to be able receive
+// `animatedFooterPosition`.
+interface CustomFooterProps extends BottomSheetFooterProps {}
+
+const CustomFooter = ({ animatedFooterPosition }: CustomFooterProps) => {
+  //#region hooks
+  // we need the bottom safe insets to avoid bottom notches.
+  const { bottom: bottomSafeArea } = useSafeAreaInsets();
+  // extract animated index and other functionalities
+  const { expand, collapse, animatedIndex } = useBottomSheet();
+  //#endregion
+
+  //#region styles
+  // create the arrow animated style reacting to the
+  // sheet index.
+  const arrowAnimatedStyle = useAnimatedStyle(() => {
+    const arrowRotate = interpolate(
+      animatedIndex.value,
+      [0, 1],
+      [toRad(0), toRad(-180)],
+      Extrapolate.CLAMP
+    );
+    return {
+      transform: [{ rotate: `${arrowRotate}rad` }],
+    };
+  }, []);
+  const arrowStyle = useMemo(
+    () => [arrowAnimatedStyle, styles.arrow],
+    [arrowAnimatedStyle]
+  );
+  // create the content animated style reacting to the
+  // sheet index.
+  const containerAnimatedStyle = useAnimatedStyle(
+    () => ({
+      opacity: interpolate(
+        animatedIndex.value,
+        [-0.85, 0],
+        [0, 1],
+        Extrapolate.CLAMP
+      ),
+    }),
+    [animatedIndex]
+  );
+  const containerStyle = useMemo(
+    () => [containerAnimatedStyle, styles.container],
+    [containerAnimatedStyle]
+  );
+  //#endregion
+
+  //#region callbacks
+  const handleArrowPress = useCallback(() => {
+    // if sheet is collapsed, then we extend it,
+    // or the opposite.
+    if (animatedIndex.value === 0) {
+      expand();
+    } else {
+      collapse();
+    }
+  }, [expand, collapse, animatedIndex]);
+  //#endregion
+
+  return (
+    <BottomSheetFooter
+      // we pass the bottom safe inset
+      bottomInset={bottomSafeArea}
+      // we pass the provided `animatedFooterPosition`
+      animatedFooterPosition={animatedFooterPosition}
+    >
+      <AnimatedRectButton style={containerStyle} onPress={handleArrowPress}>
+        <Animated.Text style={arrowStyle}>⌃</Animated.Text>
+      </AnimatedRectButton>
+    </BottomSheetFooter>
+  );
+};
+
+// footer style
+const styles = StyleSheet.create({
+  container: {
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 24,
+    marginBottom: 12,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#80f',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 8.0,
+
+    elevation: 8,
+  },
+  arrow: {
+    fontSize: 20,
+    height: 20,
+    textAlignVertical: 'center',
+    fontWeight: '900',
+    color: '#fff',
+  },
+});
+
+export default CustomFooter;
+```
+
+```tsx title="App.tsx"
+import React, { useCallback, useMemo, useRef } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
+import CustomFooter from './CustomFooter';
+
+const App = () => {
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+  // renders
+  return (
+    <View style={styles.container}>
+      <BottomSheet
+        index={1}
+        snapPoints={snapPoints}
+        footerComponent={CustomFooter}
+      >
+        <View style={styles.contentContainer}>
+          <Text>Awesome 🎉</Text>
+        </View>
+      </BottomSheet>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+});
+
+export default App;
+```

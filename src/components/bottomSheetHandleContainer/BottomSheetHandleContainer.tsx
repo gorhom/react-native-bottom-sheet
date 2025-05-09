@@ -2,12 +2,13 @@ import React, { memo, useCallback, useMemo } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import BottomSheetHandle from '../bottomSheetHandle';
 import {
   useBottomSheetGestureHandlers,
   useBottomSheetInternal,
 } from '../../hooks';
 import { print } from '../../utilities';
+import { DEFAULT_ENABLE_HANDLE_PANNING_GESTURE } from '../bottomSheet/constants';
+import BottomSheetHandle from '../bottomSheetHandle';
 import { styles } from './styles';
 import type { BottomSheetHandleContainerProps } from './types';
 
@@ -15,7 +16,7 @@ function BottomSheetHandleContainerComponent({
   animatedIndex,
   animatedPosition,
   simultaneousHandlers: _internalSimultaneousHandlers,
-  enableHandlePanningGesture,
+  enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
   handleHeight,
   handleComponent: _providedHandleComponent,
   handleStyle: _providedHandleStyle,
@@ -34,7 +35,7 @@ function BottomSheetHandleContainerComponent({
   //#endregion
 
   //#region variables
-  const simultaneousHandlers = useMemo<any>(() => {
+  const simultaneousHandlers = useMemo<unknown[]>(() => {
     const refs = [];
 
     if (_internalSimultaneousHandlers) {
@@ -54,7 +55,7 @@ function BottomSheetHandleContainerComponent({
 
   const panGesture = useMemo(() => {
     let gesture = Gesture.Pan()
-      .enabled(enableHandlePanningGesture!)
+      .enabled(enableHandlePanningGesture)
       .shouldCancelWhenOutside(false)
       .runOnJS(false)
       .onStart(handlePanGestureHandler.handleOnStart)
@@ -68,7 +69,7 @@ function BottomSheetHandleContainerComponent({
 
     if (simultaneousHandlers) {
       gesture = gesture.simultaneousWithExternalGesture(
-        simultaneousHandlers as any
+        simultaneousHandlers as never
       );
     }
 
@@ -113,13 +114,16 @@ function BottomSheetHandleContainerComponent({
     }: LayoutChangeEvent) {
       handleHeight.value = height;
 
-      print({
-        component: BottomSheetHandleContainer.displayName,
-        method: 'handleContainerLayout',
-        params: {
-          height,
-        },
-      });
+      if (__DEV__) {
+        print({
+          component: BottomSheetHandleContainer.displayName,
+          method: 'handleContainerLayout',
+          category: 'layout',
+          params: {
+            height,
+          },
+        });
+      }
     },
     [handleHeight]
   );

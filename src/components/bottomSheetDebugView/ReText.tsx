@@ -1,14 +1,16 @@
 import React from 'react';
-import { TextProps as RNTextProps, TextInput } from 'react-native';
+import { type TextProps as RNTextProps, TextInput } from 'react-native';
 import Animated, {
+  type SharedValue,
+  type AnimatedProps,
   useAnimatedProps,
   useDerivedValue,
 } from 'react-native-reanimated';
 
 interface TextProps {
   text: string;
-  value: Animated.SharedValue<number | boolean> | number;
-  style?: Animated.AnimateProps<RNTextProps>['style'];
+  value: SharedValue<number | boolean> | number;
+  style?: AnimatedProps<RNTextProps>['style'];
 }
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -22,8 +24,8 @@ const ReText = (props: TextProps) => {
       typeof _providedValue === 'number'
         ? _providedValue
         : typeof _providedValue.value === 'number'
-        ? _providedValue.value.toFixed(2)
-        : _providedValue.value,
+          ? _providedValue.value.toFixed(2)
+          : _providedValue.value,
     [_providedValue]
   );
   const animatedProps = useAnimatedProps(() => {

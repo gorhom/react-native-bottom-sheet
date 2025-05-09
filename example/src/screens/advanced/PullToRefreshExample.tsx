@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
 import { HeaderHandle } from '../../components/headerHandle/HeaderHandle';
@@ -14,7 +14,7 @@ const PullToRefreshExample = () => {
 
   // callbacks
   const handleRefresh = useCallback(() => {
-    // eslint-disable-next-line no-console
+    // biome-ignore lint/suspicious/noConsole: it is need for the example
     console.log('handleRefresh');
   }, []);
   const handleExpandPress = useCallback(() => {
@@ -40,6 +40,7 @@ const PullToRefreshExample = () => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         handleComponent={renderHeaderHandle}
       >
         <ContactList type="FlatList" count={15} onRefresh={handleRefresh} />

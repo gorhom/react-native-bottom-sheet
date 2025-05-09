@@ -1,8 +1,9 @@
-import { useCallback, RefObject, useRef } from 'react';
+import { type RefObject, useCallback, useRef } from 'react';
+import type { NodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
-import { getRefNativeTag } from '../utilities/getRefNativeTag';
 import { SCROLLABLE_STATE, SCROLLABLE_TYPE } from '../constants';
-import type { ScrollableRef, Scrollable } from '../types';
+import type { Scrollable, ScrollableRef } from '../types';
+import { findNodeHandle } from '../utilities';
 
 export const useScrollable = () => {
   // refs
@@ -22,7 +23,7 @@ export const useScrollable = () => {
   // callbacks
   const setScrollableRef = useCallback((ref: ScrollableRef) => {
     // get current node handle id
-    let currentRefId = scrollableRef.current?.id ?? null;
+    const currentRefId = scrollableRef.current?.id ?? null;
 
     if (currentRefId !== ref.id) {
       if (scrollableRef.current) {
@@ -36,15 +37,15 @@ export const useScrollable = () => {
 
   const removeScrollableRef = useCallback((ref: RefObject<Scrollable>) => {
     // find node handle id
-    let id;
+    let id: NodeHandle | null;
     try {
-      id = getRefNativeTag(ref);
+      id = findNodeHandle(ref.current);
     } catch {
       return;
     }
 
     // get current node handle id
-    let currentRefId = scrollableRef.current?.id ?? null;
+    const currentRefId = scrollableRef.current?.id ?? null;
 
     /**
      * @DEV

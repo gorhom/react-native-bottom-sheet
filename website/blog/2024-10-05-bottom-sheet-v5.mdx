@@ -1,0 +1,107 @@
+---
+title: BottomSheet v5 is finally out!
+description: BottomSheet v5 a fully rewritten implementation to provide more stability, performance, and more features.
+authors:
+  - gorhom
+slug: bottom-sheet-v5
+keywords:
+  - bottomsheet
+  - bottom-sheet
+  - bottom sheet
+  - react-native
+  - react native
+  - ios
+  - android
+  - sheet
+  - modal
+  - presentation modal
+  - reanimated
+tags: [release]
+date: 2024-10-05
+image: /img/bottom-sheet-preview.gif
+hide_table_of_contents: false
+---
+
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Video from "@theme/Video";
+
+I am happy to announce the long-awaited release of the **React Native Bottom Sheet v5**. In this release I have completely rewritten the entire gesture solution with the new **[React Native Gesture Handler v2](https://blog.swmansion.com/introducing-gesture-handler-2-0-50515f1c4afc)**, and I have added support for **React Native Web** to provide a performant simplified API across all React Native supported platforms.
+
+{/* truncate */}
+
+This release has been delayed for a while now due to an increase in responsibilities and commitments in my daily job, moving forward I will try to find someone to help maintaining the project.
+
+## Features
+
+### Web Support
+
+Supporting Web has been on my list since day 0 ([issue #11](https://github.com/gorhom/react-native-bottom-sheet/issues/11)), but unfortunately was not a priority until the community start adopting solutions such as [Expo Web](https://docs.expo.dev/workflow/web/), which also provided an easier development setup for me to kick off the development.
+
+With this release, users will be able to use the library in web mobile without changing the API 🪄.
+
+<Video
+  title="React Native Bottom Sheet Web Support"
+  url={useBaseUrl("video/bottom-sheet-web-support-preview.mp4")}
+/>
+
+
+:::info
+
+🚧 Keyboard handling support for web will be followed shortly, PRs are always welcome.
+
+:::
+
+This feature is enabled by default, Read more about [Web Support](/web-support).
+
+### Dynamic Sizing
+
+Re-introduced the dynamic sizing with **0 configuration** from the user, where the library internally managed to calculate static views and list content size height and set it as the bottom sheet content height.
+
+<Video
+  title="React Native Bottom Sheet Dynamic Sizing"
+  url={useBaseUrl("video/bottom-sheet-dynamic-sizing-preview.mp4")}
+/>
+
+This feature is enabled by default, Read more about [Dynamic Sizing](/dynamic-sizing).
+
+### FlashList Integration
+
+Previously, I have published the [FlashList](https://shopify.github.io/flash-list/) by [Shopify](https://shopify.engineering/) integration for my sponsors only. However, with this release I decided to publish it for everyone ❤️. Users could easily use the pre-integrated component by importing **`BottomSheetFlashList`** from the library.
+
+```tsx
+import { BottomSheetFlashList } from '@gorhom/bottom-sheet'
+```
+
+<Video
+  title="React Native Bottom Sheet FlashList"
+  url={useBaseUrl("video/bottom-sheet-flashlist-preview.mp4")}
+/>
+
+This feature is enabled by default, Read more about [FlashList](/components/bottomsheetflashlist) integration.
+
+## Improvements
+
+### Refactored Snapping Mechanism
+
+The bottom sheet has multiple events that trigger its snapping to positions, whether a change in a snap point value, container height or the keyboard appearance. Since the introduction of keyboard handling in `v4` there has been multiple issues reported regarding the bottom sheet snapping to a wrong position or sometimes not even reacting to resizing events. With this release, I have refactored the whole snapping mechanism from the scratch and built it working backward from the edge cases such as: content resizing, container resizing and keyboard appearance.
+
+## Migration
+
+As the introduction of the [Dynamic Sizing](/dynamic-sizing), many might find their bottom sheets heights changes as it is enabled by default. To avoid such issues while migrating to **v5**, I recommend disabling it by setting the prop `enableDynamicSizing` to `false`, then try to figure out whether to use it or limit the dynamic content height by setting the prop `maxDynamicContentSize`.
+
+## Breaking Changes
+
+- Updated Gesture Handler to **v2**
+- Updated Reanimated to **v3**
+- Updated `enableDynamicSizing` default value to **`true`**
+- Updated `stackBehavior` default value to `switch`
+
+read all other changes in [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md).
+
+## Special thanks
+
+Thanks to all users for testing and reporting issues. Without your help, this library wouldn't progress this much ❤️
+
+Special thanks to [@Mahmoud-SK](https://github.com/Mahmoud-SK), [@Eli-Nathan](https://github.com/Eli-Nathan), [@ororsatti](https://github.com/ororsatti), [@janodetzel](https://github.com/janodetzel), [@cenksari](https://github.com/cenksari), [@AndreiCalazans](https://github.com/AndreiCalazans), [@MoritzCooks](https://github.com/MoritzCooks), [@fobos531](https://github.com/fobos531), [@ghorbani-m](https://github.com/ghorbani-m), [@jaworek](https://github.com/jaworek), [@joshsmith](https://github.com/joshsmith), [@david-gomes5](https://github.com/david-gomes5), [@christophby](https://github.com/christophby), [@koplyarov](https://github.com/koplyarov), [@beqramo](https://github.com/beqramo), [@magrinj](https://github.com/magrinj), [@gkueny](https://github.com/gkueny), [@eps1lon](https://github.com/eps1lon), [@janicduplessis](https://github.com/janicduplessis) and others for testing & contributing to this release.
+
+Finally, thanks to [Software Mansion](http://swmansion.com/) for powering this library with `Reanimated` & `Gesture Handler`.

@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import {
   ScrollView as RNScrollView,
-  ScrollViewProps as RNScrollViewProps,
+  type ScrollViewProps as RNScrollViewProps,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';

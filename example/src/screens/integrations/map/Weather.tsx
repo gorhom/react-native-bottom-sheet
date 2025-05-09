@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import Animated, {
-  Extrapolate,
+  Extrapolation,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
@@ -44,7 +44,7 @@ const Weather = ({ animatedIndex, animatedPosition }: WeatherProps) => {
         animatedIndex.value,
         [1, 1.125],
         [1, 0],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP
       ),
       transform: [
         {
@@ -54,7 +54,7 @@ const Weather = ({ animatedIndex, animatedPosition }: WeatherProps) => {
         },
       ],
     };
-  }, [height, screenHeight]);
+  }, [animatedIndex.value, animatedPosition.value, height, screenHeight]);
   const containerStyle = useMemo(
     () => [
       styles.container,

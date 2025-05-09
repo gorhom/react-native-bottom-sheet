@@ -18,6 +18,6 @@ export { useGestureEventsHandlersDefault } from './useGestureEventsHandlersDefau
 export { useKeyboard } from './useKeyboard';
 export { useStableCallback } from './useStableCallback';
 export { usePropsValidator } from './usePropsValidator';
-export { useNormalizedSnapPoints } from './useNormalizedSnapPoints';
+export { useAnimatedSnapPoints } from './useAnimatedSnapPoints';
 export { useReactiveSharedValue } from './useReactiveSharedValue';
 export { useBottomSheetGestureHandlers } from './useBottomSheetGestureHandlers';

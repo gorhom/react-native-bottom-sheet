@@ -1,13 +1,13 @@
 import React, { memo, useContext, useMemo } from 'react';
-import { RefreshControl, RefreshControlProps } from 'react-native';
+import { RefreshControl, type RefreshControlProps } from 'react-native';
 import {
   Gesture,
   GestureDetector,
-  SimultaneousGesture,
+  type SimultaneousGesture,
 } from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps } from 'react-native-reanimated';
-import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import { SCROLLABLE_STATE } from '../../constants';
+import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import { useBottomSheetInternal } from '../../hooks';
 
 const AnimatedRefreshControl = Animated.createAnimatedComponent(RefreshControl);
@@ -23,33 +23,56 @@ function BottomSheetRefreshControlComponent({
 }: BottomSheetRefreshControlProps) {
   //#region hooks
   const draggableGesture = useContext(BottomSheetDraggableContext);
-  const { animatedScrollableState } = useBottomSheetInternal();
+  const { animatedScrollableState, enableContentPanningGesture } =
+    useBottomSheetInternal();
   //#endregion
 
+  if (!draggableGesture && enableContentPanningGesture) {
+    throw "'BottomSheetRefreshControl' cannot be used out of the BottomSheet!";
+  }
+
   //#region variables
-  const animatedProps = useAnimatedProps(() => ({
-    enabled: animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED,
-  }));
+  const animatedProps = useAnimatedProps(
+    () => ({
+      enabled: animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED,
+    }),
+    [animatedScrollableState.value]
+  );
+
   const gesture = useMemo(
     () =>
-      Gesture.Simultaneous(
-        Gesture.Native().shouldCancelWhenOutside(false),
-        scrollableGesture,
-        draggableGesture!
-      ),
+      draggableGesture
+        ? Gesture.Native()
+            // @ts-ignore
+            .simultaneousWithExternalGesture(
+              ...draggableGesture.toGestureArray(),
+              ...scrollableGesture.toGestureArray()
+            )
+            .shouldCancelWhenOutside(true)
+        : undefined,
     [draggableGesture, scrollableGesture]
   );
+
   //#endregion
 
   // render
+  if (gesture) {
+    return (
+      <GestureDetector gesture={gesture}>
+        <AnimatedRefreshControl
+          {...rest}
+          onRefresh={onRefresh}
+          animatedProps={animatedProps}
+        />
+      </GestureDetector>
+    );
+  }
   return (
-    <GestureDetector gesture={gesture}>
-      <AnimatedRefreshControl
-        {...rest}
-        onRefresh={onRefresh}
-        animatedProps={animatedProps}
-      />
-    </GestureDetector>
+    <AnimatedRefreshControl
+      {...rest}
+      onRefresh={onRefresh}
+      animatedProps={animatedProps}
+    />
   );
 }
 

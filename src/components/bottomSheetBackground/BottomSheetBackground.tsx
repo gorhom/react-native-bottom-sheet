@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
-import type { BottomSheetBackgroundProps } from './types';
 import { styles } from './styles';
+import type { BottomSheetBackgroundProps } from './types';
 
 const BottomSheetBackgroundComponent = ({
   pointerEvents,

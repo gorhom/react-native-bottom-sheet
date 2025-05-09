@@ -6,14 +6,14 @@ import type {
 } from 'react-native-gesture-handler';
 import BottomSheetRefreshControl from './BottomSheetRefreshControl';
 
-export default BottomSheetRefreshControl as any as React.MemoExoticComponent<
+export default BottomSheetRefreshControl as never as React.MemoExoticComponent<
   React.ForwardRefExoticComponent<
     RefreshControlProps & {
       scrollableGesture: SimultaneousGesture;
       children: React.ReactNode | React.ReactNode[];
     } & React.RefAttributes<
         React.ComponentType<
-          NativeViewGestureHandlerProps & React.RefAttributes<any>
+          NativeViewGestureHandlerProps & React.RefAttributes<never>
         >
       >
   >

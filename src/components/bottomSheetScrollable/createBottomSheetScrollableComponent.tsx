@@ -4,28 +4,30 @@ import React, {
   useImperativeHandle,
   useMemo,
 } from 'react';
-import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
-import { BottomSheetDraggableContext } from '../../contexts/gesture';
-import {
-  useScrollHandler,
-  useScrollableSetter,
-  useBottomSheetInternal,
-  useStableCallback,
-} from '../../hooks';
+import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATE,
-  SCROLLABLE_TYPE,
+  type SCROLLABLE_TYPE,
 } from '../../constants';
+import { BottomSheetDraggableContext } from '../../contexts/gesture';
+import {
+  useBottomSheetInternal,
+  useScrollHandler,
+  useScrollableSetter,
+  useStableCallback,
+} from '../../hooks';
 import { ScrollableContainer } from './ScrollableContainer';
+import { useBottomSheetContentSizeSetter } from './useBottomSheetContentSizeSetter';
 
 export function createBottomSheetScrollableComponent<T, P>(
   type: SCROLLABLE_TYPE,
+  // biome-ignore lint: to be addressed!
   ScrollableComponent: any
 ) {
   return forwardRef<T, P>((props, ref) => {
-    // props
+    //#region props
     const {
       // hooks
       focusHook,
@@ -46,7 +48,9 @@ export function createBottomSheetScrollableComponent<T, P>(
       onScrollEndDrag,
       onContentSizeChange,
       ...rest
+      // biome-ignore lint: to be addressed!
     }: any = props;
+    //#endregion
 
     //#region hooks
     const draggableGesture = useContext(BottomSheetDraggableContext);
@@ -59,11 +63,15 @@ export function createBottomSheetScrollableComponent<T, P>(
       );
     const {
       animatedFooterHeight,
-      animatedContentHeight,
       animatedScrollableState,
-      enableDynamicSizing,
+      enableContentPanningGesture,
     } = useBottomSheetInternal();
+    const { setContentSize } = useBottomSheetContentSizeSetter();
     //#endregion
+
+    if (!draggableGesture && enableContentPanningGesture) {
+      throw "'Scrollable' cannot be used out of the BottomSheet!";
+    }
 
     //#region variables
     const scrollableAnimatedProps = useAnimatedProps(
@@ -77,12 +85,14 @@ export function createBottomSheetScrollableComponent<T, P>(
       [animatedScrollableState, showsVerticalScrollIndicator]
     );
 
-    const nativeGesture = useMemo(
+    const scrollableGesture = useMemo(
       () =>
-        Gesture.Native()
-          // @ts-ignore
-          .simultaneousWithExternalGesture(draggableGesture!)
-          .shouldCancelWhenOutside(false),
+        draggableGesture
+          ? Gesture.Native()
+              // @ts-ignore
+              .simultaneousWithExternalGesture(draggableGesture)
+              .shouldCancelWhenOutside(false)
+          : undefined,
       [draggableGesture]
     );
     //#endregion
@@ -90,9 +100,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#region callbacks
     const handleContentSizeChange = useStableCallback(
       (contentWidth: number, contentHeight: number) => {
-        if (enableDynamicSizing) {
-          animatedContentHeight.value = contentHeight;
-        }
+        setContentSize(contentHeight);
 
         if (onContentSizeChange) {
           onContentSizeChange(contentWidth, contentHeight);
@@ -108,7 +116,7 @@ export function createBottomSheetScrollableComponent<T, P>(
           ? animatedFooterHeight.value
           : 0,
       }),
-      [enableFooterMarginAdjustment]
+      [animatedFooterHeight, enableFooterMarginAdjustment]
     );
     const containerStyle = useMemo(() => {
       return enableFooterMarginAdjustment
@@ -136,7 +144,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     return (
       <ScrollableContainer
         ref={scrollableRef}
-        nativeGesture={nativeGesture}
+        nativeGesture={scrollableGesture}
         animatedProps={scrollableAnimatedProps}
         overScrollMode={overScrollMode}
         keyboardDismissMode={keyboardDismissMode}
@@ -147,6 +155,7 @@ export function createBottomSheetScrollableComponent<T, P>(
         onRefresh={onRefresh}
         onScroll={scrollHandler}
         onContentSizeChange={handleContentSizeChange}
+        setContentSize={setContentSize}
         ScrollableComponent={ScrollableComponent}
         refreshControl={refreshControl}
         {...rest}

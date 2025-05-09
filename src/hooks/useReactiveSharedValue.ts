@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react';
-import Animated, {
-  cancelAnimation,
-  makeMutable,
-} from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
+import { cancelAnimation, makeMutable } from 'react-native-reanimated';
 import type { Primitive } from '../types';
 
 export const useReactiveSharedValue = <T>(
   value: T
-): T extends Primitive ? Animated.SharedValue<T> : T => {
+): T extends Primitive ? SharedValue<T> : T => {
   const initialValueRef = useRef<T>(null);
-  const valueRef = useRef<Animated.SharedValue<T>>(null);
+  const valueRef = useRef<SharedValue<T>>(null);
 
   if (value && typeof value === 'object' && 'value' in value) {
     /**

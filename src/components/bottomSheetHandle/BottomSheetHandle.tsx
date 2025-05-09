@@ -1,13 +1,13 @@
 import React, { memo, useMemo } from 'react';
 import Animated from 'react-native-reanimated';
+import {
+  DEFAULT_ACCESSIBILITY_HINT,
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ACCESSIBLE,
+} from './constants';
 import { styles } from './styles';
 import type { BottomSheetDefaultHandleProps } from './types';
-import {
-  DEFAULT_ACCESSIBLE,
-  DEFAULT_ACCESSIBILITY_ROLE,
-  DEFAULT_ACCESSIBILITY_LABEL,
-  DEFAULT_ACCESSIBILITY_HINT,
-} from './constants';
 
 const BottomSheetHandleComponent = ({
   style,

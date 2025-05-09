@@ -1,8 +1,5 @@
-import { memo } from 'react';
-import {
-  VirtualizedList as RNVirtualizedList,
-  VirtualizedListProps as RNVirtualizedListProps,
-} from 'react-native';
+import { type ComponentProps, memo } from 'react';
+import { VirtualizedList as RNVirtualizedList } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
 import { createBottomSheetScrollableComponent } from './createBottomSheetScrollableComponent';
@@ -12,14 +9,14 @@ import type {
 } from './types';
 
 const AnimatedVirtualizedList =
-  Animated.createAnimatedComponent<RNVirtualizedListProps<any>>(
+  Animated.createAnimatedComponent<ComponentProps<typeof RNVirtualizedList>>(
     RNVirtualizedList
   );
 
 const BottomSheetVirtualizedListComponent =
   createBottomSheetScrollableComponent<
     BottomSheetVirtualizedListMethods,
-    BottomSheetVirtualizedListProps<any>
+    BottomSheetVirtualizedListProps<never>
   >(SCROLLABLE_TYPE.VIRTUALIZEDLIST, AnimatedVirtualizedList);
 
 const BottomSheetVirtualizedList = memo(BottomSheetVirtualizedListComponent);

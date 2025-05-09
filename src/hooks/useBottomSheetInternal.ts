@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import {
   BottomSheetInternalContext,
-  BottomSheetInternalContextType,
+  type BottomSheetInternalContextType,
 } from '../contexts/internal';
 
 export function useBottomSheetInternal(

@@ -1,0 +1,95 @@
+name: Bug Report
+description: File a bug report.
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+
+        ⚠️ **Please note that issues that do not follow the template will be closed.**
+        ## Environment Info
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of the library are you using?
+      options:
+        - v5
+        - v4 (deprecated)
+        - v2 (deprecated)
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: ra-version
+    attributes:
+      label: Reanimated Version
+      description: What version of React Native Reanimated are you using?
+      options:
+        - v3
+        - v2 (deprecated)
+        - v1 (deprecated)
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: gh-version
+    attributes:
+      label: Gesture Handler Version
+      description: What version of Gesture Handler are you using?
+      options:
+        - v2
+        - v1 (deprecated)
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platforms
+      description: What platform\s this bug is occurring on?
+      multiple: true
+      options:
+        - iOS
+        - Android
+        - Web
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Please provide a clear and concise description of what the bug is? Include screenshots or gifs if needed.
+      placeholder: Tell us what happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repo-steps
+    attributes:
+      label: Reproduction steps
+      description: You must provide a clear list of steps and code to reproduce the problem.
+      placeholder: ex. - drag the bottom sheet...
+      value: "- "
+    validations:
+      required: true
+
+  - type: input
+    id: snack
+    attributes:
+      label: Reproduction sample
+      description: You must provide a reproduction sample code using **Expo Snack** [issue reproduction template](https://snack.expo.dev/@gorhom/bottom-sheet---issue-reproduction-template)
+      placeholder: ex. https://snack.expo.dev/@gorhom/bottom-sheet---issue-reproduction-template
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": false },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "lineEnding": "lf",
+    "lineWidth": 80,
+    "ignore": ["**/.github", "**/lib", "**/.expo", "**/website"]
+  },
+  "organizeImports": { "enabled": true, "ignore": ["**/website"] },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noMultipleSpacesInRegularExpressionLiterals": "warn",
+        "noUselessLoneBlockStatements": "warn",
+        "noUselessUndefinedInitialization": "warn",
+        "noVoid": "warn",
+        "noWith": "warn",
+        "useLiteralKeys": "warn"
+      },
+      "correctness": {
+        "noConstAssign": "error",
+        "noConstantCondition": "off",
+        "noEmptyCharacterClassInRegex": "warn",
+        "noGlobalObjectCalls": "warn",
+        "noInnerDeclarations": "off",
+        "noInvalidUseBeforeDeclaration": "off",
+        "noUndeclaredVariables": "error",
+        "noUnreachable": "error",
+        "noUnusedVariables": "warn",
+        "useArrayLiterals": "warn",
+        "useExhaustiveDependencies": "error",
+        "useHookAtTopLevel": "error",
+        "useIsNan": "warn"
+      },
+      "security": { "noGlobalEval": "error" },
+      "style": {
+        "noCommaOperator": "warn",
+        "noYodaExpression": "warn",
+        "useBlockStatements": "warn",
+        "useCollapsedElseIf": "off",
+        "useConsistentBuiltinInstantiation": "warn",
+        "useDefaultSwitchClause": "off",
+        "useSingleVarDeclarator": "off",
+        "useExponentiationOperator": "off"
+      },
+      "suspicious": {
+        "noCatchAssign": "warn",
+        "noCommentText": "error",
+        "noConsole": {
+          "level": "error",
+          "options": { "allow": ["warn", "error"] }
+        },
+        "noControlCharactersInRegex": "warn",
+        "noDebugger": "warn",
+        "noDoubleEquals": "warn",
+        "noDuplicateClassMembers": "error",
+        "noDuplicateJsxProps": "error",
+        "noDuplicateObjectKeys": "error",
+        "noEmptyBlockStatements": "off",
+        "noFallthroughSwitchClause": "warn",
+        "noFunctionAssign": "warn",
+        "noLabelVar": "warn",
+        "noRedeclare": "off",
+        "noSelfCompare": "warn",
+        "noShadowRestrictedNames": "warn",
+        "noSparseArray": "warn",
+        "useValidTypeof": "warn"
+      }
+    },
+    "ignore": ["**/node_modules/", "**/lib", "**/.expo", "**/website"]
+  },
+  "javascript": {
+    "jsxRuntime": "reactClassic",
+    "formatter": {
+      "trailingCommas": "es5",
+      "semicolons": "always",
+      "arrowParentheses": "asNeeded",
+      "quoteStyle": "single",
+      "bracketSpacing": true
+    },
+    "globals": [
+      "clearImmediate",
+      "queueMicrotask",
+      "Blob",
+      "Set",
+      "Promise",
+      "requestIdleCallback",
+      "setImmediate",
+      "requestAnimationFrame",
+      "File",
+      "Map",
+      "__DEV__",
+      "WebSocket"
+    ]
+  },
+  "files": {
+    "ignore": [
+      "**/node_modules/",
+      "**/lib",
+      "**/.expo",
+      "**/example",
+      "**/website"
+    ]
+  }
+}

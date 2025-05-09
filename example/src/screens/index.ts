@@ -1,4 +1,4 @@
-import { ShowcaseExampleScreenSectionType } from '@gorhom/showcase-template';
+import type { ShowcaseExampleScreenSectionType } from '@gorhom/showcase-template';
 import { Platform } from 'react-native';
 
 const screens: ShowcaseExampleScreenSectionType[] = [];
@@ -60,9 +60,9 @@ const modalSection = {
       getScreen: () => require('./modal/StackExample').default,
     },
     {
-      name: 'Dynamic Snap Point',
-      slug: 'Modal/DynamicSnapPointExample',
-      getScreen: () => require('./modal/DynamicSnapPointExample').default,
+      name: 'Dynamic Sizing',
+      slug: 'Modal/DynamicSizingExample',
+      getScreen: () => require('./modal/DynamicSizingExample').default,
     },
     {
       name: 'Detached',
@@ -100,9 +100,9 @@ const advancedSection = {
       getScreen: () => require('./advanced/BackdropExample').default,
     },
     {
-      name: 'Dynamic Snap Point',
-      slug: 'Advanced/DynamicSnapPointExample',
-      getScreen: () => require('./advanced/DynamicSnapPointExample').default,
+      name: 'Dynamic Sizing',
+      slug: 'Advanced/DynamicSizingExample',
+      getScreen: () => require('./advanced/DynamicSizingExample').default,
     },
     {
       name: 'Shadow',
@@ -162,6 +162,11 @@ if (Platform.OS !== 'web') {
           headerTintColor: 'black',
           headerTransparent: true,
         },
+      },
+      {
+        name: 'FlashList',
+        slug: 'Integrations/FlashList',
+        getScreen: () => require('./integrations/flashlist').default,
       },
     ],
     collapsed: true,

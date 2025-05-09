@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { useDerivedValue } from 'react-native-reanimated';
-import { useBottomSheetInternal } from '../../hooks';
 import { KEYBOARD_STATE } from '../../constants';
+import { useBottomSheetInternal } from '../../hooks';
 import type { BottomSheetFooterContainerProps } from './types';
 
 const BottomSheetFooterContainerComponent = ({

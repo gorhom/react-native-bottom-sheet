@@ -1,27 +1,28 @@
 import type React from 'react';
-import type { ViewStyle, Insets, StyleProp } from 'react-native';
+import type { Insets, StyleProp, ViewStyle } from 'react-native';
+import type { PanGesture } from 'react-native-gesture-handler';
 import type {
-  SharedValue,
   AnimateStyle,
+  ReduceMotion,
+  SharedValue,
   WithSpringConfig,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import type { PanGesture } from 'react-native-gesture-handler';
-import type { BottomSheetHandleProps } from '../bottomSheetHandle';
-import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
-import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
-import type { BottomSheetFooterProps } from '../bottomSheetFooter';
 import type {
-  SNAP_POINT_TYPE,
   ANIMATION_SOURCE,
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
+  SNAP_POINT_TYPE,
 } from '../../constants';
 import type {
   GestureEventsHandlersHookType,
   NullableAccessibilityProps,
 } from '../../types';
+import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
+import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
+import type { BottomSheetFooterProps } from '../bottomSheetFooter';
+import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 
 export interface BottomSheetProps
   extends BottomSheetAnimationConfigs,
@@ -83,10 +84,9 @@ export interface BottomSheetProps
    */
   enablePanDownToClose?: boolean;
   /**
-   * Enable dynamic sizing for content view and scrollable
-   * content size.
+   * Enable dynamic sizing for content view and scrollable content size.
    * @type boolean
-   * @default false
+   * @default true
    */
   enableDynamicSizing?: boolean;
   /**
@@ -95,6 +95,16 @@ export interface BottomSheetProps
    * @default true
    */
   animateOnMount?: boolean;
+  /**
+   * To override the user reduce motion setting.
+   * - `ReduceMotion.System`: if the `Reduce motion` accessibility setting is enabled on the device, disable the animation.
+   * - `ReduceMotion.Always`: disable the animation, even if `Reduce motion` accessibility setting is not enabled.
+   * - `ReduceMotion.Never`: enable the animation, even if `Reduce motion` accessibility setting is enabled.
+   * @type ReduceMotion
+   * @see https://docs.swmansion.com/react-native-reanimated/docs/guides/accessibility
+   * @default ReduceMotion.System
+   */
+  overrideReduceMotion?: ReduceMotion;
   //#endregion
 
   //#region layout
@@ -151,6 +161,11 @@ export interface BottomSheetProps
    * - `restore`: restore sheet position.
    */
   keyboardBlurBehavior?: keyof typeof KEYBOARD_BLUR_BEHAVIOR;
+  /**
+   * Enable blurring the keyboard when user start to drag the bottom sheet.
+   * @default false
+   */
+  enableBlurKeyboardOnGesture?: boolean;
   /**
    * Defines keyboard input mode for Android only.
    * @link {https://developer.android.com/guide/topics/manifest/activity-element#wsoft}

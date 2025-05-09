@@ -1,10 +1,14 @@
 import React, { memo, useEffect, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, StyleSheet } from 'react-native';
+import {
+  type LayoutChangeEvent,
+  StyleSheet,
+  type ViewStyle,
+} from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
-import type { BottomSheetViewProps } from './types';
 import { print } from '../../utilities';
+import type { BottomSheetViewProps } from './types';
 
 function BottomSheetViewComponent({
   focusHook: useFocusHook = useEffect,
@@ -25,36 +29,25 @@ function BottomSheetViewComponent({
   //#endregion
 
   //#region styles
-  const flattenContainerStyle = useMemo(
+  const flattenStyle = useMemo<ViewStyle | undefined>(
     () => StyleSheet.flatten(style),
     [style]
   );
-  const containerStylePaddingBottom = useMemo(() => {
-    const paddingBottom =
-      flattenContainerStyle && 'paddingBottom' in flattenContainerStyle
-        ? flattenContainerStyle.paddingBottom
+  const containerStyle = useAnimatedStyle(() => {
+    if (!enableFooterMarginAdjustment) {
+      return flattenStyle ?? {};
+    }
+
+    const marginBottom =
+      typeof flattenStyle?.marginBottom === 'number'
+        ? flattenStyle.marginBottom
         : 0;
-    return typeof paddingBottom === 'number' ? paddingBottom : 0;
-  }, [flattenContainerStyle]);
-  const containerStyle = useMemo(() => {
+
     return {
-      ...flattenContainerStyle,
-      paddingBottom: 0,
+      ...(flattenStyle ?? {}),
+      marginBottom: marginBottom + animatedFooterHeight.value,
     };
-  }, [flattenContainerStyle]);
-  const spaceStyle = useAnimatedStyle(
-    () => ({
-      opacity: 0,
-      height: enableFooterMarginAdjustment
-        ? animatedFooterHeight.value + containerStylePaddingBottom
-        : containerStylePaddingBottom,
-    }),
-    [
-      enableFooterMarginAdjustment,
-      containerStylePaddingBottom,
-      animatedFooterHeight,
-    ]
-  );
+  }, [flattenStyle, enableFooterMarginAdjustment, animatedFooterHeight]);
   //#endregion
 
   //#region callbacks
@@ -72,13 +65,16 @@ function BottomSheetViewComponent({
         onLayout(event);
       }
 
-      print({
-        component: BottomSheetView.displayName,
-        method: 'handleLayout',
-        params: {
-          height: event.nativeEvent.layout.height,
-        },
-      });
+      if (__DEV__) {
+        print({
+          component: BottomSheetView.displayName,
+          method: 'handleLayout',
+          category: 'layout',
+          params: {
+            height: event.nativeEvent.layout.height,
+          },
+        });
+      }
     },
     [onLayout, animatedContentHeight, enableDynamicSizing]
   );
@@ -89,9 +85,8 @@ function BottomSheetViewComponent({
 
   //render
   return (
-    <Animated.View onLayout={handleLayout} style={containerStyle} {...rest}>
+    <Animated.View {...rest} onLayout={handleLayout} style={containerStyle}>
       {children}
-      <Animated.View pointerEvents="none" style={spaceStyle} />
     </Animated.View>
   );
 }

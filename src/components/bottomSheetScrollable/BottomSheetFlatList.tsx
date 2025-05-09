@@ -1,8 +1,5 @@
-import { memo } from 'react';
-import {
-  FlatList as RNFlatList,
-  FlatListProps as RNFlatListProps,
-} from 'react-native';
+import { type ComponentProps, memo } from 'react';
+import { FlatList as RNFlatList } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
 import { createBottomSheetScrollableComponent } from './createBottomSheetScrollableComponent';
@@ -12,11 +9,13 @@ import type {
 } from './types';
 
 const AnimatedFlatList =
-  Animated.createAnimatedComponent<RNFlatListProps<any>>(RNFlatList);
+  Animated.createAnimatedComponent<ComponentProps<typeof RNFlatList>>(
+    RNFlatList
+  );
 
 const BottomSheetFlatListComponent = createBottomSheetScrollableComponent<
   BottomSheetFlatListMethods,
-  BottomSheetFlatListProps<any>
+  BottomSheetFlatListProps<never>
 >(SCROLLABLE_TYPE.FLATLIST, AnimatedFlatList);
 
 const BottomSheetFlatList = memo(BottomSheetFlatListComponent);

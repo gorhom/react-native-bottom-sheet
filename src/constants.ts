@@ -1,70 +1,71 @@
 import { Dimensions, Platform } from 'react-native';
-import Animated, { Easing } from 'react-native-reanimated';
+import type Animated from 'react-native-reanimated';
+import { Easing } from 'react-native-reanimated';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 enum GESTURE_SOURCE {
   UNDETERMINED = 0,
-  SCROLLABLE,
-  HANDLE,
-  CONTENT,
+  SCROLLABLE = 1,
+  HANDLE = 2,
+  CONTENT = 3,
 }
 
 enum SHEET_STATE {
   CLOSED = 0,
-  OPENED,
-  EXTENDED,
-  OVER_EXTENDED,
-  FILL_PARENT,
+  OPENED = 1,
+  EXTENDED = 2,
+  OVER_EXTENDED = 3,
+  FILL_PARENT = 4,
 }
 
 enum SCROLLABLE_STATE {
   LOCKED = 0,
-  UNLOCKED,
-  UNDETERMINED,
+  UNLOCKED = 1,
+  UNDETERMINED = 2,
 }
 
 enum SCROLLABLE_TYPE {
   UNDETERMINED = 0,
-  VIEW,
-  FLATLIST,
-  SCROLLVIEW,
-  SECTIONLIST,
-  VIRTUALIZEDLIST,
+  VIEW = 1,
+  FLATLIST = 2,
+  SCROLLVIEW = 3,
+  SECTIONLIST = 4,
+  VIRTUALIZEDLIST = 5,
 }
 
 enum ANIMATION_STATE {
   UNDETERMINED = 0,
-  RUNNING,
-  STOPPED,
-  INTERRUPTED,
+  RUNNING = 1,
+  STOPPED = 2,
+  INTERRUPTED = 3,
 }
 
 enum ANIMATION_SOURCE {
   NONE = 0,
-  MOUNT,
-  GESTURE,
-  USER,
-  CONTAINER_RESIZE,
-  SNAP_POINT_CHANGE,
-  KEYBOARD,
+  MOUNT = 1,
+  GESTURE = 2,
+  USER = 3,
+  CONTAINER_RESIZE = 4,
+  SNAP_POINT_CHANGE = 5,
+  KEYBOARD = 6,
 }
 
 enum ANIMATION_METHOD {
-  TIMING,
-  SPRING,
+  TIMING = 0,
+  SPRING = 1,
 }
 
 enum KEYBOARD_STATE {
   UNDETERMINED = 0,
-  SHOWN,
-  HIDDEN,
+  SHOWN = 1,
+  HIDDEN = 2,
 }
 
 enum SNAP_POINT_TYPE {
   PROVIDED = 0,
-  DYNAMIC,
+  DYNAMIC = 1,
 }
 
 const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
@@ -100,6 +101,7 @@ const SCROLLABLE_DECELERATION_RATE_MAPPER = {
 const MODAL_STACK_BEHAVIOR = {
   replace: 'replace',
   push: 'push',
+  switch: 'switch',
 };
 
 const KEYBOARD_BEHAVIOR = {

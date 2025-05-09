@@ -1,8 +1,8 @@
 import type { PanGestureHandlerProperties } from 'react-native-gesture-handler';
-import type Animated from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
+import type { useInteractivePanGestureHandlerConfigs } from '../../hooks/useGestureHandler';
 import type { BottomSheetProps } from '../bottomSheet';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
-import type { useInteractivePanGestureHandlerConfigs } from '../../hooks/useGestureHandler';
 
 export interface BottomSheetHandleContainerProps
   extends Pick<PanGestureHandlerProperties, 'simultaneousHandlers'>,
@@ -21,5 +21,5 @@ export interface BottomSheetHandleContainerProps
       | 'keyboardBehavior'
     >,
     BottomSheetHandleProps {
-  handleHeight: Animated.SharedValue<number>;
+  handleHeight: SharedValue<number>;
 }

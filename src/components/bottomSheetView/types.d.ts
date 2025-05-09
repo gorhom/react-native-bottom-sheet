@@ -1,4 +1,4 @@
-import type { EffectCallback, DependencyList, ReactNode } from 'react';
+import type { DependencyList, EffectCallback, ReactNode } from 'react';
 import type { ViewProps as RNViewProps } from 'react-native';
 
 export interface BottomSheetViewProps extends RNViewProps {
