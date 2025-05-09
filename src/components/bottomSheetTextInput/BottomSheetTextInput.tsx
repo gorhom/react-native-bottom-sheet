@@ -13,6 +13,13 @@ const BottomSheetTextInputComponent = forwardRef<
 >(({ onFocus, onBlur, ...rest }, ref) => {
   //#region hooks
   const { shouldHandleKeyboardEvents } = useBottomSheetInternal();
+
+  useEffect(() => {
+    return () => {
+      // Reset the flag on unmount
+      shouldHandleKeyboardEvents.value = false;
+    };
+  }, [shouldHandleKeyboardEvents]);
   //#endregion
 
   //#region callbacks
