@@ -7,7 +7,7 @@ import React, {
   memo,
   useEffect,
 } from 'react';
-import { type Insets, Platform } from 'react-native';
+import { type Insets, Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedReaction,
@@ -56,7 +56,6 @@ import {
   normalizeSnapPoint,
   print,
 } from '../../utilities';
-import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import { BottomSheetBackgroundContainer } from '../bottomSheetBackground';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
@@ -159,7 +158,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       // components
       handleComponent,
-      backdropComponent,
+      backdropComponent: BackdropComponent,
       backgroundComponent,
       footerComponent,
       children,
@@ -1894,12 +1893,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           <BottomSheetGestureHandlersProvider
             gestureEventsHandlersHook={gestureEventsHandlersHook}
           >
-            <BottomSheetBackdropContainer
-              key="BottomSheetBackdropContainer"
-              animatedIndex={animatedIndex}
-              animatedPosition={animatedPosition}
-              backdropComponent={backdropComponent}
-            />
+            {BackdropComponent ? (
+              <BackdropComponent
+                animatedIndex={animatedIndex}
+                animatedPosition={animatedPosition}
+                style={StyleSheet.absoluteFillObject}
+              />
+            ) : null}
             <BottomSheetHostingContainer
               key="BottomSheetContainer"
               shouldCalculateHeight={!$modal}

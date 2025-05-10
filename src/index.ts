@@ -31,7 +31,7 @@ export { BottomSheetHandle } from './components/bottomSheetHandle';
 export { default as BottomSheetDraggableView } from './components/bottomSheetDraggableView';
 export { default as BottomSheetView } from './components/bottomSheetView';
 export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
-export { default as BottomSheetBackdrop } from './components/bottomSheetBackdrop';
+export { BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 export { default as BottomSheetFooter } from './components/bottomSheetFooter';
 export { default as BottomSheetFooterContainer } from './components/bottomSheetFooterContainer/BottomSheetFooterContainer';
 

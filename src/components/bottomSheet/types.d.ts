@@ -275,9 +275,6 @@ export interface BottomSheetProps
    * @see {BottomSheetHandleProps}
    * @type React.FC\<BottomSheetHandleProps\>
    */
-  //     handleComponent: React.ForwardRefExoticComponent<
-  //   BottomSheetDefaultHandleProps & React.RefAttributes<View>
-  // >;
   handleComponent?: React.FC<
     BottomSheetHandleProps & Partial<React.RefAttributes<View>>
   > | null;
@@ -285,9 +282,9 @@ export interface BottomSheetProps
    * Component to be placed as a sheet backdrop.
    * @see {BottomSheetBackdropProps}
    * @type React.FC\<BottomSheetBackdropProps\>
-   * @default null
+   * @default undefined
    */
-  backdropComponent?: React.FC<BottomSheetBackdropProps> | null;
+  backdropComponent?: React.FC<BottomSheetBackdropProps>;
   /**
    * Component to be placed as a background.
    * @see {BottomSheetBackgroundProps}
