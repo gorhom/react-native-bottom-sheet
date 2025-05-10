@@ -62,8 +62,8 @@ import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetFooterContainer from '../bottomSheetFooterContainer/BottomSheetFooterContainer';
 import BottomSheetGestureHandlersProvider from '../bottomSheetGestureHandlersProvider';
-import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
-import BottomSheetHostingContainer from '../bottomSheetHostingContainer';
+import { BottomSheetHandleContainer } from '../bottomSheetHandle';
+import { BottomSheetHostingContainer } from '../bottomSheetHostingContainer';
 import {
   DEFAULT_ACCESSIBILITY_LABEL,
   DEFAULT_ACCESSIBILITY_ROLE,
@@ -1937,20 +1937,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                     />
                   )}
                 </Animated.View>
-                <BottomSheetHandleContainer
-                  key="BottomSheetHandleContainer"
-                  animatedIndex={animatedIndex}
-                  animatedPosition={animatedPosition}
-                  handleHeight={animatedHandleHeight}
-                  enableHandlePanningGesture={enableHandlePanningGesture}
-                  enableOverDrag={enableOverDrag}
-                  enablePanDownToClose={enablePanDownToClose}
-                  overDragResistanceFactor={overDragResistanceFactor}
-                  keyboardBehavior={keyboardBehavior}
-                  handleComponent={handleComponent}
-                  handleStyle={_providedHandleStyle}
-                  handleIndicatorStyle={_providedHandleIndicatorStyle}
-                />
+                {handleComponent !== null ? (
+                  <BottomSheetHandleContainer
+                    key="BottomSheetHandleContainer"
+                    animatedIndex={animatedIndex}
+                    animatedPosition={animatedPosition}
+                    handleHeight={animatedHandleHeight}
+                    enableHandlePanningGesture={enableHandlePanningGesture}
+                    enableOverDrag={enableOverDrag}
+                    enablePanDownToClose={enablePanDownToClose}
+                    overDragResistanceFactor={overDragResistanceFactor}
+                    keyboardBehavior={keyboardBehavior}
+                    handleComponent={handleComponent}
+                    handleStyle={_providedHandleStyle}
+                    handleIndicatorStyle={_providedHandleIndicatorStyle}
+                  />
+                ) : null}
               </Animated.View>
               {/* <BottomSheetDebugView
                 values={{

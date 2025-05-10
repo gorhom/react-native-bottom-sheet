@@ -100,3 +100,4 @@ function BottomSheetHostingContainerComponent({
 export const BottomSheetHostingContainer = memo(
   BottomSheetHostingContainerComponent
 );
+BottomSheetHostingContainer.displayName = 'BottomSheetHostingContainer';

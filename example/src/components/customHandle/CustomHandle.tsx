@@ -1,6 +1,6 @@
+import type { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
 import React, { memo, useMemo } from 'react';
-import { StyleProp, StyleSheet, Text, ViewStyle } from 'react-native';
-import { BottomSheetHandleProps } from '@gorhom/bottom-sheet';
+import { type StyleProp, StyleSheet, Text, type ViewStyle } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -12,12 +12,13 @@ import { transformOrigin } from '../../utilities/transformOrigin';
 
 interface CustomHandleProps extends BottomSheetHandleProps {
   title: string;
-  style?: StyleProp<ViewStyle>;
 }
 
 const CustomHandleComponent: React.FC<CustomHandleProps> = ({
+  ref,
   title,
   style,
+  onLayout,
   animatedIndex,
 }) => {
   //#region animations
@@ -105,7 +106,9 @@ const CustomHandleComponent: React.FC<CustomHandleProps> = ({
   // render
   return (
     <Animated.View
+      ref={ref}
       style={[containerStyle, containerAnimatedStyle]}
+      onLayout={onLayout}
       renderToHardwareTextureAndroid={true}
     >
       <Animated.View style={[leftIndicatorStyle, leftIndicatorAnimatedStyle]} />

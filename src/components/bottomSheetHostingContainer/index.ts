@@ -1,2 +1,2 @@
-export { BottomSheetHostingContainer as default } from './BottomSheetHostingContainer';
+export { BottomSheetHostingContainer } from './BottomSheetHostingContainer';
 export type { BottomSheetHostingContainerProps } from './types';

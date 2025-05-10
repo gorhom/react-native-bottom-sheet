@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { CustomHandle } from '../../components/customHandle';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
+import { CustomHandle } from '../../components/customHandle';
 
 const CustomHandleExample = () => {
   // hooks
@@ -42,6 +42,7 @@ const CustomHandleExample = () => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         handleComponent={renderCustomHandle}
       >
         <ContactList count={10} type="FlatList" />

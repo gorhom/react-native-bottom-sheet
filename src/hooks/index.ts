@@ -21,4 +21,7 @@ export { useStableCallback } from './useStableCallback';
 export { usePropsValidator } from './usePropsValidator';
 export { useAnimatedSnapPoints } from './useAnimatedSnapPoints';
 export { useReactiveSharedValue } from './useReactiveSharedValue';
-export { useBoundingClientRect } from './useBoundingClientRect';
+export {
+  useBoundingClientRect,
+  type BoundingClientRect,
+} from './useBoundingClientRect';

@@ -10,7 +10,7 @@ import {
   INITIAL_CONTAINER_HEIGHT,
   INITIAL_CONTAINER_OFFSET,
 } from '../bottomSheet/constants';
-import BottomSheetHostingContainer from '../bottomSheetHostingContainer';
+import { BottomSheetHostingContainer } from '../bottomSheetHostingContainer';
 import type {
   BottomSheetModalPrivateMethods,
   BottomSheetModalStackBehavior,
