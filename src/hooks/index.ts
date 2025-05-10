@@ -13,6 +13,7 @@ export { useScrollHandler } from './useScrollHandler';
 // gestures
 export { useGestureHandler } from './useGestureHandler';
 export { useGestureEventsHandlersDefault } from './useGestureEventsHandlersDefault';
+export { useBottomSheetGestureHandlers } from './useBottomSheetGestureHandlers';
 
 // utilities
 export { useKeyboard } from './useKeyboard';
@@ -20,4 +21,4 @@ export { useStableCallback } from './useStableCallback';
 export { usePropsValidator } from './usePropsValidator';
 export { useAnimatedSnapPoints } from './useAnimatedSnapPoints';
 export { useReactiveSharedValue } from './useReactiveSharedValue';
-export { useBottomSheetGestureHandlers } from './useBottomSheetGestureHandlers';
+export { useBoundingClientRect } from './useBoundingClientRect';
