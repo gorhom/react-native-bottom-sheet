@@ -49,7 +49,7 @@ const BottomSheetFooterContainerComponent = ({
   return <FooterComponent animatedFooterPosition={animatedFooterPosition} />;
 };
 
-const BottomSheetFooterContainer = memo(BottomSheetFooterContainerComponent);
+export const BottomSheetFooterContainer = memo(
+  BottomSheetFooterContainerComponent
+);
 BottomSheetFooterContainer.displayName = 'BottomSheetFooterContainer';
-
-export default BottomSheetFooterContainer;

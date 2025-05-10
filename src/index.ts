@@ -32,8 +32,10 @@ export { default as BottomSheetDraggableView } from './components/bottomSheetDra
 export { default as BottomSheetView } from './components/bottomSheetView';
 export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
 export { BottomSheetBackdrop } from './components/bottomSheetBackdrop';
-export { default as BottomSheetFooter } from './components/bottomSheetFooter';
-export { default as BottomSheetFooterContainer } from './components/bottomSheetFooterContainer/BottomSheetFooterContainer';
+export {
+  BottomSheetFooter,
+  BottomSheetFooterContainer,
+} from './components/bottomSheetFooter';
 
 // touchables
 import BottomSheetTouchable from './components/touchables';
