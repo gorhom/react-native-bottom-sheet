@@ -1,5 +1,5 @@
 import { type RefObject, useLayoutEffect } from 'react';
-import { Platform, type View } from 'react-native';
+import type { View } from 'react-native';
 import { isFabricInstalled } from '../utilities/isFabricInstalled';
 
 export type BoundingClientRect = {

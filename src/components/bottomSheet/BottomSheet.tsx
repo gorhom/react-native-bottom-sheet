@@ -58,12 +58,12 @@ import {
 } from '../../utilities';
 import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
 import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
-import BottomSheetContainer from '../bottomSheetContainer';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetFooterContainer from '../bottomSheetFooterContainer/BottomSheetFooterContainer';
 import BottomSheetGestureHandlersProvider from '../bottomSheetGestureHandlersProvider';
 import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
+import BottomSheetHostingContainer from '../bottomSheetHostingContainer';
 import {
   DEFAULT_ACCESSIBILITY_LABEL,
   DEFAULT_ACCESSIBILITY_ROLE,
@@ -1900,7 +1900,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               animatedPosition={animatedPosition}
               backdropComponent={backdropComponent}
             />
-            <BottomSheetContainer
+            <BottomSheetHostingContainer
               key="BottomSheetContainer"
               shouldCalculateHeight={!$modal}
               containerHeight={_animatedContainerHeight}
@@ -1981,7 +1981,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   // isInTemporaryPosition,
                 }}
               /> */}
-            </BottomSheetContainer>
+            </BottomSheetHostingContainer>
           </BottomSheetGestureHandlersProvider>
         </BottomSheetInternalProvider>
       </BottomSheetProvider>
