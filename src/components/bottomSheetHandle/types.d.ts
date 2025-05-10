@@ -53,9 +53,5 @@ export type BottomSheetHandleContainerProps = Pick<
     | 'keyboardBehavior'
   > &
   BottomSheetHandleProps & {
-    // handleComponent: React.ForwardRefExoticComponent<
-    //   BottomSheetDefaultHandleProps & React.RefAttributes<View>
-    // >;
-
     handleHeight: SharedValue<number>;
   };

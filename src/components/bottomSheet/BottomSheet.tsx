@@ -57,7 +57,7 @@ import {
   print,
 } from '../../utilities';
 import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
-import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
+import { BottomSheetBackgroundContainer } from '../bottomSheetBackground';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import BottomSheetFooterContainer from '../bottomSheetFooterContainer/BottomSheetFooterContainer';
@@ -1911,13 +1911,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               style={_providedContainerStyle}
             >
               <Animated.View style={containerStyle}>
-                <BottomSheetBackgroundContainer
-                  key="BottomSheetBackgroundContainer"
-                  animatedIndex={animatedIndex}
-                  animatedPosition={animatedPosition}
-                  backgroundComponent={backgroundComponent}
-                  backgroundStyle={_providedBackgroundStyle}
-                />
+                {backgroundComponent === null ? null : (
+                  <BottomSheetBackgroundContainer
+                    key="BottomSheetBackgroundContainer"
+                    animatedIndex={animatedIndex}
+                    animatedPosition={animatedPosition}
+                    backgroundComponent={backgroundComponent}
+                    backgroundStyle={_providedBackgroundStyle}
+                  />
+                )}
+
                 <Animated.View
                   pointerEvents="box-none"
                   style={contentMaskContainerStyle}
@@ -1931,11 +1934,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   >
                     {children}
                   </DraggableView>
-                  {footerComponent && (
+                  {footerComponent ? (
                     <BottomSheetFooterContainer
                       footerComponent={footerComponent}
                     />
-                  )}
+                  ) : null}
                 </Animated.View>
                 {handleComponent !== null ? (
                   <BottomSheetHandleContainer
