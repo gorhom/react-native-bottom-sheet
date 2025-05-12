@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import Animated from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
 import {
   DEFAULT_ACCESSIBILITY_HINT,
   DEFAULT_ACCESSIBILITY_LABEL,
@@ -9,42 +9,41 @@ import {
 import { styles } from './styles';
 import type { BottomSheetDefaultHandleProps } from './types';
 
-const BottomSheetHandleComponent = ({
+function BottomSheetHandleComponent({
   style,
   indicatorStyle: _indicatorStyle,
-  children,
   accessible = DEFAULT_ACCESSIBLE,
   accessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
-}: BottomSheetDefaultHandleProps) => {
-  // styles
+  children,
+}: BottomSheetDefaultHandleProps) {
+  //#region styles
   const containerStyle = useMemo(
-    () => [styles.container, ...[Array.isArray(style) ? style : [style]]],
+    () => [styles.container, StyleSheet.flatten(style)],
     [style]
   );
   const indicatorStyle = useMemo(
-    () => [
-      styles.indicator,
-      ...[Array.isArray(_indicatorStyle) ? _indicatorStyle : [_indicatorStyle]],
-    ],
+    () => [styles.indicator, StyleSheet.flatten(_indicatorStyle)],
     [_indicatorStyle]
   );
+  //#endregion
 
   // render
   return (
-    <Animated.View
+    <View
       style={containerStyle}
       accessible={accessible ?? undefined}
       accessibilityRole={accessibilityRole ?? undefined}
       accessibilityLabel={accessibilityLabel ?? undefined}
       accessibilityHint={accessibilityHint ?? undefined}
+      collapsable={true}
     >
-      <Animated.View style={indicatorStyle} />
+      <View style={indicatorStyle} />
       {children}
-    </Animated.View>
+    </View>
   );
-};
+}
 
 const BottomSheetHandle = memo(BottomSheetHandleComponent);
 BottomSheetHandle.displayName = 'BottomSheetHandle';

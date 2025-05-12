@@ -1,13 +1,11 @@
-import React, { memo } from 'react';
-import { StyleSheet, Text } from 'react-native';
 import {
   BottomSheetHandle,
-  BottomSheetHandleProps,
+  type BottomSheetHandleProps,
 } from '@gorhom/bottom-sheet';
+import React, { memo } from 'react';
+import { StyleSheet, Text } from 'react-native';
 
-interface HeaderHandleProps extends BottomSheetHandleProps {
-  children?: string | React.ReactNode | React.ReactNode[];
-}
+interface HeaderHandleProps extends BottomSheetHandleProps {}
 
 const HeaderHandleComponent = ({ children, ...rest }: HeaderHandleProps) => {
   return (

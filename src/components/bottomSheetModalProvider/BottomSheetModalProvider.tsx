@@ -10,7 +10,7 @@ import {
   INITIAL_CONTAINER_HEIGHT,
   INITIAL_CONTAINER_OFFSET,
 } from '../bottomSheet/constants';
-import BottomSheetContainer from '../bottomSheetContainer';
+import { BottomSheetHostingContainer } from '../bottomSheetHostingContainer';
 import type {
   BottomSheetModalPrivateMethods,
   BottomSheetModalStackBehavior,
@@ -195,7 +195,7 @@ const BottomSheetModalProviderWrapper = ({
   return (
     <BottomSheetModalProvider value={externalContextVariables}>
       <BottomSheetModalInternalProvider value={internalContextVariables}>
-        <BottomSheetContainer
+        <BottomSheetHostingContainer
           containerOffset={animatedContainerOffset}
           containerHeight={animatedContainerHeight}
         />

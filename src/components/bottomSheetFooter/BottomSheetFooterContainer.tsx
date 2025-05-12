@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { useDerivedValue } from 'react-native-reanimated';
 import { KEYBOARD_STATE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
+import { INITIAL_HANDLE_HEIGHT } from '../bottomSheet/constants';
 import type { BottomSheetFooterContainerProps } from './types';
 
 const BottomSheetFooterContainerComponent = ({
@@ -20,21 +21,23 @@ const BottomSheetFooterContainerComponent = ({
 
   //#region variables
   const animatedFooterPosition = useDerivedValue(() => {
-    const keyboardHeight = animatedKeyboardHeightInContainer.value;
-    let footerTranslateY = Math.max(
-      0,
-      animatedContainerHeight.value - animatedPosition.value
-    );
+    const handleHeight = animatedHandleHeight.get();
+    if (handleHeight === INITIAL_HANDLE_HEIGHT) {
+      return 0;
+    }
 
-    if (animatedKeyboardState.value === KEYBOARD_STATE.SHOWN) {
+    const keyboardHeight = animatedKeyboardHeightInContainer.get();
+    const containerHeight = animatedContainerHeight.get();
+    const position = animatedPosition.get();
+    const keyboardState = animatedKeyboardState.get();
+    const footerHeight = animatedFooterHeight.get();
+
+    let footerTranslateY = Math.max(0, containerHeight - position);
+    if (keyboardState === KEYBOARD_STATE.SHOWN) {
       footerTranslateY = footerTranslateY - keyboardHeight;
     }
 
-    footerTranslateY =
-      footerTranslateY -
-      animatedFooterHeight.value -
-      animatedHandleHeight.value;
-
+    footerTranslateY = footerTranslateY - footerHeight - handleHeight;
     return footerTranslateY;
   }, [
     animatedKeyboardHeightInContainer,
@@ -49,7 +52,7 @@ const BottomSheetFooterContainerComponent = ({
   return <FooterComponent animatedFooterPosition={animatedFooterPosition} />;
 };
 
-const BottomSheetFooterContainer = memo(BottomSheetFooterContainerComponent);
+export const BottomSheetFooterContainer = memo(
+  BottomSheetFooterContainerComponent
+);
 BottomSheetFooterContainer.displayName = 'BottomSheetFooterContainer';
-
-export default BottomSheetFooterContainer;
