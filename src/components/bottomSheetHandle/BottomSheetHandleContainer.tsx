@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
 import type { LayoutChangeEvent, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 import {
   type BoundingClientRect,
   useBottomSheetGestureHandlers,
@@ -156,14 +157,18 @@ function BottomSheetHandleContainerComponent({
   const HandleComponent = handleComponent ?? BottomSheetHandle;
   return (
     <GestureDetector gesture={panGesture}>
-      <HandleComponent
+      <Animated.View
         ref={ref}
-        animatedIndex={animatedIndex}
-        animatedPosition={animatedPosition}
-        style={_providedHandleStyle}
-        indicatorStyle={_providedIndicatorStyle}
         onLayout={handleContainerLayout}
-      />
+        key="BottomSheetHandleContainer"
+      >
+        <HandleComponent
+          animatedIndex={animatedIndex}
+          animatedPosition={animatedPosition}
+          style={_providedHandleStyle}
+          indicatorStyle={_providedIndicatorStyle}
+        />
+      </Animated.View>
     </GestureDetector>
   );
   //#endregion

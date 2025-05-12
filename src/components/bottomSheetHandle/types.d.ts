@@ -9,8 +9,7 @@ import type {
 } from '../../types';
 import type { BottomSheetProps } from '../bottomSheet';
 
-export type BottomSheetHandleProps = BottomSheetVariables & ViewProps;
-
+export type BottomSheetHandleProps = BottomSheetVariables;
 export interface BottomSheetDefaultHandleProps
   extends BottomSheetHandleProps,
     NullableAccessibilityProps {

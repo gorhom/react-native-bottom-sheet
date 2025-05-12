@@ -275,9 +275,8 @@ export interface BottomSheetProps
    * @see {BottomSheetHandleProps}
    * @type React.FC\<BottomSheetHandleProps\>
    */
-  handleComponent?: React.FC<
-    BottomSheetHandleProps & Partial<React.RefAttributes<View>>
-  > | null;
+  handleComponent?: React.FC<BottomSheetHandleProps> | null;
+
   /**
    * Component to be placed as a sheet backdrop.
    * @see {BottomSheetBackdropProps}
