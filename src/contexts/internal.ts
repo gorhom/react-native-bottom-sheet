@@ -42,6 +42,7 @@ export interface BottomSheetInternalContextType
   animatedIndex: SharedValue<number>;
   animatedContainerHeight: SharedValue<number>;
   animatedContentHeight: SharedValue<number>;
+  animatedSheetHeight: SharedValue<number>;
   animatedHighestSnapPoint: SharedValue<number>;
   animatedClosedPosition: SharedValue<number>;
   animatedFooterHeight: SharedValue<number>;
