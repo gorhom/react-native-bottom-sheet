@@ -1,0 +1,1 @@
+{"version":3,"names":["_reactNative","require","getRefNativeTag","ref","findNodeHandle","current"],"sourceRoot":"../../../src","sources":["utilities/getRefNativeTag.web.ts"],"mappings":";;;;;;AACA,IAAAA,YAAA,GAAAC,OAAA;AAEO,SAASC,eAAeA,CAACC,GAAqB,EAAE;EACrD,OAAO,IAAAC,2BAAc,EAACD,GAAG,EAAEE,OAAO,CAAC,IAAI,IAAI;AAC7C","ignoreList":[]}

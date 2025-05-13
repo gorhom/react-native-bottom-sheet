@@ -1,0 +1,1 @@
+{"version":3,"names":["StyleSheet","styles","create","root","flex","container","absoluteFillObject"],"sourceRoot":"../../../../src","sources":["components/bottomSheetContainer/styles.ts"],"mappings":";;AAAA,SAASA,UAAU,QAAQ,cAAc;AAEzC,OAAO,MAAMC,MAAM,GAAGD,UAAU,CAACE,MAAM,CAAC;EACtCC,IAAI,EAAE;IACJC,IAAI,EAAE;EACR,CAAC;EACDC,SAAS,EAAEL,UAAU,CAACM;AACxB,CAAC,CAAC","ignoreList":[]}

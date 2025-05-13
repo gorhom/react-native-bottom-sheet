@@ -1,0 +1,1 @@
+{"version":3,"file":"useScrollEventsHandlersDefault.d.ts","sourceRoot":"","sources":["../../../src/hooks/useScrollEventsHandlersDefault.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAEV,4BAA4B,EAC7B,MAAM,UAAU,CAAC;AAGlB,MAAM,MAAM,sBAAsB,GAAG;IACnC,qBAAqB,EAAE,MAAM,CAAC;IAC9B,yBAAyB,EAAE,OAAO,CAAC;CACpC,CAAC;AAEF,eAAO,MAAM,8BAA8B,EAAE,4BA6I5C,CAAC"}

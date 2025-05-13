@@ -1,0 +1,1 @@
+{"version":3,"names":["createContext","BottomSheetGestureHandlersContext","BottomSheetDraggableContext"],"sourceRoot":"../../../src","sources":["contexts/gesture.ts"],"mappings":";;AAAA,SAASA,aAAa,QAAQ,OAAO;AASrC,OAAO,MAAMC,iCAAiC,gBAC5CD,aAAa,CAA+C,IAAI,CAAC;AAEnE,OAAO,MAAME,2BAA2B,gBAAGF,aAAa,CAAiB,IAAI,CAAC","ignoreList":[]}

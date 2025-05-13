@@ -7,7 +7,11 @@
   "types": "lib/typescript/index.d.ts",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "files": ["src", "lib", "mock.js"],
+  "files": [
+    "src",
+    "lib",
+    "mock.js"
+  ],
   "keywords": [
     "react-native",
     "ios",
@@ -78,6 +82,10 @@
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
-    "targets": ["commonjs", "module", "typescript"]
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
   }
 }

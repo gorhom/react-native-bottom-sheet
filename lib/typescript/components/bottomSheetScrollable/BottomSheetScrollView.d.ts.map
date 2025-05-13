@@ -1,0 +1,1 @@
+{"version":3,"file":"BottomSheetScrollView.d.ts","sourceRoot":"","sources":["../../../../src/components/bottomSheetScrollable/BottomSheetScrollView.tsx"],"names":[],"mappings":"AAQA,OAAO,KAAK,EACV,4BAA4B,EAC5B,0BAA0B,EAC3B,MAAM,SAAS,CAAC;AAUjB,QAAA,MAAM,qBAAqB,uLAAuC,CAAC;wBAG3B,CACtC,KAAK,EAAE,0BAA0B,KAC9B,UAAU,CAAC,OAAO,qBAAqB,CAAC;AAF7C,wBAE8C"}

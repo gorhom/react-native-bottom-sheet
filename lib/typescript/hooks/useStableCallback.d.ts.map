@@ -1,0 +1,1 @@
+{"version":3,"file":"useStableCallback.d.ts","sourceRoot":"","sources":["../../../src/hooks/useStableCallback.ts"],"names":[],"mappings":"AAEA,KAAK,QAAQ,CAAC,CAAC,SAAS,OAAO,EAAE,EAAE,CAAC,IAAI,CAAC,GAAG,IAAI,EAAE,CAAC,KAAK,CAAC,CAAC;AAE1D;;GAEG;AACH,wBAAgB,iBAAiB,CAAC,CAAC,SAAS,OAAO,EAAE,EAAE,CAAC,EACtD,QAAQ,EAAE,QAAQ,CAAC,CAAC,EAAE,CAAC,CAAC,8BAiBzB"}

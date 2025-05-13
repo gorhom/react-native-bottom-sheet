@@ -1,0 +1,1 @@
+{"version":3,"names":["current","id","Number","MAX_SAFE_INTEGER"],"sourceRoot":"../../../src","sources":["utilities/id.ts"],"mappings":";;AAAA,IAAIA,OAAO,GAAG,CAAC;AAEf,OAAO,MAAMC,EAAE,GAAGA,CAAA,KAAM;EACtBD,OAAO,GAAG,CAACA,OAAO,GAAG,CAAC,IAAIE,MAAM,CAACC,gBAAgB;EACjD,OAAOH,OAAO;AAChB,CAAC","ignoreList":[]}

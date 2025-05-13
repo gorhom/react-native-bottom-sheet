@@ -1,4 +1,3 @@
-import invariant from 'invariant';
 import React, {
   useMemo,
   useCallback,

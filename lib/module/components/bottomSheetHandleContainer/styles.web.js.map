@@ -1,0 +1,1 @@
+{"version":3,"names":["StyleSheet","styles","create","container","cursor"],"sourceRoot":"../../../../src","sources":["components/bottomSheetHandleContainer/styles.web.ts"],"mappings":";;AAAA,SAASA,UAAU,QAAQ,cAAc;AAEzC,OAAO,MAAMC,MAAM,GAAGD,UAAU,CAACE,MAAM,CAAC;EACtCC,SAAS,EAAE;IACT;IACAC,MAAM,EAAE;EACV;AACF,CAAC,CAAC","ignoreList":[]}
