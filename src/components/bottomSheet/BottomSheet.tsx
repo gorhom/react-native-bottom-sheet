@@ -1028,12 +1028,19 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animationConfigs?: WithSpringConfig | WithTimingConfig
     ) {
       const snapPoints = animatedSnapPoints.value;
-      invariant(
-        index >= -1 && index <= snapPoints.length - 1,
-        `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
-          snapPoints.length - 1
-        }`
-      );
+      
+      if (!(index >= -1 && (index <= snapPoints.length - 1 || (Array.isArray(_providedSnapPoints) && index <= _providedSnapPoints?.length -1)))) {
+        if (__DEV__) {
+          console.warn(
+            `[BottomSheet] 'index' was provided but out of the provided snap points range! expected value to be between -1, ${
+              snapPoints.length - 1
+            }`
+          );
+        }
+
+        return;
+      }
+
       if (__DEV__) {
         print({
           component: BottomSheet.name,
