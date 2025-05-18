@@ -16,14 +16,17 @@ function BottomSheetBodyComponent({ style, children }: BottomSheetBodyProps) {
   //#endregion
 
   //#region styles
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: Platform.OS === 'android' && animatedIndex.get() === -1 ? 0 : 1,
-    transform: [
-      {
-        translateY: animatedPosition.get(),
-      },
-    ],
-  }));
+  const containerAnimatedStyle = useAnimatedStyle(
+    () => ({
+      opacity: Platform.OS === 'android' && animatedIndex.get() === -1 ? 0 : 1,
+      transform: [
+        {
+          translateY: animatedPosition.get(),
+        },
+      ],
+    }),
+    [animatedPosition, animatedIndex]
+  );
   const containerStyle = useMemo(
     () => [style, styles.container, containerAnimatedStyle],
     [style, containerAnimatedStyle]

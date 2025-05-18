@@ -98,7 +98,7 @@ function BottomSheetContentComponent({
 
         if (keyboardState === KEYBOARD_STATE.SHOWN) {
           if (
-            keyboardHeightInContainer + animatedSheetHeight.value >
+            keyboardHeightInContainer + animatedSheetHeight.get() >
             containerHeight
           ) {
             contentHeight =
@@ -188,7 +188,7 @@ function BottomSheetContentComponent({
      */
     if (
       enableDynamicSizing &&
-      animatedContentHeight.value === INITIAL_CONTAINER_HEIGHT
+      animatedContentHeight.get() === INITIAL_CONTAINER_HEIGHT
     ) {
       return {};
     }
@@ -246,3 +246,4 @@ function BottomSheetContentComponent({
 }
 
 export const BottomSheetContent = memo(BottomSheetContentComponent);
+BottomSheetContent.displayName = 'BottomSheetContent';
