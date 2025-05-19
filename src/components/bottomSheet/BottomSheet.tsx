@@ -1885,9 +1885,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    const DraggableView = enableContentPanningGesture
-      ? BottomSheetDraggableView
-      : Animated.View;
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetInternalProvider value={internalContextVariables}>
@@ -1925,12 +1922,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   accessibilityRole={_providedAccessibilityRole ?? undefined}
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
                 >
-                  <DraggableView
+                  <BottomSheetDraggableView
                     key="BottomSheetRootDraggableView"
                     style={contentContainerStyle}
+                    enabled={enableContentPanningGesture}
                   >
                     {children}
-                  </DraggableView>
+                  </BottomSheetDraggableView>
                   {footerComponent && (
                     <BottomSheetFooterContainer
                       footerComponent={footerComponent}
