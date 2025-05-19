@@ -194,8 +194,13 @@ function BottomSheetContentComponent({
     }
 
     const paddingBottom = detached ? 0 : animatedPaddingBottom.get();
+
     return {
-      paddingBottom: paddingBottom,
+      paddingBottom: animate({
+        point: paddingBottom,
+        configs: animationConfigs,
+        overrideReduceMotion,
+      }),
       height: animate({
         point: animatedContentHeightMax.get() + paddingBottom,
         configs: animationConfigs,
@@ -211,10 +216,6 @@ function BottomSheetContentComponent({
     animatedContentHeight,
     animatedContentHeightMax,
     animatedContainerHeight,
-    animatedHighestSnapPoint,
-    animatedHandleHeight,
-    animatedPosition,
-    isInTemporaryPosition,
   ]);
   const contentContainerStyle = useMemo(
     () => [
