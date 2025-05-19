@@ -4,6 +4,8 @@ import { WINDOW_WIDTH } from '../../constants';
 export const styles = StyleSheet.create({
   container: {
     padding: 10,
+    // @ts-ignore supported on web
+    cursor: 'grab',
   },
 
   indicator: {

@@ -4,6 +4,7 @@ import React, {
   useImperativeHandle,
   useMemo,
 } from 'react';
+import { StyleSheet } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import {
@@ -110,22 +111,25 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region styles
-    const containerAnimatedStyle = useAnimatedStyle(
+    const flattenStyle = useMemo(() => StyleSheet.flatten(style), [style]);
+    const paddingBottom = flattenStyle?.paddingBottom ?? 0;
+    const contentContainerAnimatedStyle = useAnimatedStyle(
       () => ({
-        marginBottom: enableFooterMarginAdjustment
-          ? animatedFooterHeight.value
-          : 0,
+        paddingBottom: enableFooterMarginAdjustment
+          ? animatedFooterHeight.get() + paddingBottom
+          : paddingBottom,
       }),
-      [animatedFooterHeight, enableFooterMarginAdjustment]
+      [animatedFooterHeight, enableFooterMarginAdjustment, paddingBottom]
     );
-    const containerStyle = useMemo(() => {
+    const contentContainerStyle = useMemo(() => {
       return enableFooterMarginAdjustment
-        ? [
-            ...(style ? ('length' in style ? style : [style]) : []),
-            containerAnimatedStyle,
-          ]
-        : style;
-    }, [enableFooterMarginAdjustment, style, containerAnimatedStyle]);
+        ? [flattenStyle, contentContainerAnimatedStyle]
+        : flattenStyle;
+    }, [
+      enableFooterMarginAdjustment,
+      flattenStyle,
+      contentContainerAnimatedStyle,
+    ]);
     //#endregion
 
     //#region effects
@@ -151,7 +155,8 @@ export function createBottomSheetScrollableComponent<T, P>(
         refreshing={refreshing}
         scrollEventThrottle={16}
         progressViewOffset={progressViewOffset}
-        style={containerStyle}
+        style={style}
+        contentContainerStyle={contentContainerStyle}
         onRefresh={onRefresh}
         onScroll={scrollHandler}
         onContentSizeChange={handleContentSizeChange}
