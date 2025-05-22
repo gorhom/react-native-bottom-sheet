@@ -1,19 +1,15 @@
-import type React from 'react';
 import { findNodeHandle as _findNodeHandle } from 'react-native';
 
-export function findNodeHandle(
-  componentOrHandle:
-    | null
-    | number
-    // biome-ignore lint/suspicious/noExplicitAny: fix later
-    | React.Component<any, any>
-    // biome-ignore lint/suspicious/noExplicitAny: fix later
-    | React.ComponentClass<any>
-) {
+export function findNodeHandle(...[componentOrHandle]: Parameters<typeof _findNodeHandle>) {
   try {
     return _findNodeHandle(componentOrHandle);
   } catch {
-    // @ts-ignore
-    return componentOrHandle.getNativeScrollRef();
+    try {
+      // @ts-ignore
+      return componentOrHandle.getNativeScrollRef();
+    } catch {
+      // @ts-ignore
+      return componentOrHandle._wrapperListRef?.getListRef()?.getScrollRef()
+    }
   }
 }
