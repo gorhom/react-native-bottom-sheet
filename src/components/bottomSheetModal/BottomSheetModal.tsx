@@ -75,7 +75,7 @@ function BottomSheetModalComponent<T = any>(
     unmountSheet,
     willUnmountSheet,
   } = useBottomSheetModalInternal();
-  const { removePortal: unmountPortal } = usePortal();
+  const { removePortal: unmountPortal } = usePortal(hostName);
   //#endregion
 
   //#region refs
