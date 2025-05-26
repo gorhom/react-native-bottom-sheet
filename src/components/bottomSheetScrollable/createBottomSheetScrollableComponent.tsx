@@ -4,9 +4,8 @@ import React, {
   useImperativeHandle,
   useMemo,
 } from 'react';
-import { StyleSheet } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
-import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
+import { useAnimatedProps } from 'react-native-reanimated';
 import {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATE,
@@ -14,6 +13,7 @@ import {
 } from '../../constants';
 import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import {
+  useBottomSheetContentContainerStyle,
   useBottomSheetInternal,
   useScrollHandler,
   useScrollableSetter,
@@ -38,7 +38,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       overScrollMode = 'never',
       keyboardDismissMode = 'interactive',
       showsVerticalScrollIndicator = true,
-      style,
+      contentContainerStyle: _providedContentContainerStyle,
       refreshing,
       onRefresh,
       progressViewOffset,
@@ -62,11 +62,8 @@ export function createBottomSheetScrollableComponent<T, P>(
         onScrollBeginDrag,
         onScrollEndDrag
       );
-    const {
-      animatedFooterHeight,
-      animatedScrollableState,
-      enableContentPanningGesture,
-    } = useBottomSheetInternal();
+    const { animatedScrollableState, enableContentPanningGesture } =
+      useBottomSheetInternal();
     const { setContentSize } = useBottomSheetContentSizeSetter();
     //#endregion
 
@@ -102,7 +99,6 @@ export function createBottomSheetScrollableComponent<T, P>(
     const handleContentSizeChange = useStableCallback(
       (contentWidth: number, contentHeight: number) => {
         setContentSize(contentHeight);
-
         if (onContentSizeChange) {
           onContentSizeChange(contentWidth, contentHeight);
         }
@@ -111,25 +107,10 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region styles
-    const flattenStyle = useMemo(() => StyleSheet.flatten(style), [style]);
-    const paddingBottom = flattenStyle?.paddingBottom ?? 0;
-    const contentContainerAnimatedStyle = useAnimatedStyle(
-      () => ({
-        paddingBottom: enableFooterMarginAdjustment
-          ? animatedFooterHeight.get() + paddingBottom
-          : paddingBottom,
-      }),
-      [animatedFooterHeight, enableFooterMarginAdjustment, paddingBottom]
-    );
-    const contentContainerStyle = useMemo(() => {
-      return enableFooterMarginAdjustment
-        ? [flattenStyle, contentContainerAnimatedStyle]
-        : flattenStyle;
-    }, [
+    const contentContainerStyle = useBottomSheetContentContainerStyle(
       enableFooterMarginAdjustment,
-      flattenStyle,
-      contentContainerAnimatedStyle,
-    ]);
+      _providedContentContainerStyle
+    );
     //#endregion
 
     //#region effects
@@ -155,7 +136,6 @@ export function createBottomSheetScrollableComponent<T, P>(
         refreshing={refreshing}
         scrollEventThrottle={16}
         progressViewOffset={progressViewOffset}
-        style={style}
         contentContainerStyle={contentContainerStyle}
         onRefresh={onRefresh}
         onScroll={scrollHandler}

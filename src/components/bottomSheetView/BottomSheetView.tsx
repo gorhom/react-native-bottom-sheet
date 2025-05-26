@@ -1,12 +1,11 @@
-import React, { memo, useEffect, useCallback, useMemo } from 'react';
-import {
-  type LayoutChangeEvent,
-  StyleSheet,
-  type ViewStyle,
-} from 'react-native';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import React, { memo, useEffect, useCallback } from 'react';
+import type { LayoutChangeEvent } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
-import { useBottomSheetInternal } from '../../hooks';
+import {
+  useBottomSheetContentContainerStyle,
+  useBottomSheetInternal,
+} from '../../hooks';
 import { print } from '../../utilities';
 import type { BottomSheetViewProps } from './types';
 
@@ -22,32 +21,16 @@ function BottomSheetViewComponent({
   const {
     animatedScrollableContentOffsetY,
     animatedScrollableType,
-    animatedFooterHeight,
     enableDynamicSizing,
     animatedContentHeight,
   } = useBottomSheetInternal();
   //#endregion
 
   //#region styles
-  const flattenStyle = useMemo<ViewStyle | undefined>(
-    () => StyleSheet.flatten(style),
-    [style]
+  const containerStyle = useBottomSheetContentContainerStyle(
+    enableFooterMarginAdjustment,
+    style
   );
-  const containerStyle = useAnimatedStyle(() => {
-    if (!enableFooterMarginAdjustment) {
-      return flattenStyle ?? {};
-    }
-
-    const marginBottom =
-      typeof flattenStyle?.marginBottom === 'number'
-        ? flattenStyle.marginBottom
-        : 0;
-
-    return {
-      ...(flattenStyle ?? {}),
-      marginBottom: marginBottom + animatedFooterHeight.value,
-    };
-  }, [flattenStyle, enableFooterMarginAdjustment, animatedFooterHeight]);
   //#endregion
 
   //#region callbacks
@@ -80,8 +63,9 @@ function BottomSheetViewComponent({
   );
   //#endregion
 
-  // effects
+  //#region effects
   useFocusHook(handleSettingScrollable);
+  //#endregion
 
   //render
   return (

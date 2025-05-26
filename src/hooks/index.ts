@@ -25,3 +25,4 @@ export {
   useBoundingClientRect,
   type BoundingClientRect,
 } from './useBoundingClientRect';
+export { useBottomSheetContentContainerStyle } from './useBottomSheetContentContainerStyle';
