@@ -3,7 +3,7 @@ import type { Insets, StyleProp, ViewStyle } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import type { BottomSheetProps } from '../bottomSheet/types';
 
-export interface BottomSheetContainerProps
+export interface BottomSheetHostingContainerProps
   extends Partial<
     Pick<BottomSheetProps, 'topInset' | 'bottomInset' | 'detached'>
   > {

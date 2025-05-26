@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
 import { CustomFooter } from '../../components/customFooter';
@@ -36,6 +36,7 @@ const FooterExample = () => {
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
         enablePanDownToClose={true}
+        enableDynamicSizing={false}
         handleComponent={SearchHandle}
         footerComponent={CustomFooter}
       >

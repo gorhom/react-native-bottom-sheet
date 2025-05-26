@@ -77,13 +77,6 @@ const BottomSheetFlashListComponent = forwardRef<
   //#endregion
 });
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    overflow: 'visible',
-  },
-});
-
 export const BottomSheetFlashList = memo(BottomSheetFlashListComponent);
 
 export default BottomSheetFlashList as <T>(

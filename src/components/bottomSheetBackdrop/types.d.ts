@@ -4,6 +4,7 @@ import type {
   BottomSheetVariables,
   NullableAccessibilityProps,
 } from '../../types';
+import type { BottomSheetProps } from '../bottomSheet/types';
 
 export interface BottomSheetBackdropProps
   extends Pick<ViewProps, 'style'>,

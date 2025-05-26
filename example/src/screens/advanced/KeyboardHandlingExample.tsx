@@ -22,7 +22,7 @@ const KeyboardHandlingExample = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => [SEARCH_HANDLE_HEIGHT + 34, 450], []);
+  const snapPoints = useMemo(() => [SEARCH_HANDLE_HEIGHT + 34, 480], []);
 
   // callbacks
   const handleToggleKeyboardBehavior = useCallback(() => {
@@ -87,7 +87,7 @@ const KeyboardHandlingExample = () => {
         enableBlurKeyboardOnGesture={blurKeyboardOnGesture}
         handleComponent={SearchHandle}
       >
-        <ContactList count={12} type="FlatList" />
+        <ContactList count={15} type="FlatList" />
       </BottomSheet>
     </View>
   );

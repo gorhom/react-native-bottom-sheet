@@ -1,14 +1,17 @@
-import React, { useMemo, useCallback, ComponentProps, memo } from 'react';
-import { Text, Platform, View, ViewStyle } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
 import {
   BottomSheetFlatList,
   BottomSheetScrollView,
   BottomSheetSectionList,
-  BottomSheetVirtualizedList,
   BottomSheetView,
+  BottomSheetVirtualizedList,
 } from '@gorhom/bottom-sheet';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useMemo, useCallback, type ComponentProps, memo } from 'react';
+import { Platform, Text, View, type ViewStyle } from 'react-native';
+import {
+  useSafeAreaFrame,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import {
   createContactListMockData,
   createContactSectionsMockData,

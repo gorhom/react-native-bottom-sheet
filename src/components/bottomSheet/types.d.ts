@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { Insets, StyleProp, ViewStyle } from 'react-native';
+import type { Insets, StyleProp, View, ViewStyle } from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
   AnimateStyle,
@@ -276,13 +276,14 @@ export interface BottomSheetProps
    * @type React.FC\<BottomSheetHandleProps\>
    */
   handleComponent?: React.FC<BottomSheetHandleProps> | null;
+
   /**
    * Component to be placed as a sheet backdrop.
    * @see {BottomSheetBackdropProps}
    * @type React.FC\<BottomSheetBackdropProps\>
-   * @default null
+   * @default undefined
    */
-  backdropComponent?: React.FC<BottomSheetBackdropProps> | null;
+  backdropComponent?: React.FC<BottomSheetBackdropProps>;
   /**
    * Component to be placed as a background.
    * @see {BottomSheetBackgroundProps}

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { ViewStyle } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
+import type { BottomSheetProps } from '../bottomSheet/types';
 
 export interface BottomSheetFooterProps {
   /**
@@ -35,3 +36,6 @@ export interface BottomSheetDefaultFooterProps extends BottomSheetFooterProps {
    */
   children?: ReactNode | ReactNode[];
 }
+
+export interface BottomSheetFooterContainerProps
+  extends Required<Pick<BottomSheetProps, 'footerComponent'>> {}

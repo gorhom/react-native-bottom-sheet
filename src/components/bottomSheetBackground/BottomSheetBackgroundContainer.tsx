@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import BottomSheetBackground from '../bottomSheetBackground';
+import { BottomSheetBackground } from './BottomSheetBackground';
 import { styles } from './styles';
 import type { BottomSheetBackgroundContainerProps } from './types';
 
@@ -10,15 +10,16 @@ const BottomSheetBackgroundContainerComponent = ({
   backgroundComponent: _providedBackgroundComponent,
   backgroundStyle: _providedBackgroundStyle,
 }: BottomSheetBackgroundContainerProps) => {
-  const BackgroundComponent =
-    _providedBackgroundComponent || BottomSheetBackground;
-
+  //#region style
   const backgroundStyle = useMemo(
     () => StyleSheet.flatten([styles.container, _providedBackgroundStyle]),
     [_providedBackgroundStyle]
   );
+  //#endregion
 
-  return _providedBackgroundComponent === null ? null : (
+  const BackgroundComponent =
+    _providedBackgroundComponent ?? BottomSheetBackground;
+  return (
     <BackgroundComponent
       pointerEvents="none"
       animatedIndex={animatedIndex}
@@ -28,9 +29,7 @@ const BottomSheetBackgroundContainerComponent = ({
   );
 };
 
-const BottomSheetBackgroundContainer = memo(
+export const BottomSheetBackgroundContainer = memo(
   BottomSheetBackgroundContainerComponent
 );
 BottomSheetBackgroundContainer.displayName = 'BottomSheetBackgroundContainer';
-
-export default BottomSheetBackgroundContainer;
