@@ -1,7 +1,7 @@
 // @ts-ignore
 import type { FlashListProps } from '@shopify/flash-list';
 import React, { forwardRef, memo, type Ref, useMemo } from 'react';
-import { type ScrollViewProps, StyleSheet } from 'react-native';
+import type { ScrollViewProps } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import BottomSheetScrollView from './BottomSheetScrollView';
 import type {
