@@ -1,7 +1,14 @@
 import type { ShowcaseExampleScreenSectionType } from '@gorhom/showcase-template';
 import { Platform } from 'react-native';
 
-const screens: ShowcaseExampleScreenSectionType[] = [];
+const screens: Array<object> = [
+  {
+    name: '🔥 LegendList',
+    slug: 'Integrations/LegendList-featured',
+    title: '🔥 LegendList',
+    getScreen: () => require('./integrations/legendlist').default,
+  },
+];
 
 //#region Basic Section
 const basicSection = {
@@ -167,6 +174,11 @@ if (Platform.OS !== 'web') {
         name: 'FlashList',
         slug: 'Integrations/FlashList',
         getScreen: () => require('./integrations/flashlist').default,
+      },
+      {
+        name: 'LegendList',
+        slug: 'Integrations/LegendList',
+        getScreen: () => require('./integrations/legendlist').default,
       },
     ],
     collapsed: true,

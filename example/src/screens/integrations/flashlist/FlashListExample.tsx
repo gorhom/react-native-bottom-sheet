@@ -1,8 +1,10 @@
-import BottomSheet, { BottomSheetFlashList } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  useBottomSheetScrollableCreator,
+} from '@gorhom/bottom-sheet';
+import { FlashList, type ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  type ListRenderItemInfo,
   StyleSheet,
   Text,
   View,
@@ -61,6 +63,7 @@ const FlashListExample = () => {
     () => <Footer isLoading={tweets.length !== tweetsData.length} />,
     [tweets]
   );
+  const BottomSheetFlashListScrollable = useBottomSheetScrollableCreator();
   return (
     <View style={styles.container}>
       <Button label="Snap To 90%" onPress={() => handleSnapPress(2)} />
@@ -74,7 +77,7 @@ const FlashListExample = () => {
         snapPoints={snapPoints}
         enableDynamicSizing={false}
       >
-        <BottomSheetFlashList
+        <FlashList
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           onEndReached={handleOnEndReached}
@@ -84,6 +87,7 @@ const FlashListExample = () => {
           ItemSeparatorComponent={Divider}
           data={tweets}
           viewabilityConfig={viewabilityConfig}
+          renderScrollComponent={BottomSheetFlashListScrollable}
         />
       </BottomSheet>
     </View>
