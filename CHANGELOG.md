@@ -1,5 +1,16 @@
 
 
+## [5.1.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.4...v5.1.5) (2025-05-26)
+
+
+### Bug Fixes
+
+* **#2237:** fixed node handle lookup for virtualized list on web (by [@btoo](https://github.com/btoo)) ([6442b0e](https://github.com/gorhom/react-native-bottom-sheet/commit/6442b0ea54a38d8dcb82f63aade077ead29d382b))
+* **#2288:** added unique id to the root bottom sheet modal portal ([711ea7a](https://github.com/gorhom/react-native-bottom-sheet/commit/711ea7a5290ef485b9ba5c65eb45e28d6e495b43)), closes [#2288](https://github.com/gorhom/react-native-bottom-sheet/issues/2288)
+* fixed initial content height calculation on web ([4db946e](https://github.com/gorhom/react-native-bottom-sheet/commit/4db946e4af331bb2d3a80002ee6051da9f3593eb))
+* prevent canceling touchmove events when not cancelable ([#2244](https://github.com/gorhom/react-native-bottom-sheet/issues/2244))(by [@erickreutz](https://github.com/erickreutz)) ([14d5d1e](https://github.com/gorhom/react-native-bottom-sheet/commit/14d5d1e89f22b5101445799fd0cb836ecb7c4882))
+* provide the portal host name with use portal ([67e9097](https://github.com/gorhom/react-native-bottom-sheet/commit/67e909711164aba900c2764034723c8b0e051704))
+
 ## [5.1.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.3...v5.1.4) (2025-05-04)
 
 
