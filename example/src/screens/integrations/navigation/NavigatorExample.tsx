@@ -1,14 +1,22 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
-import {
-  createStackNavigator,
-  StackNavigationOptions,
-  TransitionPresets,
-} from '@react-navigation/stack';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { NavigationContainer } from '@react-navigation/native';
-import createDummyScreen from './DummyScreen';
+import {
+  NavigationContainer,
+  NavigationIndependentTree,
+} from '@react-navigation/native';
+import {
+  type StackNavigationOptions,
+  TransitionPresets,
+  createStackNavigator,
+} from '@react-navigation/stack';
+import React, {
+  type ComponentProps,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Button } from '../../../components/button';
+import createDummyScreen from './DummyScreen';
 
 const Stack = createStackNavigator();
 const ScreenA = createDummyScreen({
@@ -42,9 +50,10 @@ const Navigator = () => {
   const screenOptions = useMemo<StackNavigationOptions>(
     () => ({
       ...TransitionPresets.SlideFromRightIOS,
-      headerMode: 'screen',
+      headerMode: 'float',
       headerShown: true,
       safeAreaInsets: { top: 0 },
+      headerShadowVisible: false,
       cardStyle: {
         backgroundColor: 'white',
         overflow: 'visible',
@@ -53,20 +62,39 @@ const Navigator = () => {
     []
   );
 
-  const screenAOptions = useMemo(() => ({ headerLeft: () => null }), []);
+  const options = useMemo<ComponentProps<typeof Stack.Screen>['options']>(
+    () => ({
+      headerBackTitle: 'Back',
+    }),
+    []
+  );
   return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator screenOptions={screenOptions}>
-        <Stack.Screen
-          name="FlatList Screen"
-          options={screenAOptions}
-          component={ScreenA}
-        />
-        <Stack.Screen name="ScrollView Screen" component={ScreenB} />
-        <Stack.Screen name="SectionList Screen" component={ScreenC} />
-        <Stack.Screen name="View Screen" component={ScreenD} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <NavigationIndependentTree>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={screenOptions}>
+          <Stack.Screen
+            name="FlatList Screen"
+            options={{ headerLeft: () => null }}
+            component={ScreenA}
+          />
+          <Stack.Screen
+            name="ScrollView Screen"
+            options={options}
+            component={ScreenB}
+          />
+          <Stack.Screen
+            name="SectionList Screen"
+            options={options}
+            component={ScreenC}
+          />
+          <Stack.Screen
+            name="View Screen"
+            options={options}
+            component={ScreenD}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   );
 };
 
