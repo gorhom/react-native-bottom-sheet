@@ -1,5 +1,10 @@
 import { useMemo, useState } from 'react';
-import { StyleSheet, type ViewProps, type ViewStyle } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  type ViewProps,
+  type ViewStyle,
+} from 'react-native';
 import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 
@@ -9,7 +14,8 @@ export function useBottomSheetContentContainerStyle(
 ) {
   const [footerHeight, setFooterHeight] = useState(0);
   //#region hooks
-  const { animatedFooterHeight } = useBottomSheetInternal();
+  const { animatedFooterHeight, animatedContentHeight } =
+    useBottomSheetInternal();
   //#endregion
 
   //#region styles
@@ -17,8 +23,9 @@ export function useBottomSheetContentContainerStyle(
     return !_style
       ? {}
       : Array.isArray(_style)
-        ? StyleSheet.compose(..._style)
-        : _style;
+        ? // @ts-ignore
+          (StyleSheet.compose(..._style) as ViewStyle)
+        : (_style as ViewStyle);
   }, [_style]);
   const style = useMemo<ViewProps['style']>(() => {
     if (!enableFooterMarginAdjustment) {
@@ -28,7 +35,16 @@ export function useBottomSheetContentContainerStyle(
     let currentBottomPadding = 0;
     if (flattenStyle && typeof flattenStyle === 'object') {
       const { paddingBottom, padding, paddingVertical } = flattenStyle;
-      currentBottomPadding = paddingBottom ?? paddingVertical ?? padding ?? 0;
+      if (paddingBottom !== undefined && typeof paddingBottom === 'number') {
+        currentBottomPadding = paddingBottom;
+      } else if (
+        paddingVertical !== undefined &&
+        typeof paddingVertical === 'number'
+      ) {
+        currentBottomPadding = paddingVertical;
+      } else if (padding !== undefined && typeof padding === 'number') {
+        currentBottomPadding = padding;
+      }
     }
 
     return [
@@ -44,15 +60,27 @@ export function useBottomSheetContentContainerStyle(
   //#region effects
   useAnimatedReaction(
     () => animatedFooterHeight.get(),
-    result => {
+    (result, previousFooterHeight) => {
       if (!enableFooterMarginAdjustment) {
         return;
       }
       runOnJS(setFooterHeight)(result);
+
+      if (Platform.OS === 'web') {
+        /**
+         * a reaction that will append the footer height to the content
+         * height if margin adjustment is true.
+         *
+         * This is needed due to the web layout the footer after the content.
+         */
+        if (result && !previousFooterHeight) {
+          const contentHeight = animatedContentHeight.get();
+          animatedContentHeight.set(contentHeight + result);
+        }
+      }
     },
-    [animatedFooterHeight]
+    [animatedFooterHeight, animatedContentHeight, enableFooterMarginAdjustment]
   );
   //#endregion
-
   return style;
 }
