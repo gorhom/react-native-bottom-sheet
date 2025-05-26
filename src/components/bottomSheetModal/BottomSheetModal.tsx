@@ -68,6 +68,7 @@ function BottomSheetModalComponent<T = any>(
 
   //#region hooks
   const {
+    hostName,
     containerHeight,
     containerOffset,
     mountSheet,
@@ -437,6 +438,7 @@ function BottomSheetModalComponent<T = any>(
     <Portal
       key={key}
       name={key}
+      hostName={hostName}
       handleOnMount={handlePortalRender}
       handleOnUpdate={handlePortalRender}
       handleOnUnmount={handlePortalOnUnmount}

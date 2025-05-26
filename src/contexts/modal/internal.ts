@@ -7,6 +7,7 @@ import type {
 } from '../../components/bottomSheetModal';
 
 export interface BottomSheetModalInternalContextType {
+  hostName: string;
   containerHeight: SharedValue<number>;
   containerOffset: SharedValue<Required<Insets>>;
   mountSheet: (
