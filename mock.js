@@ -25,17 +25,36 @@ const BottomSheetComponent = props => {
 };
 
 class BottomSheetModal extends React.Component {
+  // Store mock data passed via present
+  data = null;
+
   snapToIndex() {}
   snapToPosition() {}
   expand() {}
   collapse() {}
-  close() {}
-  forceClose() {}
-  present() {}
-  dismiss() {}
+  close() {
+    this.data = null;
+  }
+  forceClose() {
+    this.data = null;
+  }
+  present(data) {
+    // Store data passed to present
+    this.data = data;
+    // Need to trigger a re-render somehow if component depends on this state,
+    // but for basic mock, just storing is often enough.
+  }
+  dismiss() {
+    this.data = null;
+  }
 
   render() {
-    return this.props.children;
+    const { children: Content } = this.props;
+    return typeof Content === 'function' ? (
+      <Content data={this.data} />
+    ) : (
+      Content
+    );
   }
 }
 
@@ -103,6 +122,85 @@ const useBottomSheetDynamicSnapPoints = () => ({
   handleContentLayout: NOOP,
 });
 
+const GESTURE_SOURCE = {
+  UNDETERMINED: 0,
+  SCROLLABLE: 1,
+  HANDLE: 2,
+  CONTENT: 3,
+};
+
+const SHEET_STATE = {
+  CLOSED: 0,
+  OPENED: 1,
+  EXTENDED: 2,
+  OVER_EXTENDED: 3,
+  FILL_PARENT: 4,
+};
+
+const SCROLLABLE_STATE = {
+  LOCKED: 0,
+  UNLOCKED: 1,
+  UNDETERMINED: 2,
+};
+
+const SCROLLABLE_TYPE = {
+  UNDETERMINED: 0,
+  VIEW: 1,
+  FLATLIST: 2,
+  SCROLLVIEW: 3,
+  SECTIONLIST: 4,
+  VIRTUALIZEDLIST: 5,
+};
+
+const ANIMATION_STATE = {
+  UNDETERMINED: 0,
+  RUNNING: 1,
+  STOPPED: 2,
+  INTERRUPTED: 3,
+};
+
+const ANIMATION_SOURCE = {
+  NONE: 0,
+  MOUNT: 1,
+  GESTURE: 2,
+  USER: 3,
+  CONTAINER_RESIZE: 4,
+  SNAP_POINT_CHANGE: 5,
+  KEYBOARD: 6,
+};
+
+const ANIMATION_METHOD = {
+  TIMING: 0,
+  SPRING: 1,
+};
+
+const KEYBOARD_STATE = {
+  UNDETERMINED: 0,
+  SHOWN: 1,
+  HIDDEN: 2,
+};
+
+const SNAP_POINT_TYPE = {
+  PROVIDED: 0,
+  DYNAMIC: 1,
+};
+
+const ENUMS = {
+  GESTURE_SOURCE,
+  SHEET_STATE,
+  SCROLLABLE_STATE,
+  SCROLLABLE_TYPE,
+  ANIMATION_STATE,
+  ANIMATION_SOURCE,
+  ANIMATION_METHOD,
+  KEYBOARD_STATE,
+  SNAP_POINT_TYPE,
+};
+
+const createBottomSheetScrollableComponent = (_type, ScrollableComponent) => {
+  return ScrollableComponent;
+};
+
 module.exports = {
   BottomSheetView: BottomSheetComponent,
   BottomSheetTextInput: ReactNative.TextInput,
@@ -129,4 +227,7 @@ module.exports = {
   useBottomSheetInternal,
   useBottomSheetModalInternal,
   useBottomSheetDynamicSnapPoints,
+
+  ...ENUMS,
+  createBottomSheetScrollableComponent,
 };
