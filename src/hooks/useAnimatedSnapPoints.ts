@@ -27,7 +27,10 @@ import { normalizeSnapPoint } from '../utilities';
  * Helper function to extract snap points from props
  */
 const extractSnapPoints = (snapPoints: BottomSheetProps['snapPoints']) =>
-  snapPoints ? ('value' in snapPoints ? snapPoints.value : snapPoints) : [];
+ {
+  'worklet';
+  return snapPoints ? ('value' in snapPoints ? snapPoints.value : snapPoints) : []
+};
 
 export const useAnimatedSnapPoints = (
   snapPoints: BottomSheetProps['snapPoints'],
