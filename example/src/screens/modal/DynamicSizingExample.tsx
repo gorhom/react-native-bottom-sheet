@@ -69,16 +69,20 @@ const DynamicSizingExample = () => {
   const footerComponent = useMemo(
     () => (props: BottomSheetFooterProps) => (
       <BottomSheetFooter style={footerContainerStyle} {...props}>
-        <Button
-          label="Add Item"
-          style={styles.footerButton}
-          onPress={handleIncreaseContentPress}
-        />
-        <Button
-          label="Remove Item"
-          style={styles.footerButton}
-          onPress={handleDecreaseContentPress}
-        />
+        <View style={{ flex: 1 }}>
+          <Button
+            label="Add Item"
+            style={styles.footerButton}
+            onPress={handleIncreaseContentPress}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Button
+            label="Remove Item"
+            style={styles.footerButton}
+            onPress={handleDecreaseContentPress}
+          />
+        </View>
       </BottomSheetFooter>
     ),
     [

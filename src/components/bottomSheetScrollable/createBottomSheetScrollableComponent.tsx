@@ -5,7 +5,7 @@ import React, {
   useMemo,
 } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
-import { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
+import { useAnimatedProps } from 'react-native-reanimated';
 import {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATE,
@@ -13,6 +13,7 @@ import {
 } from '../../constants';
 import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import {
+  useBottomSheetContentContainerStyle,
   useBottomSheetInternal,
   useScrollHandler,
   useScrollableSetter,
@@ -37,7 +38,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       overScrollMode = 'never',
       keyboardDismissMode = 'interactive',
       showsVerticalScrollIndicator = true,
-      style,
+      contentContainerStyle: _providedContentContainerStyle,
       refreshing,
       onRefresh,
       progressViewOffset,
@@ -61,11 +62,8 @@ export function createBottomSheetScrollableComponent<T, P>(
         onScrollBeginDrag,
         onScrollEndDrag
       );
-    const {
-      animatedFooterHeight,
-      animatedScrollableState,
-      enableContentPanningGesture,
-    } = useBottomSheetInternal();
+    const { animatedScrollableState, enableContentPanningGesture } =
+      useBottomSheetInternal();
     const { setContentSize } = useBottomSheetContentSizeSetter();
     //#endregion
 
@@ -101,7 +99,6 @@ export function createBottomSheetScrollableComponent<T, P>(
     const handleContentSizeChange = useStableCallback(
       (contentWidth: number, contentHeight: number) => {
         setContentSize(contentHeight);
-
         if (onContentSizeChange) {
           onContentSizeChange(contentWidth, contentHeight);
         }
@@ -110,22 +107,10 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region styles
-    const containerAnimatedStyle = useAnimatedStyle(
-      () => ({
-        marginBottom: enableFooterMarginAdjustment
-          ? animatedFooterHeight.value
-          : 0,
-      }),
-      [animatedFooterHeight, enableFooterMarginAdjustment]
+    const contentContainerStyle = useBottomSheetContentContainerStyle(
+      enableFooterMarginAdjustment,
+      _providedContentContainerStyle
     );
-    const containerStyle = useMemo(() => {
-      return enableFooterMarginAdjustment
-        ? [
-            ...(style ? ('length' in style ? style : [style]) : []),
-            containerAnimatedStyle,
-          ]
-        : style;
-    }, [enableFooterMarginAdjustment, style, containerAnimatedStyle]);
     //#endregion
 
     //#region effects
@@ -151,7 +136,7 @@ export function createBottomSheetScrollableComponent<T, P>(
         refreshing={refreshing}
         scrollEventThrottle={16}
         progressViewOffset={progressViewOffset}
-        style={containerStyle}
+        contentContainerStyle={contentContainerStyle}
         onRefresh={onRefresh}
         onScroll={scrollHandler}
         onContentSizeChange={handleContentSizeChange}

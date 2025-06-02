@@ -68,13 +68,14 @@ function BottomSheetModalComponent<T = any>(
 
   //#region hooks
   const {
+    hostName,
     containerHeight,
     containerOffset,
     mountSheet,
     unmountSheet,
     willUnmountSheet,
   } = useBottomSheetModalInternal();
-  const { removePortal: unmountPortal } = usePortal();
+  const { removePortal: unmountPortal } = usePortal(hostName);
   //#endregion
 
   //#region refs
@@ -437,6 +438,7 @@ function BottomSheetModalComponent<T = any>(
     <Portal
       key={key}
       name={key}
+      hostName={hostName}
       handleOnMount={handlePortalRender}
       handleOnUpdate={handlePortalRender}
       handleOnUnmount={handlePortalOnUnmount}

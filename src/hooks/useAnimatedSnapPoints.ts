@@ -73,7 +73,7 @@ export const useAnimatedSnapPoints = (
     const dynamicSnapPoint =
       containerHeight.value -
       Math.min(
-        contentHeight.value + handleHeight.value + footerHeight.value,
+        contentHeight.value + handleHeight.value,
         maxDynamicContentSize !== undefined
           ? maxDynamicContentSize
           : containerHeight.value

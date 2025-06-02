@@ -6,11 +6,12 @@ import {
   BottomSheetModalInternalProvider,
   BottomSheetModalProvider,
 } from '../../contexts';
+import { id } from '../../utilities/id';
 import {
   INITIAL_CONTAINER_HEIGHT,
   INITIAL_CONTAINER_OFFSET,
 } from '../bottomSheet/constants';
-import BottomSheetContainer from '../bottomSheetContainer';
+import { BottomSheetHostingContainer } from '../bottomSheetHostingContainer';
 import type {
   BottomSheetModalPrivateMethods,
   BottomSheetModalStackBehavior,
@@ -29,6 +30,7 @@ const BottomSheetModalProviderWrapper = ({
   //#endregion
 
   //#region variables
+  const hostName = useMemo(() => `bottom-sheet-portal-${id()}`, []);
   const sheetsQueueRef = useRef<BottomSheetModalRef[]>([]);
   //#endregion
 
@@ -175,6 +177,7 @@ const BottomSheetModalProviderWrapper = ({
   );
   const internalContextVariables = useMemo(
     () => ({
+      hostName,
       containerHeight: animatedContainerHeight,
       containerOffset: animatedContainerOffset,
       mountSheet: handleMountSheet,
@@ -182,6 +185,7 @@ const BottomSheetModalProviderWrapper = ({
       willUnmountSheet: handleWillUnmountSheet,
     }),
     [
+      hostName,
       animatedContainerHeight,
       animatedContainerOffset,
       handleMountSheet,
@@ -195,11 +199,11 @@ const BottomSheetModalProviderWrapper = ({
   return (
     <BottomSheetModalProvider value={externalContextVariables}>
       <BottomSheetModalInternalProvider value={internalContextVariables}>
-        <BottomSheetContainer
+        <BottomSheetHostingContainer
           containerOffset={animatedContainerOffset}
           containerHeight={animatedContainerHeight}
         />
-        <PortalProvider>{children}</PortalProvider>
+        <PortalProvider rootHostName={hostName}>{children}</PortalProvider>
       </BottomSheetModalInternalProvider>
     </BottomSheetModalProvider>
   );

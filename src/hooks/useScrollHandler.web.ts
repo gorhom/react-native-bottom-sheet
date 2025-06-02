@@ -1,8 +1,8 @@
 import { type TouchEvent, useEffect, useRef } from 'react';
-import { findNodeHandle } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { ANIMATION_STATE, SCROLLABLE_STATE } from '../constants';
 import type { Scrollable, ScrollableEvent } from '../types';
+import { findNodeHandle } from '../utilities/findNodeHandle.web';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 export type ScrollEventContextType = {
@@ -31,7 +31,6 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
   useEffect(() => {
     // biome-ignore lint: to be addressed!
     const element = findNodeHandle(scrollableRef.current) as any;
-
     let scrollOffset = 0;
     let supportsPassive = false;
     let maybePrevent = false;
@@ -51,7 +50,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
     }
 
     function handleOnTouchMove(event: TouchEvent) {
-      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
+      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED && event.cancelable) {
         return event.preventDefault();
       }
 
@@ -61,7 +60,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
         const touchY = event.touches[0].clientY;
         const touchYDelta = touchY - lastTouchY;
 
-        if (touchYDelta > 0) {
+        if (touchYDelta > 0 && event.cancelable) {
           return event.preventDefault();
         }
       }
@@ -92,7 +91,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
         animatedScrollableContentOffsetY.value = Math.max(0, scrollOffset);
       }
 
-      if (scrollOffset <= 0) {
+      if (scrollOffset <= 0 && event.cancelable) {
         event.preventDefault();
         event.stopPropagation();
         return false;

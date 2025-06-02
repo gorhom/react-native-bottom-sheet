@@ -1,28 +1,30 @@
 import type React from 'react';
-import type { ViewProps } from 'react-native';
-import type { AnimateProps } from 'react-native-reanimated';
+import type { View, ViewProps } from 'react-native';
+import type { PanGestureHandlerProperties } from 'react-native-gesture-handler';
+import type { AnimateProps, SharedValue } from 'react-native-reanimated';
+import type { useInteractivePanGestureHandlerConfigs } from '../../hooks/useGestureHandler';
 import type {
   BottomSheetVariables,
   NullableAccessibilityProps,
 } from '../../types';
+import type { BottomSheetProps } from '../bottomSheet';
 
-export interface BottomSheetHandleProps extends BottomSheetVariables {}
-
+export type BottomSheetHandleProps = BottomSheetVariables;
 export interface BottomSheetDefaultHandleProps
   extends BottomSheetHandleProps,
     NullableAccessibilityProps {
   /**
    * View style to be applied to the handle container.
-   * @type Animated.AnimateStyle<ViewStyle> | ViewStyle
+   * @type ViewStyle
    * @default undefined
    */
-  style?: AnimateProps<ViewProps>['style'];
+  style?: ViewProps['style'];
   /**
    * View style to be applied to the handle indicator.
-   * @type Animated.AnimateStyle<ViewStyle> | ViewStyle
+   * @type ViewStyle
    * @default undefined
    */
-  indicatorStyle?: AnimateProps<ViewProps>['style'];
+  indicatorStyle?: ViewProps['style'];
   /**
    * Content to be added below the indicator.
    * @type React.ReactNode | React.ReactNode[];
@@ -30,3 +32,25 @@ export interface BottomSheetDefaultHandleProps
    */
   children?: React.ReactNode | React.ReactNode[];
 }
+
+export type BottomSheetHandleContainerProps = Pick<
+  PanGestureHandlerProperties,
+  'simultaneousHandlers'
+> &
+  Pick<
+    BottomSheetProps,
+    | 'enableHandlePanningGesture'
+    | 'handleIndicatorStyle'
+    | 'handleStyle'
+    | 'handleComponent'
+  > &
+  Pick<
+    useInteractivePanGestureHandlerConfigs,
+    | 'enableOverDrag'
+    | 'enablePanDownToClose'
+    | 'overDragResistanceFactor'
+    | 'keyboardBehavior'
+  > &
+  BottomSheetHandleProps & {
+    handleHeight: SharedValue<number>;
+  };

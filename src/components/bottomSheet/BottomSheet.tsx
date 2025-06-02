@@ -7,12 +7,11 @@ import React, {
   memo,
   useEffect,
 } from 'react';
-import { type Insets, Platform } from 'react-native';
+import { type Insets, Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedReaction,
   useSharedValue,
-  useAnimatedStyle,
   useDerivedValue,
   runOnJS,
   interpolate,
@@ -56,14 +55,14 @@ import {
   normalizeSnapPoint,
   print,
 } from '../../utilities';
-import BottomSheetBackdropContainer from '../bottomSheetBackdropContainer';
-import BottomSheetBackgroundContainer from '../bottomSheetBackgroundContainer';
-import BottomSheetContainer from '../bottomSheetContainer';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
-import BottomSheetDraggableView from '../bottomSheetDraggableView';
-import BottomSheetFooterContainer from '../bottomSheetFooterContainer/BottomSheetFooterContainer';
+import { BottomSheetBackgroundContainer } from '../bottomSheetBackground';
+import { BottomSheetFooterContainer } from '../bottomSheetFooter';
 import BottomSheetGestureHandlersProvider from '../bottomSheetGestureHandlersProvider';
-import BottomSheetHandleContainer from '../bottomSheetHandleContainer';
+import { BottomSheetHandleContainer } from '../bottomSheetHandle';
+import { BottomSheetHostingContainer } from '../bottomSheetHostingContainer';
+import { BottomSheetBody } from './BottomSheetBody';
+import { BottomSheetContent } from './BottomSheetContent';
 import {
   DEFAULT_ACCESSIBILITY_LABEL,
   DEFAULT_ACCESSIBILITY_ROLE,
@@ -85,7 +84,6 @@ import {
   INITIAL_SNAP_POINT,
   INITIAL_VALUE,
 } from './constants';
-import { styles } from './styles';
 import type { AnimateToPositionType, BottomSheetProps } from './types';
 
 Animated.addWhitelistedUIProps({
@@ -114,7 +112,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       overrideReduceMotion: _providedOverrideReduceMotion,
 
       // styles
-      style: _providedStyle,
+      style,
       containerStyle: _providedContainerStyle,
       backgroundStyle: _providedBackgroundStyle,
       handleStyle: _providedHandleStyle,
@@ -159,7 +157,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       // components
       handleComponent,
-      backdropComponent,
+      backdropComponent: BackdropComponent,
       backgroundComponent,
       footerComponent,
       children,
@@ -445,71 +443,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animatedSheetState,
     ]);
     // dynamic
-    const animatedContentHeightMax = useDerivedValue(() => {
-      const keyboardHeightInContainer = animatedKeyboardHeightInContainer.value;
-      const handleHeight = Math.max(0, animatedHandleHeight.value);
-      let contentHeight = animatedSheetHeight.value - handleHeight;
-
-      if (
-        keyboardBehavior === KEYBOARD_BEHAVIOR.extend &&
-        animatedKeyboardState.value === KEYBOARD_STATE.SHOWN
-      ) {
-        contentHeight = contentHeight - keyboardHeightInContainer;
-      } else if (
-        keyboardBehavior === KEYBOARD_BEHAVIOR.fillParent &&
-        isInTemporaryPosition.value
-      ) {
-        if (animatedKeyboardState.value === KEYBOARD_STATE.SHOWN) {
-          contentHeight =
-            animatedContainerHeight.value -
-            handleHeight -
-            keyboardHeightInContainer;
-        } else {
-          contentHeight = animatedContainerHeight.value - handleHeight;
-        }
-      } else if (
-        keyboardBehavior === KEYBOARD_BEHAVIOR.interactive &&
-        isInTemporaryPosition.value
-      ) {
-        const contentWithKeyboardHeight =
-          contentHeight + keyboardHeightInContainer;
-
-        if (animatedKeyboardState.value === KEYBOARD_STATE.SHOWN) {
-          if (
-            keyboardHeightInContainer + animatedSheetHeight.value >
-            animatedContainerHeight.value
-          ) {
-            contentHeight =
-              animatedContainerHeight.value -
-              keyboardHeightInContainer -
-              handleHeight;
-          }
-        } else if (
-          contentWithKeyboardHeight + handleHeight >
-          animatedContainerHeight.value
-        ) {
-          contentHeight = animatedContainerHeight.value - handleHeight;
-        } else {
-          contentHeight = contentWithKeyboardHeight;
-        }
-      }
-
-      /**
-       * before the container is measured, `contentHeight` value will be below zero,
-       * which will lead to freeze the scrollable.
-       *
-       * @link (https://github.com/gorhom/react-native-bottom-sheet/issues/470)
-       */
-      return Math.max(contentHeight, 0);
-    }, [
-      animatedContainerHeight,
-      animatedHandleHeight,
-      animatedKeyboardHeightInContainer,
-      animatedKeyboardState,
-      animatedSheetHeight,
-      isInTemporaryPosition,
-      keyboardBehavior,
-    ]);
     const animatedIndex = useDerivedValue(() => {
       const adjustedSnapPoints = animatedSnapPoints.value.slice().reverse();
       const adjustedSnapPointsIndexes = animatedSnapPoints.value
@@ -1364,6 +1297,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedScrollableType,
         animatedIndex,
         animatedPosition,
+        animatedSheetHeight,
         animatedContentHeight,
         animatedClosedPosition,
         animatedHandleHeight,
@@ -1394,6 +1328,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedIndex,
         animatedPosition,
         animatedContentHeight,
+        animatedSheetHeight,
         animatedScrollableType,
         animatedContentGestureState,
         animatedHandleGestureState,
@@ -1454,74 +1389,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         handleClose,
         handleForceClose,
       ]
-    );
-    //#endregion
-
-    //#region styles
-    const containerAnimatedStyle = useAnimatedStyle(
-      () => ({
-        opacity:
-          Platform.OS === 'android' && animatedIndex.value === -1 ? 0 : 1,
-        transform: [
-          {
-            translateY: animatedPosition.value,
-          },
-        ],
-      }),
-      [animatedPosition, animatedIndex]
-    );
-    const containerStyle = useMemo(
-      () => [_providedStyle, styles.container, containerAnimatedStyle],
-      [_providedStyle, containerAnimatedStyle]
-    );
-    const contentContainerAnimatedStyle = useAnimatedStyle(() => {
-      /**
-       * if dynamic sizing is enabled, and content height
-       * is still not set, then we exit method.
-       */
-      if (
-        enableDynamicSizing &&
-        animatedContentHeight.value === INITIAL_CONTAINER_HEIGHT
-      ) {
-        return {};
-      }
-
-      return {
-        height: animate({
-          point: animatedContentHeightMax.value,
-          configs: _providedAnimationConfigs,
-          overrideReduceMotion: _providedOverrideReduceMotion,
-        }),
-      };
-    }, [
-      enableDynamicSizing,
-      animatedContentHeight,
-      animatedContentHeightMax,
-      _providedOverrideReduceMotion,
-      _providedAnimationConfigs,
-    ]);
-    const contentContainerStyle = useMemo(
-      () => [styles.contentContainer, contentContainerAnimatedStyle],
-      [contentContainerAnimatedStyle]
-    );
-    /**
-     * added safe area to prevent the sheet from floating above
-     * the bottom of the screen, when sheet being over dragged or
-     * when the sheet is resized.
-     */
-    const contentMaskContainerAnimatedStyle = useAnimatedStyle(() => {
-      if (detached) {
-        return {
-          overflow: 'visible',
-        };
-      }
-      return {
-        paddingBottom: animatedContainerHeight.value,
-      };
-    }, [animatedContainerHeight, detached]);
-    const contentMaskContainerStyle = useMemo(
-      () => [styles.contentMaskContainer, contentMaskContainerAnimatedStyle],
-      [contentMaskContainerAnimatedStyle]
     );
     //#endregion
 
@@ -1885,22 +1752,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     // render
-    const DraggableView = enableContentPanningGesture
-      ? BottomSheetDraggableView
-      : Animated.View;
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetInternalProvider value={internalContextVariables}>
           <BottomSheetGestureHandlersProvider
             gestureEventsHandlersHook={gestureEventsHandlersHook}
           >
-            <BottomSheetBackdropContainer
-              key="BottomSheetBackdropContainer"
-              animatedIndex={animatedIndex}
-              animatedPosition={animatedPosition}
-              backdropComponent={backdropComponent}
-            />
-            <BottomSheetContainer
+            {BackdropComponent ? (
+              <BackdropComponent
+                animatedIndex={animatedIndex}
+                animatedPosition={animatedPosition}
+                style={StyleSheet.absoluteFillObject}
+              />
+            ) : null}
+            <BottomSheetHostingContainer
               key="BottomSheetContainer"
               shouldCalculateHeight={!$modal}
               containerHeight={_animatedContainerHeight}
@@ -1910,48 +1775,48 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               detached={detached}
               style={_providedContainerStyle}
             >
-              <Animated.View style={containerStyle}>
-                <BottomSheetBackgroundContainer
-                  key="BottomSheetBackgroundContainer"
-                  animatedIndex={animatedIndex}
-                  animatedPosition={animatedPosition}
-                  backgroundComponent={backgroundComponent}
-                  backgroundStyle={_providedBackgroundStyle}
-                />
-                <Animated.View
+              <BottomSheetBody style={style}>
+                {backgroundComponent === null ? null : (
+                  <BottomSheetBackgroundContainer
+                    key="BottomSheetBackgroundContainer"
+                    animatedIndex={animatedIndex}
+                    animatedPosition={animatedPosition}
+                    backgroundComponent={backgroundComponent}
+                    backgroundStyle={_providedBackgroundStyle}
+                  />
+                )}
+                <BottomSheetContent
                   pointerEvents="box-none"
-                  style={contentMaskContainerStyle}
                   accessible={_providedAccessible ?? undefined}
                   accessibilityRole={_providedAccessibilityRole ?? undefined}
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+                  keyboardBehavior={keyboardBehavior}
+                  detached={detached}
                 >
-                  <DraggableView
-                    key="BottomSheetRootDraggableView"
-                    style={contentContainerStyle}
-                  >
-                    {children}
-                  </DraggableView>
-                  {footerComponent && (
+                  {children}
+                  {footerComponent ? (
                     <BottomSheetFooterContainer
                       footerComponent={footerComponent}
                     />
-                  )}
-                </Animated.View>
-                <BottomSheetHandleContainer
-                  key="BottomSheetHandleContainer"
-                  animatedIndex={animatedIndex}
-                  animatedPosition={animatedPosition}
-                  handleHeight={animatedHandleHeight}
-                  enableHandlePanningGesture={enableHandlePanningGesture}
-                  enableOverDrag={enableOverDrag}
-                  enablePanDownToClose={enablePanDownToClose}
-                  overDragResistanceFactor={overDragResistanceFactor}
-                  keyboardBehavior={keyboardBehavior}
-                  handleComponent={handleComponent}
-                  handleStyle={_providedHandleStyle}
-                  handleIndicatorStyle={_providedHandleIndicatorStyle}
-                />
-              </Animated.View>
+                  ) : null}
+                </BottomSheetContent>
+                {handleComponent !== null ? (
+                  <BottomSheetHandleContainer
+                    key="BottomSheetHandleContainer"
+                    animatedIndex={animatedIndex}
+                    animatedPosition={animatedPosition}
+                    handleHeight={animatedHandleHeight}
+                    enableHandlePanningGesture={enableHandlePanningGesture}
+                    enableOverDrag={enableOverDrag}
+                    enablePanDownToClose={enablePanDownToClose}
+                    overDragResistanceFactor={overDragResistanceFactor}
+                    keyboardBehavior={keyboardBehavior}
+                    handleComponent={handleComponent}
+                    handleStyle={_providedHandleStyle}
+                    handleIndicatorStyle={_providedHandleIndicatorStyle}
+                  />
+                ) : null}
+              </BottomSheetBody>
               {/* <BottomSheetDebugView
                 values={{
                   // topInset,
@@ -1968,7 +1833,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   // animatedHandleGestureState,
                   // animatedContentGestureState,
                   animatedContainerHeight,
-                  animatedContentHeightMax,
+                  animatedHighestSnapPoint,
                   animatedSheetHeight,
                   animatedHandleHeight,
                   animatedContentHeight,
@@ -1981,7 +1846,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   // isInTemporaryPosition,
                 }}
               /> */}
-            </BottomSheetContainer>
+            </BottomSheetHostingContainer>
           </BottomSheetGestureHandlersProvider>
         </BottomSheetInternalProvider>
       </BottomSheetProvider>

@@ -1,16 +1,16 @@
-import React, { memo, useState, useCallback } from 'react';
 import {
-  View,
-  StyleSheet,
-  Dimensions,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-} from 'react-native';
-import {
+  type BottomSheetHandleProps,
   BottomSheetTextInput,
-  BottomSheetHandleProps,
 } from '@gorhom/bottom-sheet';
 import { useShowcaseTheme } from '@gorhom/showcase-template';
+import React, { memo, useState, useCallback } from 'react';
+import {
+  Dimensions,
+  type NativeSyntheticEvent,
+  StyleSheet,
+  type TextInputChangeEventData,
+  View,
+} from 'react-native';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 export const SEARCH_HANDLE_HEIGHT = 69;
