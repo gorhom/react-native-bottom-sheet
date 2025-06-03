@@ -575,8 +575,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         if (__DEV__) {
           runOnJS(print)({
-            component: BottomSheet.name,
-            method: animateToPositionCompleted.name,
+            component: 'BottomSheet',
+            method: 'animateToPositionCompleted',
             params: {
               animatedCurrentIndex: animatedCurrentIndex.value,
               animatedNextPosition: animatedNextPosition.value,
@@ -607,8 +607,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ) {
         if (__DEV__) {
           runOnJS(print)({
-            component: BottomSheet.name,
-            method: animateToPosition.name,
+            component: 'BottomSheet',
+            method: 'animateToPosition',
             params: {
               currentPosition: animatedPosition.value,
               nextPosition: position,
@@ -1459,7 +1459,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         if (__DEV__) {
           runOnJS(print)({
-            component: BottomSheet.name,
+            component: 'BottomSheet',
             method: 'useAnimatedReaction::OnSnapPointChange',
             category: 'effect',
             params: {
