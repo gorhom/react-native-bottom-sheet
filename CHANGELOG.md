@@ -1,5 +1,16 @@
 
 
+## [5.1.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.5...v5.1.6) (2025-06-03)
+
+
+### Bug Fixes
+
+* **#2267:** early exit when attempting to snap to index while layout is not ready ([0715f03](https://github.com/gorhom/react-native-bottom-sheet/commit/0715f0384a187cdb1df903d693666ac4b12db807)), closes [#2267](https://github.com/gorhom/react-native-bottom-sheet/issues/2267)
+* **#2278:** removed flashlist for web ([e17096f](https://github.com/gorhom/react-native-bottom-sheet/commit/e17096feade145f9e6349815398f8aaae758d554)), closes [#2278](https://github.com/gorhom/react-native-bottom-sheet/issues/2278)
+* added positions to onAnimate, and prevent index to be negative with keyboard animations ([#2271](https://github.com/gorhom/react-native-bottom-sheet/issues/2271))(by [@souyahia](https://github.com/souyahia)) ([898270e](https://github.com/gorhom/react-native-bottom-sheet/commit/898270e62e0f83c8f8df671a60d6aabe749d890e))
+* allow bottom sheet view to resize it self when its content resized ([5397478](https://github.com/gorhom/react-native-bottom-sheet/commit/53974786a18aceab1cc15def1b29c94ef93002e3))
+* updated BottomSheetModal mock, add createBottomSheetScrollableComponent and enum mocks ([#2265](https://github.com/gorhom/react-native-bottom-sheet/issues/2265))(by [@gabimoncha](https://github.com/gabimoncha)) ([a77904a](https://github.com/gorhom/react-native-bottom-sheet/commit/a77904ac935278bec4e086700e1e93baa54282b6))
+
 ## [5.1.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.4...v5.1.5) (2025-05-26)
 
 
