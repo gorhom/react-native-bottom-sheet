@@ -1,19 +1,19 @@
-import React, { memo, useEffect, useCallback } from 'react';
-import type { LayoutChangeEvent } from 'react-native';
-import Animated from 'react-native-reanimated';
+import React, { memo, useEffect, useCallback, useMemo } from 'react';
+import { type LayoutChangeEvent, View } from 'react-native';
 import { SCROLLABLE_TYPE } from '../../constants';
 import {
   useBottomSheetContentContainerStyle,
   useBottomSheetInternal,
 } from '../../hooks';
 import { print } from '../../utilities';
+import { styles } from './styles';
 import type { BottomSheetViewProps } from './types';
 
 function BottomSheetViewComponent({
   focusHook: useFocusHook = useEffect,
   enableFooterMarginAdjustment = false,
   onLayout,
-  style,
+  style: _providedStyle,
   children,
   ...rest
 }: BottomSheetViewProps) {
@@ -29,7 +29,11 @@ function BottomSheetViewComponent({
   //#region styles
   const containerStyle = useBottomSheetContentContainerStyle(
     enableFooterMarginAdjustment,
-    style
+    _providedStyle
+  );
+  const style = useMemo(
+    () => [containerStyle, styles.container],
+    [containerStyle]
   );
   //#endregion
 
@@ -69,9 +73,9 @@ function BottomSheetViewComponent({
 
   //render
   return (
-    <Animated.View {...rest} onLayout={handleLayout} style={containerStyle}>
+    <View {...rest} onLayout={handleLayout} style={style}>
       {children}
-    </Animated.View>
+    </View>
   );
 }
 
