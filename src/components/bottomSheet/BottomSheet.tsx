@@ -544,7 +544,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             category: 'callback',
             params: {
               toIndex: targetIndex,
+              toPosition: targetPosition,
               fromIndex: animatedCurrentIndex.value,
+              fromPosition: animatedPosition.value,
             },
           });
         }
@@ -648,10 +650,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedNextPosition.value = position;
 
         /**
-         * offset the position if keyboard is shown
+         * offset the position if keyboard is shown,
+         * and behavior not extend.
          */
         let offset = 0;
-        if (animatedKeyboardState.value === KEYBOARD_STATE.SHOWN) {
+        if (
+          animatedKeyboardState.value === KEYBOARD_STATE.SHOWN &&
+          keyboardBehavior !== KEYBOARD_BEHAVIOR.extend &&
+          position < animatedPosition.value
+        ) {
           offset = animatedKeyboardHeightInContainer.value;
         }
 
@@ -677,6 +684,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [
         handleOnAnimate,
+        keyboardBehavior,
         _providedAnimationConfigs,
         _providedOverrideReduceMotion,
       ]
