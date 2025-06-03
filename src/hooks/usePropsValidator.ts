@@ -21,8 +21,8 @@ export const usePropsValidator = ({
   useMemo(() => {
     //#region snap points
     const _snapPoints = snapPoints
-      ? 'value' in snapPoints
-        ? snapPoints.value
+      ? 'get' in snapPoints
+        ? snapPoints.get()
         : snapPoints
       : [];
     invariant(

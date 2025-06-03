@@ -960,7 +960,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       index: number,
       animationConfigs?: WithSpringConfig | WithTimingConfig
     ) {
-      const snapPoints = animatedSnapPoints.value;
+      const snapPoints = animatedSnapPoints.get();
+      const isLayoutReady = isLayoutCalculated.get();
+
+      // early exit if layout is not ready yet.
+      if (!isLayoutReady) {
+        return;
+      }
+
       invariant(
         index >= -1 && index <= snapPoints.length - 1,
         `'index' was provided but out of the provided snap points range! expected value to be between -1, ${
