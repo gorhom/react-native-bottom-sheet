@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { State } from 'react-native-gesture-handler';
 import { scrollTo } from 'react-native-reanimated';
-import { ANIMATION_STATE, SCROLLABLE_STATE, SHEET_STATE } from '../constants';
+import { ANIMATION_STATUS, SCROLLABLE_STATE, SHEET_STATE } from '../constants';
 import type {
   ScrollEventHandlerCallbackType,
   ScrollEventsHandlersHookType,
@@ -111,7 +111,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           return;
         }
 
-        if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
+        if (animatedAnimationState.get().status !== ANIMATION_STATUS.RUNNING) {
           scrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
         }
@@ -138,7 +138,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           return;
         }
 
-        if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
+        if (animatedAnimationState.get().status !== ANIMATION_STATUS.RUNNING) {
           scrollableContentOffsetY.value = y;
           rootScrollableContentOffsetY.value = y;
         }

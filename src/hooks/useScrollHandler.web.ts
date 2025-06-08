@@ -1,6 +1,6 @@
 import { type TouchEvent, useEffect, useRef } from 'react';
 import { useSharedValue } from 'react-native-reanimated';
-import { ANIMATION_STATE, SCROLLABLE_STATE } from '../constants';
+import { ANIMATION_STATUS, SCROLLABLE_STATE } from '../constants';
 import type { Scrollable, ScrollableEvent } from '../types';
 import { findNodeHandle } from '../utilities/findNodeHandle.web';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
@@ -50,7 +50,10 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
     }
 
     function handleOnTouchMove(event: TouchEvent) {
-      if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED && event.cancelable) {
+      if (
+        animatedScrollableState.value === SCROLLABLE_STATE.LOCKED &&
+        event.cancelable
+      ) {
         return event.preventDefault();
       }
 
@@ -86,7 +89,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
     function handleOnScroll(event: TouchEvent) {
       scrollOffset = element.scrollTop;
 
-      if (animatedAnimationState.value !== ANIMATION_STATE.RUNNING) {
+      if (animatedAnimationState.get().status !== ANIMATION_STATUS.RUNNING) {
         scrollableContentOffsetY.value = Math.max(0, scrollOffset);
         animatedScrollableContentOffsetY.value = Math.max(0, scrollOffset);
       }

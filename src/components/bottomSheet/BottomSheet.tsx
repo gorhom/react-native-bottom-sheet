@@ -26,7 +26,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
-  ANIMATION_STATE,
+  ANIMATION_STATUS,
   KEYBOARD_BEHAVIOR,
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
@@ -47,7 +47,11 @@ import {
   useScrollable,
   useStableCallback,
 } from '../../hooks';
-import type { BottomSheetMethods, BottomSheetPosition } from '../../types';
+import type {
+  AnimationState,
+  BottomSheetMethods,
+  BottomSheetPosition,
+} from '../../types';
 import {
   animate,
   getKeyboardAnimationConfigs,
@@ -329,10 +333,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region state/dynamic variables
     // states
-    const animatedAnimationState = useSharedValue(ANIMATION_STATE.UNDETERMINED);
-    const animatedAnimationSource = useSharedValue<ANIMATION_SOURCE>(
-      ANIMATION_SOURCE.MOUNT
-    );
+    const animatedAnimationState = useSharedValue<AnimationState>({
+      status: ANIMATION_STATUS.UNDETERMINED,
+      source: ANIMATION_SOURCE.MOUNT,
+    });
     const animatedSheetState = useDerivedValue(() => {
       // closed position = position >= container height
       if (animatedPosition.value >= animatedClosedPosition.value) {
@@ -423,7 +427,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
        */
       if (
         animatedKeyboardState.get().status === KEYBOARD_STATUS.SHOWN &&
-        animatedAnimationState.value === ANIMATION_STATE.RUNNING
+        animatedAnimationState.get().status === ANIMATION_STATUS.RUNNING
       ) {
         return SCROLLABLE_STATE.UNLOCKED;
       }
@@ -459,14 +463,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           )
         : -1;
 
+      const { status: animationStatus, source: animationSource } =
+        animatedAnimationState.get();
       /**
        * if the sheet is currently running an animation by the keyboard opening,
        * then we clamp the index on android with resize keyboard mode.
        */
       if (
         android_keyboardInputMode === KEYBOARD_INPUT_MODE.adjustResize &&
-        animatedAnimationSource.value === ANIMATION_SOURCE.KEYBOARD &&
-        animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+        animationStatus === ANIMATION_STATUS.RUNNING &&
+        animationSource === ANIMATION_SOURCE.KEYBOARD &&
         isInTemporaryPosition.value
       ) {
         return Math.max(animatedCurrentIndex.value, currentIndex);
@@ -478,8 +484,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
        */
       const nextPosition = animatedNextPosition.get();
       if (
-        animatedAnimationSource.value === ANIMATION_SOURCE.SNAP_POINT_CHANGE &&
-        animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+        animationStatus === ANIMATION_STATUS.RUNNING &&
+        animationSource === ANIMATION_SOURCE.SNAP_POINT_CHANGE &&
         nextPosition
       ) {
         return nextPosition.index;
@@ -488,7 +494,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       return currentIndex;
     }, [
       android_keyboardInputMode,
-      animatedAnimationSource,
       animatedAnimationState,
       animatedContainerHeight,
       animatedCurrentIndex,
@@ -568,9 +573,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const stopAnimation = useCallback(() => {
       'worklet';
       cancelAnimation(animatedPosition);
-      animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
-      animatedAnimationState.value = ANIMATION_STATE.STOPPED;
-    }, [animatedPosition, animatedAnimationState, animatedAnimationSource]);
+      animatedAnimationState.set({
+        status: ANIMATION_STATUS.STOPPED,
+        source: ANIMATION_SOURCE.NONE,
+      });
+    }, [animatedPosition, animatedAnimationState]);
     const animateToPositionCompleted = useCallback(
       function animateToPositionCompleted(isFinished?: boolean) {
         'worklet';
@@ -590,19 +597,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           });
         }
 
-        if (animatedAnimationSource.value === ANIMATION_SOURCE.MOUNT) {
+        if (animatedAnimationState.get().source === ANIMATION_SOURCE.MOUNT) {
           isAnimatedOnMount.value = true;
         }
 
         // reset values
         isForcedClosing.value = false;
-        animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
-        animatedAnimationState.value = ANIMATION_STATE.STOPPED;
+        animatedAnimationState.set({
+          status: ANIMATION_STATUS.STOPPED,
+          source: ANIMATION_SOURCE.NONE,
+        });
         animatedNextPosition.set(undefined);
         animatedContainerHeightDidChange.value = false;
       },
       [
-        animatedAnimationSource,
         animatedAnimationState,
         animatedContainerHeightDidChange,
         animatedCurrentIndex,
@@ -642,8 +650,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         // early exit if there is a running animation to
         // the same position
         const nextPosition = animatedNextPosition.get();
+        const animationStatus = animatedAnimationState.get().status;
         if (
-          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          animationStatus === ANIMATION_STATUS.RUNNING &&
           nextPosition &&
           position === nextPosition.y
         ) {
@@ -651,15 +660,17 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         // stop animation if it is running
-        if (animatedAnimationState.value === ANIMATION_STATE.RUNNING) {
+        if (animationStatus === ANIMATION_STATUS.RUNNING) {
           stopAnimation();
         }
 
         /**
          * set animation state to running, and source
          */
-        animatedAnimationState.value = ANIMATION_STATE.RUNNING;
-        animatedAnimationSource.value = source;
+        animatedAnimationState.set({
+          status: ANIMATION_STATUS.RUNNING,
+          source,
+        });
 
         /**
          * offset the position if keyboard is shown,
@@ -701,7 +712,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedAnimationConfigs,
         _providedOverrideReduceMotion,
         animateToPositionCompleted,
-        animatedAnimationSource,
         animatedAnimationState,
         animatedKeyboardState,
         animatedNextPosition,
@@ -730,7 +740,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         // the same position
         const nextPosition = animatedNextPosition.get();
         if (
-          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
+          animatedAnimationState.get().status === ANIMATION_STATUS.RUNNING &&
           nextPosition &&
           targetPosition === nextPosition.y
         ) {
@@ -933,10 +943,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        const { status: animationStatus } = animatedAnimationState.get();
         /**
          * when evaluating the position while the bottom sheet is animating.
          */
-        if (animatedAnimationState.value === ANIMATION_STATE.RUNNING) {
+        if (animationStatus === ANIMATION_STATUS.RUNNING) {
           const nextPositionIndex =
             animatedNextPosition.get()?.index ?? INITIAL_VALUE;
           /**
@@ -969,7 +980,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * position and not animating, we re-set the position to closed position.
          */
         if (
-          animatedAnimationState.value !== ANIMATION_STATE.RUNNING &&
+          animationStatus !== ANIMATION_STATUS.RUNNING &&
           animatedCurrentIndex.value === -1
         ) {
           /**
@@ -1489,9 +1500,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          *
          * [read more](https://github.com/gorhom/react-native-bottom-sheet/issues/2163)
          */
+        const { status: animationStatus, source: animationSource } =
+          animatedAnimationState.get();
         if (
-          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
-          animatedAnimationSource.value === ANIMATION_SOURCE.GESTURE &&
+          animationStatus === ANIMATION_STATUS.RUNNING &&
+          animationSource === ANIMATION_SOURCE.GESTURE &&
           animatedNextPosition.get()?.index === -1
         ) {
           animateToPosition(
@@ -1503,7 +1516,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [
         animatedContainerHeightDidChange,
         animatedAnimationState,
-        animatedAnimationSource,
         animatedNextPosition,
         animatedClosedPosition,
       ]
@@ -1578,13 +1590,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        const { status: animationStatus, source: animationSource } =
+          animatedAnimationState.get();
         /**
          * if keyboard is hidden by customer gesture, then we early exit.
          */
         if (
           status === KEYBOARD_STATUS.HIDDEN &&
-          animatedAnimationState.value === ANIMATION_STATE.RUNNING &&
-          animatedAnimationSource.value === ANIMATION_SOURCE.GESTURE
+          animationStatus === ANIMATION_STATUS.RUNNING &&
+          animationSource === ANIMATION_SOURCE.GESTURE
         ) {
           return;
         }
@@ -1716,21 +1730,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       () => ({
         _animatedIndex: animatedIndex.value,
         _animatedPosition: animatedPosition.value,
-        _animationState: animatedAnimationState.value,
+        _animationStatus: animatedAnimationState.get().status,
         _contentGestureState: animatedContentGestureState.value,
         _handleGestureState: animatedHandleGestureState.value,
       }),
       ({
         _animatedIndex,
         _animatedPosition,
-        _animationState,
+        _animationStatus,
         _contentGestureState,
         _handleGestureState,
       }) => {
         /**
          * exit the method if animation state is not stopped.
          */
-        if (_animationState !== ANIMATION_STATE.STOPPED) {
+        if (_animationStatus !== ANIMATION_STATUS.STOPPED) {
           return;
         }
 

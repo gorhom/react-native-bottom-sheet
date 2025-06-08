@@ -21,7 +21,12 @@ import type {
   WithSpringConfig,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import type { GESTURE_SOURCE, KEYBOARD_STATUS } from './constants';
+import type {
+  ANIMATION_SOURCE,
+  ANIMATION_STATUS,
+  GESTURE_SOURCE,
+  KEYBOARD_STATUS,
+} from './constants';
 
 //#region Methods
 export interface BottomSheetMethods {
@@ -221,3 +226,8 @@ export type KeyboardState = {
   duration: number;
 };
 //#endregion
+
+export type AnimationState = {
+  status: ANIMATION_STATUS;
+  source: ANIMATION_SOURCE;
+};

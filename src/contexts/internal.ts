@@ -7,12 +7,17 @@ import type {
   BottomSheetProps,
 } from '../components/bottomSheet/types';
 import type {
-  ANIMATION_STATE,
+  ANIMATION_STATUS,
   SCROLLABLE_STATE,
   SCROLLABLE_TYPE,
   SHEET_STATE,
 } from '../constants';
-import type { KeyboardState, Scrollable, ScrollableRef } from '../types';
+import type {
+  AnimationState,
+  KeyboardState,
+  Scrollable,
+  ScrollableRef,
+} from '../types';
 
 export interface BottomSheetInternalContextType
   extends Partial<BottomSheetGestureProps>,
@@ -28,7 +33,7 @@ export interface BottomSheetInternalContextType
       >
     > {
   // animated states
-  animatedAnimationState: SharedValue<ANIMATION_STATE>;
+  animatedAnimationState: SharedValue<AnimationState>;
   animatedSheetState: SharedValue<SHEET_STATE>;
   animatedScrollableState: SharedValue<SCROLLABLE_STATE>;
   animatedKeyboardState: SharedValue<KeyboardState>;
