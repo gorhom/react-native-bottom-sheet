@@ -114,6 +114,17 @@ export interface BottomSheetVariables {
   animatedPosition: SharedValue<number>;
 }
 
+export type BottomSheetPosition = {
+  /**
+   * Position index based on the current detents.
+   */
+  index: number;
+  /**
+   * Position coordinates.
+   */
+  y: number;
+};
+
 //#region scrollables
 export type Scrollable = FlatList | ScrollView | SectionList;
 export type ScrollableRef = {
@@ -191,12 +202,14 @@ export type ScrollEventsHandlersHookType = (
 };
 //#endregion
 
+//#region accessibility
 export interface NullableAccessibilityProps extends AccessibilityProps {
   accessible?: AccessibilityProps['accessible'] | null;
   accessibilityLabel?: AccessibilityProps['accessibilityLabel'] | null;
   accessibilityHint?: AccessibilityProps['accessibilityHint'] | null;
   accessibilityRole?: AccessibilityProps['accessibilityRole'] | null;
 }
+//#endregion
 
 //#region keyboard
 export type KeyboardState = {
