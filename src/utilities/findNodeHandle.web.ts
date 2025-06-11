@@ -22,6 +22,14 @@ export function findNodeHandle(
     }
   } catch {}
 
+  try {
+      // @ts-ignore
+    nodeHandle = componentOrHandle.getScrollableNode();
+    if (nodeHandle) {
+      return nodeHandle;
+    }
+  } catch {}
+
   // @ts-ignore https://github.com/facebook/react-native/blob/a314e34d6ee875830d36e4df1789a897c7262056/packages/virtualized-lists/Lists/VirtualizedList.js#L1252
   nodeHandle = componentOrHandle._scrollRef;
   if (nodeHandle) {
