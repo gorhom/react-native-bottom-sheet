@@ -82,5 +82,5 @@ export const usePropsValidator = ({
     //#endregion
 
     // animations
-  }, [index, snapPoints, topInset, bottomInset, enableDynamicSizing]);
+  }, [index, snapPoints, topInset, bottomInset, enableDynamicSizing, android_bottomTabBarHeight]);
 };
