@@ -136,6 +136,13 @@ export interface BottomSheetProps
    */
   bottomInset?: number;
   /**
+   * Bottom tab bar height value helps to avoid extra padding below text input on android,
+   * usually comes from `@react-navigation/bottom-tabs` hook `useBottomTabBarHeight`.
+   * @type number
+   * @default 0
+   */
+  android_bottomTabBarHeight?: number;
+  /**
    * Max dynamic content size height to limit the bottom sheet height
    * from exceeding a provided size.
    * @type number
