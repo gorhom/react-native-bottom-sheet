@@ -14,9 +14,10 @@ export const usePropsValidator = ({
   enableDynamicSizing,
   topInset,
   bottomInset,
+  android_bottomTabBarHeight,
 }: Pick<
   BottomSheetProps,
-  'index' | 'snapPoints' | 'enableDynamicSizing' | 'topInset' | 'bottomInset'
+  'index' | 'snapPoints' | 'enableDynamicSizing' | 'topInset' | 'bottomInset' | 'android_bottomTabBarHeight'
 >) => {
   useMemo(() => {
     //#region snap points
@@ -74,8 +75,12 @@ export const usePropsValidator = ({
       typeof bottomInset === 'number' || typeof bottomInset === 'undefined',
       `'bottomInset' was provided but with wrong type ! expected type is a number.`
     );
+    invariant(
+      typeof android_bottomTabBarHeight === 'number' || typeof android_bottomTabBarHeight === 'undefined',
+      `'android_bottomTabBarHeight' was provided but with wrong type ! expected type is a number.`
+    );
     //#endregion
 
     // animations
-  }, [index, snapPoints, topInset, bottomInset, enableDynamicSizing]);
+  }, [index, snapPoints, topInset, bottomInset, enableDynamicSizing, android_bottomTabBarHeight]);
 };
