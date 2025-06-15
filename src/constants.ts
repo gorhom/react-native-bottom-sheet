@@ -76,17 +76,17 @@ const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
 const ANIMATION_DURATION = 250;
 
 const ANIMATION_CONFIGS = Platform.select<WithTimingConfig | WithSpringConfig>({
-  ios: {
+  android: {
+    duration: ANIMATION_DURATION,
+    easing: ANIMATION_EASING,
+  },
+  default: {
     damping: 500,
     stiffness: 1000,
     mass: 3,
     overshootClamping: true,
     restDisplacementThreshold: 10,
     restSpeedThreshold: 10,
-  },
-  default: {
-    duration: ANIMATION_DURATION,
-    easing: ANIMATION_EASING,
   },
 });
 

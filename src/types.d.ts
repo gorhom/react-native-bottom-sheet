@@ -294,4 +294,10 @@ export type LayoutState = {
   contentHeight: number;
 };
 
+export type DetentsState = {
+  detents?: number[];
+  dynamicDetentIndex?: number;
+  highestDetentPosition?: number;
+  closedDetentPosition?: number;
+};
 //#endregion

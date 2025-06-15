@@ -14,6 +14,7 @@ import type {
 } from '../constants';
 import type {
   AnimationState,
+  DetentsState,
   KeyboardState,
   LayoutState,
   Scrollable,
@@ -35,6 +36,7 @@ export interface BottomSheetInternalContextType
       >
     > {
   // animated states
+  animatedDetentsState: SharedValue<DetentsState>;
   animatedAnimationState: SharedValue<AnimationState>;
   animatedSheetState: SharedValue<SHEET_STATE>;
   animatedKeyboardState: SharedValue<KeyboardState>;
@@ -47,12 +49,9 @@ export interface BottomSheetInternalContextType
   animatedScrollableStatus: SharedValue<SCROLLABLE_STATUS>;
 
   // animated values
-  animatedSnapPoints: SharedValue<number[]>;
   animatedPosition: SharedValue<number>;
   animatedIndex: SharedValue<number>;
   animatedSheetHeight: SharedValue<number>;
-  animatedHighestSnapPoint: SharedValue<number>;
-  animatedClosedPosition: SharedValue<number>;
   isInTemporaryPosition: SharedValue<boolean>;
 
   // methods

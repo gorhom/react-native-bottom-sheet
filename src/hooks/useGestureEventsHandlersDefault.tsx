@@ -43,12 +43,10 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
     //#region variables
     const {
       animatedPosition,
-      animatedSnapPoints,
+      animatedDetentsState,
       animatedKeyboardState,
       animatedScrollableState,
       animatedLayoutState,
-      animatedHighestSnapPoint,
-      animatedClosedPosition,
       enableOverDrag,
       enablePanDownToClose,
       overDragResistanceFactor,
@@ -110,7 +108,16 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
     const handleOnChange: GestureEventHandlerCallbackType = useCallback(
       function handleOnChange(source, { translationY }) {
         'worklet';
-        let highestSnapPoint = animatedHighestSnapPoint.value;
+        const { highestDetentPosition, detents } = animatedDetentsState.get();
+        if (
+          highestDetentPosition === undefined ||
+          detents === undefined ||
+          detents.length === 0
+        ) {
+          return;
+        }
+
+        let highestSnapPoint = highestDetentPosition;
 
         /**
          * if keyboard is shown, then we set the highest point to the current
@@ -137,7 +144,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         const { containerHeight } = animatedLayoutState.get();
         const lowestSnapPoint = enablePanDownToClose
           ? containerHeight
-          : animatedSnapPoints.value[0];
+          : detents[0];
 
         /**
          * if scrollable is refreshable and sheet position at the highest
@@ -257,9 +264,8 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         overDragResistanceFactor,
         isInTemporaryPosition,
         animatedScrollableState,
-        animatedHighestSnapPoint,
+        animatedDetentsState,
         animatedLayoutState,
-        animatedSnapPoints,
         animatedPosition,
         context,
       ]
@@ -267,7 +273,18 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
     const handleOnEnd: GestureEventHandlerCallbackType = useCallback(
       function handleOnEnd(source, { translationY, absoluteY, velocityY }) {
         'worklet';
-        const highestSnapPoint = animatedHighestSnapPoint.value;
+        const { highestDetentPosition, detents, closedDetentPosition } =
+          animatedDetentsState.get();
+        if (
+          highestDetentPosition === undefined ||
+          detents === undefined ||
+          detents.length === 0 ||
+          closedDetentPosition === undefined
+        ) {
+          return;
+        }
+
+        const highestSnapPoint = highestDetentPosition;
         const isSheetAtHighestSnapPoint =
           animatedPosition.value === highestSnapPoint;
         const {
@@ -353,9 +370,9 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
          * clone snap points array, and insert the container height
          * if pan down to close is enabled.
          */
-        const snapPoints = animatedSnapPoints.value.slice();
+        const snapPoints = detents.slice();
         if (enablePanDownToClose) {
-          snapPoints.unshift(animatedClosedPosition.value);
+          snapPoints.unshift(closedDetentPosition);
         }
 
         /**
@@ -394,11 +411,9 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         enablePanDownToClose,
         isInTemporaryPosition,
         animatedScrollableState,
+        animatedDetentsState,
         animatedKeyboardState,
-        animatedClosedPosition,
-        animatedHighestSnapPoint,
         animatedPosition,
-        animatedSnapPoints,
         animateToPosition,
         context,
       ]

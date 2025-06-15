@@ -48,7 +48,7 @@ function BottomSheetContentComponent({
     enableContentPanningGesture,
     animatedPosition,
     animatedLayoutState,
-    animatedHighestSnapPoint,
+    animatedDetentsState,
     animatedSheetHeight,
     animatedKeyboardState,
     isInTemporaryPosition,
@@ -140,8 +140,10 @@ function BottomSheetContentComponent({
       return 0;
     }
 
+    const { highestDetentPosition } = animatedDetentsState.get();
+
     const highestSnapPoint = Math.max(
-      animatedHighestSnapPoint.get(),
+      highestDetentPosition ?? 0,
       animatedPosition.get()
     );
     /**
@@ -172,7 +174,7 @@ function BottomSheetContentComponent({
     overDragResistanceFactor,
     animatedPosition,
     animatedLayoutState,
-    animatedHighestSnapPoint,
+    animatedDetentsState,
     animatedKeyboardState,
   ]);
   //#endregion
