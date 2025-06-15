@@ -53,7 +53,6 @@ export interface BottomSheetInternalContextType
   animatedSheetHeight: SharedValue<number>;
   animatedHighestSnapPoint: SharedValue<number>;
   animatedClosedPosition: SharedValue<number>;
-  isContentHeightFixed: SharedValue<boolean>;
   isInTemporaryPosition: SharedValue<boolean>;
 
   // methods

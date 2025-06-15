@@ -224,7 +224,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const isAnimatedOnMount = useSharedValue(
       !animateOnMount || _providedIndex === -1
     );
-    const isContentHeightFixed = useSharedValue(false);
     const isLayoutCalculated = useDerivedValue(() => {
       let isContainerHeightCalculated = false;
       const { containerHeight, handleHeight } = animatedLayoutState.get();
@@ -1352,7 +1351,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedSnapPoints,
         animatedHighestSnapPoint,
         isInTemporaryPosition,
-        isContentHeightFixed,
         simultaneousHandlers: _providedSimultaneousHandlers,
         waitFor: _providedWaitFor,
         activeOffsetX: _providedActiveOffsetX,
@@ -1380,7 +1378,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedScrollableState,
         animatedScrollableStatus,
         animatedSnapPoints,
-        isContentHeightFixed,
         isInTemporaryPosition,
         enableContentPanningGesture,
         overDragResistanceFactor,

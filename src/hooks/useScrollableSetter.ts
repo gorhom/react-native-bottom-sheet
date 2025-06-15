@@ -14,12 +14,8 @@ export const useScrollableSetter = (
   useFocusHook = useEffect
 ) => {
   // hooks
-  const {
-    animatedScrollableState,
-    isContentHeightFixed,
-    setScrollableRef,
-    removeScrollableRef,
-  } = useBottomSheetInternal();
+  const { animatedScrollableState, setScrollableRef, removeScrollableRef } =
+    useBottomSheetInternal();
 
   // callbacks
   const handleSettingScrollable = useCallback(() => {
@@ -30,8 +26,6 @@ export const useScrollableSetter = (
       type,
       refreshable,
     }));
-
-    isContentHeightFixed.value = false;
 
     // set current scrollable ref
     const id = findNodeHandle(ref.current);
@@ -52,7 +46,6 @@ export const useScrollableSetter = (
     type,
     refreshable,
     contentOffsetY,
-    isContentHeightFixed,
     animatedScrollableState,
     setScrollableRef,
     removeScrollableRef,
