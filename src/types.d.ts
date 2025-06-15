@@ -244,6 +244,10 @@ export type AnimationState = {
    * The next position in pixels that the animation is targeting.
    */
   nextPosition?: number;
+  /**
+   * Indicates whether the animation is forced closing to prevent any interruptions.
+   */
+  isForcedClosing?: boolean;
 };
 
 /**
