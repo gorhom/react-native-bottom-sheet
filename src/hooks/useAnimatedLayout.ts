@@ -97,7 +97,5 @@ export function useAnimatedLayout(
   );
   //#endregion
 
-  return {
-    state,
-  };
+  return state;
 }

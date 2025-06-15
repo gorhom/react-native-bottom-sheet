@@ -188,7 +188,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#endregion
 
     //#region layout variables
-    const { state: animatedLayoutState } = useAnimatedLayout(
+    const animatedLayoutState = useAnimatedLayout(
       containerLayoutState,
       topInset,
       bottomInset,
