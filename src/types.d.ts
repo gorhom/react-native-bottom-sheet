@@ -122,17 +122,6 @@ export interface BottomSheetVariables {
   animatedPosition: SharedValue<number>;
 }
 
-export type BottomSheetPosition = {
-  /**
-   * Position index based on the current detents.
-   */
-  index: number;
-  /**
-   * Position coordinates.
-   */
-  y: number;
-};
-
 //#region scrollable
 export type ScrollableState = {
   type: SCROLLABLE_TYPE;
@@ -247,6 +236,14 @@ export type AnimationState = {
    * It is represented by the `ANIMATION_SOURCE` enum, which includes values like 'user', 'system', etc.
    */
   source: ANIMATION_SOURCE;
+  /**
+   * The index of the next snap point that the animation is targeting.
+   */
+  nextIndex?: number;
+  /**
+   * The next position in pixels that the animation is targeting.
+   */
+  nextPosition?: number;
 };
 
 /**

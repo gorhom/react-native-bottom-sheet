@@ -47,11 +47,7 @@ import {
   useScrollable,
   useStableCallback,
 } from '../../hooks';
-import type {
-  AnimationState,
-  BottomSheetMethods,
-  BottomSheetPosition,
-} from '../../types';
+import type { AnimationState, BottomSheetMethods } from '../../types';
 import {
   animate,
   getKeyboardAnimationConfigs,
@@ -223,9 +219,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animateOnMount ? -1 : _providedIndex
     );
     const animatedPosition = useSharedValue(INITIAL_POSITION);
-    const animatedNextPosition = useSharedValue<
-      BottomSheetPosition | undefined
-    >(undefined);
 
     // conditional
     const isAnimatedOnMount = useSharedValue(
@@ -384,8 +377,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           )
         : -1;
 
-      const { status: animationStatus, source: animationSource } =
-        animatedAnimationState.get();
+      const {
+        status: animationStatus,
+        source: animationSource,
+        nextIndex,
+        nextPosition,
+      } = animatedAnimationState.get();
       /**
        * if the sheet is currently running an animation by the keyboard opening,
        * then we clamp the index on android with resize keyboard mode.
@@ -403,13 +400,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
        * if the sheet is currently running an animation by snap point change - usually caused
        * by dynamic content height -, then we return the next position index.
        */
-      const nextPosition = animatedNextPosition.get();
       if (
         animationStatus === ANIMATION_STATUS.RUNNING &&
         animationSource === ANIMATION_SOURCE.SNAP_POINT_CHANGE &&
-        nextPosition
+        nextIndex !== undefined &&
+        nextPosition !== undefined
       ) {
-        return nextPosition.index;
+        return nextIndex;
       }
 
       return currentIndex;
@@ -418,7 +415,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       animatedAnimationState,
       animatedLayoutState,
       animatedCurrentIndex,
-      animatedNextPosition,
       animatedPosition,
       animatedSnapPoints,
       isInTemporaryPosition,
@@ -524,44 +520,47 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        const { nextIndex, nextPosition } = animatedAnimationState.get();
+
         if (__DEV__) {
           runOnJS(print)({
             component: 'BottomSheet',
             method: 'animateToPositionCompleted',
             params: {
-              animatedCurrentIndex: animatedCurrentIndex.value,
-              animatedNextPosition: animatedNextPosition.get()?.y,
-              animatedNextPositionIndex: animatedNextPosition.get()?.index,
+              currentIndex: animatedCurrentIndex.value,
+              nextIndex,
+              nextPosition,
             },
           });
+        }
+
+        if (nextIndex === undefined || nextPosition === undefined) {
+          return;
         }
 
         if (animatedAnimationState.get().source === ANIMATION_SOURCE.MOUNT) {
           isAnimatedOnMount.value = true;
         }
 
-        // set static current index
-        const currentIndex = animatedNextPosition.get()?.index ?? -1;
-        const currentPosition = animatedNextPosition.get()?.y ?? 0;
-
         // callbacks
-        if (currentIndex !== animatedCurrentIndex.get()) {
-          runOnJS(handleOnChange)(currentIndex, currentPosition);
+        if (nextIndex !== animatedCurrentIndex.get()) {
+          runOnJS(handleOnChange)(nextIndex, nextPosition);
         }
 
-        if (currentIndex === -1) {
+        if (nextIndex === -1) {
           runOnJS(handleOnClose)();
         }
 
-        animatedCurrentIndex.set(currentIndex);
+        animatedCurrentIndex.set(nextIndex);
 
         // reset values
         isForcedClosing.value = false;
         animatedAnimationState.set({
           status: ANIMATION_STATUS.STOPPED,
           source: ANIMATION_SOURCE.NONE,
+          nextIndex: undefined,
+          nextPosition: undefined,
         });
-        animatedNextPosition.set(undefined);
         animatedContainerHeightDidChange.value = false;
       },
       [
@@ -569,7 +568,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         handleOnClose,
         animatedCurrentIndex,
         animatedAnimationState,
-        animatedNextPosition,
         animatedContainerHeightDidChange,
         isAnimatedOnMount,
         isForcedClosing,
@@ -605,12 +603,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         // early exit if there is a running animation to
         // the same position
-        const nextPosition = animatedNextPosition.get();
-        const animationStatus = animatedAnimationState.get().status;
+        const { status: animationStatus, nextPosition } =
+          animatedAnimationState.get();
         if (
           animationStatus === ANIMATION_STATUS.RUNNING &&
-          nextPosition &&
-          position === nextPosition.y
+          position === nextPosition
         ) {
           return;
         }
@@ -619,14 +616,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (animationStatus === ANIMATION_STATUS.RUNNING) {
           stopAnimation();
         }
-
-        /**
-         * set animation state to running, and source
-         */
-        animatedAnimationState.set({
-          status: ANIMATION_STATUS.RUNNING,
-          source,
-        });
 
         /**
          * offset the position if keyboard is shown,
@@ -641,9 +630,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           offset = animatedKeyboardState.get().heightWithinContainer;
         }
         const index = animatedSnapPoints.value.indexOf(position + offset);
-        animatedNextPosition.set({
-          index,
-          y: position,
+
+        /**
+         * set the animation state
+         */
+        animatedAnimationState.set({
+          status: ANIMATION_STATUS.RUNNING,
+          source,
+          nextIndex: index,
+          nextPosition: position,
         });
 
         /**
@@ -670,7 +665,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animateToPositionCompleted,
         animatedAnimationState,
         animatedKeyboardState,
-        animatedNextPosition,
         animatedPosition,
         animatedSnapPoints,
         stopAnimation,
@@ -692,13 +686,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
+        const { status: animationStatus, nextPosition } =
+          animatedAnimationState.get();
+
         // early exit if there is a running animation to
         // the same position
-        const nextPosition = animatedNextPosition.get();
         if (
-          animatedAnimationState.get().status === ANIMATION_STATUS.RUNNING &&
-          nextPosition &&
-          targetPosition === nextPosition.y
+          animationStatus === ANIMATION_STATUS.RUNNING &&
+          targetPosition === nextPosition
         ) {
           return;
         }
@@ -717,9 +712,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * store next position
          */
-        animatedNextPosition.set({
-          index: animatedSnapPoints.get().indexOf(targetPosition),
-          y: targetPosition,
+        const index = animatedSnapPoints.get().indexOf(targetPosition);
+        animatedAnimationState.set(state => {
+          'worklet';
+          return {
+            ...state,
+            nextPosition: targetPosition,
+            nextIndex: index,
+          };
         });
 
         stopAnimation();
@@ -729,12 +729,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedContainerHeightDidChange.value = false;
       },
       [
-        animatedAnimationState,
+        stopAnimation,
         animatedPosition,
         animatedContainerHeightDidChange,
-        animatedNextPosition,
+        animatedAnimationState,
         animatedSnapPoints,
-        stopAnimation,
       ]
     );
     //#endregion
@@ -899,13 +898,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        const { status: animationStatus } = animatedAnimationState.get();
+        const { status: animationStatus, nextIndex } =
+          animatedAnimationState.get();
         /**
          * when evaluating the position while the bottom sheet is animating.
          */
         if (animationStatus === ANIMATION_STATUS.RUNNING) {
-          const nextPositionIndex =
-            animatedNextPosition.get()?.index ?? INITIAL_VALUE;
+          const nextPositionIndex = nextIndex ?? INITIAL_VALUE;
           /**
            * when evaluating the position while the bottom sheet is
            * closing, then we force closing the bottom sheet with no animation.
@@ -984,7 +983,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedContainerHeightDidChange,
         animatedCurrentIndex,
         animatedIndex,
-        animatedNextPosition,
         animatedPosition,
         animatedSnapPoints,
         isAnimatedOnMount,
@@ -1032,11 +1030,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
        * - already animating to next position.
        * - sheet is forced closing.
        */
-      const nextPosition = animatedNextPosition.get();
+      const { nextPosition, nextIndex } = animatedAnimationState.get();
       if (
         !isLayoutCalculated.value ||
-        (nextPosition && index === nextPosition.index) ||
-        (nextPosition && targetPosition === nextPosition.y) ||
+        index === nextIndex ||
+        targetPosition === nextPosition ||
         isForcedClosing.value
       ) {
         return;
@@ -1063,7 +1061,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (__DEV__) {
           print({
             component: 'BottomSheet',
-            method: handleSnapToPosition.name,
+            method: 'handleSnapToPosition',
             params: {
               position,
             },
@@ -1082,10 +1080,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * - already animating to next position.
          * - sheet is forced closing.
          */
-        const nextPosition = animatedNextPosition.get();
+        const { nextPosition } = animatedAnimationState.get();
         if (
           !isLayoutCalculated ||
-          (nextPosition && targetPosition === nextPosition.y) ||
+          targetPosition === nextPosition ||
           isForcedClosing.value
         ) {
           return;
@@ -1105,22 +1103,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       },
       [
         animateToPosition,
+        isInTemporaryPosition,
         isLayoutCalculated,
         isForcedClosing,
         animatedLayoutState,
-        animatedNextPosition,
-        isInTemporaryPosition,
+        animatedAnimationState,
       ]
     );
-    // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheet.name): used for debug only
     const handleClose = useCallback(
       function handleClose(
         animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         if (__DEV__) {
           print({
-            component: BottomSheet.name,
-            method: handleClose.name,
+            component: 'BottomSheet',
+            method: 'handleClose',
           });
         }
 
@@ -1132,10 +1129,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * - already animating to next position.
          * - sheet is forced closing.
          */
-        const nextPosition = animatedNextPosition.get();
+        const { nextPosition } = animatedAnimationState.get();
         if (
           !isLayoutCalculated.value ||
-          (nextPosition && targetPosition === nextPosition.y) ||
+          targetPosition === nextPosition ||
           isForcedClosing.value
         ) {
           return;
@@ -1158,19 +1155,18 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isForcedClosing,
         isLayoutCalculated,
         isInTemporaryPosition,
-        animatedNextPosition,
         animatedClosedPosition,
+        animatedAnimationState,
       ]
     );
-    // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheet.name): used for debug only
     const handleForceClose = useCallback(
       function handleForceClose(
         animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
         if (__DEV__) {
           print({
-            component: BottomSheet.name,
-            method: handleForceClose.name,
+            component: 'BottomSheet',
+            method: 'handleForceClose',
           });
         }
 
@@ -1181,11 +1177,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * - already animating to next position.
          * - sheet is forced closing.
          */
-        const nextPosition = animatedNextPosition.get();
-        if (
-          (nextPosition && targetPosition === nextPosition.y) ||
-          isForcedClosing.value
-        ) {
+        const { nextPosition } = animatedAnimationState.get();
+        if (targetPosition === nextPosition || isForcedClosing.value) {
           return;
         }
 
@@ -1210,8 +1203,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animateToPosition,
         isForcedClosing,
         isInTemporaryPosition,
-        animatedNextPosition,
         animatedClosedPosition,
+        animatedAnimationState,
       ]
     );
     // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheet.name): used for debug only
@@ -1236,11 +1229,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * - already animating to next position.
          * - sheet is forced closing.
          */
-        const nextPosition = animatedNextPosition.get();
+        const { nextPosition, nextIndex } = animatedAnimationState.get();
         if (
           !isLayoutCalculated.value ||
-          (nextPosition && targetIndex === nextPosition.index) ||
-          (nextPosition && targetPosition === nextPosition.y) ||
+          targetIndex === nextIndex ||
+          targetPosition === nextPosition ||
           isForcedClosing.value
         ) {
           return;
@@ -1264,7 +1257,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isLayoutCalculated,
         isForcedClosing,
         animatedSnapPoints,
-        animatedNextPosition,
+        animatedAnimationState,
       ]
     );
     // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheet.name): used for debug only
@@ -1287,11 +1280,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * - already animating to next position.
          * - sheet is forced closing.
          */
-        const nextPosition = animatedNextPosition.get();
+        const { nextPosition, nextIndex } = animatedAnimationState.get();
         if (
           !isLayoutCalculated ||
-          (nextPosition && nextPosition.index === 0) ||
-          (nextPosition && targetPosition === nextPosition.y) ||
+          nextIndex === 0 ||
+          targetPosition === nextPosition ||
           isForcedClosing.value
         ) {
           return;
@@ -1315,7 +1308,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isLayoutCalculated,
         isInTemporaryPosition,
         animatedSnapPoints,
-        animatedNextPosition,
+        animatedAnimationState,
       ]
     );
 
@@ -1442,12 +1435,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          *
          * [read more](https://github.com/gorhom/react-native-bottom-sheet/issues/2163)
          */
-        const { status: animationStatus, source: animationSource } =
-          animatedAnimationState.get();
+        const {
+          status: animationStatus,
+          source: animationSource,
+          nextIndex,
+        } = animatedAnimationState.get();
         if (
           animationStatus === ANIMATION_STATUS.RUNNING &&
           animationSource === ANIMATION_SOURCE.GESTURE &&
-          animatedNextPosition.get()?.index === -1
+          nextIndex === -1
         ) {
           animateToPosition(
             animatedClosedPosition.value,
@@ -1458,7 +1454,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       [
         animatedContainerHeightDidChange,
         animatedAnimationState,
-        animatedNextPosition,
         animatedClosedPosition,
       ]
     );
