@@ -30,6 +30,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
   const handleOnScroll: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useWorkletCallback(
       ({ contentOffset: { y } }, context) => {
+          'worklet';
         /**
          * if sheet position is extended or fill parent, then we reset
          * `shouldLockInitialPosition` value to false.
@@ -70,6 +71,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
   const handleOnBeginDrag: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useWorkletCallback(
       ({ contentOffset: { y } }, context) => {
+          'worklet';
         scrollableContentOffsetY.value = y;
         rootScrollableContentOffsetY.value = y;
         context.initialContentOffsetY = y;
@@ -97,6 +99,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
   const handleOnEndDrag: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useWorkletCallback(
       ({ contentOffset: { y } }, context) => {
+          'worklet';
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)
@@ -123,6 +126,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
   const handleOnMomentumEnd: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useWorkletCallback(
       ({ contentOffset: { y } }, context) => {
+          'worklet';
         if (animatedScrollableState.value === SCROLLABLE_STATE.LOCKED) {
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)

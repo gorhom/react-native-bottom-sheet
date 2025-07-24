@@ -50,6 +50,7 @@ export const useKeyboard = () => {
       easing: KeyboardEventEasing,
       bottomOffset?: number
     ) => {
+      'worklet';
       if (state === KEYBOARD_STATE.SHOWN && !shouldHandleKeyboardEvents.value) {
         /**
          * if the keyboard event was fired before the `onFocus` on TextInput,

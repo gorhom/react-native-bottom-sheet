@@ -69,6 +69,7 @@ export const useGestureEventsHandlersDefault = () => {
   //#region gesture methods
   const handleOnStart: GestureEventHandlerCallbackType = useWorkletCallback(
     function handleOnStart(__, { translationY }) {
+        'worklet';
       // cancel current animation
       stopAnimation();
 
@@ -97,6 +98,7 @@ export const useGestureEventsHandlersDefault = () => {
   );
   const handleOnChange: GestureEventHandlerCallbackType = useWorkletCallback(
     function handleOnChange(source, { translationY }) {
+        'worklet';
       let highestSnapPoint = animatedHighestSnapPoint.value;
 
       translationY = translationY - context.value.initialTranslationY;
@@ -251,6 +253,7 @@ export const useGestureEventsHandlersDefault = () => {
   );
   const handleOnEnd: GestureEventHandlerCallbackType = useWorkletCallback(
     function handleOnEnd(source, { translationY, absoluteY, velocityY }) {
+        'worklet';
       const highestSnapPoint = animatedHighestSnapPoint.value;
       const isSheetAtHighestSnapPoint =
         animatedPosition.value === highestSnapPoint;
@@ -384,6 +387,7 @@ export const useGestureEventsHandlersDefault = () => {
   );
   const handleOnFinalize: GestureEventHandlerCallbackType = useWorkletCallback(
     function handleOnFinalize() {
+        'worklet';
       resetContext(context);
     },
     [context]
