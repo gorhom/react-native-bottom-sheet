@@ -2,8 +2,8 @@ import { Keyboard, Platform } from 'react-native';
 import {
   runOnJS,
   useSharedValue,
-  useWorkletCallback,
 } from 'react-native-reanimated';
+import { useWorkletCallback } from './useWorkletCallback';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,

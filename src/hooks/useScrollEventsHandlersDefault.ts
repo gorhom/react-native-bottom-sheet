@@ -1,5 +1,6 @@
 import { State } from 'react-native-gesture-handler';
-import { scrollTo, useWorkletCallback } from 'react-native-reanimated';
+import { scrollTo } from 'react-native-reanimated';
+import { useWorkletCallback } from './useWorkletCallback';
 import { ANIMATION_STATE, SCROLLABLE_STATE, SHEET_STATE } from '../constants';
 import type {
   ScrollEventHandlerCallbackType,

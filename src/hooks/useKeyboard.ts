@@ -9,9 +9,9 @@ import {
 import {
   runOnUI,
   useAnimatedReaction,
-  useSharedValue,
-  useWorkletCallback,
+  useSharedValue
 } from 'react-native-reanimated';
+import { useWorkletCallback } from './useWorkletCallback';
 import { KEYBOARD_STATE, SCREEN_HEIGHT } from '../constants';
 
 const KEYBOARD_EVENT_MAPPER = {

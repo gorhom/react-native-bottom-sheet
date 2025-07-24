@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { type Insets, Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
-import Animated, {
+import {
   useAnimatedReaction,
   useSharedValue,
   useDerivedValue,
@@ -18,13 +18,13 @@ import Animated, {
   Extrapolation,
   runOnUI,
   cancelAnimation,
-  useWorkletCallback,
   type WithSpringConfig,
   type WithTimingConfig,
   type SharedValue,
   useReducedMotion,
   ReduceMotion,
 } from 'react-native-reanimated';
+import { useWorkletCallback } from '../../hooks/useWorkletCallback';
 import {
   ANIMATION_SOURCE,
   ANIMATION_STATE,
@@ -86,9 +86,6 @@ import {
 } from './constants';
 import type { AnimateToPositionType, BottomSheetProps } from './types';
 
-Animated.addWhitelistedUIProps({
-  decelerationRate: true,
-});
 
 type BottomSheet = BottomSheetMethods;
 
