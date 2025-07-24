@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { type Insets, Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
-import {
+import Animated, {
   useAnimatedReaction,
   useSharedValue,
   useDerivedValue,
@@ -86,6 +86,11 @@ import {
 } from './constants';
 import type { AnimateToPositionType, BottomSheetProps } from './types';
 
+if (typeof Animated?.addWhitelistedUIProps === 'function') {
+    Animated.addWhitelistedUIProps({
+        decelerationRate: true,
+    });
+}
 
 type BottomSheet = BottomSheetMethods;
 

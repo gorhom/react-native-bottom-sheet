@@ -15,6 +15,10 @@ interface TextProps {
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
+if (typeof Animated?.addWhitelistedNativeProps === 'function') {
+  Animated.addWhitelistedNativeProps({ text: true });
+}
+
 const ReText = (props: TextProps) => {
   const { text, value: _providedValue, style } = { style: {}, ...props };
   const providedValue = useDerivedValue(
