@@ -24,6 +24,7 @@ import type {
   BottomSheetModalProps,
   BottomSheetModalState,
 } from './types';
+import {IS_REANIMATED_V4} from "../bottomSheet/constants";
 
 const INITIAL_STATE: BottomSheetModalState = {
   mount: false,
@@ -47,7 +48,7 @@ function BottomSheetModalComponent<T = any>(
     onAnimate: _providedOnAnimate,
 
     // bottom sheet props
-    index = 0,
+    index = IS_REANIMATED_V4 ? 1 : 0,
     snapPoints,
     enablePanDownToClose = true,
     animateOnMount = true,

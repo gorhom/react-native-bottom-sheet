@@ -607,7 +607,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedNextPosition.value = INITIAL_VALUE;
         animatedNextPositionIndex.value = INITIAL_VALUE;
         animatedContainerHeightDidChange.value = false;
-      }
+      }, []
     );
     const animateToPosition: AnimateToPositionType = useWorkletCallback(
       function animateToPosition(
