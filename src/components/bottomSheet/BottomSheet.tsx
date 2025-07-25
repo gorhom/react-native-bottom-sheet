@@ -18,13 +18,13 @@ import Animated, {
   Extrapolation,
   runOnUI,
   cancelAnimation,
-  useWorkletCallback,
   type WithSpringConfig,
   type WithTimingConfig,
   type SharedValue,
   useReducedMotion,
   ReduceMotion,
 } from 'react-native-reanimated';
+import { useWorkletCallback } from '../../hooks/useWorkletCallback';
 import {
   ANIMATION_SOURCE,
   ANIMATION_STATE,
@@ -86,9 +86,11 @@ import {
 } from './constants';
 import type { AnimateToPositionType, BottomSheetProps } from './types';
 
-Animated.addWhitelistedUIProps({
-  decelerationRate: true,
-});
+if (typeof Animated?.addWhitelistedUIProps === 'function') {
+    Animated.addWhitelistedUIProps({
+        decelerationRate: true,
+    });
+}
 
 type BottomSheet = BottomSheetMethods;
 
@@ -570,12 +572,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region animation
     const stopAnimation = useWorkletCallback(() => {
+        'worklet';
       cancelAnimation(animatedPosition);
       animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
       animatedAnimationState.value = ANIMATION_STATE.STOPPED;
     }, [animatedPosition, animatedAnimationState, animatedAnimationSource]);
     const animateToPositionCompleted = useWorkletCallback(
       function animateToPositionCompleted(isFinished?: boolean) {
+          'worklet';
         if (!isFinished) {
           return;
         }
@@ -603,7 +607,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedNextPosition.value = INITIAL_VALUE;
         animatedNextPositionIndex.value = INITIAL_VALUE;
         animatedContainerHeightDidChange.value = false;
-      }
+      }, []
     );
     const animateToPosition: AnimateToPositionType = useWorkletCallback(
       function animateToPosition(
@@ -612,6 +616,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         velocity = 0,
         configs?: WithTimingConfig | WithSpringConfig
       ) {
+          'worklet';
         if (__DEV__) {
           runOnJS(print)({
             component: 'BottomSheet',
@@ -697,6 +702,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const setToPosition = useWorkletCallback(function setToPosition(
       targetPosition: number
     ) {
+        'worklet';
       if (
         targetPosition === animatedPosition.value ||
         targetPosition === undefined ||
@@ -852,6 +858,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         source: ANIMATION_SOURCE,
         animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
+          'worklet';
         /**
          * if a force closing is running and source not from user, then we early exit
          */
@@ -1031,6 +1038,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         position: number | string,
         animationConfigs?: WithSpringConfig | WithTimingConfig
       ) {
+          'worklet';
         if (__DEV__) {
           print({
             component: BottomSheet.name,

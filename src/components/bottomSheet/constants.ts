@@ -4,6 +4,9 @@ import {
   KEYBOARD_INPUT_MODE,
   SCREEN_HEIGHT,
 } from '../../constants';
+import * as Reanimated from 'react-native-reanimated';
+
+export const IS_REANIMATED_V4 = typeof Reanimated?.useWorkletCallback !== 'function';
 
 // default values
 const DEFAULT_HANDLE_HEIGHT = 24;
@@ -65,3 +68,4 @@ export {
   DEFAULT_ACCESSIBILITY_LABEL,
   DEFAULT_ACCESSIBILITY_ROLE,
 };
+

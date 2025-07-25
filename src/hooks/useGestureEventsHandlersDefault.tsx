@@ -1,9 +1,9 @@
 import { Keyboard, Platform } from 'react-native';
 import {
   runOnJS,
-  useSharedValue,
-  useWorkletCallback,
+  useSharedValue
 } from 'react-native-reanimated';
+import { useWorkletCallback } from './useWorkletCallback';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
@@ -72,6 +72,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
     //#region gesture methods
     const handleOnStart: GestureEventHandlerCallbackType = useWorkletCallback(
       function handleOnStart(__, _) {
+          'worklet';
         // cancel current animation
         stopAnimation();
 
@@ -113,6 +114,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
     );
     const handleOnChange: GestureEventHandlerCallbackType = useWorkletCallback(
       function handleOnChange(source, { translationY }) {
+          'worklet';
         let highestSnapPoint = animatedHighestSnapPoint.value;
 
         /**
@@ -269,6 +271,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
     );
     const handleOnEnd: GestureEventHandlerCallbackType = useWorkletCallback(
       function handleOnEnd(source, { translationY, absoluteY, velocityY }) {
+          'worklet';
         const highestSnapPoint = animatedHighestSnapPoint.value;
         const isSheetAtHighestSnapPoint =
           animatedPosition.value === highestSnapPoint;
@@ -404,6 +407,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
     const handleOnFinalize: GestureEventHandlerCallbackType =
       useWorkletCallback(
         function handleOnFinalize() {
+            'worklet';
           resetContext(context);
         },
         [context]

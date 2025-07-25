@@ -24,6 +24,7 @@ import type {
   BottomSheetModalProps,
   BottomSheetModalState,
 } from './types';
+import {IS_REANIMATED_V4} from "../bottomSheet/constants";
 
 const INITIAL_STATE: BottomSheetModalState = {
   mount: false,
