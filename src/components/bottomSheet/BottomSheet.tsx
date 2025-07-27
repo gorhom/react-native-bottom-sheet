@@ -609,7 +609,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedAnimationSource,
         animatedAnimationState,
         animatedContainerHeightDidChange,
-        animatedCurrentIndex.value,
+        animatedCurrentIndex,
         animatedNextPosition,
         animatedNextPositionIndex,
         isAnimatedOnMount,
