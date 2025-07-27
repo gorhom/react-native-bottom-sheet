@@ -1,9 +1,6 @@
 import { useCallback } from 'react';
 import { Keyboard, Platform } from 'react-native';
-import {
-  runOnJS,
-  useSharedValue,
-} from 'react-native-reanimated';
+import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
@@ -110,6 +107,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         animatedPosition,
         animatedKeyboardState,
         animatedScrollableContentOffsetY,
+        context,
       ]
     );
     const handleOnChange: GestureEventHandlerCallbackType = useCallback(
@@ -267,6 +265,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         animatedPosition,
         animatedScrollableType,
         animatedScrollableContentOffsetY,
+        context,
       ]
     );
     const handleOnEnd: GestureEventHandlerCallbackType = useCallback(
@@ -401,17 +400,17 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         animatedSnapPoints,
         animatedScrollableContentOffsetY,
         animateToPosition,
+        context,
       ]
     );
 
-    const handleOnFinalize: GestureEventHandlerCallbackType =
-      useCallback(
-        function handleOnFinalize() {
-          'worklet';
-          resetContext(context);
-        },
-        [context]
-      );
+    const handleOnFinalize: GestureEventHandlerCallbackType = useCallback(
+      function handleOnFinalize() {
+        'worklet';
+        resetContext(context);
+      },
+      [context]
+    );
     //#endregion
 
     return {
