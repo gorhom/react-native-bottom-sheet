@@ -1,5 +1,7 @@
 
 
+## [5.1.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.6...v5.1.7) (2025-07-27)
+
 ## [5.1.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.5...v5.1.6) (2025-06-03)
 
 
