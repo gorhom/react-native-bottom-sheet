@@ -1,8 +1,8 @@
+import { useCallback } from 'react';
 import { Keyboard, Platform } from 'react-native';
 import {
   runOnJS,
   useSharedValue,
-  useWorkletCallback,
 } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
@@ -67,8 +67,9 @@ export const useGestureEventsHandlersDefault = () => {
   //#endregion
 
   //#region gesture methods
-  const handleOnStart: GestureEventHandlerCallbackType = useWorkletCallback(
+  const handleOnStart: GestureEventHandlerCallbackType = useCallback(
     function handleOnStart(__, { translationY }) {
+      'worklet';
       // cancel current animation
       stopAnimation();
 
@@ -95,8 +96,9 @@ export const useGestureEventsHandlersDefault = () => {
       animatedScrollableContentOffsetY,
     ]
   );
-  const handleOnChange: GestureEventHandlerCallbackType = useWorkletCallback(
+  const handleOnChange: GestureEventHandlerCallbackType = useCallback(
     function handleOnChange(source, { translationY }) {
+      'worklet';
       let highestSnapPoint = animatedHighestSnapPoint.value;
 
       translationY = translationY - context.value.initialTranslationY;
@@ -249,8 +251,9 @@ export const useGestureEventsHandlersDefault = () => {
       animatedScrollableContentOffsetY,
     ]
   );
-  const handleOnEnd: GestureEventHandlerCallbackType = useWorkletCallback(
+  const handleOnEnd: GestureEventHandlerCallbackType = useCallback(
     function handleOnEnd(source, { translationY, absoluteY, velocityY }) {
+      'worklet';
       const highestSnapPoint = animatedHighestSnapPoint.value;
       const isSheetAtHighestSnapPoint =
         animatedPosition.value === highestSnapPoint;
@@ -382,8 +385,9 @@ export const useGestureEventsHandlersDefault = () => {
       animateToPosition,
     ]
   );
-  const handleOnFinalize: GestureEventHandlerCallbackType = useWorkletCallback(
+  const handleOnFinalize: GestureEventHandlerCallbackType = useCallback(
     function handleOnFinalize() {
+      'worklet';
       resetContext(context);
     },
     [context]
