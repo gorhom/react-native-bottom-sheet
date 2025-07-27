@@ -66,6 +66,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
         scrollableContentOffsetY,
         animatedScrollableState,
         animatedSheetState,
+        animatedHandleGestureState,
       ]
     );
   const handleOnBeginDrag: ScrollEventHandlerCallbackType<ScrollEventContextType> =

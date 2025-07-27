@@ -75,7 +75,14 @@ export const useKeyboard = () => {
       keyboardState.value = state;
       temporaryCachedKeyboardEvent.value = [];
     },
-    []
+    [
+      keyboardAnimationDuration,
+      keyboardAnimationEasing,
+      keyboardHeight,
+      keyboardState,
+      shouldHandleKeyboardEvents,
+      temporaryCachedKeyboardEvent,
+    ]
   );
   //#endregion
 

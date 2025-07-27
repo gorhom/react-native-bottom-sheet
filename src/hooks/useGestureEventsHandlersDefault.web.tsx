@@ -1,9 +1,6 @@
 import { useCallback } from 'react';
 import { Keyboard, Platform } from 'react-native';
-import {
-  runOnJS,
-  useSharedValue,
-} from 'react-native-reanimated';
+import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
@@ -94,6 +91,7 @@ export const useGestureEventsHandlersDefault = () => {
       animatedPosition,
       animatedKeyboardState,
       animatedScrollableContentOffsetY,
+      context,
     ]
   );
   const handleOnChange: GestureEventHandlerCallbackType = useCallback(
@@ -249,6 +247,7 @@ export const useGestureEventsHandlersDefault = () => {
       animatedPosition,
       animatedScrollableType,
       animatedScrollableContentOffsetY,
+      context,
     ]
   );
   const handleOnEnd: GestureEventHandlerCallbackType = useCallback(
@@ -383,6 +382,7 @@ export const useGestureEventsHandlersDefault = () => {
       animatedSnapPoints,
       animatedScrollableContentOffsetY,
       animateToPosition,
+      context,
     ]
   );
   const handleOnFinalize: GestureEventHandlerCallbackType = useCallback(
