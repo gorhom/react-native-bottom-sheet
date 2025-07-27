@@ -1,5 +1,13 @@
 
 
+## [5.1.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.6...v5.1.8) (2025-07-27)
+
+
+### Bug Fixes
+
+* added support for reanimated v4 ([#2223](https://github.com/gorhom/react-native-bottom-sheet/issues/2223))(by [@skusnierz](https://github.com/skusnierz)) ([d96a18e](https://github.com/gorhom/react-native-bottom-sheet/commit/d96a18eb113739bb7707e2f61e17ece2afb3b174))
+* migrate from `useWorkletCallback` ([#2356](https://github.com/gorhom/react-native-bottom-sheet/issues/2356))(by [@tomekzaw](https://github.com/tomekzaw)) ([3620972](https://github.com/gorhom/react-native-bottom-sheet/commit/3620972160f987b4437c06927a9ab768fbffe843))
+
 ## [5.1.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.6...v5.1.7) (2025-07-27)
 
 ## [5.1.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.5...v5.1.6) (2025-06-03)
