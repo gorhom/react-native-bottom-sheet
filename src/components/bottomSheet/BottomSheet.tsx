@@ -131,6 +131,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       containerOffset: _providedContainerOffset,
       topInset = 0,
       bottomInset = 0,
+      android_bottomTabBarHeight = 0,
       maxDynamicContentSize,
 
       // animated callback shared values
@@ -179,6 +180,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         enableDynamicSizing,
         topInset,
         bottomInset,
+        android_bottomTabBarHeight,
       });
     }
     //#endregion
@@ -1606,7 +1608,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                     Math.abs(bottomInset - animatedContainerOffset.value.bottom)
                 )
               : Math.abs(
-                  _keyboardHeight - animatedContainerOffset.value.bottom
+                  _keyboardHeight - animatedContainerOffset.value.bottom -
+                    (Platform.OS === 'android' ? android_bottomTabBarHeight : 0)
                 );
 
         /**
