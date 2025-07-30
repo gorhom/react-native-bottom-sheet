@@ -75,9 +75,7 @@ const ANIMATION_CONFIGS_IOS = {
   damping: 500,
   stiffness: 1000,
   mass: 3,
-  overshootClamping: true,
-  restDisplacementThreshold: 10,
-  restSpeedThreshold: 10,
+  overshootClamping: false,
 };
 
 const ANIMATION_CONFIGS_ANDROID = {
