@@ -586,8 +586,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             component: 'BottomSheet',
             method: 'animateToPositionCompleted',
             params: {
-              animatedAnimationSource: animatedAnimationSource.value,
-              animatedAnimationState: animatedAnimationState.value,
+              animatedCurrentIndex: animatedCurrentIndex.value,
+              animatedNextPosition: animatedNextPosition.value,
+              animatedNextPositionIndex: animatedNextPositionIndex.value,
             },
           });
         }
@@ -597,42 +598,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         // reset values
+        isForcedClosing.value = false;
         animatedAnimationSource.value = ANIMATION_SOURCE.NONE;
         animatedAnimationState.value = ANIMATION_STATE.STOPPED;
-      },
-      [
-        animatedAnimationSource,
-        animatedAnimationState,
-        isAnimatedOnMount,
-      ]
-    );
-    const handleNewAnimatedValues = useCallback(
-      function handleNewAnimatedValues() {
-        'worklet';
-
-        if (__DEV__) {
-          runOnJS(print)({
-            component: 'BottomSheet',
-            method: 'handleNewAnimatedValues',
-            params: {
-              isForcedClosing: isForcedClosing.value,
-              animatedNextPosition: animatedNextPosition.value,
-              animatedNextPositionIndex: animatedNextPositionIndex.value,
-              animatedContainerHeightDidChange: animatedContainerHeightDidChange.value,
-            },
-          });
-        }
-
-        // reset values
-        isForcedClosing.value = false;
         animatedNextPosition.value = INITIAL_VALUE;
         animatedNextPositionIndex.value = INITIAL_VALUE;
         animatedContainerHeightDidChange.value = false;
       },
       [
+        animatedAnimationSource,
+        animatedAnimationState,
         animatedContainerHeightDidChange,
+        animatedCurrentIndex,
         animatedNextPosition,
         animatedNextPositionIndex,
+        isAnimatedOnMount,
         isForcedClosing,
       ]
     );
@@ -1805,7 +1785,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           }
 
           animatedCurrentIndex.value = _animatedIndex;
-          handleNewAnimatedValues();
           runOnJS(handleOnChange)(_animatedIndex, _animatedPosition);
         }
 
