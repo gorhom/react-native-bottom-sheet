@@ -195,4 +195,5 @@ export interface NullableAccessibilityProps extends AccessibilityProps {
   accessibilityLabel?: AccessibilityProps['accessibilityLabel'] | null;
   accessibilityHint?: AccessibilityProps['accessibilityHint'] | null;
   accessibilityRole?: AccessibilityProps['accessibilityRole'] | null;
+  accessibilityViewIsModal?: AccessibilityProps['accessibilityViewIsModal'] | null;
 }
