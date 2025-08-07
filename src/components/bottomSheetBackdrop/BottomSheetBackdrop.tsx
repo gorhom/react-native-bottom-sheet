@@ -20,6 +20,7 @@ import {
   DEFAULT_ACCESSIBILITY_HINT,
   DEFAULT_ACCESSIBILITY_LABEL,
   DEFAULT_ACCESSIBILITY_ROLE,
+  DEFAULT_ACCESSIBILITY_VIEW_MODAL,
   DEFAULT_ACCESSIBLE,
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
@@ -44,6 +45,7 @@ const BottomSheetBackdropComponent = ({
   accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
+  accessibilityViewIsModal: _providedAccessibilityViewIsModal = DEFAULT_ACCESSIBILITY_VIEW_MODAL,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
@@ -149,6 +151,7 @@ const BottomSheetBackdropComponent = ({
               typeof pressBehavior === 'string' ? pressBehavior : 'move'
             } the Bottom Sheet`
       }
+      accessibilityViewIsModal={_providedAccessibilityViewIsModal ?? undefined}
     >
       {children}
     </Animated.View>
