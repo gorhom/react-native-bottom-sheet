@@ -167,6 +167,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
       accessibilityRole:
         _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+      accessibleBackground,
+      accessibilityBackgroundLabel,
+      accessibilityBackgroundRole,
     } = props;
     //#endregion
 
@@ -1852,6 +1855,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 {backgroundComponent === null ? null : (
                   <BottomSheetBackgroundContainer
                     key="BottomSheetBackgroundContainer"
+                    accessible={accessibleBackground}
+                    accessibilityLabel={accessibilityBackgroundLabel}
+                    accessibilityRole={accessibilityBackgroundRole}
                     animatedIndex={animatedIndex}
                     animatedPosition={animatedPosition}
                     backgroundComponent={backgroundComponent}
