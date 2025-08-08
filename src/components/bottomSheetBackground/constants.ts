@@ -1,0 +1,11 @@
+// accessibility
+const DEFAULT_ACCESSIBLE = true;
+const DEFAULT_ACCESSIBILITY_LABEL = 'Bottom Sheet';
+const DEFAULT_ACCESSIBILITY_ROLE = 'adjustable';
+
+export {
+  // accessibility
+  DEFAULT_ACCESSIBLE,
+  DEFAULT_ACCESSIBILITY_LABEL,
+  DEFAULT_ACCESSIBILITY_ROLE,
+};

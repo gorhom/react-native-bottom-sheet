@@ -5,6 +5,9 @@ import { styles } from './styles';
 import type { BottomSheetBackgroundContainerProps } from './types';
 
 const BottomSheetBackgroundContainerComponent = ({
+  accessible,
+  accessibilityLabel,
+  accessibilityRole,
   animatedIndex,
   animatedPosition,
   backgroundComponent: _providedBackgroundComponent,
@@ -21,6 +24,9 @@ const BottomSheetBackgroundContainerComponent = ({
     _providedBackgroundComponent ?? BottomSheetBackground;
   return (
     <BackgroundComponent
+      accessible={accessible}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole={accessibilityRole}
       pointerEvents="none"
       animatedIndex={animatedIndex}
       animatedPosition={animatedPosition}
