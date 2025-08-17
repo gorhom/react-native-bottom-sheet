@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef } from 'react';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
 import {
   type LayoutChangeEvent,
   StatusBar,
@@ -7,14 +7,13 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { WINDOW_HEIGHT } from '../../constants';
-import { useStableCallback } from '../../hooks';
 import { print } from '../../utilities';
 import { styles } from './styles';
 import type { BottomSheetHostingContainerProps } from './types';
 
 function BottomSheetHostingContainerComponent({
-  containerHeight,
-  containerOffset,
+  containerLayoutState,
+  layoutState,
   topInset = 0,
   bottomInset = 0,
   shouldCalculateHeight = true,
@@ -42,44 +41,72 @@ function BottomSheetHostingContainerComponent({
   //#endregion
 
   //#region callbacks
-  const handleLayoutEvent = useStableCallback(function handleLayoutEvent({
-    nativeEvent: {
-      layout: { height },
-    },
-  }: LayoutChangeEvent) {
-    containerHeight.value = height;
-    containerRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-      if (!containerOffset.value) {
-        return;
+  const handleLayoutEvent = useCallback(
+    function handleLayoutEvent({
+      nativeEvent: {
+        layout: { height },
+      },
+    }: LayoutChangeEvent) {
+      if (containerLayoutState) {
+        containerLayoutState.modify(state => {
+          'worklet';
+          state.height = height;
+          return state;
+        });
       }
-      containerOffset.value = {
-        top: pageY ?? 0,
-        left: 0,
-        right: 0,
-        bottom: Math.max(
-          0,
-          WINDOW_HEIGHT -
-            ((pageY ?? 0) + height + (StatusBar.currentHeight ?? 0))
-        ),
-      };
-    });
 
-    if (__DEV__) {
-      print({
-        component: 'BottomSheetHostingContainer',
-        method: 'handleLayoutEvent',
-        category: 'layout',
-        params: {
-          height,
-          top: containerOffset.value?.top,
-          left: containerOffset.value?.left,
-          right: containerOffset.value?.right,
-          bottom: containerOffset.value?.bottom,
-          WINDOW_HEIGHT,
-        },
-      });
-    }
-  });
+      if (layoutState) {
+        layoutState.modify(state => {
+          'worklet';
+          state.rawContainerHeight = height;
+          return state;
+        });
+      }
+
+      containerRef.current?.measure(
+        (_x, _y, _width, _height, _pageX, pageY) => {
+          const offset = {
+            bottom: Math.max(
+              0,
+              WINDOW_HEIGHT -
+                ((pageY ?? 0) + height + (StatusBar.currentHeight ?? 0))
+            ),
+            top: pageY ?? 0,
+            left: 0,
+            right: 0,
+          };
+
+          if (containerLayoutState) {
+            containerLayoutState.modify(state => {
+              'worklet';
+              state.offset = offset;
+              return state;
+            });
+          }
+
+          if (layoutState) {
+            layoutState.modify(state => {
+              'worklet';
+              state.containerOffset = offset;
+              return state;
+            });
+          }
+        }
+      );
+
+      if (__DEV__) {
+        print({
+          component: 'BottomSheetHostingContainer',
+          method: 'handleLayoutEvent',
+          category: 'layout',
+          params: {
+            height,
+          },
+        });
+      }
+    },
+    [layoutState, containerLayoutState]
+  );
   //#endregion
 
   //#region render

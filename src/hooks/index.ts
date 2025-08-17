@@ -16,6 +16,7 @@ export { useGestureEventsHandlersDefault } from './useGestureEventsHandlersDefau
 export { useBottomSheetGestureHandlers } from './useBottomSheetGestureHandlers';
 
 // utilities
+export { useAnimatedLayout } from './useAnimatedLayout';
 export { useAnimatedKeyboard } from './useAnimatedKeyboard';
 export { useStableCallback } from './useStableCallback';
 export { usePropsValidator } from './usePropsValidator';

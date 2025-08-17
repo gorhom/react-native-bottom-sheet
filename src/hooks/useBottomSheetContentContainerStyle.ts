@@ -14,8 +14,7 @@ export function useBottomSheetContentContainerStyle(
 ) {
   const [footerHeight, setFooterHeight] = useState(0);
   //#region hooks
-  const { animatedFooterHeight, animatedContentHeight } =
-    useBottomSheetInternal();
+  const { animatedLayoutState } = useBottomSheetInternal();
   //#endregion
 
   //#region styles
@@ -59,7 +58,7 @@ export function useBottomSheetContentContainerStyle(
 
   //#region effects
   useAnimatedReaction(
-    () => animatedFooterHeight.get(),
+    () => animatedLayoutState.get().footerHeight,
     (result, previousFooterHeight) => {
       if (!enableFooterMarginAdjustment) {
         return;
@@ -74,12 +73,15 @@ export function useBottomSheetContentContainerStyle(
          * This is needed due to the web layout the footer after the content.
          */
         if (result && !previousFooterHeight) {
-          const contentHeight = animatedContentHeight.get();
-          animatedContentHeight.set(contentHeight + result);
+          animatedLayoutState.modify(state => {
+            'worklet';
+            state.contentHeight = state.contentHeight + result;
+            return state;
+          });
         }
       }
     },
-    [animatedFooterHeight, animatedContentHeight, enableFooterMarginAdjustment]
+    [animatedLayoutState, enableFooterMarginAdjustment]
   );
   //#endregion
   return style;

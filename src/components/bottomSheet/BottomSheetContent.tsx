@@ -5,12 +5,16 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { KEYBOARD_BEHAVIOR, KEYBOARD_STATUS } from '../../constants';
+import {
+  INITIAL_LAYOUT_VALUE,
+  KEYBOARD_BEHAVIOR,
+  KEYBOARD_STATUS,
+} from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
 import type { NullableAccessibilityProps } from '../../types';
 import { animate } from '../../utilities';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
-import { INITIAL_CONTAINER_HEIGHT } from './constants';
+import {} from './constants';
 import type { BottomSheetProps } from './types';
 
 type BottomSheetContent = {
@@ -43,10 +47,8 @@ function BottomSheetContentComponent({
     overDragResistanceFactor,
     enableContentPanningGesture,
     animatedPosition,
-    animatedHandleHeight,
+    animatedLayoutState,
     animatedHighestSnapPoint,
-    animatedContainerHeight,
-    animatedContentHeight,
     animatedSheetHeight,
     animatedKeyboardState,
     isInTemporaryPosition,
@@ -55,10 +57,12 @@ function BottomSheetContentComponent({
 
   //#region variables
   const animatedContentHeightMax = useDerivedValue(() => {
+    const { containerHeight, handleHeight } = animatedLayoutState.get();
+
     /**
      * if container height is not yet calculated, then we exit the method
      */
-    if (animatedContainerHeight.get() === INITIAL_CONTAINER_HEIGHT) {
+    if (containerHeight === INITIAL_LAYOUT_VALUE) {
       return 0;
     }
 
@@ -67,9 +71,7 @@ function BottomSheetContentComponent({
       heightWithinContainer: keyboardHeightWithinContainer,
     } = animatedKeyboardState.get();
 
-    const handleHeight = Math.max(0, animatedHandleHeight.get());
-    const containerHeight = animatedContainerHeight.get();
-    let contentHeight = animatedSheetHeight.get() - handleHeight;
+    let contentHeight = animatedSheetHeight.get() - Math.max(0, handleHeight);
 
     switch (keyboardBehavior) {
       case KEYBOARD_BEHAVIOR.extend:
@@ -123,19 +125,18 @@ function BottomSheetContentComponent({
      */
     return Math.max(contentHeight, 0);
   }, [
-    animatedContainerHeight,
-    animatedHandleHeight,
+    animatedLayoutState,
     animatedKeyboardState,
     animatedSheetHeight,
     isInTemporaryPosition,
     keyboardBehavior,
   ]);
   const animatedPaddingBottom = useDerivedValue(() => {
-    const containerHeight = animatedContainerHeight.get();
+    const containerHeight = animatedLayoutState.get().containerHeight;
     /**
      * if container height is not yet calculated, then we exit the method
      */
-    if (containerHeight === INITIAL_CONTAINER_HEIGHT) {
+    if (containerHeight === INITIAL_LAYOUT_VALUE) {
       return 0;
     }
 
@@ -170,7 +171,7 @@ function BottomSheetContentComponent({
   }, [
     overDragResistanceFactor,
     animatedPosition,
-    animatedContainerHeight,
+    animatedLayoutState,
     animatedHighestSnapPoint,
     animatedKeyboardState,
   ]);
@@ -178,10 +179,11 @@ function BottomSheetContentComponent({
 
   //#region styles
   const contentMaskContainerAnimatedStyle = useAnimatedStyle(() => {
+    const { containerHeight, contentHeight } = animatedLayoutState.get();
     /**
      * if container height is not yet calculated, then we exit the method
      */
-    if (animatedContainerHeight.get() === INITIAL_CONTAINER_HEIGHT) {
+    if (containerHeight === INITIAL_LAYOUT_VALUE) {
       return {};
     }
 
@@ -189,14 +191,12 @@ function BottomSheetContentComponent({
      * if dynamic sizing is enabled, and content height
      * is still not set, then we exit method.
      */
-    if (
-      enableDynamicSizing &&
-      animatedContentHeight.get() === INITIAL_CONTAINER_HEIGHT
-    ) {
+    if (enableDynamicSizing && contentHeight === INITIAL_LAYOUT_VALUE) {
       return {};
     }
 
     const paddingBottom = detached ? 0 : animatedPaddingBottom.get();
+    const height = animatedContentHeightMax.get() + paddingBottom;
 
     return {
       paddingBottom: animate({
@@ -205,7 +205,7 @@ function BottomSheetContentComponent({
         overrideReduceMotion,
       }),
       height: animate({
-        point: animatedContentHeightMax.get() + paddingBottom,
+        point: height,
         configs: animationConfigs,
         overrideReduceMotion,
       }),
@@ -216,9 +216,9 @@ function BottomSheetContentComponent({
     detached,
     animationConfigs,
     overrideReduceMotion,
-    animatedContentHeight,
+    animatedLayoutState,
     animatedContentHeightMax,
-    animatedContainerHeight,
+    animatedLayoutState,
   ]);
   const contentContainerStyle = useMemo(
     () => [

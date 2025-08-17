@@ -18,11 +18,8 @@ function BottomSheetViewComponent({
   ...rest
 }: BottomSheetViewProps) {
   //#region hooks
-  const {
-    animatedScrollableState,
-    enableDynamicSizing,
-    animatedContentHeight,
-  } = useBottomSheetInternal();
+  const { animatedScrollableState, enableDynamicSizing, animatedLayoutState } =
+    useBottomSheetInternal();
   //#endregion
 
   //#region styles
@@ -47,7 +44,16 @@ function BottomSheetViewComponent({
   const handleLayout = useCallback(
     (event: LayoutChangeEvent) => {
       if (enableDynamicSizing) {
-        animatedContentHeight.set(event.nativeEvent.layout.height);
+        const {
+          nativeEvent: {
+            layout: { height },
+          },
+        } = event;
+        animatedLayoutState.modify(state => {
+          'worklet';
+          state.contentHeight = height;
+          return state;
+        });
       }
 
       if (onLayout) {
@@ -56,7 +62,7 @@ function BottomSheetViewComponent({
 
       if (__DEV__) {
         print({
-          component: BottomSheetView.displayName,
+          component: 'BottomSheetView',
           method: 'handleLayout',
           category: 'layout',
           params: {
@@ -65,7 +71,7 @@ function BottomSheetViewComponent({
         });
       }
     },
-    [onLayout, animatedContentHeight, enableDynamicSizing]
+    [onLayout, animatedLayoutState, enableDynamicSizing]
   );
   //#endregion
 

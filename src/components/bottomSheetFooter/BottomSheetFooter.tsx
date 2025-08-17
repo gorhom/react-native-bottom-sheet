@@ -22,7 +22,7 @@ function BottomSheetFooterComponent({
   //#endregion
 
   //#region hooks
-  const { animatedFooterHeight, animatedKeyboardState } =
+  const { animatedLayoutState, animatedKeyboardState } =
     useBottomSheetInternal();
   //#endregion
 
@@ -58,7 +58,11 @@ function BottomSheetFooterComponent({
         layout: { height },
       },
     }: LayoutChangeEvent) => {
-      animatedFooterHeight.set(height);
+      animatedLayoutState.modify(state => {
+        'worklet';
+        state.footerHeight = height;
+        return state;
+      });
 
       if (__DEV__) {
         print({
@@ -71,11 +75,15 @@ function BottomSheetFooterComponent({
         });
       }
     },
-    [animatedFooterHeight]
+    [animatedLayoutState]
   );
   const handleBoundingClientRect = useCallback(
     ({ height }: BoundingClientRect) => {
-      animatedFooterHeight.set(height);
+      animatedLayoutState.modify(state => {
+        'worklet';
+        state.footerHeight = height;
+        return state;
+      });
 
       if (__DEV__) {
         print({
@@ -88,7 +96,7 @@ function BottomSheetFooterComponent({
         });
       }
     },
-    [animatedFooterHeight]
+    [animatedLayoutState]
   );
   //#endregion
 

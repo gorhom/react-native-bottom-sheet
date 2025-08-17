@@ -4,11 +4,9 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 import type { BottomSheetProps } from '../components/bottomSheet';
-import {
-  INITIAL_CONTAINER_HEIGHT,
-  INITIAL_HANDLE_HEIGHT,
-  INITIAL_SNAP_POINT,
-} from '../components/bottomSheet/constants';
+import { INITIAL_SNAP_POINT } from '../components/bottomSheet/constants';
+import { INITIAL_LAYOUT_VALUE } from '../constants';
+import type { LayoutState } from '../types';
 import { normalizeSnapPoint } from '../utilities';
 
 /**
@@ -18,25 +16,21 @@ import { normalizeSnapPoint } from '../utilities';
  * @param containerHeight BottomSheetContainer height.
  * @param contentHeight content size.
  * @param handleHeight handle size.
- * @param footerHeight footer size.
  * @param enableDynamicSizing
  * @param maxDynamicContentSize
  * @returns {SharedValue<number[]>}
  */
 export const useAnimatedSnapPoints = (
   snapPoints: BottomSheetProps['snapPoints'],
-  containerHeight: SharedValue<number>,
-  contentHeight: SharedValue<number>,
-  handleHeight: SharedValue<number>,
-  footerHeight: SharedValue<number>,
+  layoutState: SharedValue<LayoutState>,
   enableDynamicSizing: BottomSheetProps['enableDynamicSizing'],
   maxDynamicContentSize: BottomSheetProps['maxDynamicContentSize']
 ): [SharedValue<number[]>, SharedValue<number>, SharedValue<boolean>] => {
   const dynamicSnapPointIndex = useSharedValue<number>(-1);
   const normalizedSnapPoints = useDerivedValue(() => {
+    const { containerHeight } = layoutState.get();
     // early exit, if container layout is not ready
-    const isContainerLayoutReady =
-      containerHeight.value !== INITIAL_CONTAINER_HEIGHT;
+    const isContainerLayoutReady = containerHeight !== INITIAL_LAYOUT_VALUE;
     if (!isContainerLayoutReady) {
       return [INITIAL_SNAP_POINT];
     }
@@ -51,7 +45,7 @@ export const useAnimatedSnapPoints = (
     // normalized all provided snap points, converting percentage
     // values into absolute values.
     let _normalizedSnapPoints = _snapPoints.map(snapPoint =>
-      normalizeSnapPoint(snapPoint, containerHeight.value)
+      normalizeSnapPoint(snapPoint, containerHeight)
     ) as number[];
 
     // return normalized snap points if dynamic sizing is not enabled
@@ -59,24 +53,26 @@ export const useAnimatedSnapPoints = (
       return _normalizedSnapPoints;
     }
 
+    const { handleHeight, contentHeight } = layoutState.get();
+
     // early exit, if handle height is not calculated yet.
-    if (handleHeight.value === INITIAL_HANDLE_HEIGHT) {
+    if (handleHeight === INITIAL_LAYOUT_VALUE) {
       return [INITIAL_SNAP_POINT];
     }
 
     // early exit, if content height is not calculated yet.
-    if (contentHeight.value === INITIAL_CONTAINER_HEIGHT) {
+    if (contentHeight === INITIAL_LAYOUT_VALUE) {
       return [INITIAL_SNAP_POINT];
     }
 
     // calculate a new snap point based on content height.
     const dynamicSnapPoint =
-      containerHeight.value -
+      containerHeight -
       Math.min(
-        contentHeight.value + handleHeight.value,
+        contentHeight + handleHeight,
         maxDynamicContentSize !== undefined
           ? maxDynamicContentSize
-          : containerHeight.value
+          : containerHeight
       );
 
     // push dynamic snap point into the normalized snap points,
@@ -95,10 +91,7 @@ export const useAnimatedSnapPoints = (
     return _normalizedSnapPoints;
   }, [
     snapPoints,
-    containerHeight,
-    handleHeight,
-    contentHeight,
-    footerHeight,
+    layoutState,
     enableDynamicSizing,
     maxDynamicContentSize,
     dynamicSnapPointIndex,

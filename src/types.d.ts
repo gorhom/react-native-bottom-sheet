@@ -2,6 +2,7 @@ import type React from 'react';
 import type {
   AccessibilityProps,
   FlatList,
+  Insets,
   KeyboardEventEasing,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -223,7 +224,7 @@ export interface NullableAccessibilityProps extends AccessibilityProps {
 }
 //#endregion
 
-//#region keyboard
+//#region states
 export type KeyboardState = {
   target?: number;
   status: KEYBOARD_STATUS;
@@ -232,9 +233,64 @@ export type KeyboardState = {
   easing: KeyboardEventEasing;
   duration: number;
 };
-//#endregion
 
+/**
+ * Represents the state of an animation, including its current status and the source that triggered it.
+ */
 export type AnimationState = {
+  /**
+   * The current status of the animation, this can be one of the values defined in the `ANIMATION_STATUS` enum, such as 'idle', 'running', 'completed', etc.
+   */
   status: ANIMATION_STATUS;
+  /**
+   * The source of the animation which indicates where the animation was initiated from, such as user interaction, system event, or programmatic trigger.
+   * It is represented by the `ANIMATION_SOURCE` enum, which includes values like 'user', 'system', etc.
+   */
   source: ANIMATION_SOURCE;
 };
+
+/**
+ * Represents the layout state of the bottom sheet container.
+ */
+export type ContainerLayoutState = {
+  /**
+   * The height of the container in pixels.
+   */
+  height: number;
+  /**
+   * The required insets applied to the container, such as padding or safe area.
+   */
+  offset: Required<Insets>;
+};
+
+/**
+ * Represents the layout state of the bottom sheet components.
+ */
+export type LayoutState = {
+  /**
+   * The original height of the container before any adjustments.
+   */
+  rawContainerHeight: number;
+  /**
+   * The adjusted height of the container after applying insets or other modifications.
+   */
+  containerHeight: number;
+  /**
+   * The required insets applied to the container, such as padding or safe area.
+   */
+  containerOffset: Required<Insets>;
+  /**
+   * The height of the handle element used to drag the bottom sheet.
+   */
+  handleHeight: number;
+  /**
+   * The height of the footer section within the bottom sheet.
+   */
+  footerHeight: number;
+  /**
+   * The total height of the content inside the bottom sheet.
+   */
+  contentHeight: number;
+};
+
+//#endregion

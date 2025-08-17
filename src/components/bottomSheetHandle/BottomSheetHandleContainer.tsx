@@ -18,7 +18,6 @@ function BottomSheetHandleContainerComponent({
   animatedPosition,
   simultaneousHandlers: _internalSimultaneousHandlers,
   enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
-  handleHeight,
   handleComponent,
   handleStyle: _providedHandleStyle,
   handleIndicatorStyle: _providedIndicatorStyle,
@@ -29,6 +28,7 @@ function BottomSheetHandleContainerComponent({
 
   //#region hooks
   const {
+    animatedLayoutState,
     activeOffsetX,
     activeOffsetY,
     failOffsetX,
@@ -116,11 +116,15 @@ function BottomSheetHandleContainerComponent({
         layout: { height },
       },
     }: LayoutChangeEvent) {
-      handleHeight.value = height;
+      animatedLayoutState.modify(state => {
+        'worklet';
+        state.handleHeight = height;
+        return state;
+      });
 
       if (__DEV__) {
         print({
-          component: BottomSheetHandleContainer.displayName,
+          component: 'BottomSheetHandleContainer',
           method: 'handleContainerLayout',
           category: 'layout',
           params: {
@@ -129,14 +133,19 @@ function BottomSheetHandleContainerComponent({
         });
       }
     },
-    [handleHeight]
+    [animatedLayoutState]
   );
   const handleBoundingClientRect = useCallback(
     ({ height }: BoundingClientRect) => {
-      handleHeight.value = height;
+      animatedLayoutState.modify(state => {
+        'worklet';
+        state.handleHeight = height;
+        return state;
+      });
+
       if (__DEV__) {
         print({
-          component: BottomSheetHandleContainer.displayName,
+          component: 'BottomSheetHandleContainer',
           method: 'handleBoundingClientRect',
           category: 'layout',
           params: {
@@ -145,7 +154,7 @@ function BottomSheetHandleContainerComponent({
         });
       }
     },
-    [handleHeight]
+    [animatedLayoutState]
   );
   //#endregion
 

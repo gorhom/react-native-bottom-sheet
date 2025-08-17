@@ -1,6 +1,10 @@
 import { Dimensions, Platform } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import { Easing } from 'react-native-reanimated';
+import {
+  Easing,
+  type WithSpringConfig,
+  type WithTimingConfig,
+} from 'react-native-reanimated';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
@@ -71,22 +75,20 @@ enum SNAP_POINT_TYPE {
 const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
 const ANIMATION_DURATION = 250;
 
-const ANIMATION_CONFIGS_IOS = {
-  damping: 500,
-  stiffness: 1000,
-  mass: 3,
-  overshootClamping: true,
-  restDisplacementThreshold: 10,
-  restSpeedThreshold: 10,
-};
-
-const ANIMATION_CONFIGS_ANDROID = {
-  duration: ANIMATION_DURATION,
-  easing: ANIMATION_EASING,
-};
-
-const ANIMATION_CONFIGS =
-  Platform.OS === 'ios' ? ANIMATION_CONFIGS_IOS : ANIMATION_CONFIGS_ANDROID;
+const ANIMATION_CONFIGS = Platform.select<WithTimingConfig | WithSpringConfig>({
+  ios: {
+    damping: 500,
+    stiffness: 1000,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 10,
+    restSpeedThreshold: 10,
+  },
+  default: {
+    duration: ANIMATION_DURATION,
+    easing: ANIMATION_EASING,
+  },
+});
 
 const SCROLLABLE_DECELERATION_RATE_MAPPER = {
   [SCROLLABLE_STATUS.UNDETERMINED]: 0,
@@ -122,6 +124,17 @@ const KEYBOARD_INPUT_MODE = {
 
 const KEYBOARD_DISMISS_THRESHOLD = 12.5;
 
+const INITIAL_LAYOUT_VALUE = -999;
+const INITIAL_CONTAINER_LAYOUT = {
+  height: INITIAL_LAYOUT_VALUE,
+  offset: {
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
+};
+
 export {
   GESTURE_SOURCE,
   SHEET_STATE,
@@ -145,4 +158,6 @@ export {
   ANIMATION_CONFIGS,
   ANIMATION_EASING,
   ANIMATION_DURATION,
+  INITIAL_LAYOUT_VALUE,
+  INITIAL_CONTAINER_LAYOUT,
 };

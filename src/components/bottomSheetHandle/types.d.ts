@@ -51,6 +51,4 @@ export type BottomSheetHandleContainerProps = Pick<
     | 'overDragResistanceFactor'
     | 'keyboardBehavior'
   > &
-  BottomSheetHandleProps & {
-    handleHeight: SharedValue<number>;
-  };
+  BottomSheetHandleProps;

@@ -1,35 +1,28 @@
 import React, { memo } from 'react';
 import { useDerivedValue } from 'react-native-reanimated';
-import { KEYBOARD_STATUS } from '../../constants';
+import { INITIAL_LAYOUT_VALUE, KEYBOARD_STATUS } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
-import { INITIAL_HANDLE_HEIGHT } from '../bottomSheet/constants';
 import type { BottomSheetFooterContainerProps } from './types';
 
 const BottomSheetFooterContainerComponent = ({
   footerComponent: FooterComponent,
 }: BottomSheetFooterContainerProps) => {
   //#region hooks
-  const {
-    animatedContainerHeight,
-    animatedHandleHeight,
-    animatedFooterHeight,
-    animatedPosition,
-    animatedKeyboardState,
-  } = useBottomSheetInternal();
+  const { animatedLayoutState, animatedPosition, animatedKeyboardState } =
+    useBottomSheetInternal();
   //#endregion
 
   //#region variables
   const animatedFooterPosition = useDerivedValue(() => {
-    const handleHeight = animatedHandleHeight.get();
-    if (handleHeight === INITIAL_HANDLE_HEIGHT) {
+    const { handleHeight, footerHeight, containerHeight } =
+      animatedLayoutState.get();
+    if (handleHeight === INITIAL_LAYOUT_VALUE) {
       return 0;
     }
 
     const { status: keyboardStatus, heightWithinContainer: keyboardHeight } =
       animatedKeyboardState.get();
-    const containerHeight = animatedContainerHeight.get();
     const position = animatedPosition.get();
-    const footerHeight = animatedFooterHeight.get();
 
     let footerTranslateY = Math.max(0, containerHeight - position);
     if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
@@ -38,13 +31,7 @@ const BottomSheetFooterContainerComponent = ({
 
     footerTranslateY = footerTranslateY - footerHeight - handleHeight;
     return footerTranslateY;
-  }, [
-    animatedKeyboardState,
-    animatedContainerHeight,
-    animatedPosition,
-    animatedFooterHeight,
-    animatedHandleHeight,
-  ]);
+  }, [animatedKeyboardState, animatedPosition, animatedLayoutState]);
   //#endregion
 
   return <FooterComponent animatedFooterPosition={animatedFooterPosition} />;

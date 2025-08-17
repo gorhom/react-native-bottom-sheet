@@ -15,6 +15,7 @@ import type {
 import type {
   AnimationState,
   KeyboardState,
+  LayoutState,
   Scrollable,
   ScrollableRef,
   ScrollableState,
@@ -39,6 +40,7 @@ export interface BottomSheetInternalContextType
   animatedKeyboardState: SharedValue<KeyboardState>;
   animatedContentGestureState: SharedValue<State>;
   animatedHandleGestureState: SharedValue<State>;
+  animatedLayoutState: SharedValue<LayoutState>;
 
   // scrollable
   animatedScrollableState: SharedValue<ScrollableState>;
@@ -48,13 +50,9 @@ export interface BottomSheetInternalContextType
   animatedSnapPoints: SharedValue<number[]>;
   animatedPosition: SharedValue<number>;
   animatedIndex: SharedValue<number>;
-  animatedContainerHeight: SharedValue<number>;
-  animatedContentHeight: SharedValue<number>;
   animatedSheetHeight: SharedValue<number>;
   animatedHighestSnapPoint: SharedValue<number>;
   animatedClosedPosition: SharedValue<number>;
-  animatedFooterHeight: SharedValue<number>;
-  animatedHandleHeight: SharedValue<number>;
   isContentHeightFixed: SharedValue<boolean>;
   isInTemporaryPosition: SharedValue<boolean>;
 

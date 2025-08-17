@@ -46,7 +46,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       animatedSnapPoints,
       animatedKeyboardState,
       animatedScrollableState,
-      animatedContainerHeight,
+      animatedLayoutState,
       animatedHighestSnapPoint,
       animatedClosedPosition,
       enableOverDrag,
@@ -134,8 +134,9 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           highestSnapPoint = context.value.initialPosition;
         }
 
+        const { containerHeight } = animatedLayoutState.get();
         const lowestSnapPoint = enablePanDownToClose
-          ? animatedContainerHeight.value
+          ? containerHeight
           : animatedSnapPoints.value[0];
 
         /**
@@ -257,7 +258,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         isInTemporaryPosition,
         animatedScrollableState,
         animatedHighestSnapPoint,
-        animatedContainerHeight,
+        animatedLayoutState,
         animatedSnapPoints,
         animatedPosition,
         context,
