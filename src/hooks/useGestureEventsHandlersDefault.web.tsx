@@ -44,15 +44,13 @@ export const useGestureEventsHandlersDefault = () => {
     animatedSnapPoints,
     animatedKeyboardState,
     animatedContainerHeight,
-    animatedScrollableType,
+    animatedScrollableState,
     animatedHighestSnapPoint,
     animatedClosedPosition,
-    animatedScrollableContentOffsetY,
     enableOverDrag,
     enablePanDownToClose,
     overDragResistanceFactor,
     isInTemporaryPosition,
-    isScrollableRefreshable,
     animateToPosition,
     stopAnimation,
   } = useBottomSheetInternal();
@@ -81,16 +79,16 @@ export const useGestureEventsHandlersDefault = () => {
        * if the scrollable content is scrolled, then
        * we lock the position.
        */
-      if (animatedScrollableContentOffsetY.value > 0) {
+      if (animatedScrollableState.get().contentOffsetY > 0) {
         context.value.isScrollablePositionLocked = true;
       }
     },
     [
       stopAnimation,
+      context,
       animatedPosition,
       animatedKeyboardState,
-      animatedScrollableContentOffsetY,
-      context,
+      animatedScrollableState,
     ]
   );
   const handleOnChange: GestureEventHandlerCallbackType = useCallback(
@@ -125,13 +123,19 @@ export const useGestureEventsHandlersDefault = () => {
         ? animatedContainerHeight.value
         : animatedSnapPoints.value[0];
 
+      const {
+        refreshable: scrollableIsRefreshable,
+        contentOffsetY: scrollableContentOffsetY,
+        type: scrollableType,
+      } = animatedScrollableState.get();
+
       /**
        * if scrollable is refreshable and sheet position at the highest
        * point, then do not interact with current gesture.
        */
       if (
         source === GESTURE_SOURCE.CONTENT &&
-        isScrollableRefreshable.value &&
+        scrollableIsRefreshable &&
         animatedPosition.value === highestSnapPoint
       ) {
         return;
@@ -147,7 +151,7 @@ export const useGestureEventsHandlersDefault = () => {
         (context.value.initialPosition === highestSnapPoint &&
           source === GESTURE_SOURCE.CONTENT) ||
         !context.value.isScrollablePositionLocked
-          ? animatedScrollableContentOffsetY.value * -1
+          ? scrollableContentOffsetY * -1
           : 0;
 
       /**
@@ -191,7 +195,7 @@ export const useGestureEventsHandlersDefault = () => {
       if (enableOverDrag) {
         if (
           (source === GESTURE_SOURCE.HANDLE ||
-            animatedScrollableType.value === SCROLLABLE_TYPE.VIEW) &&
+            scrollableType === SCROLLABLE_TYPE.VIEW) &&
           draggedPosition < highestSnapPoint
         ) {
           const resistedPosition =
@@ -235,18 +239,16 @@ export const useGestureEventsHandlersDefault = () => {
       animatedPosition.value = clampedPosition;
     },
     [
+      context,
       enableOverDrag,
       enablePanDownToClose,
       overDragResistanceFactor,
       isInTemporaryPosition,
-      isScrollableRefreshable,
       animatedHighestSnapPoint,
       animatedContainerHeight,
       animatedSnapPoints,
       animatedPosition,
-      animatedScrollableType,
-      animatedScrollableContentOffsetY,
-      context,
+      animatedScrollableState,
     ]
   );
   const handleOnEnd: GestureEventHandlerCallbackType = useCallback(
@@ -256,13 +258,19 @@ export const useGestureEventsHandlersDefault = () => {
       const isSheetAtHighestSnapPoint =
         animatedPosition.value === highestSnapPoint;
 
+      const {
+        refreshable: scrollableIsRefreshable,
+        contentOffsetY: scrollableContentOffsetY,
+        type: scrollableType,
+      } = animatedScrollableState.get();
+
       /**
        * if scrollable is refreshable and sheet position at the highest
        * point, then do not interact with current gesture.
        */
       if (
         source === GESTURE_SOURCE.CONTENT &&
-        isScrollableRefreshable.value &&
+        scrollableIsRefreshable &&
         isSheetAtHighestSnapPoint
       ) {
         return;
@@ -291,8 +299,8 @@ export const useGestureEventsHandlersDefault = () => {
        * start position and keyboard still shown.
        */
       const isScrollable =
-        animatedScrollableType.value !== SCROLLABLE_TYPE.UNDETERMINED &&
-        animatedScrollableType.value !== SCROLLABLE_TYPE.VIEW;
+        scrollableType !== SCROLLABLE_TYPE.UNDETERMINED &&
+        scrollableType !== SCROLLABLE_TYPE.VIEW;
 
       /**
        * if keyboard is shown and the sheet is dragged down,
@@ -355,8 +363,7 @@ export const useGestureEventsHandlersDefault = () => {
       }
 
       const wasGestureHandledByScrollView =
-        source === GESTURE_SOURCE.CONTENT &&
-        animatedScrollableContentOffsetY.value > 0;
+        source === GESTURE_SOURCE.CONTENT && scrollableContentOffsetY > 0;
       /**
        * prevents snapping from top to middle / bottom with repeated interrupted scrolls
        */
@@ -373,14 +380,12 @@ export const useGestureEventsHandlersDefault = () => {
     [
       enablePanDownToClose,
       isInTemporaryPosition,
-      isScrollableRefreshable,
+      animatedScrollableState,
       animatedClosedPosition,
       animatedHighestSnapPoint,
       animatedKeyboardState,
       animatedPosition,
-      animatedScrollableType,
       animatedSnapPoints,
-      animatedScrollableContentOffsetY,
       animateToPosition,
       context,
     ]

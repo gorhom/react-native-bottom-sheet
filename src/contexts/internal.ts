@@ -8,7 +8,7 @@ import type {
 } from '../components/bottomSheet/types';
 import type {
   ANIMATION_STATUS,
-  SCROLLABLE_STATE,
+  SCROLLABLE_STATUS,
   SCROLLABLE_TYPE,
   SHEET_STATE,
 } from '../constants';
@@ -17,6 +17,7 @@ import type {
   KeyboardState,
   Scrollable,
   ScrollableRef,
+  ScrollableState,
 } from '../types';
 
 export interface BottomSheetInternalContextType
@@ -35,10 +36,13 @@ export interface BottomSheetInternalContextType
   // animated states
   animatedAnimationState: SharedValue<AnimationState>;
   animatedSheetState: SharedValue<SHEET_STATE>;
-  animatedScrollableState: SharedValue<SCROLLABLE_STATE>;
   animatedKeyboardState: SharedValue<KeyboardState>;
   animatedContentGestureState: SharedValue<State>;
   animatedHandleGestureState: SharedValue<State>;
+
+  // scrollable
+  animatedScrollableState: SharedValue<ScrollableState>;
+  animatedScrollableStatus: SharedValue<SCROLLABLE_STATUS>;
 
   // animated values
   animatedSnapPoints: SharedValue<number[]>;
@@ -51,10 +55,6 @@ export interface BottomSheetInternalContextType
   animatedClosedPosition: SharedValue<number>;
   animatedFooterHeight: SharedValue<number>;
   animatedHandleHeight: SharedValue<number>;
-  animatedScrollableType: SharedValue<SCROLLABLE_TYPE>;
-  animatedScrollableContentOffsetY: SharedValue<number>;
-  animatedScrollableOverrideState: SharedValue<SCROLLABLE_STATE>;
-  isScrollableRefreshable: SharedValue<boolean>;
   isContentHeightFixed: SharedValue<boolean>;
   isInTemporaryPosition: SharedValue<boolean>;
 

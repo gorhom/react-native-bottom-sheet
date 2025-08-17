@@ -15,10 +15,8 @@ export const useScrollableSetter = (
 ) => {
   // hooks
   const {
-    animatedScrollableType,
-    animatedScrollableContentOffsetY: rootScrollableContentOffsetY,
+    animatedScrollableState,
     isContentHeightFixed,
-    isScrollableRefreshable,
     setScrollableRef,
     removeScrollableRef,
   } = useBottomSheetInternal();
@@ -26,9 +24,13 @@ export const useScrollableSetter = (
   // callbacks
   const handleSettingScrollable = useCallback(() => {
     // set current content offset
-    rootScrollableContentOffsetY.value = contentOffsetY.value;
-    animatedScrollableType.value = type;
-    isScrollableRefreshable.value = refreshable;
+    animatedScrollableState.set(state => ({
+      ...state,
+      contentOffsetY: contentOffsetY.value,
+      type,
+      refreshable,
+    }));
+
     isContentHeightFixed.value = false;
 
     // set current scrollable ref
@@ -49,11 +51,9 @@ export const useScrollableSetter = (
     ref,
     type,
     refreshable,
-    animatedScrollableType,
-    rootScrollableContentOffsetY,
     contentOffsetY,
-    isScrollableRefreshable,
     isContentHeightFixed,
+    animatedScrollableState,
     setScrollableRef,
     removeScrollableRef,
   ]);

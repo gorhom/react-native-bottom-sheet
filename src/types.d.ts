@@ -26,6 +26,8 @@ import type {
   ANIMATION_STATUS,
   GESTURE_SOURCE,
   KEYBOARD_STATUS,
+  SCROLLABLE_STATUS,
+  SCROLLABLE_TYPE,
 } from './constants';
 
 //#region Methods
@@ -130,7 +132,12 @@ export type BottomSheetPosition = {
   y: number;
 };
 
-//#region scrollables
+//#region scrollable
+export type ScrollableState = {
+  type: SCROLLABLE_TYPE;
+  contentOffsetY: number;
+  refreshable: boolean;
+};
 export type Scrollable = FlatList | ScrollView | SectionList;
 export type ScrollableRef = {
   id: number;

@@ -19,8 +19,7 @@ function BottomSheetViewComponent({
 }: BottomSheetViewProps) {
   //#region hooks
   const {
-    animatedScrollableContentOffsetY,
-    animatedScrollableType,
+    animatedScrollableState,
     enableDynamicSizing,
     animatedContentHeight,
   } = useBottomSheetInternal();
@@ -39,9 +38,12 @@ function BottomSheetViewComponent({
 
   //#region callbacks
   const handleSettingScrollable = useCallback(() => {
-    animatedScrollableContentOffsetY.value = 0;
-    animatedScrollableType.value = SCROLLABLE_TYPE.VIEW;
-  }, [animatedScrollableContentOffsetY, animatedScrollableType]);
+    animatedScrollableState.set(state => ({
+      ...state,
+      contentOffsetY: 0,
+      type: SCROLLABLE_TYPE.VIEW,
+    }));
+  }, [animatedScrollableState]);
   const handleLayout = useCallback(
     (event: LayoutChangeEvent) => {
       if (enableDynamicSizing) {
