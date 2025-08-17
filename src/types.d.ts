@@ -18,6 +18,9 @@ import type {
   State,
 } from 'react-native-gesture-handler';
 import type {
+  EasingFunction,
+  EasingFunctionFactory,
+  ReduceMotion,
   SharedValue,
   WithSpringConfig,
   WithTimingConfig,
@@ -139,6 +142,36 @@ export type ScrollableEvent = (
 //#endregion
 
 //#region utils
+export interface TimingConfig {
+  duration?: number;
+  reduceMotion?: ReduceMotion;
+  easing?: EasingFunction | EasingFunctionFactory;
+}
+
+export type SpringConfig = {
+  stiffness?: number;
+  overshootClamping?: boolean;
+  restDisplacementThreshold?: number;
+  restSpeedThreshold?: number;
+  velocity?: number;
+  reduceMotion?: ReduceMotion;
+} & (
+  | {
+      mass?: number;
+      damping?: number;
+      duration?: never;
+      dampingRatio?: never;
+      clamp?: never;
+    }
+  | {
+      mass?: never;
+      damping?: never;
+      duration?: number;
+      dampingRatio?: number;
+      clamp?: { min?: number; max?: number };
+    }
+);
+
 export type Primitive = string | number | boolean;
 //#endregion
 

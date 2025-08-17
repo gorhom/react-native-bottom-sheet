@@ -23,12 +23,12 @@ const ReText = ({ text, value: _providedValue, style }: TextProps) => {
       return '';
     }
 
-    const rawValue =
-      typeof _providedValue === 'number'
-        ? _providedValue
-        : typeof _providedValue.get() === 'number'
-          ? _providedValue.get().toFixed(2)
-          : _providedValue.get();
+    let rawValue: number | string | object | boolean = '';
+    if (typeof _providedValue === 'number') {
+      rawValue = _providedValue as number;
+    } else if (typeof _providedValue.get === 'function') {
+      rawValue = _providedValue.get();
+    }
 
     if (typeof rawValue === 'object') {
       const rawValueObject = Object.entries(rawValue)
@@ -43,6 +43,10 @@ const ReText = ({ text, value: _providedValue, style }: TextProps) => {
         }, '');
 
       return `${text}\n${rawValueObject}`;
+    }
+
+    if (typeof rawValue === 'number') {
+      rawValue = rawValue.toFixed(2);
     }
 
     return `${text}: ${rawValue}`;

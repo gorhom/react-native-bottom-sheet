@@ -12,7 +12,27 @@
   },
   "plugins": {
     "@release-it/conventional-changelog": {
-      "preset": "angular",
+      "preset": {
+        "name": "conventionalcommits",
+        "types": [
+          {
+            "type": "feat",
+            "section": "🚀 New Features"
+          },
+          {
+            "type": "fix",
+            "section": "🐛 Bug Fixes"
+          },
+          {
+            "type": "chore",
+            "section": "🧹 Maintenance Chores"
+          },
+          {
+            "type": "refactor",
+            "section": "♻️ Code Refactor"
+          }
+        ]
+      },
       "infile": "CHANGELOG.md"
     }
   }

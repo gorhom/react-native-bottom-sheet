@@ -77,7 +77,6 @@ import {
   DEFAULT_KEYBOARD_INPUT_MODE,
   DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
   INITIAL_POSITION,
-  INITIAL_SNAP_POINT,
   INITIAL_VALUE,
 } from './constants';
 import type { AnimateToPositionType, BottomSheetProps } from './types';

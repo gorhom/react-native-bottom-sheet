@@ -6,12 +6,7 @@ import type {
   BottomSheetGestureProps,
   BottomSheetProps,
 } from '../components/bottomSheet/types';
-import type {
-  ANIMATION_STATUS,
-  SCROLLABLE_STATUS,
-  SCROLLABLE_TYPE,
-  SHEET_STATE,
-} from '../constants';
+import type { SCROLLABLE_STATUS, SHEET_STATE } from '../constants';
 import type {
   AnimationState,
   DetentsState,

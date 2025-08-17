@@ -1,10 +1,7 @@
 import { Dimensions, Platform } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import {
-  Easing,
-  type WithSpringConfig,
-  type WithTimingConfig,
-} from 'react-native-reanimated';
+import { Easing } from 'react-native-reanimated';
+import type { SpringConfig, TimingConfig } from './types';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
@@ -75,7 +72,7 @@ enum SNAP_POINT_TYPE {
 const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
 const ANIMATION_DURATION = 250;
 
-const ANIMATION_CONFIGS = Platform.select<WithTimingConfig | WithSpringConfig>({
+const ANIMATION_CONFIGS = Platform.select<TimingConfig | SpringConfig>({
   android: {
     duration: ANIMATION_DURATION,
     easing: ANIMATION_EASING,
