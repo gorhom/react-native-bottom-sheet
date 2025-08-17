@@ -9,7 +9,7 @@ import Animated, {
 
 interface TextProps {
   text: string;
-  value: SharedValue<number | boolean> | number;
+  value: SharedValue<number | boolean | object> | number;
   style?: AnimatedProps<RNTextProps>['style'];
 }
 
@@ -17,30 +17,50 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 Animated.addWhitelistedNativeProps({ text: true });
 
-const ReText = (props: TextProps) => {
-  const { text, value: _providedValue, style } = { style: {}, ...props };
-  const providedValue = useDerivedValue(
-    () =>
+const ReText = ({ text, value: _providedValue, style }: TextProps) => {
+  const providedValue = useDerivedValue(() => {
+    if (!_providedValue) {
+      return '';
+    }
+
+    const rawValue =
       typeof _providedValue === 'number'
         ? _providedValue
-        : typeof _providedValue.value === 'number'
-          ? _providedValue.value.toFixed(2)
-          : _providedValue.value,
-    [_providedValue]
-  );
+        : typeof _providedValue.get() === 'number'
+          ? _providedValue.get().toFixed(2)
+          : _providedValue.get();
+
+    if (typeof rawValue === 'object') {
+      const rawValueObject = Object.entries(rawValue)
+        .map(item => `${item[0]}: ${item[1]}`)
+        .reduce((result, current, index) => {
+          if (index !== 0) {
+            result = `${result} \n`;
+          }
+
+          result = `${result}- ${current}`;
+          return result;
+        }, '');
+
+      return `${text}\n${rawValueObject}`;
+    }
+
+    return `${text}: ${rawValue}`;
+  }, [text, _providedValue]);
   const animatedProps = useAnimatedProps(() => {
     return {
-      text: `${text}: ${providedValue.value}`,
+      text: providedValue.get(),
     };
-  }, [text, providedValue]);
+  }, [providedValue]);
   return (
     <AnimatedTextInput
       underlineColorAndroid="transparent"
       editable={false}
-      value={`${text}: ${providedValue.value}`}
+      value={providedValue?.get() ?? ''}
       style={style}
       // @ts-ignore
       animatedProps={animatedProps}
+      multiline={true}
     />
   );
 };
