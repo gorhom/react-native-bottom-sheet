@@ -1,49 +1,87 @@
-import React, { memo, useCallback, forwardRef, useEffect } from 'react';
+import React, {
+  memo,
+  useCallback,
+  forwardRef,
+  useEffect,
+  useRef,
+  useImperativeHandle,
+} from 'react';
 import type {
   NativeSyntheticEvent,
   TextInputFocusEventData,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
+import { findNodeHandle } from '../../utilities';
 import type { BottomSheetTextInputProps } from './types';
 
 const BottomSheetTextInputComponent = forwardRef<
-  TextInput,
+  TextInput | undefined,
   BottomSheetTextInputProps
->(({ onFocus, onBlur, ...rest }, ref) => {
+>(({ onFocus, onBlur, ...rest }, providedRef) => {
+  //#region refs
+  const ref = useRef<TextInput>(null);
+  //#endregion
+
   //#region hooks
-  const { shouldHandleKeyboardEvents } = useBottomSheetInternal();
+  const { animatedKeyboardState } = useBottomSheetInternal();
   //#endregion
 
   //#region callbacks
   const handleOnFocus = useCallback(
     (args: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      shouldHandleKeyboardEvents.value = true;
+      const keyboardState = animatedKeyboardState.get();
+      animatedKeyboardState.set({
+        ...keyboardState,
+        target: args.nativeEvent.target,
+      });
       if (onFocus) {
         onFocus(args);
       }
     },
-    [onFocus, shouldHandleKeyboardEvents]
+    [onFocus, animatedKeyboardState]
   );
   const handleOnBlur = useCallback(
     (args: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      shouldHandleKeyboardEvents.value = false;
+      /**
+       * remove the keyboard state target if it belong
+       * to the current component.
+       */
+      const keyboardState = animatedKeyboardState.get();
+      if (keyboardState.target === args.nativeEvent.target) {
+        animatedKeyboardState.set({
+          ...keyboardState,
+          target: undefined,
+        });
+      }
       if (onBlur) {
         onBlur(args);
       }
     },
-    [onBlur, shouldHandleKeyboardEvents]
+    [onBlur, animatedKeyboardState]
   );
   //#endregion
 
   //#region effects
   useEffect(() => {
     return () => {
-      // Reset the flag on unmount
-      shouldHandleKeyboardEvents.value = false;
+      /**
+       * remove the keyboard state target if it belong
+       * to the current component.
+       */
+      const componentNode = findNodeHandle(ref.current);
+      const keyboardState = animatedKeyboardState.get();
+      if (keyboardState.target === componentNode) {
+        animatedKeyboardState.set({
+          ...keyboardState,
+          target: undefined,
+        });
+      }
     };
-  }, [shouldHandleKeyboardEvents]);
+  }, [animatedKeyboardState]);
+  useImperativeHandle(providedRef, () => ref.current ?? undefined, []);
   //#endregion
+
   return (
     <TextInput
       ref={ref}

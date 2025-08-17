@@ -5,7 +5,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { KEYBOARD_BEHAVIOR, KEYBOARD_STATE } from '../../constants';
+import { KEYBOARD_BEHAVIOR, KEYBOARD_STATUS } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
 import type { NullableAccessibilityProps } from '../../types';
 import { animate } from '../../utilities';
@@ -49,7 +49,6 @@ function BottomSheetContentComponent({
     animatedContentHeight,
     animatedSheetHeight,
     animatedKeyboardState,
-    animatedKeyboardHeightInContainer,
     isInTemporaryPosition,
   } = useBottomSheetInternal();
   //#endregion
@@ -63,16 +62,19 @@ function BottomSheetContentComponent({
       return 0;
     }
 
-    const keyboardState = animatedKeyboardState.get();
-    const keyboardHeightInContainer = animatedKeyboardHeightInContainer.get();
+    const {
+      status: keyboardStatus,
+      heightWithinContainer: keyboardHeightWithinContainer,
+    } = animatedKeyboardState.get();
+
     const handleHeight = Math.max(0, animatedHandleHeight.get());
     const containerHeight = animatedContainerHeight.get();
     let contentHeight = animatedSheetHeight.get() - handleHeight;
 
     switch (keyboardBehavior) {
       case KEYBOARD_BEHAVIOR.extend:
-        if (keyboardState === KEYBOARD_STATE.SHOWN) {
-          contentHeight = contentHeight - keyboardHeightInContainer;
+        if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
+          contentHeight = contentHeight - keyboardHeightWithinContainer;
         }
         break;
 
@@ -81,9 +83,9 @@ function BottomSheetContentComponent({
           break;
         }
 
-        if (keyboardState === KEYBOARD_STATE.SHOWN) {
+        if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
           contentHeight =
-            containerHeight - handleHeight - keyboardHeightInContainer;
+            containerHeight - handleHeight - keyboardHeightWithinContainer;
         } else {
           contentHeight = containerHeight - handleHeight;
         }
@@ -94,15 +96,15 @@ function BottomSheetContentComponent({
           break;
         }
         const contentWithKeyboardHeight =
-          contentHeight + keyboardHeightInContainer;
+          contentHeight + keyboardHeightWithinContainer;
 
-        if (keyboardState === KEYBOARD_STATE.SHOWN) {
+        if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
           if (
-            keyboardHeightInContainer + animatedSheetHeight.get() >
+            keyboardHeightWithinContainer + animatedSheetHeight.get() >
             containerHeight
           ) {
             contentHeight =
-              containerHeight - keyboardHeightInContainer - handleHeight;
+              containerHeight - keyboardHeightWithinContainer - handleHeight;
           }
         } else if (contentWithKeyboardHeight + handleHeight > containerHeight) {
           contentHeight = containerHeight - handleHeight;
@@ -123,7 +125,6 @@ function BottomSheetContentComponent({
   }, [
     animatedContainerHeight,
     animatedHandleHeight,
-    animatedKeyboardHeightInContainer,
     animatedKeyboardState,
     animatedSheetHeight,
     isInTemporaryPosition,
@@ -157,9 +158,12 @@ function BottomSheetContentComponent({
      * if keyboard is open, then we try to add padding to prevent content
      * from being covered by the keyboard.
      */
-    if (animatedKeyboardState.get() === KEYBOARD_STATE.SHOWN) {
-      paddingBottom =
-        overDragSafePaddingBottom + animatedKeyboardHeightInContainer.get();
+    const {
+      status: keyboardStatus,
+      heightWithinContainer: keyboardHeightWithinContainer,
+    } = animatedKeyboardState.get();
+    if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
+      paddingBottom = overDragSafePaddingBottom + keyboardHeightWithinContainer;
     }
 
     return paddingBottom;
@@ -169,7 +173,6 @@ function BottomSheetContentComponent({
     animatedContainerHeight,
     animatedHighestSnapPoint,
     animatedKeyboardState,
-    animatedKeyboardHeightInContainer,
   ]);
   //#endregion
 

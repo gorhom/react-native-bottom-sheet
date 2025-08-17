@@ -4,7 +4,7 @@ import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
-  KEYBOARD_STATE,
+  KEYBOARD_STATUS,
   SCROLLABLE_TYPE,
   WINDOW_HEIGHT,
 } from '../constants';
@@ -18,13 +18,13 @@ import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 type GestureEventContextType = {
   initialPosition: number;
-  initialKeyboardState: KEYBOARD_STATE;
+  initialKeyboardStatus: KEYBOARD_STATUS;
   isScrollablePositionLocked: boolean;
 };
 
 const INITIAL_CONTEXT: GestureEventContextType = {
   initialPosition: 0,
-  initialKeyboardState: KEYBOARD_STATE.UNDETERMINED,
+  initialKeyboardStatus: KEYBOARD_STATUS.UNDETERMINED,
   isScrollablePositionLocked: false,
 };
 
@@ -45,7 +45,6 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       animatedPosition,
       animatedSnapPoints,
       animatedKeyboardState,
-      animatedKeyboardHeight,
       animatedContainerHeight,
       animatedScrollableType,
       animatedHighestSnapPoint,
@@ -73,13 +72,13 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         // cancel current animation
         stopAnimation();
 
-        let initialKeyboardState = animatedKeyboardState.value;
+        let initialKeyboardStatus = animatedKeyboardState.get().status;
         // blur the keyboard when user start dragging the bottom sheet
         if (
           enableBlurKeyboardOnGesture &&
-          initialKeyboardState === KEYBOARD_STATE.SHOWN
+          initialKeyboardStatus === KEYBOARD_STATUS.SHOWN
         ) {
-          initialKeyboardState = KEYBOARD_STATE.HIDDEN;
+          initialKeyboardStatus = KEYBOARD_STATUS.HIDDEN;
           runOnJS(dismissKeyboard)();
         }
 
@@ -87,7 +86,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         context.value = {
           ...context.value,
           initialPosition: animatedPosition.value,
-          initialKeyboardState: animatedKeyboardState.value,
+          initialKeyboardStatus,
         };
 
         /**
@@ -121,7 +120,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
          */
         if (
           isInTemporaryPosition.value &&
-          context.value.initialKeyboardState === KEYBOARD_STATE.SHOWN
+          context.value.initialKeyboardStatus === KEYBOARD_STATUS.SHOWN
         ) {
           highestSnapPoint = context.value.initialPosition;
         }
@@ -318,7 +317,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
          * then we dismiss the keyboard.
          */
         if (
-          context.value.initialKeyboardState === KEYBOARD_STATE.SHOWN &&
+          context.value.initialKeyboardStatus === KEYBOARD_STATUS.SHOWN &&
           animatedPosition.value > context.value.initialPosition
         ) {
           /**
@@ -332,7 +331,9 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
             !(
               Platform.OS === 'ios' &&
               isScrollable &&
-              absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
+              absoluteY >
+                WINDOW_HEIGHT -
+                  animatedKeyboardState.get().heightWithinContainer
             )
           ) {
             runOnJS(dismissKeyboard)();
@@ -392,9 +393,9 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         enablePanDownToClose,
         isInTemporaryPosition,
         isScrollableRefreshable,
+        animatedKeyboardState,
         animatedClosedPosition,
         animatedHighestSnapPoint,
-        animatedKeyboardHeight,
         animatedPosition,
         animatedScrollableType,
         animatedSnapPoints,

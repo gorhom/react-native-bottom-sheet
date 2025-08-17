@@ -4,7 +4,7 @@ import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
-  KEYBOARD_STATE,
+  KEYBOARD_STATUS,
   SCROLLABLE_TYPE,
   WINDOW_HEIGHT,
 } from '../constants';
@@ -15,7 +15,7 @@ import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 type GestureEventContextType = {
   initialPosition: number;
-  initialKeyboardState: KEYBOARD_STATE;
+  initialKeyboardStatus: KEYBOARD_STATUS;
   initialTranslationY: number;
   isScrollablePositionLocked: boolean;
 };
@@ -23,7 +23,7 @@ type GestureEventContextType = {
 const INITIAL_CONTEXT: GestureEventContextType = {
   initialPosition: 0,
   initialTranslationY: 0,
-  initialKeyboardState: KEYBOARD_STATE.UNDETERMINED,
+  initialKeyboardStatus: KEYBOARD_STATUS.UNDETERMINED,
   isScrollablePositionLocked: false,
 };
 
@@ -43,7 +43,6 @@ export const useGestureEventsHandlersDefault = () => {
     animatedPosition,
     animatedSnapPoints,
     animatedKeyboardState,
-    animatedKeyboardHeight,
     animatedContainerHeight,
     animatedScrollableType,
     animatedHighestSnapPoint,
@@ -74,7 +73,7 @@ export const useGestureEventsHandlersDefault = () => {
       context.value = {
         ...context.value,
         initialPosition: animatedPosition.value,
-        initialKeyboardState: animatedKeyboardState.value,
+        initialKeyboardStatus: animatedKeyboardState.get().status,
         initialTranslationY: translationY,
       };
 
@@ -106,7 +105,7 @@ export const useGestureEventsHandlersDefault = () => {
        */
       if (
         isInTemporaryPosition.value &&
-        context.value.initialKeyboardState === KEYBOARD_STATE.SHOWN
+        context.value.initialKeyboardStatus === KEYBOARD_STATUS.SHOWN
       ) {
         highestSnapPoint = context.value.initialPosition;
       }
@@ -300,7 +299,7 @@ export const useGestureEventsHandlersDefault = () => {
        * then we dismiss the keyboard.
        */
       if (
-        context.value.initialKeyboardState === KEYBOARD_STATE.SHOWN &&
+        context.value.initialKeyboardStatus === KEYBOARD_STATUS.SHOWN &&
         animatedPosition.value > context.value.initialPosition
       ) {
         /**
@@ -314,7 +313,8 @@ export const useGestureEventsHandlersDefault = () => {
           !(
             Platform.OS === 'ios' &&
             isScrollable &&
-            absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
+            absoluteY >
+              WINDOW_HEIGHT - animatedKeyboardState.get().heightWithinContainer
           )
         ) {
           dismissKeyboardOnJs();
@@ -376,7 +376,7 @@ export const useGestureEventsHandlersDefault = () => {
       isScrollableRefreshable,
       animatedClosedPosition,
       animatedHighestSnapPoint,
-      animatedKeyboardHeight,
+      animatedKeyboardState,
       animatedPosition,
       animatedScrollableType,
       animatedSnapPoints,

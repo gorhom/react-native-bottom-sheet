@@ -2,6 +2,7 @@ import type React from 'react';
 import type {
   AccessibilityProps,
   FlatList,
+  KeyboardEventEasing,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
@@ -20,7 +21,7 @@ import type {
   WithSpringConfig,
   WithTimingConfig,
 } from 'react-native-reanimated';
-import type { GESTURE_SOURCE } from './constants';
+import type { GESTURE_SOURCE, KEYBOARD_STATUS } from './constants';
 
 //#region Methods
 export interface BottomSheetMethods {
@@ -196,3 +197,14 @@ export interface NullableAccessibilityProps extends AccessibilityProps {
   accessibilityHint?: AccessibilityProps['accessibilityHint'] | null;
   accessibilityRole?: AccessibilityProps['accessibilityRole'] | null;
 }
+
+//#region keyboard
+export type KeyboardState = {
+  target?: number;
+  status: KEYBOARD_STATUS;
+  height: number;
+  heightWithinContainer: number;
+  easing: KeyboardEventEasing;
+  duration: number;
+};
+//#endregion

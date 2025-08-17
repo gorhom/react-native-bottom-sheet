@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { useDerivedValue } from 'react-native-reanimated';
-import { KEYBOARD_STATE } from '../../constants';
+import { KEYBOARD_STATUS } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
 import { INITIAL_HANDLE_HEIGHT } from '../bottomSheet/constants';
 import type { BottomSheetFooterContainerProps } from './types';
@@ -15,7 +15,6 @@ const BottomSheetFooterContainerComponent = ({
     animatedFooterHeight,
     animatedPosition,
     animatedKeyboardState,
-    animatedKeyboardHeightInContainer,
   } = useBottomSheetInternal();
   //#endregion
 
@@ -26,24 +25,23 @@ const BottomSheetFooterContainerComponent = ({
       return 0;
     }
 
-    const keyboardHeight = animatedKeyboardHeightInContainer.get();
+    const { status: keyboardStatus, heightWithinContainer: keyboardHeight } =
+      animatedKeyboardState.get();
     const containerHeight = animatedContainerHeight.get();
     const position = animatedPosition.get();
-    const keyboardState = animatedKeyboardState.get();
     const footerHeight = animatedFooterHeight.get();
 
     let footerTranslateY = Math.max(0, containerHeight - position);
-    if (keyboardState === KEYBOARD_STATE.SHOWN) {
+    if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
       footerTranslateY = footerTranslateY - keyboardHeight;
     }
 
     footerTranslateY = footerTranslateY - footerHeight - handleHeight;
     return footerTranslateY;
   }, [
-    animatedKeyboardHeightInContainer,
+    animatedKeyboardState,
     animatedContainerHeight,
     animatedPosition,
-    animatedKeyboardState,
     animatedFooterHeight,
     animatedHandleHeight,
   ]);

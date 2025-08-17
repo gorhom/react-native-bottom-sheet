@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import { KEYBOARD_STATE } from '../../constants';
+import { KEYBOARD_STATUS } from '../../constants';
 import {
   type BoundingClientRect,
   useBottomSheetInternal,
@@ -33,7 +33,7 @@ function BottomSheetFooterComponent({
     /**
      * Offset the bottom inset only when keyboard is not shown
      */
-    if (animatedKeyboardState.get() !== KEYBOARD_STATE.SHOWN) {
+    if (animatedKeyboardState.get().status !== KEYBOARD_STATUS.SHOWN) {
       footerTranslateY = footerTranslateY - bottomInset;
     }
 

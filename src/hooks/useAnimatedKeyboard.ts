@@ -11,7 +11,8 @@ import {
   useAnimatedReaction,
   useSharedValue,
 } from 'react-native-reanimated';
-import { KEYBOARD_STATE, SCREEN_HEIGHT } from '../constants';
+import { KEYBOARD_STATUS, SCREEN_HEIGHT } from '../constants';
+import type { KeyboardState } from '../types';
 
 const KEYBOARD_EVENT_MAPPER = {
   KEYBOARD_SHOW: Platform.select({
@@ -26,63 +27,79 @@ const KEYBOARD_EVENT_MAPPER = {
   }) as KeyboardEventName,
 };
 
-export const useKeyboard = () => {
+const INITIAL_STATE: KeyboardState = {
+  status: KEYBOARD_STATUS.UNDETERMINED,
+  height: 0,
+  heightWithinContainer: 0,
+  easing: 'keyboard',
+  duration: 500,
+};
+
+export const useAnimatedKeyboard = () => {
   //#region variables
-  const shouldHandleKeyboardEvents = useSharedValue(false);
-  const keyboardState = useSharedValue<KEYBOARD_STATE>(
-    KEYBOARD_STATE.UNDETERMINED
-  );
-  const keyboardHeight = useSharedValue(0);
-  const keyboardAnimationEasing =
-    useSharedValue<KeyboardEventEasing>('keyboard');
-  const keyboardAnimationDuration = useSharedValue(500);
-  // biome-ignore lint: to be addressed!
-  const temporaryCachedKeyboardEvent = useSharedValue<any[]>([]);
+  const state = useSharedValue(INITIAL_STATE);
+  const temporaryCachedState = useSharedValue<Omit<
+    KeyboardState,
+    'heightWithinContainer' | 'target'
+  > | null>(null);
   //#endregion
 
   //#region worklets
   const handleKeyboardEvent = useCallback(
     (
-      state: KEYBOARD_STATE,
+      status: KEYBOARD_STATUS,
       height: number,
       duration: number,
       easing: KeyboardEventEasing,
       bottomOffset?: number
     ) => {
       'worklet';
-      if (state === KEYBOARD_STATE.SHOWN && !shouldHandleKeyboardEvents.value) {
-        /**
-         * if the keyboard event was fired before the `onFocus` on TextInput,
-         * then we cache the input, and wait till the `shouldHandleKeyboardEvents`
-         * to be updated then fire this function again.
-         */
-        temporaryCachedKeyboardEvent.value = [state, height, duration, easing];
+      const currentState = state.get();
+
+      /**
+       * if the keyboard event was fired before the `onFocus` on TextInput,
+       * then we cache the event, and wait till the `target` is been set
+       * to be updated then fire this function again.
+       */
+      if (status === KEYBOARD_STATUS.SHOWN && !currentState.target) {
+        temporaryCachedState.set({
+          status,
+          height,
+          duration,
+          easing,
+        });
         return;
       }
-      keyboardHeight.value =
-        state === KEYBOARD_STATE.SHOWN ? height : keyboardHeight.value;
+
+      /**
+       * clear temporary cached state.
+       */
+      temporaryCachedState.set(null);
+
+      /**
+       * if keyboard status is hidden, then we keep old height.
+       */
+      let adjustedHeight =
+        status === KEYBOARD_STATUS.SHOWN ? height : currentState.height;
 
       /**
        * if keyboard had an bottom offset -android bottom bar-, then
        * we add that offset to the keyboard height.
        */
       if (bottomOffset) {
-        keyboardHeight.value = keyboardHeight.value + bottomOffset;
+        adjustedHeight = adjustedHeight + bottomOffset;
       }
 
-      keyboardAnimationDuration.value = duration;
-      keyboardAnimationEasing.value = easing;
-      keyboardState.value = state;
-      temporaryCachedKeyboardEvent.value = [];
+      state.set({
+        target: currentState.target,
+        status,
+        easing,
+        duration,
+        height: adjustedHeight,
+        heightWithinContainer: currentState.heightWithinContainer,
+      });
     },
-    [
-      keyboardAnimationDuration,
-      keyboardAnimationEasing,
-      keyboardHeight,
-      keyboardState,
-      shouldHandleKeyboardEvents,
-      temporaryCachedKeyboardEvent,
-    ]
+    [state, temporaryCachedState]
   );
   //#endregion
 
@@ -90,7 +107,7 @@ export const useKeyboard = () => {
   useEffect(() => {
     const handleOnKeyboardShow = (event: KeyboardEvent) => {
       runOnUI(handleKeyboardEvent)(
-        KEYBOARD_STATE.SHOWN,
+        KEYBOARD_STATUS.SHOWN,
         event.endCoordinates.height,
         event.duration,
         event.easing,
@@ -101,7 +118,7 @@ export const useKeyboard = () => {
     };
     const handleOnKeyboardHide = (event: KeyboardEvent) => {
       runOnUI(handleKeyboardEvent)(
-        KEYBOARD_STATE.HIDDEN,
+        KEYBOARD_STATUS.HIDDEN,
         event.endCoordinates.height,
         event.duration,
         event.easing
@@ -130,22 +147,27 @@ export const useKeyboard = () => {
    * @link https://github.com/gorhom/react-native-bottom-sheet/issues/411
    */
   useAnimatedReaction(
-    () => shouldHandleKeyboardEvents.value,
-    result => {
-      const params = temporaryCachedKeyboardEvent.value;
-      if (result && params.length > 0) {
-        handleKeyboardEvent(params[0], params[1], params[2], params[3]);
+    () => state.value.target,
+    (result, previous) => {
+      if (!result || result === previous) {
+        return;
       }
+
+      const cachedState = temporaryCachedState.get();
+      if (!cachedState) {
+        return;
+      }
+
+      handleKeyboardEvent(
+        cachedState.status,
+        cachedState.height,
+        cachedState.duration,
+        cachedState.easing
+      );
     },
-    []
+    [temporaryCachedState, handleKeyboardEvent]
   );
   //#endregion
 
-  return {
-    state: keyboardState,
-    height: keyboardHeight,
-    animationEasing: keyboardAnimationEasing,
-    animationDuration: keyboardAnimationDuration,
-    shouldHandleKeyboardEvents,
-  };
+  return state;
 };
