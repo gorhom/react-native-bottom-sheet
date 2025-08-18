@@ -202,7 +202,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       const { containerHeight } = animatedLayoutState.get();
       const { highestDetentPosition } = animatedDetentsState.get();
 
-      if (!highestDetentPosition) {
+      if (highestDetentPosition === undefined) {
         return INITIAL_LAYOUT_VALUE;
       }
 
@@ -1801,6 +1801,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   scrollableStatus: animatedScrollableStatus,
                   layoutState: animatedLayoutState,
                   detentsState: animatedDetentsState,
+                  sheetHeight: animatedSheetHeight,
                   isLayoutCalculated,
                 }}
               /> */}
