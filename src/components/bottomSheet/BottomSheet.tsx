@@ -637,7 +637,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (
           animatedKeyboardState.get().status === KEYBOARD_STATUS.SHOWN &&
           keyboardBehavior !== KEYBOARD_BEHAVIOR.extend &&
-          position < animatedPosition.value
+          position !== animatedPosition.value
         ) {
           offset = animatedKeyboardState.get().heightWithinContainer;
         }
