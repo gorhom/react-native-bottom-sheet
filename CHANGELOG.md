@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.1...v5.2.2) (2025-08-18)
+
+### 🐛 Bug Fixes
+
+* **#2364:** fixed layouting issue when dynamic sizing enabled and handle is not provided ([d3275b1](https://github.com/gorhom/react-native-bottom-sheet/commit/d3275b1e97ab7ed975cc28ddcfaa2ffb25624c98))
+
 ## [5.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.0...v5.2.1) (2025-08-18)
 
 ### 🐛 Bug Fixes
