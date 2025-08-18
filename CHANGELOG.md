@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.0...v5.2.1) (2025-08-18)
+
+### 🐛 Bug Fixes
+
+* **#2418:** updated nullability check for highestDetentPosition ([b51ea61](https://github.com/gorhom/react-native-bottom-sheet/commit/b51ea619a2c36d5a2514ad00a43928e206db0512)), closes [#2418](https://github.com/gorhom/react-native-bottom-sheet/issues/2418)
+
 ## [5.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.8...v5.2.0) (2025-08-17)
 
 ### 🚀 New Features
