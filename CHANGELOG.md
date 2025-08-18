@@ -1,5 +1,7 @@
 # Changelog
 
+## [5.2.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.2...v5.2.3) (2025-08-18)
+
 ## [5.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.1...v5.2.2) (2025-08-18)
 
 ### 🐛 Bug Fixes
