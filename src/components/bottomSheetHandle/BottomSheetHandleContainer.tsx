@@ -10,7 +10,6 @@ import {
 } from '../../hooks';
 import { print } from '../../utilities';
 import { DEFAULT_ENABLE_HANDLE_PANNING_GESTURE } from '../bottomSheet/constants';
-import BottomSheetHandle from './BottomSheetHandle';
 import type { BottomSheetHandleContainerProps } from './types';
 
 function BottomSheetHandleContainerComponent({
@@ -18,7 +17,7 @@ function BottomSheetHandleContainerComponent({
   animatedPosition,
   simultaneousHandlers: _internalSimultaneousHandlers,
   enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
-  handleComponent,
+  handleComponent: HandleComponent,
   handleStyle: _providedHandleStyle,
   handleIndicatorStyle: _providedIndicatorStyle,
 }: BottomSheetHandleContainerProps) {
@@ -163,7 +162,6 @@ function BottomSheetHandleContainerComponent({
   //#endregion
 
   //#region renders
-  const HandleComponent = handleComponent ?? BottomSheetHandle;
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View

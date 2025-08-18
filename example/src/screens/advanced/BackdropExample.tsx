@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
 import { HeaderHandle } from '../../components/headerHandle';
@@ -65,6 +65,7 @@ const BackdropExample = () => {
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
         handleComponent={renderHeaderHandle}
+        enableDynamicSizing={false}
       >
         <ContactList type="FlatList" count={10} />
       </BottomSheet>

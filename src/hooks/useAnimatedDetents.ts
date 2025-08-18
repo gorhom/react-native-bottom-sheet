@@ -94,7 +94,8 @@ export const useAnimatedDetents = (
     // sort all detents.
     _normalizedDetents = _normalizedDetents.sort((a, b) => b - a);
 
-    highestDetentPosition = _normalizedDetents[0];
+    // update the highest detent position.
+    highestDetentPosition = _normalizedDetents[_normalizedDetents.length - 1];
 
     // locate the dynamic detent index.
     const dynamicDetentIndex = _normalizedDetents.indexOf(dynamicSnapPoint);

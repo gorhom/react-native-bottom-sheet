@@ -58,7 +58,10 @@ import { BottomSheetBackgroundContainer } from '../bottomSheetBackground';
 // import BottomSheetDebugView from '../bottomSheetDebugView';
 import { BottomSheetFooterContainer } from '../bottomSheetFooter';
 import BottomSheetGestureHandlersProvider from '../bottomSheetGestureHandlersProvider';
-import { BottomSheetHandleContainer } from '../bottomSheetHandle';
+import {
+  BottomSheetHandle,
+  BottomSheetHandleContainer,
+} from '../bottomSheetHandle';
 import { BottomSheetHostingContainer } from '../bottomSheetHostingContainer';
 import { BottomSheetBody } from './BottomSheetBody';
 import { BottomSheetContent } from './BottomSheetContent';
@@ -152,7 +155,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       detached = false,
 
       // components
-      handleComponent,
+      handleComponent = BottomSheetHandle,
       backdropComponent: BackdropComponent,
       backgroundComponent,
       footerComponent,
@@ -187,7 +190,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       containerLayoutState,
       topInset,
       bottomInset,
-      $modal
+      $modal,
+      handleComponent === null
     );
     const animatedDetentsState = useAnimatedDetents(
       _providedSnapPoints,
@@ -1797,6 +1801,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               </BottomSheetBody>
               {/* <BottomSheetDebugView
                 values={{
+                  index: animatedIndex,
+                  position: animatedPosition,
                   sheetStatus: animatedSheetState,
                   scrollableStatus: animatedScrollableStatus,
                   layoutState: animatedLayoutState,

@@ -28,13 +28,15 @@ const INITIAL_STATE: LayoutState = {
  * @param topInset - The top inset value to be subtracted from the container height.
  * @param bottomInset - The bottom inset value to be subtracted from the container height.
  * @param modal - Optional flag indicating if the layout is in modal mode.
+ * @param shouldOverrideHandleHeight - Optional flag to override the handle height in the layout state, only when handle is set to null.
  * @returns An object containing the animated layout state.
  */
 export function useAnimatedLayout(
   containerLayoutState: SharedValue<ContainerLayoutState> | undefined,
   topInset: number,
   bottomInset: number,
-  modal?: boolean
+  modal?: boolean,
+  shouldOverrideHandleHeight?: boolean
 ) {
   //#region  variables
   const verticalInset = useMemo(
@@ -43,6 +45,7 @@ export function useAnimatedLayout(
   );
   const initialState = useMemo(() => {
     const _state = { ...INITIAL_STATE };
+
     if (containerLayoutState) {
       const containerLayout = containerLayoutState.get();
       _state.containerHeight = modal
@@ -50,8 +53,13 @@ export function useAnimatedLayout(
         : containerLayout.height;
       _state.containerOffset = containerLayout.offset;
     }
+
+    if (shouldOverrideHandleHeight) {
+      _state.handleHeight = 0;
+    }
+
     return _state;
-  }, [containerLayoutState, modal, verticalInset]);
+  }, [containerLayoutState, modal, shouldOverrideHandleHeight, verticalInset]);
   //#endregion
 
   //#region state
