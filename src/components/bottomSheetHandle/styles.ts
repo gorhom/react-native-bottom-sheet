@@ -1,11 +1,13 @@
 import { Platform, StyleSheet } from 'react-native';
 import { WINDOW_WIDTH } from '../../constants';
 
+const webContainerStyle =
+  Platform.OS === 'web' ? { cursor: 'pointer' as const } : {};
+
 export const styles = StyleSheet.create({
   container: {
-    ...(Platform.OS === 'web'
-      ? { padding: 10, cursor: 'grab' }
-      : { padding: 10 }), // native-safe style
+    padding: 10,
+    ...webContainerStyle,
   },
 
   indicator: {
