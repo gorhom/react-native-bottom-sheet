@@ -167,6 +167,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
       accessibilityRole:
         _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+      accessibilityLabelledBy: _providedAccessibilityLabelledBy,
+      accessibilityState: _providedAccessibilityState,
+      role: _providedRole,
     } = props;
     //#endregion
 
@@ -1773,6 +1776,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   accessible={_providedAccessible ?? undefined}
                   accessibilityRole={_providedAccessibilityRole ?? undefined}
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+                  accessibilityLabelledBy={_providedAccessibilityLabelledBy ?? undefined}
+                  accessibilityState={_providedAccessibilityState ?? undefined}
+                  role={_providedRole}
                   keyboardBehavior={keyboardBehavior}
                   detached={detached}
                 >
