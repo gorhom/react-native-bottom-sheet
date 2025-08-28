@@ -1,27 +1,27 @@
 import invariant from 'invariant';
 import React, {
-  useMemo,
-  useCallback,
   forwardRef,
-  useImperativeHandle,
   memo,
+  useCallback,
   useEffect,
+  useImperativeHandle,
+  useMemo,
 } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
 import Animated, {
-  useAnimatedReaction,
-  useSharedValue,
-  useDerivedValue,
-  runOnJS,
-  interpolate,
-  Extrapolation,
-  runOnUI,
   cancelAnimation,
+  Extrapolation,
+  interpolate,
+  ReduceMotion,
+  runOnJS,
+  runOnUI,
+  useAnimatedReaction,
+  useDerivedValue,
+  useReducedMotion,
+  useSharedValue,
   type WithSpringConfig,
   type WithTimingConfig,
-  useReducedMotion,
-  ReduceMotion,
 } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
@@ -854,6 +854,26 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             : detents[_providedIndex];
         }
 
+        const { status, nextIndex, nextPosition } =
+          animatedAnimationState.get();
+
+        /**
+         * if the evaluated position is for a snap change source while the sheet is currently running
+         * an animation and the next position is different than the detent at next index,
+         * then we return the detent at next index.
+         *
+         * https://github.com/gorhom/react-native-bottom-sheet/issues/2431
+         */
+        if (
+          source === ANIMATION_SOURCE.SNAP_POINT_CHANGE &&
+          status === ANIMATION_STATUS.RUNNING &&
+          nextIndex !== undefined &&
+          nextPosition !== undefined &&
+          detents[nextIndex] !== nextPosition
+        ) {
+          return detents[nextIndex];
+        }
+
         /**
          * return the current index position.
          */
@@ -863,6 +883,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedContentGestureState,
         animatedCurrentIndex,
         animatedHandleGestureState,
+        animatedAnimationState,
         animatedKeyboardState,
         animatedPosition,
         animatedDetentsState,
