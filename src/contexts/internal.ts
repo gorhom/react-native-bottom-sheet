@@ -1,4 +1,4 @@
-import { type RefObject, createContext } from 'react';
+import { createContext, type RefObject } from 'react';
 import type { State } from 'react-native-gesture-handler';
 import type { SharedValue } from 'react-native-reanimated';
 import type {
@@ -54,6 +54,9 @@ export interface BottomSheetInternalContextType
   animateToPosition: AnimateToPositionType;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
+
+  // refs
+  textInputNodesRef: React.MutableRefObject<Set<number>>;
 }
 
 export const BottomSheetInternalContext =

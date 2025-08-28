@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
   Keyboard,
   type KeyboardEvent,
@@ -37,6 +37,7 @@ const INITIAL_STATE: KeyboardState = {
 
 export const useAnimatedKeyboard = () => {
   //#region variables
+  const textInputNodesRef = useRef(new Set<number>());
   const state = useSharedValue(INITIAL_STATE);
   const temporaryCachedState = useSharedValue<Omit<
     KeyboardState,
@@ -90,14 +91,14 @@ export const useAnimatedKeyboard = () => {
         adjustedHeight = adjustedHeight + bottomOffset;
       }
 
-      state.set({
-        target: currentState.target,
+      state.set(state => ({
         status,
         easing,
         duration,
         height: adjustedHeight,
-        heightWithinContainer: currentState.heightWithinContainer,
-      });
+        target: state.target,
+        heightWithinContainer: state.heightWithinContainer,
+      }));
     },
     [state, temporaryCachedState]
   );
@@ -169,5 +170,5 @@ export const useAnimatedKeyboard = () => {
   );
   //#endregion
 
-  return state;
+  return { state, textInputNodesRef };
 };

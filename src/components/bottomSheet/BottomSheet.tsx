@@ -270,7 +270,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
     //#region hooks variables
     // keyboard
-    const animatedKeyboardState = useAnimatedKeyboard();
+    const { state: animatedKeyboardState, textInputNodesRef } =
+      useAnimatedKeyboard();
     const userReduceMotionSetting = useReducedMotion();
     const reduceMotion = useMemo(() => {
       return !_providedOverrideReduceMotion ||
@@ -630,17 +631,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         /**
-         * offset the position if keyboard is shown,
-         * and behavior not extend.
+         * offset the position if keyboard is shown and behavior not extend.
          */
         let offset = 0;
         if (
           animatedKeyboardState.get().status === KEYBOARD_STATUS.SHOWN &&
-          keyboardBehavior !== KEYBOARD_BEHAVIOR.extend &&
-          position < animatedPosition.value
+          keyboardBehavior !== KEYBOARD_BEHAVIOR.extend
         ) {
           offset = animatedKeyboardState.get().heightWithinContainer;
         }
+
         const { detents } = animatedDetentsState.get();
         const index = detents?.indexOf(position + offset) ?? -1;
 
@@ -1411,6 +1411,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     //#region contexts variables
     const internalContextVariables = useMemo(
       () => ({
+        textInputNodesRef,
         enableContentPanningGesture,
         enableDynamicSizing,
         overDragResistanceFactor,
@@ -1442,6 +1443,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         removeScrollableRef,
       }),
       [
+        textInputNodesRef,
         animatedIndex,
         animatedPosition,
         animatedSheetHeight,
@@ -1622,18 +1624,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        if (__DEV__) {
-          runOnJS(print)({
-            component: 'BottomSheet',
-            method: 'useAnimatedReaction::OnKeyboardStateChange',
-            category: 'effect',
-            params: {
-              status,
-              height,
-            },
-          });
-        }
-
         /**
          * Calculate the keyboard height in the container.
          */
@@ -1646,6 +1636,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   height - Math.abs(bottomInset - containerOffset.bottom)
                 )
               : Math.abs(height - containerOffset.bottom);
+
+        if (__DEV__) {
+          runOnJS(print)({
+            component: 'BottomSheet',
+            method: 'useAnimatedReaction::OnKeyboardStateChange',
+            category: 'effect',
+            params: {
+              status,
+              height,
+              heightWithinContainer,
+              containerOffset,
+            },
+          });
+        }
 
         /**
          * if platform is android and the input mode is resize, then exit the method
@@ -1668,14 +1672,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             return;
           }
         }
-        animatedKeyboardState.set({
-          target,
-          status,
-          height,
-          easing,
-          duration,
+        animatedKeyboardState.set(state => ({
+          ...state,
           heightWithinContainer,
-        });
+        }));
 
         /**
          * if user is interacting with sheet, then exit the method
