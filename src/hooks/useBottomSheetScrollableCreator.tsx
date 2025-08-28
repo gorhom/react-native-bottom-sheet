@@ -1,7 +1,7 @@
-import type { ReactElement } from 'react';
+import { type ReactElement, useCallback } from 'react';
 import {
-  BottomSheetScrollView,
   type BottomSheetScrollableProps,
+  BottomSheetScrollView,
 } from '../components/bottomSheetScrollable';
 
 type BottomSheetScrollableCreatorConfigs = {} & BottomSheetScrollableProps;
@@ -34,16 +34,27 @@ export function useBottomSheetScrollableCreator<T = any>({
   focusHook,
   scrollEventsHandlersHook,
   enableFooterMarginAdjustment,
-}: BottomSheetScrollableCreatorConfigs = {}): (props: T) => ReactElement<T> {
-  // @ts-ignore
-  return ({ data: _, ...props }: T, ref: never) => (
-    // @ts-ignore
-    <BottomSheetScrollView
-      ref={ref}
-      {...props}
-      focusHook={focusHook}
-      scrollEventsHandlersHook={scrollEventsHandlersHook}
-      enableFooterMarginAdjustment={enableFooterMarginAdjustment}
-    />
+}: BottomSheetScrollableCreatorConfigs = {}): (
+  props: T,
+  ref?: never
+) => ReactElement<T> {
+  return useCallback(
+    function useBottomSheetScrollableCreator(
+      // @ts-expect-error
+      { data: _, ...props }: T,
+      ref?: never
+    ): ReactElement<T> {
+      return (
+        // @ts-expect-error
+        <BottomSheetScrollView
+          ref={ref}
+          {...props}
+          focusHook={focusHook}
+          scrollEventsHandlersHook={scrollEventsHandlersHook}
+          enableFooterMarginAdjustment={enableFooterMarginAdjustment}
+        />
+      );
+    },
+    [focusHook, scrollEventsHandlersHook, enableFooterMarginAdjustment]
   );
 }
