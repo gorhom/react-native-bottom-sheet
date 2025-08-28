@@ -634,11 +634,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * offset the position if keyboard is shown and behavior not extend.
          */
         let offset = 0;
+        const { status, heightWithinContainer } = animatedKeyboardState.get();
         if (
-          animatedKeyboardState.get().status === KEYBOARD_STATUS.SHOWN &&
-          keyboardBehavior !== KEYBOARD_BEHAVIOR.extend
+          status === KEYBOARD_STATUS.SHOWN &&
+          keyboardBehavior !== KEYBOARD_BEHAVIOR.extend &&
+          source === ANIMATION_SOURCE.KEYBOARD
         ) {
-          offset = animatedKeyboardState.get().heightWithinContainer;
+          offset = heightWithinContainer;
         }
 
         const { detents } = animatedDetentsState.get();
