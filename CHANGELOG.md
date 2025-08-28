@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.2.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.3...v5.2.4) (2025-08-28)
+
+### 🐛 Bug Fixes
+
+* **#2430:** fixed flickering issue with animation by keyboard ([334e94c](https://github.com/gorhom/react-native-bottom-sheet/commit/334e94c5ffd700261201c07bd153711d38b09ef6))
+* **#2430:** fixed the force closing when switching between two text inputs ([086baed](https://github.com/gorhom/react-native-bottom-sheet/commit/086baeda48be71b9b8d020e1b680573a92218b18))
+* **#2431:** added handling for evaluating position for detent change while animating ([090afa6](https://github.com/gorhom/react-native-bottom-sheet/commit/090afa64338e27882ae4c32b090e9ce72a2ba38a)), closes [#2431](https://github.com/gorhom/react-native-bottom-sheet/issues/2431)
+* memoized the scrollable creator hook ([e51e523](https://github.com/gorhom/react-native-bottom-sheet/commit/e51e52382ee561a2db6022af36ab5181e07c8042))
+
+### 🧹 Maintenance Chores
+
+* updated biome dep ([eb03ab0](https://github.com/gorhom/react-native-bottom-sheet/commit/eb03ab074dc17df9c3ff404f645db3bfbc0c6aab))
+
 ## [5.2.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.2...v5.2.3) (2025-08-18)
 
 ## [5.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.1...v5.2.2) (2025-08-18)
