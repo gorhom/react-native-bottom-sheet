@@ -69,8 +69,7 @@ function BottomSheetModalComponent<T = any>(
   //#region hooks
   const {
     hostName,
-    containerHeight,
-    containerOffset,
+    containerLayoutState,
     mountSheet,
     unmountSheet,
     willUnmountSheet,
@@ -94,7 +93,6 @@ function BottomSheetModalComponent<T = any>(
   //#endregion
 
   //#region private methods
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const resetVariables = useCallback(function resetVariables() {
     print({
       component: BottomSheetModal.name,
@@ -106,7 +104,6 @@ function BottomSheetModalComponent<T = any>(
     mounted.current = false;
     forcedDismissed.current = false;
   }, []);
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const unmount = useCallback(
     function unmount() {
       if (__DEV__) {
@@ -260,7 +257,6 @@ function BottomSheetModalComponent<T = any>(
     },
     [willUnmountSheet, unmount, key, enablePanDownToClose]
   );
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const handleMinimize = useCallback(
     function handleMinimize() {
       if (__DEV__) {
@@ -312,7 +308,6 @@ function BottomSheetModalComponent<T = any>(
   //#endregion
 
   //#region callbacks
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const handlePortalOnUnmount = useCallback(
     function handlePortalOnUnmount() {
       if (__DEV__) {
@@ -457,8 +452,7 @@ function BottomSheetModalComponent<T = any>(
           snapPoints={snapPoints}
           enablePanDownToClose={enablePanDownToClose}
           animateOnMount={animateOnMount}
-          containerHeight={containerHeight}
-          containerOffset={containerOffset}
+          containerLayoutState={containerLayoutState}
           onChange={handleBottomSheetOnChange}
           onClose={handleBottomSheetOnClose}
           onAnimate={handleBottomSheetOnAnimate}

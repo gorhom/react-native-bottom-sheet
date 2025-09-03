@@ -7,8 +7,7 @@ import { useBottomSheetInternal } from '../../hooks';
  */
 export function useBottomSheetContentSizeSetter() {
   //#region hooks
-  const { enableDynamicSizing, animatedContentHeight } =
-    useBottomSheetInternal();
+  const { enableDynamicSizing, animatedLayoutState } = useBottomSheetInternal();
   //#endregion
 
   //#region methods
@@ -17,9 +16,13 @@ export function useBottomSheetContentSizeSetter() {
       if (!enableDynamicSizing) {
         return;
       }
-      animatedContentHeight.set(contentHeight);
+      animatedLayoutState.modify(state => {
+        'worklet';
+        state.contentHeight = contentHeight;
+        return state;
+      });
     },
-    [enableDynamicSizing, animatedContentHeight]
+    [enableDynamicSizing, animatedLayoutState]
   );
   //#endregion
 

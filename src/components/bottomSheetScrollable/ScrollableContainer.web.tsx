@@ -7,8 +7,8 @@ import React, {
 import type { LayoutChangeEvent, ViewProps } from 'react-native';
 import type { SimultaneousGesture } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
+import { INITIAL_LAYOUT_VALUE } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
-import { INITIAL_CONTAINER_HEIGHT } from '../bottomSheet/constants';
 import { BottomSheetDraggableScrollable } from './BottomSheetDraggableScrollable';
 
 interface ScrollableContainerProps {
@@ -46,7 +46,7 @@ export const ScrollableContainer = forwardRef<
   //#endregion
 
   //#region hooks
-  const { animatedContentHeight } = useBottomSheetInternal();
+  const { animatedLayoutState } = useBottomSheetInternal();
   //#endregion
 
   //#region callbacks
@@ -76,7 +76,7 @@ export const ScrollableContainer = forwardRef<
         /**
          * early exit if the content height been calculated.
          */
-        if (animatedContentHeight.get() !== INITIAL_CONTAINER_HEIGHT) {
+        if (animatedLayoutState.get().contentHeight !== INITIAL_LAYOUT_VALUE) {
           return;
         }
         // @ts-ignore
@@ -86,7 +86,7 @@ export const ScrollableContainer = forwardRef<
         });
       }
     },
-    [onLayout, setContentSize, animatedContentHeight]
+    [onLayout, setContentSize, animatedLayoutState]
   );
   //#endregion
   return (

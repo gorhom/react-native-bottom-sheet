@@ -17,6 +17,7 @@ export { useGestureEventsHandlersDefault } from './hooks/useGestureEventsHandler
 export { useBottomSheetGestureHandlers } from './hooks/useBottomSheetGestureHandlers';
 export { useScrollHandler } from './hooks/useScrollHandler';
 export { useScrollableSetter } from './hooks/useScrollableSetter';
+export { useBottomSheetScrollableCreator } from './hooks/useBottomSheetScrollableCreator';
 //#endregion
 
 //#region components

@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
 import {
-  BottomSheetHandleProps,
+  type BottomSheetHandleProps,
   BottomSheetModal,
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
 import { HeaderHandle } from '../../components/headerHandle';
@@ -62,8 +62,9 @@ const StackExample = () => {
 
   // renders
   const renderHeaderHandle = useCallback(
-    (title: string) => (props: BottomSheetHandleProps) =>
-      <HeaderHandle {...props} children={title} />,
+    (title: string) => (props: BottomSheetHandleProps) => (
+      <HeaderHandle {...props} children={title} />
+    ),
     []
   );
   const renderBottomSheetContent = useCallback(
@@ -74,14 +75,34 @@ const StackExample = () => {
   );
   return (
     <View style={styles.container}>
-      <Button label="Present Modal A" onPress={handlePresentAPress} />
-      <Button label="Dismiss Modal A" onPress={handleDismissAPress} />
-      <Button label="Present Modal B" onPress={handlePresentBPress} />
-      <Button label="Dismiss Modal B" onPress={handleDismissBPress} />
-      <Button label="Present Modal C" onPress={handlePresentCPress} />
-      <Button label="Dismiss Modal C" onPress={handleDismissCPress} />
-      <Button label="Dismiss All Modal" onPress={handleDismissAllPress} />
-      <Button label="Dismiss A By Hook" onPress={handleDismissByHookPress} />
+      <View style={styles.row}>
+        <View style={styles.rowItem}>
+          <Button label="Present Modal A" onPress={handlePresentAPress} />
+        </View>
+        <View style={styles.rowItem}>
+          <Button label="Dismiss Modal A" onPress={handleDismissAPress} />
+        </View>
+      </View>
+
+      <View style={styles.row}>
+        <View style={styles.rowItem}>
+          <Button label="Present Modal B" onPress={handlePresentBPress} />
+        </View>
+        <View style={styles.rowItem}>
+          <Button label="Dismiss Modal B" onPress={handleDismissBPress} />
+        </View>
+      </View>
+
+      <View style={styles.row}>
+        <View style={styles.rowItem}>
+          <Button label="Present Modal C" onPress={handlePresentCPress} />
+        </View>
+        <View style={styles.rowItem}>
+          <Button label="Dismiss Modal C" onPress={handleDismissCPress} />
+        </View>
+      </View>
+      <Button label="Dismiss All Modals" onPress={handleDismissAllPress} />
+      <Button label="Dismiss All By Hook" onPress={handleDismissByHookPress} />
 
       <BottomSheetModal
         name="A"
@@ -119,6 +140,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  rowItem: {
+    flex: 1,
   },
 });
 

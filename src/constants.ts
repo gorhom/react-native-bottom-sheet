@@ -1,6 +1,7 @@
 import { Dimensions, Platform } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import { Easing } from 'react-native-reanimated';
+import type { SpringConfig, TimingConfig } from './types';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
@@ -20,7 +21,7 @@ enum SHEET_STATE {
   FILL_PARENT = 4,
 }
 
-enum SCROLLABLE_STATE {
+enum SCROLLABLE_STATUS {
   LOCKED = 0,
   UNLOCKED = 1,
   UNDETERMINED = 2,
@@ -35,7 +36,7 @@ enum SCROLLABLE_TYPE {
   VIRTUALIZEDLIST = 5,
 }
 
-enum ANIMATION_STATE {
+enum ANIMATION_STATUS {
   UNDETERMINED = 0,
   RUNNING = 1,
   STOPPED = 2,
@@ -57,7 +58,7 @@ enum ANIMATION_METHOD {
   SPRING = 1,
 }
 
-enum KEYBOARD_STATE {
+enum KEYBOARD_STATUS {
   UNDETERMINED = 0,
   SHOWN = 1,
   HIDDEN = 2,
@@ -71,27 +72,25 @@ enum SNAP_POINT_TYPE {
 const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
 const ANIMATION_DURATION = 250;
 
-const ANIMATION_CONFIGS_IOS = {
-  damping: 500,
-  stiffness: 1000,
-  mass: 3,
-  overshootClamping: true,
-  restDisplacementThreshold: 10,
-  restSpeedThreshold: 10,
-};
-
-const ANIMATION_CONFIGS_ANDROID = {
-  duration: ANIMATION_DURATION,
-  easing: ANIMATION_EASING,
-};
-
-const ANIMATION_CONFIGS =
-  Platform.OS === 'ios' ? ANIMATION_CONFIGS_IOS : ANIMATION_CONFIGS_ANDROID;
+const ANIMATION_CONFIGS = Platform.select<TimingConfig | SpringConfig>({
+  android: {
+    duration: ANIMATION_DURATION,
+    easing: ANIMATION_EASING,
+  },
+  default: {
+    damping: 500,
+    stiffness: 1000,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 10,
+    restSpeedThreshold: 10,
+  },
+});
 
 const SCROLLABLE_DECELERATION_RATE_MAPPER = {
-  [SCROLLABLE_STATE.UNDETERMINED]: 0,
-  [SCROLLABLE_STATE.LOCKED]: 0,
-  [SCROLLABLE_STATE.UNLOCKED]: Platform.select({
+  [SCROLLABLE_STATUS.UNDETERMINED]: 0,
+  [SCROLLABLE_STATUS.LOCKED]: 0,
+  [SCROLLABLE_STATUS.UNLOCKED]: Platform.select({
     ios: 0.998,
     android: 0.985,
     default: 1,
@@ -122,15 +121,26 @@ const KEYBOARD_INPUT_MODE = {
 
 const KEYBOARD_DISMISS_THRESHOLD = 12.5;
 
+const INITIAL_LAYOUT_VALUE = -999;
+const INITIAL_CONTAINER_LAYOUT = {
+  height: INITIAL_LAYOUT_VALUE,
+  offset: {
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
+};
+
 export {
   GESTURE_SOURCE,
   SHEET_STATE,
-  ANIMATION_STATE,
+  ANIMATION_STATUS,
   ANIMATION_METHOD,
   ANIMATION_SOURCE,
   SCROLLABLE_TYPE,
-  SCROLLABLE_STATE,
-  KEYBOARD_STATE,
+  SCROLLABLE_STATUS,
+  KEYBOARD_STATUS,
   SNAP_POINT_TYPE,
   WINDOW_HEIGHT,
   WINDOW_WIDTH,
@@ -145,4 +155,6 @@ export {
   ANIMATION_CONFIGS,
   ANIMATION_EASING,
   ANIMATION_DURATION,
+  INITIAL_LAYOUT_VALUE,
+  INITIAL_CONTAINER_LAYOUT,
 };

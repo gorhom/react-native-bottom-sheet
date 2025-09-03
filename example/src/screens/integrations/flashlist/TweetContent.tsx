@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     marginRight: 8,
-    backgroundColor: 'red',
   },
   gray: {
     color: '#777',

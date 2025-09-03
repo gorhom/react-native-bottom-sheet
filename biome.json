@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": false },
   "formatter": {
     "enabled": true,
@@ -8,20 +8,20 @@
     "indentStyle": "space",
     "lineEnding": "lf",
     "lineWidth": 80,
-    "ignore": ["**/.github", "**/lib", "**/.expo", "**/website"]
+    "includes": ["**", "!**/.github", "!**/lib", "!**/.expo", "!**/website"]
   },
-  "organizeImports": { "enabled": true, "ignore": ["**/website"] },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
       "complexity": {
-        "noMultipleSpacesInRegularExpressionLiterals": "warn",
         "noUselessLoneBlockStatements": "warn",
         "noUselessUndefinedInitialization": "warn",
         "noVoid": "warn",
-        "noWith": "warn",
-        "useLiteralKeys": "warn"
+        "useLiteralKeys": "warn",
+        "noAdjacentSpacesInRegex": "warn",
+        "noCommaOperator": "warn"
       },
       "correctness": {
         "noConstAssign": "error",
@@ -33,21 +33,21 @@
         "noUndeclaredVariables": "error",
         "noUnreachable": "error",
         "noUnusedVariables": "warn",
-        "useArrayLiterals": "warn",
         "useExhaustiveDependencies": "error",
         "useHookAtTopLevel": "error",
-        "useIsNan": "warn"
+        "useIsNan": "warn",
+        "useValidTypeof": "warn"
       },
       "security": { "noGlobalEval": "error" },
       "style": {
-        "noCommaOperator": "warn",
         "noYodaExpression": "warn",
         "useBlockStatements": "warn",
         "useCollapsedElseIf": "off",
         "useConsistentBuiltinInstantiation": "warn",
         "useDefaultSwitchClause": "off",
         "useSingleVarDeclarator": "off",
-        "useExponentiationOperator": "off"
+        "useExponentiationOperator": "off",
+        "useArrayLiterals": "warn"
       },
       "suspicious": {
         "noCatchAssign": "warn",
@@ -70,10 +70,16 @@
         "noSelfCompare": "warn",
         "noShadowRestrictedNames": "warn",
         "noSparseArray": "warn",
-        "useValidTypeof": "warn"
+        "noWith": "warn"
       }
     },
-    "ignore": ["**/node_modules/", "**/lib", "**/.expo", "**/website"]
+    "includes": [
+      "**",
+      "!**/node_modules/",
+      "!**/lib",
+      "!**/.expo",
+      "!**/website"
+    ]
   },
   "javascript": {
     "jsxRuntime": "reactClassic",
@@ -100,12 +106,13 @@
     ]
   },
   "files": {
-    "ignore": [
-      "**/node_modules/",
-      "**/lib",
-      "**/.expo",
-      "**/example",
-      "**/website"
+    "includes": [
+      "**",
+      "!**/node_modules/",
+      "!**/lib",
+      "!**/.expo",
+      "!**/example",
+      "!**/website"
     ]
   }
 }

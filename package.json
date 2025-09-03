@@ -1,13 +1,17 @@
 {
   "name": "@gorhom/bottom-sheet",
-  "version": "5.1.6",
+  "version": "5.2.4",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "files": ["src", "lib", "mock.js"],
+  "files": [
+    "src",
+    "lib",
+    "mock.js"
+  ],
   "keywords": [
     "react-native",
     "ios",
@@ -41,9 +45,10 @@
     "invariant": "^2.2.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.6.5",
-    "@commitlint/config-conventional": "^17.6.5",
-    "@release-it/conventional-changelog": "^8.0.1",
+    "@biomejs/biome": "2.2.2",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@types/invariant": "^2.2.34",
     "@types/react": "~18.3.12",
     "@types/react-native": "~0.73.0",
@@ -55,9 +60,9 @@
     "react-native": "0.76.0",
     "react-native-builder-bob": "^0.30.3",
     "react-native-gesture-handler": "~2.20.2",
-    "react-native-reanimated": "~3.16.1",
-    "release-it": "^17.6.0",
-    "typescript": "^5.3.0"
+    "react-native-reanimated": "~3.19.1",
+    "release-it": "^19.0.4",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
     "@types/react": "*",
@@ -65,7 +70,7 @@
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=2.16.1",
-    "react-native-reanimated": ">=3.16.0"
+    "react-native-reanimated": ">=3.16.0 || >=4.0.0-"
   },
   "peerDependenciesMeta": {
     "@types/react-native": {
@@ -78,6 +83,16 @@
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
-    "targets": ["commonjs", "module", "typescript"]
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  },
+  "resolutions": {
+    "conventional-changelog-conventionalcommits": "8.0.0"
+  },
+  "overrides": {
+    "conventional-changelog-conventionalcommits": "8.0.0"
   }
 }

@@ -1,4 +1,70 @@
+# Changelog
 
+## [5.2.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.3...v5.2.4) (2025-08-28)
+
+### 🐛 Bug Fixes
+
+* **#2430:** fixed flickering issue with animation by keyboard ([334e94c](https://github.com/gorhom/react-native-bottom-sheet/commit/334e94c5ffd700261201c07bd153711d38b09ef6))
+* **#2430:** fixed the force closing when switching between two text inputs ([086baed](https://github.com/gorhom/react-native-bottom-sheet/commit/086baeda48be71b9b8d020e1b680573a92218b18))
+* **#2431:** added handling for evaluating position for detent change while animating ([090afa6](https://github.com/gorhom/react-native-bottom-sheet/commit/090afa64338e27882ae4c32b090e9ce72a2ba38a)), closes [#2431](https://github.com/gorhom/react-native-bottom-sheet/issues/2431)
+* memoized the scrollable creator hook ([e51e523](https://github.com/gorhom/react-native-bottom-sheet/commit/e51e52382ee561a2db6022af36ab5181e07c8042))
+
+### 🧹 Maintenance Chores
+
+* updated biome dep ([eb03ab0](https://github.com/gorhom/react-native-bottom-sheet/commit/eb03ab074dc17df9c3ff404f645db3bfbc0c6aab))
+
+## [5.2.3](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.2...v5.2.3) (2025-08-18)
+
+## [5.2.2](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.1...v5.2.2) (2025-08-18)
+
+### 🐛 Bug Fixes
+
+* **#2364:** fixed layouting issue when dynamic sizing enabled and handle is not provided ([d3275b1](https://github.com/gorhom/react-native-bottom-sheet/commit/d3275b1e97ab7ed975cc28ddcfaa2ffb25624c98))
+
+## [5.2.1](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.0...v5.2.1) (2025-08-18)
+
+### 🐛 Bug Fixes
+
+* **#2418:** updated nullability check for highestDetentPosition ([b51ea61](https://github.com/gorhom/react-native-bottom-sheet/commit/b51ea619a2c36d5a2514ad00a43928e206db0512)), closes [#2418](https://github.com/gorhom/react-native-bottom-sheet/issues/2418)
+
+## [5.2.0](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.8...v5.2.0) (2025-08-17)
+
+### 🚀 New Features
+
+* added a scrollable creator hook to allow integrate with third party list libraries ([d6250e2](https://github.com/gorhom/react-native-bottom-sheet/commit/d6250e20b19801c5ea50af3e369904ebb90eb7b9))
+
+### 🐛 Bug Fixes
+
+* **#2356:** added missing dependencies to callback hooks ([#2382](https://github.com/gorhom/react-native-bottom-sheet/issues/2382)) ([dfaec13](https://github.com/gorhom/react-native-bottom-sheet/commit/dfaec131efde3126f6ff11e2fd409fd94864ef8c)), closes [#2356](https://github.com/gorhom/react-native-bottom-sheet/issues/2356) [#2356](https://github.com/gorhom/react-native-bottom-sheet/issues/2356)
+
+### 🧹 Maintenance Chores
+
+* updated animated layout hook default return ([99efdd7](https://github.com/gorhom/react-native-bottom-sheet/commit/99efdd77c49db49039afabb14a8d34cd68764afc))
+* updated example deps ([248ddd9](https://github.com/gorhom/react-native-bottom-sheet/commit/248ddd97a098627773114d1784c3abb0c5bd028e))
+* updated examples ([eb95f3a](https://github.com/gorhom/react-native-bottom-sheet/commit/eb95f3a65e7a7ecd6b317b9e2a28df79780215c7))
+* updated types ([a123b17](https://github.com/gorhom/react-native-bottom-sheet/commit/a123b179e3fd86c54b601f9caf2f1f936a79b187))
+
+### ♻️ Code Refactor
+
+* added isForcedClosing to animation state ([ab97f77](https://github.com/gorhom/react-native-bottom-sheet/commit/ab97f7755683ff2553e4daaee471fc6db6adf2ee))
+* optimise animation state ([63dc473](https://github.com/gorhom/react-native-bottom-sheet/commit/63dc4733c20e7d9dd4b1f8a5a80894a8395420b8))
+* optimise keyboard state, and remove redundant variables ([bd6c8c6](https://github.com/gorhom/react-native-bottom-sheet/commit/bd6c8c66f5617e0c398047a3c0934ab75105b17a))
+* optimise layout state ([4dfe07a](https://github.com/gorhom/react-native-bottom-sheet/commit/4dfe07a1a49e5e7a2faf339535d2dc7678f71323))
+* optimise next position state ([3d6add6](https://github.com/gorhom/react-native-bottom-sheet/commit/3d6add6d8e9570165241c0c801953c72b47c2921))
+* optimise scrollable state ([bacca9d](https://github.com/gorhom/react-native-bottom-sheet/commit/bacca9d024df6be1157e19a607b85ded84d69b7e))
+* optimise snap points/detents state ([5de7bd3](https://github.com/gorhom/react-native-bottom-sheet/commit/5de7bd343492d7f0ac978502431a1465e2d7299c))
+* removed isContentHeightFixed shared value ([e26426a](https://github.com/gorhom/react-native-bottom-sheet/commit/e26426a17e4793b7749d337fc549d118db0111f2))
+* removed next position animated value ([b81a1fd](https://github.com/gorhom/react-native-bottom-sheet/commit/b81a1fd31641b4440754be70c5007add418621b7))
+
+## [5.1.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.6...v5.1.8) (2025-07-27)
+
+
+### Bug Fixes
+
+* added support for reanimated v4 ([#2223](https://github.com/gorhom/react-native-bottom-sheet/issues/2223))(by [@skusnierz](https://github.com/skusnierz)) ([d96a18e](https://github.com/gorhom/react-native-bottom-sheet/commit/d96a18eb113739bb7707e2f61e17ece2afb3b174))
+* migrate from `useWorkletCallback` ([#2356](https://github.com/gorhom/react-native-bottom-sheet/issues/2356))(by [@tomekzaw](https://github.com/tomekzaw)) ([3620972](https://github.com/gorhom/react-native-bottom-sheet/commit/3620972160f987b4437c06927a9ab768fbffe843))
+
+## [5.1.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.6...v5.1.7) (2025-07-27)
 
 ## [5.1.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.1.5...v5.1.6) (2025-06-03)
 

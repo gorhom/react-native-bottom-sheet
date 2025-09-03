@@ -6,7 +6,7 @@ import {
   type SimultaneousGesture,
 } from 'react-native-gesture-handler';
 import Animated, { useAnimatedProps } from 'react-native-reanimated';
-import { SCROLLABLE_STATE } from '../../constants';
+import { SCROLLABLE_STATUS } from '../../constants';
 import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import { useBottomSheetInternal } from '../../hooks';
 
@@ -23,8 +23,10 @@ function BottomSheetRefreshControlComponent({
 }: BottomSheetRefreshControlProps) {
   //#region hooks
   const draggableGesture = useContext(BottomSheetDraggableContext);
-  const { animatedScrollableState, enableContentPanningGesture } =
-    useBottomSheetInternal();
+  const {
+    animatedScrollableStatus: animatedScrollableState,
+    enableContentPanningGesture,
+  } = useBottomSheetInternal();
   //#endregion
 
   if (!draggableGesture && enableContentPanningGesture) {
@@ -34,7 +36,7 @@ function BottomSheetRefreshControlComponent({
   //#region variables
   const animatedProps = useAnimatedProps(
     () => ({
-      enabled: animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED,
+      enabled: animatedScrollableState.value === SCROLLABLE_STATUS.UNLOCKED,
     }),
     [animatedScrollableState.value]
   );

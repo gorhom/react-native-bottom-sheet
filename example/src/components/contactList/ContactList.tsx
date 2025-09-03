@@ -139,6 +139,7 @@ const ContactListComponent = ({
         renderItem={renderFlatListItem}
         style={styles.container}
         keyboardDismissMode="interactive"
+        indicatorStyle="black"
         contentContainerStyle={contentContainerStyle}
         focusHook={useFocusEffect}
       />
@@ -151,6 +152,7 @@ const ContactListComponent = ({
         contentContainerStyle={contentContainerStyle}
         bounces={true}
         focusHook={useFocusEffect}
+        indicatorStyle="black"
       >
         {data.map(renderScrollViewItem)}
       </BottomSheetScrollView>
@@ -171,6 +173,7 @@ const ContactListComponent = ({
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionItem}
         focusHook={useFocusEffect}
+        indicatorStyle="black"
         removeClippedSubviews={Platform.OS === 'android' && sections.length > 0}
       />
     );

@@ -5,12 +5,16 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { KEYBOARD_BEHAVIOR, KEYBOARD_STATE } from '../../constants';
+import {
+  INITIAL_LAYOUT_VALUE,
+  KEYBOARD_BEHAVIOR,
+  KEYBOARD_STATUS,
+} from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
 import type { NullableAccessibilityProps } from '../../types';
 import { animate } from '../../utilities';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
-import { INITIAL_CONTAINER_HEIGHT } from './constants';
+import {} from './constants';
 import type { BottomSheetProps } from './types';
 
 type BottomSheetContent = {
@@ -43,36 +47,36 @@ function BottomSheetContentComponent({
     overDragResistanceFactor,
     enableContentPanningGesture,
     animatedPosition,
-    animatedHandleHeight,
-    animatedHighestSnapPoint,
-    animatedContainerHeight,
-    animatedContentHeight,
+    animatedLayoutState,
+    animatedDetentsState,
     animatedSheetHeight,
     animatedKeyboardState,
-    animatedKeyboardHeightInContainer,
     isInTemporaryPosition,
   } = useBottomSheetInternal();
   //#endregion
 
   //#region variables
   const animatedContentHeightMax = useDerivedValue(() => {
+    const { containerHeight, handleHeight } = animatedLayoutState.get();
+
     /**
      * if container height is not yet calculated, then we exit the method
      */
-    if (animatedContainerHeight.get() === INITIAL_CONTAINER_HEIGHT) {
+    if (containerHeight === INITIAL_LAYOUT_VALUE) {
       return 0;
     }
 
-    const keyboardState = animatedKeyboardState.get();
-    const keyboardHeightInContainer = animatedKeyboardHeightInContainer.get();
-    const handleHeight = Math.max(0, animatedHandleHeight.get());
-    const containerHeight = animatedContainerHeight.get();
-    let contentHeight = animatedSheetHeight.get() - handleHeight;
+    const {
+      status: keyboardStatus,
+      heightWithinContainer: keyboardHeightWithinContainer,
+    } = animatedKeyboardState.get();
+
+    let contentHeight = animatedSheetHeight.get() - Math.max(0, handleHeight);
 
     switch (keyboardBehavior) {
       case KEYBOARD_BEHAVIOR.extend:
-        if (keyboardState === KEYBOARD_STATE.SHOWN) {
-          contentHeight = contentHeight - keyboardHeightInContainer;
+        if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
+          contentHeight = contentHeight - keyboardHeightWithinContainer;
         }
         break;
 
@@ -81,9 +85,9 @@ function BottomSheetContentComponent({
           break;
         }
 
-        if (keyboardState === KEYBOARD_STATE.SHOWN) {
+        if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
           contentHeight =
-            containerHeight - handleHeight - keyboardHeightInContainer;
+            containerHeight - handleHeight - keyboardHeightWithinContainer;
         } else {
           contentHeight = containerHeight - handleHeight;
         }
@@ -94,15 +98,15 @@ function BottomSheetContentComponent({
           break;
         }
         const contentWithKeyboardHeight =
-          contentHeight + keyboardHeightInContainer;
+          contentHeight + keyboardHeightWithinContainer;
 
-        if (keyboardState === KEYBOARD_STATE.SHOWN) {
+        if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
           if (
-            keyboardHeightInContainer + animatedSheetHeight.get() >
+            keyboardHeightWithinContainer + animatedSheetHeight.get() >
             containerHeight
           ) {
             contentHeight =
-              containerHeight - keyboardHeightInContainer - handleHeight;
+              containerHeight - keyboardHeightWithinContainer - handleHeight;
           }
         } else if (contentWithKeyboardHeight + handleHeight > containerHeight) {
           contentHeight = containerHeight - handleHeight;
@@ -121,25 +125,25 @@ function BottomSheetContentComponent({
      */
     return Math.max(contentHeight, 0);
   }, [
-    animatedContainerHeight,
-    animatedHandleHeight,
-    animatedKeyboardHeightInContainer,
+    animatedLayoutState,
     animatedKeyboardState,
     animatedSheetHeight,
     isInTemporaryPosition,
     keyboardBehavior,
   ]);
   const animatedPaddingBottom = useDerivedValue(() => {
-    const containerHeight = animatedContainerHeight.get();
+    const containerHeight = animatedLayoutState.get().containerHeight;
     /**
      * if container height is not yet calculated, then we exit the method
      */
-    if (containerHeight === INITIAL_CONTAINER_HEIGHT) {
+    if (containerHeight === INITIAL_LAYOUT_VALUE) {
       return 0;
     }
 
+    const { highestDetentPosition } = animatedDetentsState.get();
+
     const highestSnapPoint = Math.max(
-      animatedHighestSnapPoint.get(),
+      highestDetentPosition ?? 0,
       animatedPosition.get()
     );
     /**
@@ -157,28 +161,31 @@ function BottomSheetContentComponent({
      * if keyboard is open, then we try to add padding to prevent content
      * from being covered by the keyboard.
      */
-    if (animatedKeyboardState.get() === KEYBOARD_STATE.SHOWN) {
-      paddingBottom =
-        overDragSafePaddingBottom + animatedKeyboardHeightInContainer.get();
+    const {
+      status: keyboardStatus,
+      heightWithinContainer: keyboardHeightWithinContainer,
+    } = animatedKeyboardState.get();
+    if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
+      paddingBottom = overDragSafePaddingBottom + keyboardHeightWithinContainer;
     }
 
     return paddingBottom;
   }, [
     overDragResistanceFactor,
     animatedPosition,
-    animatedContainerHeight,
-    animatedHighestSnapPoint,
+    animatedLayoutState,
+    animatedDetentsState,
     animatedKeyboardState,
-    animatedKeyboardHeightInContainer,
   ]);
   //#endregion
 
   //#region styles
   const contentMaskContainerAnimatedStyle = useAnimatedStyle(() => {
+    const { containerHeight, contentHeight } = animatedLayoutState.get();
     /**
      * if container height is not yet calculated, then we exit the method
      */
-    if (animatedContainerHeight.get() === INITIAL_CONTAINER_HEIGHT) {
+    if (containerHeight === INITIAL_LAYOUT_VALUE) {
       return {};
     }
 
@@ -186,14 +193,12 @@ function BottomSheetContentComponent({
      * if dynamic sizing is enabled, and content height
      * is still not set, then we exit method.
      */
-    if (
-      enableDynamicSizing &&
-      animatedContentHeight.get() === INITIAL_CONTAINER_HEIGHT
-    ) {
+    if (enableDynamicSizing && contentHeight === INITIAL_LAYOUT_VALUE) {
       return {};
     }
 
     const paddingBottom = detached ? 0 : animatedPaddingBottom.get();
+    const height = animatedContentHeightMax.get() + paddingBottom;
 
     return {
       paddingBottom: animate({
@@ -202,7 +207,7 @@ function BottomSheetContentComponent({
         overrideReduceMotion,
       }),
       height: animate({
-        point: animatedContentHeightMax.get() + paddingBottom,
+        point: height,
         configs: animationConfigs,
         overrideReduceMotion,
       }),
@@ -213,9 +218,9 @@ function BottomSheetContentComponent({
     detached,
     animationConfigs,
     overrideReduceMotion,
-    animatedContentHeight,
+    animatedLayoutState,
     animatedContentHeightMax,
-    animatedContainerHeight,
+    animatedLayoutState,
   ]);
   const contentContainerStyle = useMemo(
     () => [

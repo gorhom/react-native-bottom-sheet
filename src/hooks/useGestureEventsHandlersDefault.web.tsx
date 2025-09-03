@@ -1,13 +1,10 @@
+import { useCallback } from 'react';
 import { Keyboard, Platform } from 'react-native';
-import {
-  runOnJS,
-  useSharedValue,
-  useWorkletCallback,
-} from 'react-native-reanimated';
+import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
-  KEYBOARD_STATE,
+  KEYBOARD_STATUS,
   SCROLLABLE_TYPE,
   WINDOW_HEIGHT,
 } from '../constants';
@@ -18,7 +15,7 @@ import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 type GestureEventContextType = {
   initialPosition: number;
-  initialKeyboardState: KEYBOARD_STATE;
+  initialKeyboardStatus: KEYBOARD_STATUS;
   initialTranslationY: number;
   isScrollablePositionLocked: boolean;
 };
@@ -26,7 +23,7 @@ type GestureEventContextType = {
 const INITIAL_CONTEXT: GestureEventContextType = {
   initialPosition: 0,
   initialTranslationY: 0,
-  initialKeyboardState: KEYBOARD_STATE.UNDETERMINED,
+  initialKeyboardStatus: KEYBOARD_STATUS.UNDETERMINED,
   isScrollablePositionLocked: false,
 };
 
@@ -44,19 +41,14 @@ export const useGestureEventsHandlersDefault = () => {
   //#region variables
   const {
     animatedPosition,
-    animatedSnapPoints,
+    animatedDetentsState,
     animatedKeyboardState,
-    animatedKeyboardHeight,
-    animatedContainerHeight,
-    animatedScrollableType,
-    animatedHighestSnapPoint,
-    animatedClosedPosition,
-    animatedScrollableContentOffsetY,
+    animatedLayoutState,
+    animatedScrollableState,
     enableOverDrag,
     enablePanDownToClose,
     overDragResistanceFactor,
     isInTemporaryPosition,
-    isScrollableRefreshable,
     animateToPosition,
     stopAnimation,
   } = useBottomSheetInternal();
@@ -67,8 +59,9 @@ export const useGestureEventsHandlersDefault = () => {
   //#endregion
 
   //#region gesture methods
-  const handleOnStart: GestureEventHandlerCallbackType = useWorkletCallback(
+  const handleOnStart: GestureEventHandlerCallbackType = useCallback(
     function handleOnStart(__, { translationY }) {
+      'worklet';
       // cancel current animation
       stopAnimation();
 
@@ -76,7 +69,7 @@ export const useGestureEventsHandlersDefault = () => {
       context.value = {
         ...context.value,
         initialPosition: animatedPosition.value,
-        initialKeyboardState: animatedKeyboardState.value,
+        initialKeyboardStatus: animatedKeyboardState.get().status,
         initialTranslationY: translationY,
       };
 
@@ -84,21 +77,27 @@ export const useGestureEventsHandlersDefault = () => {
        * if the scrollable content is scrolled, then
        * we lock the position.
        */
-      if (animatedScrollableContentOffsetY.value > 0) {
+      if (animatedScrollableState.get().contentOffsetY > 0) {
         context.value.isScrollablePositionLocked = true;
       }
     },
     [
       stopAnimation,
+      context,
       animatedPosition,
       animatedKeyboardState,
-      animatedScrollableContentOffsetY,
+      animatedScrollableState,
     ]
   );
-  const handleOnChange: GestureEventHandlerCallbackType = useWorkletCallback(
+  const handleOnChange: GestureEventHandlerCallbackType = useCallback(
     function handleOnChange(source, { translationY }) {
-      let highestSnapPoint = animatedHighestSnapPoint.value;
+      'worklet';
+      const { highestDetentPosition, detents } = animatedDetentsState.get();
+      if (highestDetentPosition === undefined || detents === undefined) {
+        return;
+      }
 
+      let highestSnapPoint = highestDetentPosition;
       translationY = translationY - context.value.initialTranslationY;
       /**
        * if keyboard is shown, then we set the highest point to the current
@@ -106,7 +105,7 @@ export const useGestureEventsHandlersDefault = () => {
        */
       if (
         isInTemporaryPosition.value &&
-        context.value.initialKeyboardState === KEYBOARD_STATE.SHOWN
+        context.value.initialKeyboardStatus === KEYBOARD_STATUS.SHOWN
       ) {
         highestSnapPoint = context.value.initialPosition;
       }
@@ -122,9 +121,16 @@ export const useGestureEventsHandlersDefault = () => {
         highestSnapPoint = context.value.initialPosition;
       }
 
+      const { containerHeight } = animatedLayoutState.get();
       const lowestSnapPoint = enablePanDownToClose
-        ? animatedContainerHeight.value
-        : animatedSnapPoints.value[0];
+        ? containerHeight
+        : detents[0];
+
+      const {
+        refreshable: scrollableIsRefreshable,
+        contentOffsetY: scrollableContentOffsetY,
+        type: scrollableType,
+      } = animatedScrollableState.get();
 
       /**
        * if scrollable is refreshable and sheet position at the highest
@@ -132,7 +138,7 @@ export const useGestureEventsHandlersDefault = () => {
        */
       if (
         source === GESTURE_SOURCE.CONTENT &&
-        isScrollableRefreshable.value &&
+        scrollableIsRefreshable &&
         animatedPosition.value === highestSnapPoint
       ) {
         return;
@@ -148,7 +154,7 @@ export const useGestureEventsHandlersDefault = () => {
         (context.value.initialPosition === highestSnapPoint &&
           source === GESTURE_SOURCE.CONTENT) ||
         !context.value.isScrollablePositionLocked
-          ? animatedScrollableContentOffsetY.value * -1
+          ? scrollableContentOffsetY * -1
           : 0;
 
       /**
@@ -192,7 +198,7 @@ export const useGestureEventsHandlersDefault = () => {
       if (enableOverDrag) {
         if (
           (source === GESTURE_SOURCE.HANDLE ||
-            animatedScrollableType.value === SCROLLABLE_TYPE.VIEW) &&
+            scrollableType === SCROLLABLE_TYPE.VIEW) &&
           draggedPosition < highestSnapPoint
         ) {
           const resistedPosition =
@@ -236,24 +242,39 @@ export const useGestureEventsHandlersDefault = () => {
       animatedPosition.value = clampedPosition;
     },
     [
+      context,
       enableOverDrag,
       enablePanDownToClose,
       overDragResistanceFactor,
       isInTemporaryPosition,
-      isScrollableRefreshable,
-      animatedHighestSnapPoint,
-      animatedContainerHeight,
-      animatedSnapPoints,
+      animatedDetentsState,
+      animatedLayoutState,
       animatedPosition,
-      animatedScrollableType,
-      animatedScrollableContentOffsetY,
+      animatedScrollableState,
     ]
   );
-  const handleOnEnd: GestureEventHandlerCallbackType = useWorkletCallback(
+  const handleOnEnd: GestureEventHandlerCallbackType = useCallback(
     function handleOnEnd(source, { translationY, absoluteY, velocityY }) {
-      const highestSnapPoint = animatedHighestSnapPoint.value;
+      'worklet';
+      const { highestDetentPosition, detents, closedDetentPosition } =
+        animatedDetentsState.get();
+      if (
+        highestDetentPosition === undefined ||
+        detents === undefined ||
+        closedDetentPosition === undefined
+      ) {
+        return;
+      }
+
+      const highestSnapPoint = highestDetentPosition;
       const isSheetAtHighestSnapPoint =
         animatedPosition.value === highestSnapPoint;
+
+      const {
+        refreshable: scrollableIsRefreshable,
+        contentOffsetY: scrollableContentOffsetY,
+        type: scrollableType,
+      } = animatedScrollableState.get();
 
       /**
        * if scrollable is refreshable and sheet position at the highest
@@ -261,7 +282,7 @@ export const useGestureEventsHandlersDefault = () => {
        */
       if (
         source === GESTURE_SOURCE.CONTENT &&
-        isScrollableRefreshable.value &&
+        scrollableIsRefreshable &&
         isSheetAtHighestSnapPoint
       ) {
         return;
@@ -290,15 +311,15 @@ export const useGestureEventsHandlersDefault = () => {
        * start position and keyboard still shown.
        */
       const isScrollable =
-        animatedScrollableType.value !== SCROLLABLE_TYPE.UNDETERMINED &&
-        animatedScrollableType.value !== SCROLLABLE_TYPE.VIEW;
+        scrollableType !== SCROLLABLE_TYPE.UNDETERMINED &&
+        scrollableType !== SCROLLABLE_TYPE.VIEW;
 
       /**
        * if keyboard is shown and the sheet is dragged down,
        * then we dismiss the keyboard.
        */
       if (
-        context.value.initialKeyboardState === KEYBOARD_STATE.SHOWN &&
+        context.value.initialKeyboardStatus === KEYBOARD_STATUS.SHOWN &&
         animatedPosition.value > context.value.initialPosition
       ) {
         /**
@@ -312,7 +333,8 @@ export const useGestureEventsHandlersDefault = () => {
           !(
             Platform.OS === 'ios' &&
             isScrollable &&
-            absoluteY > WINDOW_HEIGHT - animatedKeyboardHeight.value
+            absoluteY >
+              WINDOW_HEIGHT - animatedKeyboardState.get().heightWithinContainer
           )
         ) {
           dismissKeyboardOnJs();
@@ -330,9 +352,9 @@ export const useGestureEventsHandlersDefault = () => {
        * clone snap points array, and insert the container height
        * if pan down to close is enabled.
        */
-      const snapPoints = animatedSnapPoints.value.slice();
+      const snapPoints = detents.slice();
       if (enablePanDownToClose) {
-        snapPoints.unshift(animatedClosedPosition.value);
+        snapPoints.unshift(closedDetentPosition);
       }
 
       /**
@@ -353,8 +375,7 @@ export const useGestureEventsHandlersDefault = () => {
       }
 
       const wasGestureHandledByScrollView =
-        source === GESTURE_SOURCE.CONTENT &&
-        animatedScrollableContentOffsetY.value > 0;
+        source === GESTURE_SOURCE.CONTENT && scrollableContentOffsetY > 0;
       /**
        * prevents snapping from top to middle / bottom with repeated interrupted scrolls
        */
@@ -371,19 +392,17 @@ export const useGestureEventsHandlersDefault = () => {
     [
       enablePanDownToClose,
       isInTemporaryPosition,
-      isScrollableRefreshable,
-      animatedClosedPosition,
-      animatedHighestSnapPoint,
-      animatedKeyboardHeight,
+      animatedScrollableState,
+      animatedDetentsState,
+      animatedKeyboardState,
       animatedPosition,
-      animatedScrollableType,
-      animatedSnapPoints,
-      animatedScrollableContentOffsetY,
       animateToPosition,
+      context,
     ]
   );
-  const handleOnFinalize: GestureEventHandlerCallbackType = useWorkletCallback(
+  const handleOnFinalize: GestureEventHandlerCallbackType = useCallback(
     function handleOnFinalize() {
+      'worklet';
       resetContext(context);
     },
     [context]
