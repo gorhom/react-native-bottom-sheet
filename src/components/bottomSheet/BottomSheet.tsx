@@ -77,6 +77,7 @@ import {
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   DEFAULT_KEYBOARD_BEHAVIOR,
   DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
+  DEFAULT_KEYBOARD_INDEX,
   DEFAULT_KEYBOARD_INPUT_MODE,
   DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
   INITIAL_POSITION,
@@ -552,10 +553,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        if (animatedAnimationState.get().source === ANIMATION_SOURCE.MOUNT) {
-          isAnimatedOnMount.value = true;
-        }
-
         // callbacks
         if (nextIndex !== animatedCurrentIndex.get()) {
           runOnJS(handleOnChange)(nextIndex, nextPosition);
@@ -568,6 +565,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedCurrentIndex.set(nextIndex);
 
         // reset values
+        animatedContainerHeightDidChange.set(false);
+        isAnimatedOnMount.set(true);
         animatedAnimationState.set({
           status: ANIMATION_STATUS.STOPPED,
           source: ANIMATION_SOURCE.NONE,
@@ -575,7 +574,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           nextPosition: undefined,
           isForcedClosing: undefined,
         });
-        animatedContainerHeightDidChange.value = false;
       },
       [
         handleOnChange,
@@ -642,21 +640,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         ) {
           offset = heightWithinContainer;
         }
-
         const { detents } = animatedDetentsState.get();
         let index = detents?.indexOf(position + offset) ?? -1;
 
         /**
          * because keyboard position is not part of the detents array,
-         * we need to keep the index to the current index.
+         * we will need to manually set the index to the highest detent index.
          */
         if (
           index === -1 &&
           status === KEYBOARD_STATUS.SHOWN &&
-          source === ANIMATION_SOURCE.KEYBOARD &&
-          isInTemporaryPosition.get()
+          source === ANIMATION_SOURCE.KEYBOARD
         ) {
-          index = animatedCurrentIndex.value;
+          index =
+            animatedDetentsState.get().highestDetentPosition ??
+            DEFAULT_KEYBOARD_INDEX;
         }
 
         /**
@@ -700,8 +698,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedAnimationState,
         animatedKeyboardState,
         animatedPosition,
-        animatedCurrentIndex,
-        isInTemporaryPosition,
       ]
     );
     /**
