@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.2.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.4...v5.2.5) (2025-09-04)
+
+### 🐛 Bug Fixes
+
+* **#2449:** adjust next index to current index when animating to a temporary position ([20de151](https://github.com/gorhom/react-native-bottom-sheet/commit/20de1513f571e079d243da9f3bbf3688f10acf7b)), closes [#2449](https://github.com/gorhom/react-native-bottom-sheet/issues/2449)
+* **#2449:** adjust next index to the highest detent index when animating by keyboard ([f8cd4fe](https://github.com/gorhom/react-native-bottom-sheet/commit/f8cd4fe37c1b05abd4153f586d61658a3d7954b8)), closes [#2449](https://github.com/gorhom/react-native-bottom-sheet/issues/2449)
+* conditionally apply web-only cursor style to avoid TypeScript error ([#2420](https://github.com/gorhom/react-native-bottom-sheet/issues/2420))(by [@kirstilynn](https://github.com/kirstilynn)) ([e5c077b](https://github.com/gorhom/react-native-bottom-sheet/commit/e5c077b9cc630d256ca8d9a895a35b1989394d7a))
+
+### 🧹 Maintenance Chores
+
+* updated the example deps ([c9e0473](https://github.com/gorhom/react-native-bottom-sheet/commit/c9e0473f097d61d467449b68af1170e58267136a))
+
 ## [5.2.4](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.3...v5.2.4) (2025-08-28)
 
 ### 🐛 Bug Fixes
