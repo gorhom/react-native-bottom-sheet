@@ -1,7 +1,7 @@
-const path = require('path');
+const path = require('node:path');
 const pak = require('../package.json');
 
-module.exports = function (api) {
+module.exports = api => {
   api.cache(true);
   return {
     presets: ['babel-preset-expo'],
@@ -16,7 +16,7 @@ module.exports = function (api) {
         },
       ],
       '@babel/plugin-proposal-export-namespace-from',
-      'react-native-reanimated/plugin',
+      'react-native-worklets/plugin',
     ],
   };
 };
