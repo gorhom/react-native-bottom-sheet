@@ -644,7 +644,20 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         const { detents } = animatedDetentsState.get();
-        const index = detents?.indexOf(position + offset) ?? -1;
+        let index = detents?.indexOf(position + offset) ?? -1;
+
+        /**
+         * because keyboard position is not part of the detents array,
+         * we need to keep the index to the current index.
+         */
+        if (
+          index === -1 &&
+          status === KEYBOARD_STATUS.SHOWN &&
+          source === ANIMATION_SOURCE.KEYBOARD &&
+          isInTemporaryPosition.get()
+        ) {
+          index = animatedCurrentIndex.value;
+        }
 
         /**
          * set the animation state
@@ -687,6 +700,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedAnimationState,
         animatedKeyboardState,
         animatedPosition,
+        animatedCurrentIndex,
+        isInTemporaryPosition,
       ]
     );
     /**
