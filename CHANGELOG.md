@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.5...v5.2.6) (2025-09-05)
+
+### 🐛 Bug Fixes
+
+* **#2452:** prevented the bottom sheet from snapping to -1 when resizing the detent while keyboard is open([#2327](https://github.com/gorhom/react-native-bottom-sheet/issues/2327))(by [@pakerwreah](https://github.com/pakerwreah)) ([c68edac](https://github.com/gorhom/react-native-bottom-sheet/commit/c68edacf50b76ca08ac599a8485a533c710c6289)), closes [#2452](https://github.com/gorhom/react-native-bottom-sheet/issues/2452)
+* prevent the bottom sheet from closing when over dragging while keyboard is open ([cce1f7e](https://github.com/gorhom/react-native-bottom-sheet/commit/cce1f7e0cc1b0d3c2a0014ba17624f8671816e15))
+
 ## [5.2.5](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.4...v5.2.5) (2025-09-04)
 
 ### 🐛 Bug Fixes
