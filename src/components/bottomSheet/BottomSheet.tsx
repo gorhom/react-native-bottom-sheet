@@ -632,15 +632,22 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * offset the position if keyboard is shown and behavior not extend.
          */
         let offset = 0;
+
         const { status, heightWithinContainer } = animatedKeyboardState.get();
+        const sheetState = animatedSheetState.get();
         if (
           status === KEYBOARD_STATUS.SHOWN &&
           keyboardBehavior !== KEYBOARD_BEHAVIOR.extend &&
-          [ANIMATION_SOURCE.KEYBOARD, ANIMATION_SOURCE.SNAP_POINT_CHANGE].includes(source)
+          ([
+            ANIMATION_SOURCE.KEYBOARD,
+            ANIMATION_SOURCE.SNAP_POINT_CHANGE,
+          ].includes(source) ||
+            sheetState === SHEET_STATE.OVER_EXTENDED)
         ) {
           offset = heightWithinContainer;
         }
-        const { detents } = animatedDetentsState.get();
+        const { detents, closedDetentPosition, highestDetentPosition } =
+          animatedDetentsState.get();
         let index = detents?.indexOf(position + offset) ?? -1;
 
         /**
@@ -650,11 +657,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (
           index === -1 &&
           status === KEYBOARD_STATUS.SHOWN &&
-          source === ANIMATION_SOURCE.KEYBOARD
+          position !== closedDetentPosition
         ) {
-          index =
-            animatedDetentsState.get().highestDetentPosition ??
-            DEFAULT_KEYBOARD_INDEX;
+          index = highestDetentPosition ?? DEFAULT_KEYBOARD_INDEX;
         }
 
         /**
@@ -698,6 +703,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedAnimationState,
         animatedKeyboardState,
         animatedPosition,
+        animatedSheetState,
       ]
     );
     /**
