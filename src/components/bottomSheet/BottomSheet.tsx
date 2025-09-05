@@ -636,7 +636,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         if (
           status === KEYBOARD_STATUS.SHOWN &&
           keyboardBehavior !== KEYBOARD_BEHAVIOR.extend &&
-          [ANIMATION_SOURCE.KEYBOARD, ANIMATION_SOURCE.SNAP_POINT_CHANGE].includes(source)
+          [
+            ANIMATION_SOURCE.KEYBOARD,
+            ANIMATION_SOURCE.SNAP_POINT_CHANGE,
+            ANIMATION_SOURCE.MOUNT,
+          ].includes(source)
         ) {
           offset = heightWithinContainer;
         }
