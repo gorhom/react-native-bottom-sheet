@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { Insets, StyleProp, View, ViewStyle } from 'react-native';
+import type {AccessibilityRole, Insets, StyleProp, View, ViewStyle} from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
   AnimateStyle,
@@ -106,6 +106,9 @@ export interface BottomSheetProps
    * @default ReduceMotion.System
    */
   overrideReduceMotion?: ReduceMotion;
+  accessibleBackground: boolean;
+  accessibilityBackgroundLabel?: string;
+  accessibilityBackgroundRole?: AccessibilityRole;
   //#endregion
 
   //#region layout
