@@ -3,7 +3,7 @@ import {
   BottomSheetModal,
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { ForwardedRef, useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from '../../components/button';
 import { ContactList } from '../../components/contactList';
@@ -15,7 +15,7 @@ const StackExample = () => {
   const { dismiss, dismissAll } = useBottomSheetModal();
 
   // refs
-  const bottomSheetModalARef = useRef<BottomSheetModal>(null);
+  const bottomSheetModalARef = useRef<BottomSheetModal | null>(null);
   const bottomSheetModalBRef = useRef<BottomSheetModal>(null);
   const bottomSheetModalCRef = useRef<BottomSheetModal>(null);
 
@@ -23,6 +23,11 @@ const StackExample = () => {
   const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
+  const assignBottomSheetModalARef = useCallback((ref: BottomSheetModal | null) => {
+    if(ref){
+      bottomSheetModalARef.current = ref
+    }
+  }, [])
   const handlePresentAPress = useCallback(() => {
     if (bottomSheetModalARef.current) {
       bottomSheetModalARef.current.present();
@@ -106,7 +111,7 @@ const StackExample = () => {
 
       <BottomSheetModal
         name="A"
-        ref={bottomSheetModalARef}
+        ref={assignBottomSheetModalARef}
         snapPoints={snapPoints}
         enableDynamicSizing={false}
         handleComponent={renderHeaderHandle('Modal A')}

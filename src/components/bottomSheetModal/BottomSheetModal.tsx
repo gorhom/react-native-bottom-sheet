@@ -86,6 +86,7 @@ function BottomSheetModalComponent<T = any>(
   const forcedDismissed = useRef(false);
   const mounted = useRef(false);
   mounted.current = mount;
+  const internalRef = useRef<BottomSheetModalMethods | null>(null);
   //#endregion
 
   //#region variables
@@ -187,7 +188,7 @@ function BottomSheetModalComponent<T = any>(
 
   //#region bottom sheet modal methods
   // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
-  // biome-ignore lint/correctness/useExhaustiveDependencies(ref): ref is a stable object
+  // biome-ignore lint/correctness/useExhaustiveDependencies(internalRef): internalRef is a stable object
   const handlePresent = useCallback(
     function handlePresent(_data?: T) {
       requestAnimationFrame(() => {
@@ -197,10 +198,10 @@ function BottomSheetModalComponent<T = any>(
         });
         mountSheet(
           key,
-          ref as unknown as RefObject<BottomSheetModalPrivateMethods>,
+          internalRef as unknown as RefObject<BottomSheetModalPrivateMethods>,
           stackBehavior
         );
-        ref;
+        internalRef;
 
         if (__DEV__) {
           print({
@@ -416,21 +417,38 @@ function BottomSheetModalComponent<T = any>(
   //#endregion
 
   //#region expose methods
-  useImperativeHandle(ref, () => ({
-    // sheet
-    snapToIndex: handleSnapToIndex,
-    snapToPosition: handleSnapToPosition,
-    expand: handleExpand,
-    collapse: handleCollapse,
-    close: handleClose,
-    forceClose: handleForceClose,
-    // modal methods
-    dismiss: handleDismiss,
-    present: handlePresent,
-    // internal
-    minimize: handleMinimize,
-    restore: handleRestore,
-  }));
+  const internalSheetApi = useMemo(() => {
+    return {
+      // sheet
+      snapToIndex: handleSnapToIndex,
+      snapToPosition: handleSnapToPosition,
+      expand: handleExpand,
+      collapse: handleCollapse,
+      close: handleClose,
+      forceClose: handleForceClose,
+      // modal methods
+      dismiss: handleDismiss,
+      present: handlePresent,
+      // internal
+      minimize: handleMinimize,
+      restore: handleRestore,
+    }
+  }, [
+    handleSnapToIndex,
+    handleSnapToPosition,
+    handleExpand,
+    handleCollapse,
+    handleClose,
+    handleForceClose,
+    handleDismiss,
+    handlePresent,
+    handleMinimize,
+    handleRestore,
+  ])
+
+  internalRef.current = internalSheetApi
+  
+  useImperativeHandle(ref, () => internalSheetApi, [internalSheetApi]);
   //#endregion
 
   // render
