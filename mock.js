@@ -227,6 +227,7 @@ module.exports = {
   useBottomSheetInternal,
   useBottomSheetModalInternal,
   useBottomSheetDynamicSnapPoints,
+  useBottomSheetScrollableCreator: NOOP,
 
   ...ENUMS,
   createBottomSheetScrollableComponent,
