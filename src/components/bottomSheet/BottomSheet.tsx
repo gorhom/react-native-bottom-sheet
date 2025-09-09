@@ -1709,13 +1709,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         /**
-         * if new keyboard state is hidden and blur behavior is none, then exit the method
+         * if new keyboard state is hidden and blur behavior is none,
+         * clear temporary position so evaluatePosition can snap to detent.
          */
         if (
           status === KEYBOARD_STATUS.HIDDEN &&
           keyboardBlurBehavior === KEYBOARD_BLUR_BEHAVIOR.none
         ) {
-          return;
+          isInTemporaryPosition.value = false;
         }
 
         const animationConfigs = getKeyboardAnimationConfigs(easing, duration);
