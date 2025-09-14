@@ -9,11 +9,11 @@ import React, {
 import type { ViewProps } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useAnimatedReaction,
-  runOnJS,
   Extrapolation,
+  interpolate,
+  runOnJS,
+  useAnimatedReaction,
+  useAnimatedStyle,
 } from 'react-native-reanimated';
 import { useBottomSheet } from '../../hooks';
 import {
@@ -73,6 +73,8 @@ const BottomSheetBackdropComponent = ({
       close();
     } else if (pressBehavior === 'collapse') {
       snapToIndex(disappearsOnIndex as number);
+    } else if (pressBehavior === 'custom') {
+      // do nothing, only onPress will be called
     } else if (typeof pressBehavior === 'number') {
       snapToIndex(pressBehavior);
     }
