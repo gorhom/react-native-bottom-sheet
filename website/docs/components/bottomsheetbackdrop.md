@@ -68,7 +68,7 @@ What should happen when user press backdrop?
 - `none`: do nothing, and `onPress` prop will be ignored.
 - `close`: close the sheet.
 - `collapse`: collapse the sheet.
-- `custom`: only `onPress` function will be called
+- `custom`: only `onPress` function will be called.
 - `N`: snap point index.
 
 | type                              | default | required |
