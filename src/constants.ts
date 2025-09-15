@@ -1,6 +1,5 @@
 import { Dimensions, Platform } from 'react-native';
-import type Animated from 'react-native-reanimated';
-import { Easing } from 'react-native-reanimated';
+import { Easing, EasingFunction } from 'react-native-reanimated';
 import type { SpringConfig, TimingConfig } from './types';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
