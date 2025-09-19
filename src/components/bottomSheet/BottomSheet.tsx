@@ -259,8 +259,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }, [animatedLayoutState, animatedDetentsState, handleComponent]);
     const isInTemporaryPosition = useSharedValue(false);
     const animatedContainerHeightDidChange = useSharedValue(false);
-    const keyboardStateChangeCounter = useSharedValue(0);
-    const previousKeyboardStateHash = useSharedValue('');
+    const keyboardReactionTrigger = useSharedValue(0);
 
     // gesture
     const animatedContentGestureState = useSharedValue<State>(
@@ -1611,20 +1610,26 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      *
      * @alias OnKeyboardStateChange
      */
+    // CRITICAL FIX: Use separate reaction that triggers more reliably in production
     useAnimatedReaction(
-      () => {
-        const state = animatedKeyboardState.get();
-        // CRITICAL FIX: Force reaction trigger by incrementing counter on state changes
-        // This ensures the reaction always triggers, even in production builds
-        const stateHash = `${state.status}_${state.height}_${state.target || 0}`;
-        const prevStateHash = previousKeyboardStateHash.value;
-        if (stateHash !== prevStateHash) {
-          keyboardStateChangeCounter.value =
-            keyboardStateChangeCounter.value + 1;
-          previousKeyboardStateHash.value = stateHash;
+      () => animatedKeyboardState.get(),
+      (currentState, previousState) => {
+        // Force reaction trigger by checking if state actually changed
+        if (
+          !previousState ||
+          currentState.status !== previousState.status ||
+          currentState.height !== previousState.height ||
+          (currentState.target || 0) !== (previousState.target || 0)
+        ) {
+          // Increment trigger to force main reaction
+          keyboardReactionTrigger.value = keyboardReactionTrigger.value + 1;
         }
-        return keyboardStateChangeCounter.value;
       },
+      [keyboardReactionTrigger]
+    );
+
+    useAnimatedReaction(
+      () => keyboardReactionTrigger.value,
       (result, _previousResult) => {
         /**
          * if keyboard state is equal to the previous state, then exit the method
