@@ -259,6 +259,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }, [animatedLayoutState, animatedDetentsState, handleComponent]);
     const isInTemporaryPosition = useSharedValue(false);
     const animatedContainerHeightDidChange = useSharedValue(false);
+    const keyboardStateChangeCounter = useSharedValue(0);
+    const previousKeyboardStateHash = useSharedValue('');
 
     // gesture
     const animatedContentGestureState = useSharedValue<State>(
@@ -1612,8 +1614,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     useAnimatedReaction(
       () => {
         const state = animatedKeyboardState.get();
-        // CRITICAL FIX: Add target to reaction to ensure it triggers on subsequent keyboard opens
-        return state.status + state.height + (state.target || 0);
+        // CRITICAL FIX: Force reaction trigger by incrementing counter on state changes
+        // This ensures the reaction always triggers, even in production builds
+        const stateHash = `${state.status}_${state.height}_${state.target || 0}`;
+        const prevStateHash = previousKeyboardStateHash.value;
+        if (stateHash !== prevStateHash) {
+          keyboardStateChangeCounter.value =
+            keyboardStateChangeCounter.value + 1;
+          previousKeyboardStateHash.value = stateHash;
+        }
+        return keyboardStateChangeCounter.value;
       },
       (result, _previousResult) => {
         /**
