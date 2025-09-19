@@ -1610,8 +1610,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * @alias OnKeyboardStateChange
      */
     useAnimatedReaction(
-      () =>
-        animatedKeyboardState.get().status + animatedKeyboardState.get().height,
+      () => {
+        const state = animatedKeyboardState.get();
+        // CRITICAL FIX: Add target to reaction to ensure it triggers on subsequent keyboard opens
+        return state.status + state.height + (state.target || 0);
+      },
       (result, _previousResult) => {
         /**
          * if keyboard state is equal to the previous state, then exit the method
@@ -1691,6 +1694,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             return;
           }
         }
+
         animatedKeyboardState.set(state => ({
           ...state,
           heightWithinContainer,
