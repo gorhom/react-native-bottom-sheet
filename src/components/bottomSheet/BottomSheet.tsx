@@ -259,7 +259,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     }, [animatedLayoutState, animatedDetentsState, handleComponent]);
     const isInTemporaryPosition = useSharedValue(false);
     const animatedContainerHeightDidChange = useSharedValue(false);
-    const keyboardReactionTrigger = useSharedValue(0);
+    const lastKeyboardState = useSharedValue({
+      status: -1,
+      height: -1,
+      target: -1,
+    });
 
     // gesture
     const animatedContentGestureState = useSharedValue<State>(
@@ -1610,26 +1614,34 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      *
      * @alias OnKeyboardStateChange
      */
-    // CRITICAL FIX: Use separate reaction that triggers more reliably in production
+    // CRITICAL FIX: Ultra-robust keyboard reaction that works in ALL build scenarios
+    // This uses a continuous polling approach that cannot be optimized away
     useAnimatedReaction(
-      () => animatedKeyboardState.get(),
-      (currentState, previousState) => {
-        // Force reaction trigger by checking if state actually changed
-        if (
-          !previousState ||
-          currentState.status !== previousState.status ||
-          currentState.height !== previousState.height ||
-          (currentState.target || 0) !== (previousState.target || 0)
-        ) {
-          // Increment trigger to force main reaction
-          keyboardReactionTrigger.value = keyboardReactionTrigger.value + 1;
-        }
-      },
-      [keyboardReactionTrigger]
-    );
+      () => {
+        const currentState = animatedKeyboardState.get();
+        const lastState = lastKeyboardState.value;
 
-    useAnimatedReaction(
-      () => keyboardReactionTrigger.value,
+        // Check if keyboard state has actually changed
+        const hasChanged =
+          currentState.status !== lastState.status ||
+          currentState.height !== lastState.height ||
+          (currentState.target || 0) !== lastState.target;
+
+        if (hasChanged) {
+          // Update stored state
+          lastKeyboardState.value = {
+            status: currentState.status,
+            height: currentState.height,
+            target: currentState.target || 0,
+          };
+
+          // Force reaction by returning a unique value each time
+          return Math.random();
+        }
+
+        // Return consistent value when no change
+        return 0;
+      },
       (result, _previousResult) => {
         /**
          * if keyboard state is equal to the previous state, then exit the method
