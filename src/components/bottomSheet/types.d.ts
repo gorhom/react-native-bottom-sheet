@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { Insets, StyleProp, View, ViewStyle } from 'react-native';
+import type { Insets, StyleProp, ViewStyle } from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
   AnimateStyle,
@@ -84,6 +84,12 @@ export interface BottomSheetProps
    * @default false
    */
   enablePanDownToClose?: boolean;
+  /**
+   * snaps to the same index as its current position.
+   * @type boolean
+   * @default false
+   */
+  enableSameSnapIndexOnAnimate?: boolean;
   /**
    * Enable dynamic sizing for content view and scrollable content size.
    * @type boolean
