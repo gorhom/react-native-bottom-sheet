@@ -73,6 +73,7 @@ import {
   DEFAULT_DYNAMIC_SIZING,
   DEFAULT_ENABLE_BLUR_KEYBOARD_ON_GESTURE,
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
+  DEFAULT_ENABLE_ON_ANIMATE_CALLBACK_SAME_SNAP_INDEX,
   DEFAULT_ENABLE_OVER_DRAG,
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
   DEFAULT_KEYBOARD_BEHAVIOR,
@@ -109,6 +110,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       enableDynamicSizing = DEFAULT_DYNAMIC_SIZING,
       overDragResistanceFactor = DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
       overrideReduceMotion: _providedOverrideReduceMotion,
+      enableSameSnapIndexOnAnimate = DEFAULT_ENABLE_ON_ANIMATE_CALLBACK_SAME_SNAP_INDEX,
 
       // styles
       style,
@@ -482,7 +484,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           });
         }
 
-        if (targetIndex === animatedCurrentIndex.get()) {
+        // Prevent calling onAnimate if the target index is the same as current,
+        // unless explicitly allowed by enableSameSnapIndexOnAnimate
+        if (
+          targetIndex === animatedCurrentIndex.get() &&
+          !enableSameSnapIndexOnAnimate
+        ) {
           return;
         }
 
@@ -497,7 +504,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           targetPosition
         );
       },
-      [_providedOnAnimate, animatedCurrentIndex, animatedPosition]
+      [
+        _providedOnAnimate,
+        animatedCurrentIndex,
+        animatedPosition,
+        enableSameSnapIndexOnAnimate,
+      ]
     );
     const handleOnClose = useCallback(
       function handleOnClose() {
