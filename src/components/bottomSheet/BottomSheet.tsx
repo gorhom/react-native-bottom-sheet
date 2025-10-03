@@ -659,7 +659,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           status === KEYBOARD_STATUS.SHOWN &&
           position !== closedDetentPosition
         ) {
-          index = highestDetentPosition ?? DEFAULT_KEYBOARD_INDEX;
+          index = detents?.indexOf(highestDetentPosition ?? 0) ?? DEFAULT_KEYBOARD_INDEX;
         }
 
         /**
