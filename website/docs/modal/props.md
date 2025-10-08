@@ -20,8 +20,6 @@ Modal name to help identify the modal for later on.
 
 ### stackBehavior
 
-**`Available only on v3, for now.`**
-
 Defines the stack behavior when modal mounts.
 
 - `push` it will mount the modal on top of the current one.
