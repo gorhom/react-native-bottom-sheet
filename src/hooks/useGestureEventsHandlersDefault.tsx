@@ -382,8 +382,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           translationY + context.value.initialPosition;
 
         if (wasGestureHandledByScrollView) {
-          rawDestinationPosition -=
-            animatedScrollableState.get().contentOffsetY;
+          rawDestinationPosition -= scrollableContentOffsetY;
         }
 
         /**
