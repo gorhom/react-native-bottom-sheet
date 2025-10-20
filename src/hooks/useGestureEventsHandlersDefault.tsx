@@ -33,7 +33,7 @@ const dismissKeyboard = Keyboard.dismiss;
 // biome-ignore lint: to be addressed!
 const resetContext = (context: any) => {
   'worklet';
-  Object.keys(context).map(key => {
+  Object.keys(context).forEach(key => {
     context[key] = undefined;
   });
 };
@@ -375,11 +375,22 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           snapPoints.unshift(closedDetentPosition);
         }
 
+        const wasGestureHandledByScrollView =
+          source === GESTURE_SOURCE.CONTENT && scrollableContentOffsetY > 0;
+
+        let rawDestinationPosition =
+          translationY + context.value.initialPosition;
+
+        if (wasGestureHandledByScrollView) {
+          rawDestinationPosition -=
+            animatedScrollableState.get().contentOffsetY;
+        }
+
         /**
          * calculate the destination point, using redash.
          */
         const destinationPoint = snapPoint(
-          translationY + context.value.initialPosition,
+          rawDestinationPosition,
           velocityY,
           snapPoints
         );
@@ -392,8 +403,6 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           return;
         }
 
-        const wasGestureHandledByScrollView =
-          source === GESTURE_SOURCE.CONTENT && scrollableContentOffsetY > 0;
         /**
          * prevents snapping from top to middle / bottom with repeated interrupted scrolls
          */
