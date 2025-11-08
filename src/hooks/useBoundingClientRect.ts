@@ -55,17 +55,20 @@ export function useBoundingClientRect(
       return;
     }
 
-    // @ts-ignore 👉 https://github.com/facebook/react/commit/53b1f69ba
-    if (ref.current.unstable_getBoundingClientRect !== null) {
-      // @ts-ignore https://github.com/facebook/react/commit/53b1f69ba
+    // @ts-expect-error 👉 https://github.com/facebook/react/commit/53b1f69ba
+    if (
+      ref.current.unstable_getBoundingClientRect !== null &&
+      typeof ref.current.unstable_getBoundingClientRect === 'function'
+    ) {
+      // @ts-expect-error https://github.com/facebook/react/commit/53b1f69ba
       const layout = ref.current.unstable_getBoundingClientRect();
       handler(layout);
       return;
     }
 
-    // @ts-ignore once it `unstable_getBoundingClientRect` gets stable 🤞.
+    // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable 🤞.
     if (ref.current.getBoundingClientRect !== null) {
-      // @ts-ignore once it `unstable_getBoundingClientRect` gets stable.
+      // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable.
       const layout = ref.current.getBoundingClientRect();
       handler(layout);
     }
