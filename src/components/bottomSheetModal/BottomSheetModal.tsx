@@ -323,7 +323,7 @@ function BottomSheetModalComponent<T = any>(
       /**
        * if modal is already been dismiss, we exit the method.
        */
-      if (currentIndexRef.current === -1 && minimized.current === false) {
+      if (currentIndexRef.current === -1 && minimized.current === true) {
         return;
       }
 
