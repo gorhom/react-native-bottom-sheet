@@ -43,8 +43,8 @@ export interface BottomSheetProps
    * ⚠️ This prop is required unless you set `enableDynamicSizing` to `true`.
    * @example
    * snapPoints={[200, 500]}
-   * snapPoints={[200, '%50']}
-   * snapPoints={['%100']}
+   * snapPoints={[200, '50%']}
+   * snapPoints={['100%']}
    * @type Array<string | number>
    */
   snapPoints?: Array<string | number> | SharedValue<Array<string | number>>;
