@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { Insets, StyleProp, View, ViewStyle } from 'react-native';
+import type { Insets, StyleProp, ViewStyle } from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
   AnimateStyle,
@@ -90,6 +90,13 @@ export interface BottomSheetProps
    * @default true
    */
   enableDynamicSizing?: boolean;
+  /**
+   * Enable change of one snap point per one swipe.
+   * Works only with default Gesture Events Handlers.
+   * @type boolean
+   * @default false
+   */
+  enableOneSnapPointPerSwipe?: boolean;
   /**
    * To start the sheet closed and snap to initial index when it's mounted.
    * @type boolean

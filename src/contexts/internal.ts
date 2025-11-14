@@ -28,6 +28,7 @@ export interface BottomSheetInternalContextType
         | 'enableDynamicSizing'
         | 'enableBlurKeyboardOnGesture'
         | 'overDragResistanceFactor'
+        | 'enableOneSnapPointPerSwipe'
       >
     > {
   // animated states
