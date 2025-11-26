@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.2.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.6...v5.2.7) (2025-11-26)
+
+### 🐛 Bug Fixes
+
+* fixed function undefined error in useBoundingClientRect ([#2561](https://github.com/gorhom/react-native-bottom-sheet/issues/2561))(by [@tylerdgenius](https://github.com/tylerdgenius), [@fab-nikhil](https://github.com/fab-nikhil), [@pinpong](https://github.com/pinpong)) ([3a99ee4](https://github.com/gorhom/react-native-bottom-sheet/commit/3a99ee4a2bc69ed280f045951edf4cfcf6bc6581))
+
+### 🧹 Maintenance Chores
+
+* updated ts tags for getBoundingClientRect ([6b22037](https://github.com/gorhom/react-native-bottom-sheet/commit/6b220371a4b591ac694cf1a8e16173f28ccdbba5))
+
 ## [5.2.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.5...v5.2.6) (2025-09-05)
 
 ### 🐛 Bug Fixes
