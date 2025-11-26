@@ -55,9 +55,10 @@ export function useBoundingClientRect(
       return;
     }
 
-    // @ts-expect-error 👉 https://github.com/facebook/react/commit/53b1f69ba
     if (
+      // @ts-expect-error 👉 https://github.com/facebook/react/commit/53b1f69ba
       ref.current.unstable_getBoundingClientRect !== null &&
+      // @ts-expect-error 👉 https://github.com/facebook/react/commit/53b1f69ba
       typeof ref.current.unstable_getBoundingClientRect === 'function'
     ) {
       // @ts-expect-error https://github.com/facebook/react/commit/53b1f69ba
