@@ -69,7 +69,7 @@ enum SNAP_POINT_TYPE {
   DYNAMIC = 1,
 }
 
-const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
+const ANIMATION_EASING = Easing.out(Easing.exp);
 const ANIMATION_DURATION = 250;
 
 const ANIMATION_CONFIGS = Platform.select<TimingConfig | SpringConfig>({
