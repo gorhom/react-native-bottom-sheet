@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { BottomSheetDraggableContext } from '../../contexts/gesture';
@@ -108,7 +108,9 @@ const BottomSheetDraggableViewComponent = ({
 
   return (
     <GestureDetector gesture={draggableGesture}>
-      <BottomSheetDraggableContext.Provider value={draggableGesture}>
+      <BottomSheetDraggableContext.Provider
+        value={enableContentPanningGesture ? draggableGesture : null}
+      >
         <Animated.View style={style} {...rest}>
           {children}
         </Animated.View>
