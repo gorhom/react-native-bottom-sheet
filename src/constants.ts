@@ -1,5 +1,4 @@
 import { Dimensions, Platform } from 'react-native';
-import type Animated from 'react-native-reanimated';
 import { Easing } from 'react-native-reanimated';
 import type { SpringConfig, TimingConfig } from './types';
 
