@@ -63,6 +63,7 @@ const BottomSheetTextInputComponent = forwardRef<
         animatedKeyboardState.set(state => ({
           ...state,
           target: undefined,
+          height: 0,
         }));
       }
 
@@ -100,6 +101,7 @@ const BottomSheetTextInputComponent = forwardRef<
         animatedKeyboardState.set(state => ({
           ...state,
           target: undefined,
+          height: 0,
         }));
       }
 
