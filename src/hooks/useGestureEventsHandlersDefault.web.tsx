@@ -32,7 +32,7 @@ const dismissKeyboardOnJs = runOnJS(Keyboard.dismiss);
 // biome-ignore lint: to be addressed!
 const resetContext = (context: any) => {
   'worklet';
-  Object.keys(context).map(key => {
+  Object.keys(context).forEach(key => {
     context[key] = undefined;
   });
 };

@@ -33,7 +33,7 @@ const dismissKeyboard = Keyboard.dismiss;
 // biome-ignore lint: to be addressed!
 const resetContext = (context: any) => {
   'worklet';
-  Object.keys(context).map(key => {
+  Object.keys(context).forEach(key => {
     context[key] = undefined;
   });
 };
@@ -49,6 +49,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       animatedLayoutState,
       enableOverDrag,
       enablePanDownToClose,
+      enableOneSnapPointPerSwipe,
       overDragResistanceFactor,
       isInTemporaryPosition,
       enableBlurKeyboardOnGesture,
@@ -142,9 +143,19 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
         }
 
         const { containerHeight } = animatedLayoutState.get();
-        const lowestSnapPoint = enablePanDownToClose
+        let lowestSnapPoint = enablePanDownToClose
           ? containerHeight
           : detents[0];
+
+        if (enableOneSnapPointPerSwipe) {
+          const currentIndex = detents.indexOf(context.value.initialPosition);
+
+          const nextIndex = Math.min(currentIndex + 1, detents.length - 1);
+          const prevIndex = Math.max(currentIndex - 1, 0);
+
+          highestSnapPoint = detents[nextIndex];
+          lowestSnapPoint = detents[prevIndex];
+        }
 
         /**
          * if scrollable is refreshable and sheet position at the highest
@@ -261,6 +272,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       [
         enableOverDrag,
         enablePanDownToClose,
+        enableOneSnapPointPerSwipe,
         overDragResistanceFactor,
         isInTemporaryPosition,
         animatedScrollableState,
@@ -401,6 +413,24 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           return;
         }
 
+        if (enableOneSnapPointPerSwipe) {
+          const currentIndex = snapPoints.indexOf(destinationPoint);
+          const prevIndex = snapPoints.indexOf(context.value.initialPosition);
+
+          if (Math.abs(prevIndex - currentIndex) > 1) {
+            const newIndex =
+              prevIndex > currentIndex ? currentIndex + 1 : currentIndex - 1;
+
+            animateToPosition(
+              snapPoints[newIndex],
+              ANIMATION_SOURCE.GESTURE,
+              velocityY / 2
+            );
+
+            return;
+          }
+        }
+
         animateToPosition(
           destinationPoint,
           ANIMATION_SOURCE.GESTURE,
@@ -409,6 +439,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
       },
       [
         enablePanDownToClose,
+        enableOneSnapPointPerSwipe,
         isInTemporaryPosition,
         animatedScrollableState,
         animatedDetentsState,
