@@ -963,6 +963,14 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         if (!isAnimatedOnMount.value) {
           /**
+           * if there's a running animation (like force close), respect it and don't
+           * override with mount animation
+           */
+          if (animationStatus === ANIMATION_STATUS.RUNNING) {
+            return;
+          }
+
+          /**
            * if animate on mount is set to true, then we animate to the propose position,
            * else, we set the position with out animation.
            */
