@@ -3,10 +3,29 @@ import {
   type NodeHandle,
 } from 'react-native';
 
+/**
+ * Type bridge for accessing undocumented React Native scroll component internals.
+ * These properties exist at runtime but aren't exposed in RN's public type definitions.
+ *
+ * @see https://github.com/facebook/react-native/blob/main/packages/virtualized-lists/Lists/VirtualizedList.js#L1252
+ */
+interface ScrollComponentInternals {
+  /** Available on ScrollView, FlatList, etc. to get the underlying native scroll ref */
+  getNativeScrollRef?: () => NodeHandle | null;
+  /** Internal property on VirtualizedList storing the scroll ref */
+  _scrollRef?: NodeHandle | null;
+}
+
 export function findNodeHandle(
   componentOrHandle: Parameters<typeof _findNodeHandle>['0']
-) {
-  let nodeHandle: NodeHandle | null;
+): NodeHandle | null | typeof componentOrHandle {
+  // Early return for null/undefined (React 19 fix)
+  if (componentOrHandle == null) {
+    return null;
+  }
+
+  let nodeHandle: NodeHandle | null = null;
+
   try {
     nodeHandle = _findNodeHandle(componentOrHandle);
     if (nodeHandle) {
@@ -14,18 +33,20 @@ export function findNodeHandle(
     }
   } catch {}
 
+  // Type bridge: componentOrHandle may have scroll internals at runtime
+  const scrollable = componentOrHandle as unknown as ScrollComponentInternals;
+
   try {
-    // @ts-expect-error
-    nodeHandle = componentOrHandle.getNativeScrollRef();
-    if (nodeHandle) {
-      return nodeHandle;
+    if (typeof scrollable.getNativeScrollRef === 'function') {
+      nodeHandle = scrollable.getNativeScrollRef();
+      if (nodeHandle) {
+        return nodeHandle;
+      }
     }
   } catch {}
 
-  // @ts-expect-error https://github.com/facebook/react-native/blob/a314e34d6ee875830d36e4df1789a897c7262056/packages/virtualized-lists/Lists/VirtualizedList.js#L1252
-  nodeHandle = componentOrHandle._scrollRef;
-  if (nodeHandle) {
-    return nodeHandle;
+  if (scrollable._scrollRef != null) {
+    return scrollable._scrollRef;
   }
 
   console.warn('could not find scrollable ref!');
