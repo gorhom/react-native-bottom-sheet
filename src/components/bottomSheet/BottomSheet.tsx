@@ -895,8 +895,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         /**
          * return the current index position.
+         * If index is -1 (closed), return closedDetentPosition instead of detents[-1]
          */
-        return detents[currentIndex];
+        return currentIndex === -1 
+          ? closedDetentPosition 
+          : detents[currentIndex];
       },
       [
         animatedContentGestureState,
