@@ -103,7 +103,7 @@ const SheetContent = () => {
     <BottomSheet>
       <LegendList
         {...}
-        renderScrollComponent={BottomSheetLegendListScrollable}
+        renderScrollComponent={BottomSheetScrollable}
       />
     </BottomSheet>
   )
