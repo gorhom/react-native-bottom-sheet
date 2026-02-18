@@ -90,7 +90,7 @@ const SheetContent = () => {
 
 ## useBottomSheetScrollableCreator
 
-A custom hook that creates a scrollable component for third-party libraries like `LegendList` or `FlashList` to integrate the interaction and scrolling behaviors with th BottomSheet component.
+A custom hook that creates a scrollable component for third-party libraries like `LegendList` or `FlashList` to integrate the interaction and scrolling behaviors with the BottomSheet component.
 
 ```tsx
 import React from 'react';
@@ -98,7 +98,7 @@ import BottomSheet, { useBottomSheetScrollableCreator } from '@gorhom/bottom-she
 import { LegendList } from '@legendapp/list';
 
 const SheetContent = () => {
-  const BottomSheetScrollable = useBottomSheetScrollableCreator();
+  const BottomSheetLegendListScrollable = useBottomSheetScrollableCreator();
   return (
     <BottomSheet>
       <LegendList
