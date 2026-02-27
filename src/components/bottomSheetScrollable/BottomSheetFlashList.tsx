@@ -1,13 +1,20 @@
-// @ts-ignore
-import type { FlashListProps } from '@shopify/flash-list';
 import React, { forwardRef, memo, type Ref, useMemo } from 'react';
-import type { ScrollViewProps } from 'react-native';
+import type { FlatListProps, ScrollViewProps } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import BottomSheetScrollView from './BottomSheetScrollView';
 import type {
   BottomSheetScrollViewMethods,
   BottomSheetScrollableProps,
 } from './types';
+
+/**
+ * Minimal subset of FlashListProps needed for BottomSheetFlashList.
+ * Defined locally to avoid requiring @shopify/flash-list as a dependency,
+ * since the runtime import is optional (try/catch require).
+ */
+interface FlashListProps<T> extends FlatListProps<T> {
+    estimatedItemSize?: number;
+}
 
 let FlashList: {
   FlashList: React.FC;
