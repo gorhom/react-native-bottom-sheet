@@ -67,8 +67,12 @@ export function useBoundingClientRect(
       return;
     }
 
-    // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable 🤞.
-    if (ref.current.getBoundingClientRect !== null) {
+    if (
+      // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable 🤞.
+      ref.current.getBoundingClientRect !== null &&
+      // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable 🤞.
+      typeof ref.current.getBoundingClientRect === 'function'
+    ) {
       // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable.
       const layout = ref.current.getBoundingClientRect();
       handler(layout);
