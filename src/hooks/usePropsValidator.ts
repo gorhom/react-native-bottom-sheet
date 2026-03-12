@@ -1,5 +1,5 @@
 import invariant from 'invariant';
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 import type { BottomSheetProps } from '../components/bottomSheet';
 import { INITIAL_SNAP_POINT } from '../components/bottomSheet/constants';
 
@@ -8,15 +8,7 @@ import { INITIAL_SNAP_POINT } from '../components/bottomSheet/constants';
  * replace this with `prop-types`.
  */
 
-export const usePropsValidator = ({
-  index,
-  snapPoints,
-  enableDynamicSizing,
-  topInset,
-  bottomInset,
-  containerHeight,
-  containerOffset,
-}: Pick<
+type UsePropsValidatorArgs = Pick<
   BottomSheetProps,
   | 'index'
   | 'snapPoints'
@@ -25,8 +17,18 @@ export const usePropsValidator = ({
   | 'bottomInset'
   | 'containerHeight'
   | 'containerOffset'
->) => {
-  useMemo(() => {
+>;
+
+const usePropsValidatorDev = ({
+  index,
+  snapPoints,
+  enableDynamicSizing,
+  topInset,
+  bottomInset,
+  containerHeight,
+  containerOffset,
+}: UsePropsValidatorArgs) => {
+  useEffect(() => {
     //#region snap points
     const _snapPoints = snapPoints
       ? 'get' in snapPoints
@@ -106,3 +108,7 @@ export const usePropsValidator = ({
     containerOffset,
   ]);
 };
+
+export const usePropsValidator: (props: UsePropsValidatorArgs) => void = __DEV__
+  ? usePropsValidatorDev
+  : () => {};

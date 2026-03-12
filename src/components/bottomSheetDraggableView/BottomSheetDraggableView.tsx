@@ -30,7 +30,7 @@ const BottomSheetDraggableViewComponent = ({
 
   //#region variables
   const simultaneousHandlers = useMemo(() => {
-    const refs = [];
+    const refs: unknown[] = [];
 
     if (nativeGestureRef) {
       refs.push(nativeGestureRef);

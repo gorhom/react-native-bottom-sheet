@@ -1,13 +1,17 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
 import {
+  Dimensions,
+  Keyboard,
   type LayoutChangeEvent,
   StatusBar,
   type StyleProp,
   View,
   type ViewStyle,
 } from 'react-native';
-import { WINDOW_HEIGHT } from '../../constants';
-import { print } from '../../utilities';
+import {
+  KEYBOARD_BEHAVIOR,
+  WINDOW_HEIGHT,
+} from '../../constants';
 import { styles } from './styles';
 import type { BottomSheetHostingContainerProps } from './types';
 
@@ -16,6 +20,7 @@ function BottomSheetHostingContainerComponent({
   layoutState,
   topInset = 0,
   bottomInset = 0,
+  keyboardBehavior,
   shouldCalculateHeight = true,
   detached,
   style,
@@ -23,6 +28,19 @@ function BottomSheetHostingContainerComponent({
 }: BottomSheetHostingContainerProps) {
   //#region refs
   const containerRef = useRef<View>(null);
+  const initialWindow = Dimensions.get('window');
+  const initialScreen = Dimensions.get('screen');
+  const lastAcceptedDimensionsRef = useRef<{
+    windowWidth: number;
+    windowHeight: number;
+    screenWidth: number;
+    screenHeight: number;
+  }>({
+    windowWidth: initialWindow.width,
+    windowHeight: initialWindow.height,
+    screenWidth: initialScreen.width,
+    screenHeight: initialScreen.height,
+  });
   //#endregion
 
   //#region styles
@@ -41,12 +59,53 @@ function BottomSheetHostingContainerComponent({
   //#endregion
 
   //#region callbacks
+  const shouldIgnoreKeyboardDrivenLayoutChange = useCallback(() => {
+    // Only suppress those transient layout updates for the explicit
+    // "keyboard should not move the sheet" configuration.
+    if (keyboardBehavior !== KEYBOARD_BEHAVIOR.none) {
+      return false;
+    }
+
+    if (!Keyboard.isVisible()) {
+      return false;
+    }
+
+    const window = Dimensions.get('window');
+    const screen = Dimensions.get('screen');
+    const previous = lastAcceptedDimensionsRef.current;
+
+    // If both window and screen metrics are unchanged, treat this as keyboard
+    // layout churn rather than a real resize such as rotation.
+    return (
+      window.width === previous.windowWidth &&
+      window.height === previous.windowHeight &&
+      screen.width === previous.screenWidth &&
+      screen.height === previous.screenHeight
+    );
+  }, [keyboardBehavior]);
+
   const handleLayoutEvent = useCallback(
     function handleLayoutEvent({
       nativeEvent: {
         layout: { height },
       },
     }: LayoutChangeEvent) {
+      const window = Dimensions.get('window');
+      const screen = Dimensions.get('screen');
+      const ignoredKeyboardLayoutChange =
+        shouldIgnoreKeyboardDrivenLayoutChange();
+
+      if (ignoredKeyboardLayoutChange) {
+        return;
+      }
+
+      lastAcceptedDimensionsRef.current = {
+        windowWidth: window.width,
+        windowHeight: window.height,
+        screenWidth: screen.width,
+        screenHeight: screen.height,
+      };
+
       if (containerLayoutState) {
         containerLayoutState.modify(state => {
           'worklet';
@@ -93,19 +152,12 @@ function BottomSheetHostingContainerComponent({
           }
         }
       );
-
-      if (__DEV__) {
-        print({
-          component: 'BottomSheetHostingContainer',
-          method: 'handleLayoutEvent',
-          category: 'layout',
-          params: {
-            height,
-          },
-        });
-      }
     },
-    [layoutState, containerLayoutState]
+    [
+      containerLayoutState,
+      layoutState,
+      shouldIgnoreKeyboardDrivenLayoutChange,
+    ]
   );
   //#endregion
 

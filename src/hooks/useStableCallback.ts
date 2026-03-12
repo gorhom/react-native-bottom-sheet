@@ -8,7 +8,7 @@ type Callback<T extends unknown[], R> = (...args: T) => R;
 export function useStableCallback<T extends unknown[], R>(
   callback: Callback<T, R>
 ) {
-  const callbackRef = useRef<Callback<T, R>>();
+  const callbackRef = useRef<Callback<T, R> | undefined>(undefined);
 
   useLayoutEffect(() => {
     callbackRef.current = callback;

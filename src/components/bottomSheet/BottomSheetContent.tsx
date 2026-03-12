@@ -1,18 +1,21 @@
 import React, { memo, useMemo } from 'react';
 import type { ViewProps, ViewStyle } from 'react-native';
+import { State } from 'react-native-gesture-handler';
 import Animated, {
   type AnimatedStyle,
   useAnimatedStyle,
   useDerivedValue,
+  useAnimatedReaction,
+  useSharedValue,
 } from 'react-native-reanimated';
 import {
+  ANIMATION_STATUS,
   INITIAL_LAYOUT_VALUE,
   KEYBOARD_BEHAVIOR,
   KEYBOARD_STATUS,
 } from '../../constants';
 import { useBottomSheetInternal } from '../../hooks';
 import type { NullableAccessibilityProps } from '../../types';
-import { animate } from '../../utilities';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
 import {} from './constants';
 import type { BottomSheetProps } from './types';
@@ -21,19 +24,13 @@ type BottomSheetContent = {
   style?: AnimatedStyle<ViewStyle>;
 } & Pick<
   BottomSheetProps,
-  | 'children'
-  | 'detached'
-  | 'animationConfigs'
-  | 'overrideReduceMotion'
-  | 'keyboardBehavior'
+  'children' | 'detached' | 'keyboardBehavior'
 > &
   NullableAccessibilityProps &
   ViewProps;
 
 function BottomSheetContentComponent({
   detached,
-  animationConfigs,
-  overrideReduceMotion,
   keyboardBehavior,
   accessible,
   accessibilityLabel,
@@ -52,6 +49,10 @@ function BottomSheetContentComponent({
     animatedSheetHeight,
     animatedKeyboardState,
     isInTemporaryPosition,
+    animatedContentGestureState,
+    animatedHandleGestureState,
+    animatedAnimationState,
+    animatedScrollableState,
   } = useBottomSheetInternal();
   //#endregion
 
@@ -165,18 +166,184 @@ function BottomSheetContentComponent({
       status: keyboardStatus,
       heightWithinContainer: keyboardHeightWithinContainer,
     } = animatedKeyboardState.get();
-    if (keyboardStatus === KEYBOARD_STATUS.SHOWN) {
+    if (
+      keyboardStatus === KEYBOARD_STATUS.SHOWN &&
+      keyboardBehavior !== KEYBOARD_BEHAVIOR.none
+    ) {
       paddingBottom = overDragSafePaddingBottom + keyboardHeightWithinContainer;
     }
 
     return paddingBottom;
   }, [
+    keyboardBehavior,
     overDragResistanceFactor,
     animatedPosition,
     animatedLayoutState,
     animatedDetentsState,
     animatedKeyboardState,
   ]);
+  const lastStableContentValues = useSharedValue({
+    height: 0,
+    paddingBottom: 0,
+  });
+  const displayContentHeight = useSharedValue(0);
+  const displayPaddingBottom = useSharedValue(0);
+  const maxOvershoot = useSharedValue(0);
+  const lastIsTransitionActive = useSharedValue(false);
+  const lastIsGestureActive = useSharedValue(false);
+  const gestureStartPosition = useSharedValue(0);
+  const maxGesturePosition = useSharedValue(0);
+  useAnimatedReaction(
+    () => {
+      const paddingBottom = detached ? 0 : animatedPaddingBottom.get();
+      const height = animatedContentHeightMax.get() + paddingBottom;
+      const isContentGestureActive =
+        animatedContentGestureState.value === State.ACTIVE ||
+        animatedContentGestureState.value === State.BEGAN;
+      const isHandleGestureActive =
+        animatedHandleGestureState.value === State.ACTIVE ||
+        animatedHandleGestureState.value === State.BEGAN;
+      const isGestureActive = isContentGestureActive || isHandleGestureActive;
+      const isAnimationRunning =
+        animatedAnimationState.get().status === ANIMATION_STATUS.RUNNING;
+      const isTransitionActive = isGestureActive || isAnimationRunning;
+      const detentsState = animatedDetentsState.get();
+      const closedDetentPosition =
+        detentsState.closedDetentPosition ??
+        detentsState.detents?.[0] ??
+        animatedLayoutState.get().containerHeight;
+      const overshoot =
+        closedDetentPosition === undefined
+          ? 0
+          : Math.max(0, animatedPosition.value - closedDetentPosition);
+      const scrollOvershoot = isContentGestureActive
+        ? Math.max(0, animatedScrollableState.get().contentOffsetY * -1)
+        : 0;
+
+      return {
+        height,
+        paddingBottom,
+        isTransitionActive,
+        isGestureActive,
+        overshoot,
+        scrollOvershoot,
+        closedDetentPosition,
+        position: animatedPosition.value,
+      };
+    },
+    (state, previous) => {
+      const targetHeight = state?.height ?? 0;
+      const targetPaddingBottom = state?.paddingBottom ?? 0;
+      const rawIsTransitionActive = state?.isTransitionActive ?? false;
+      const isGestureActive = state?.isGestureActive ?? false;
+      const currentPosition = state?.position ?? 0;
+      const previousPosition =
+        previous?.position ?? state?.position ?? currentPosition;
+      const isMoving = Math.abs(currentPosition - previousPosition) > 0.5;
+      const isTransitionActive = rawIsTransitionActive || isMoving;
+      const wasTransitionActive = lastIsTransitionActive.value;
+      lastIsTransitionActive.value = isTransitionActive;
+      const wasGestureActive = lastIsGestureActive.value;
+      lastIsGestureActive.value = isGestureActive;
+      const gestureEnded = wasGestureActive && !isGestureActive;
+      const gestureStarted = !wasGestureActive && isGestureActive;
+      const closedDetentPosition = state?.closedDetentPosition;
+      if (gestureStarted) {
+        gestureStartPosition.value = currentPosition;
+        maxGesturePosition.value = currentPosition;
+      }
+      if (isGestureActive) {
+        maxGesturePosition.value = Math.max(
+          maxGesturePosition.value,
+          currentPosition
+        );
+      }
+      const gestureDragDistance = Math.max(
+        0,
+        maxGesturePosition.value - gestureStartPosition.value
+      );
+
+      const currentOvershoot = Math.max(
+        state?.overshoot ?? 0,
+        state?.scrollOvershoot ?? 0
+      );
+      const gestureOvershoot =
+        closedDetentPosition === undefined
+          ? 0
+          : Math.max(0, maxGesturePosition.value - closedDetentPosition);
+      const shouldReleaseFromGestureEnd =
+        gestureEnded &&
+        (maxOvershoot.value > 0 ||
+          gestureOvershoot > 0 ||
+          currentOvershoot > 0 ||
+          gestureDragDistance > 6);
+      if (gestureEnded) {
+        maxOvershoot.value = Math.max(
+          maxOvershoot.value,
+          currentOvershoot,
+          gestureOvershoot,
+          gestureDragDistance
+        );
+      }
+      if (isTransitionActive && !shouldReleaseFromGestureEnd) {
+        maxOvershoot.value = Math.max(maxOvershoot.value, currentOvershoot);
+        if (
+          lastStableContentValues.value.height === 0 &&
+          lastStableContentValues.value.paddingBottom === 0 &&
+          (targetHeight !== 0 || targetPaddingBottom !== 0)
+        ) {
+          lastStableContentValues.value = {
+            height: targetHeight,
+            paddingBottom: targetPaddingBottom,
+          };
+        }
+        displayContentHeight.value = lastStableContentValues.value.height;
+        displayPaddingBottom.value = lastStableContentValues.value.paddingBottom;
+        return;
+      }
+
+      const releasedFromOvershoot =
+        shouldReleaseFromGestureEnd ||
+        (wasTransitionActive && !isTransitionActive && maxOvershoot.value > 0);
+      let extra = 0;
+      if (releasedFromOvershoot) {
+        extra = Math.min(maxOvershoot.value, 80);
+        const overshootHeight = lastStableContentValues.value.height + extra;
+        const overshootPadding = lastStableContentValues.value.paddingBottom;
+        maxOvershoot.value = 0;
+
+        // Avoid animating layout-affecting props (height/paddingBottom).
+        displayContentHeight.value = overshootHeight;
+        displayPaddingBottom.value = overshootPadding;
+        displayContentHeight.value = targetHeight;
+        displayPaddingBottom.value = targetPaddingBottom;
+        lastStableContentValues.value = {
+          height: targetHeight,
+          paddingBottom: targetPaddingBottom,
+        };
+        return;
+      }
+      maxOvershoot.value = 0;
+
+      displayContentHeight.value = targetHeight;
+      displayPaddingBottom.value = targetPaddingBottom;
+      lastStableContentValues.value = {
+        height: targetHeight,
+        paddingBottom: targetPaddingBottom,
+      };
+    },
+    [
+      detached,
+      animatedPaddingBottom,
+      animatedContentHeightMax,
+      animatedContentGestureState,
+      animatedHandleGestureState,
+      animatedAnimationState,
+      animatedDetentsState,
+      animatedLayoutState,
+      animatedPosition,
+    ]
+  );
   //#endregion
 
   //#region styles
@@ -197,31 +364,11 @@ function BottomSheetContentComponent({
       return {};
     }
 
-    const paddingBottom = detached ? 0 : animatedPaddingBottom.get();
-    const height = animatedContentHeightMax.get() + paddingBottom;
-
     return {
-      paddingBottom: animate({
-        point: paddingBottom,
-        configs: animationConfigs,
-        overrideReduceMotion,
-      }),
-      height: animate({
-        point: height,
-        configs: animationConfigs,
-        overrideReduceMotion,
-      }),
+      paddingBottom: displayPaddingBottom.value,
+      height: displayContentHeight.value,
     };
-  }, [
-    overDragResistanceFactor,
-    enableDynamicSizing,
-    detached,
-    animationConfigs,
-    overrideReduceMotion,
-    animatedLayoutState,
-    animatedContentHeightMax,
-    animatedLayoutState,
-  ]);
+  }, [enableDynamicSizing, detached, animatedLayoutState]);
   const contentContainerStyle = useMemo(
     () => [
       detached

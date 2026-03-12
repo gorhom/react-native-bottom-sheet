@@ -134,7 +134,7 @@ export type ScrollableState = {
 export type Scrollable = FlatList | ScrollView | SectionList;
 export type ScrollableRef = {
   id: number;
-  node: React.RefObject<Scrollable>;
+  node: React.RefObject<Scrollable | null>;
 };
 export type ScrollableEvent = (
   event: Pick<NativeSyntheticEvent<NativeScrollEvent>, 'nativeEvent'>
@@ -220,13 +220,13 @@ export type GestureHandlersHookType = (
   ) => void;
 };
 
-type ScrollEventHandlerCallbackType<C = never> = (
+export type ScrollEventHandlerCallbackType<C = never> = (
   payload: NativeScrollEvent,
   context: C
 ) => void;
 
 export type ScrollEventsHandlersHookType = (
-  ref: React.RefObject<Scrollable>,
+  ref: React.RefObject<Scrollable | null>,
   contentOffsetY: SharedValue<number>
 ) => {
   handleOnScroll?: ScrollEventHandlerCallbackType;
@@ -238,12 +238,15 @@ export type ScrollEventsHandlersHookType = (
 //#endregion
 
 //#region accessibility
-export interface NullableAccessibilityProps extends AccessibilityProps {
+export type NullableAccessibilityProps = Omit<
+  AccessibilityProps,
+  'accessible' | 'accessibilityLabel' | 'accessibilityHint' | 'accessibilityRole'
+> & {
   accessible?: AccessibilityProps['accessible'] | null;
   accessibilityLabel?: AccessibilityProps['accessibilityLabel'] | null;
   accessibilityHint?: AccessibilityProps['accessibilityHint'] | null;
   accessibilityRole?: AccessibilityProps['accessibilityRole'] | null;
-}
+};
 //#endregion
 
 //#region states

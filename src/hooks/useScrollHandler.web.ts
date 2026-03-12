@@ -115,7 +115,9 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
           supportsPassive = true;
         },
       });
-    } catch (_e) {}
+    } catch (_e) {
+      // ignore: passive event listener feature detection can fail in older envs
+    }
 
     element.addEventListener(
       'touchstart',

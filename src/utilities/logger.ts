@@ -20,35 +20,36 @@ const enableLogging = (excludeCategories?: PrintOptions['category'][]) => {
   _excludeCategories = excludeCategories;
 };
 
-let print: Print = () => {};
+const print: Print = __DEV__
+  ? ({ component, method, params, category }) => {
+      if (!_isLoggingEnabled) {
+        return;
+      }
 
-if (__DEV__) {
-  print = ({ component, method, params, category }) => {
-    if (!_isLoggingEnabled) {
-      return;
+      if (
+        category &&
+        _excludeCategories &&
+        _excludeCategories.includes(category)
+      ) {
+        return;
+      }
+
+      let message = '';
+
+      if (typeof params === 'object') {
+        message = Object.keys(params)
+          .map(key => `${key}:${params[key]}`)
+          .join(' ');
+      } else {
+        message = `${params ?? ''}`;
+      }
+      // biome-ignore lint/suspicious/noConsole: used for debugging
+      console.log(
+        `[${[component, method].filter(Boolean).join('::')}]`,
+        message
+      );
     }
-
-    if (
-      category &&
-      _excludeCategories &&
-      _excludeCategories.includes(category)
-    ) {
-      return;
-    }
-
-    let message = '';
-
-    if (typeof params === 'object') {
-      message = Object.keys(params)
-        .map(key => `${key}:${params[key]}`)
-        .join(' ');
-    } else {
-      message = `${params ?? ''}`;
-    }
-    // biome-ignore lint/suspicious/noConsole: used for debugging
-    console.log(`[${[component, method].filter(Boolean).join('::')}]`, message);
-  };
-}
+  : () => {};
 
 Object.freeze(print);
 

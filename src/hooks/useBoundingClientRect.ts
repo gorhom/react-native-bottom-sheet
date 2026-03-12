@@ -45,32 +45,28 @@ export function useBoundingClientRect(
   ref: RefObject<View | null>,
   handler: (layout: BoundingClientRect) => void
 ) {
-  if (!isFabricInstalled()) {
-    return;
-  }
-
-  // biome-ignore lint/correctness/useHookAtTopLevel: `isFabricInstalled` is a constant that will not change during the runtime
   useLayoutEffect(() => {
-    if (!ref || !ref.current) {
+    if (!isFabricInstalled()) {
       return;
     }
 
-    if (
-      // @ts-expect-error 👉 https://github.com/facebook/react/commit/53b1f69ba
-      ref.current.unstable_getBoundingClientRect !== null &&
-      // @ts-expect-error 👉 https://github.com/facebook/react/commit/53b1f69ba
-      typeof ref.current.unstable_getBoundingClientRect === 'function'
-    ) {
-      // @ts-expect-error https://github.com/facebook/react/commit/53b1f69ba
-      const layout = ref.current.unstable_getBoundingClientRect();
+    const node = ref?.current as (View & {
+      unstable_getBoundingClientRect?: () => BoundingClientRect;
+      getBoundingClientRect?: () => BoundingClientRect;
+    }) | null;
+
+    if (!node) {
+      return;
+    }
+
+    if (typeof node.unstable_getBoundingClientRect === 'function') {
+      const layout = node.unstable_getBoundingClientRect();
       handler(layout);
       return;
     }
 
-    // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable 🤞.
-    if (ref.current.getBoundingClientRect !== null) {
-      // @ts-expect-error once it `unstable_getBoundingClientRect` gets stable.
-      const layout = ref.current.getBoundingClientRect();
+    if (typeof node.getBoundingClientRect === 'function') {
+      const layout = node.getBoundingClientRect();
       handler(layout);
     }
   });

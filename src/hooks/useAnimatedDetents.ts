@@ -47,7 +47,7 @@ export const useAnimatedDetents = (
     // values into absolute values.
     let _normalizedDetents = _detents.map(snapPoint =>
       normalizeSnapPoint(snapPoint, containerHeight)
-    ) as number[];
+    );
 
     let highestDetentPosition =
       _normalizedDetents[_normalizedDetents.length - 1];

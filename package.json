@@ -2,14 +2,13 @@
   "name": "@gorhom/bottom-sheet",
   "version": "5.2.8",
   "description": "A performant interactive bottom sheet with fully configurable options 🚀",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/index.d.ts",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
   "files": [
     "src",
-    "lib",
     "mock.js"
   ],
   "keywords": [

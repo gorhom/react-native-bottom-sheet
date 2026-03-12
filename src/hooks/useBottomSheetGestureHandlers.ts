@@ -5,7 +5,9 @@ export const useBottomSheetGestureHandlers = () => {
   const context = useContext(BottomSheetGestureHandlersContext);
 
   if (context === null) {
-    throw "'useBottomSheetGestureHandlers' cannot be used out of the BottomSheet!";
+    throw new Error(
+      "'useBottomSheetGestureHandlers' cannot be used out of the BottomSheet!"
+    );
   }
 
   return context;

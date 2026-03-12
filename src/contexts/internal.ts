@@ -53,7 +53,7 @@ export interface BottomSheetInternalContextType
   stopAnimation: () => void;
   animateToPosition: AnimateToPositionType;
   setScrollableRef: (ref: ScrollableRef) => void;
-  removeScrollableRef: (ref: RefObject<Scrollable>) => void;
+  removeScrollableRef: (ref: RefObject<Scrollable | null>) => void;
 
   // refs
   textInputNodesRef: React.MutableRefObject<Set<number>>;

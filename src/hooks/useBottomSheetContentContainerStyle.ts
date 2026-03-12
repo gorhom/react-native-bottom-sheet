@@ -5,7 +5,8 @@ import {
   type ViewProps,
   type ViewStyle,
 } from 'react-native';
-import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
+import { useAnimatedReaction } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 export function useBottomSheetContentContainerStyle(
@@ -22,9 +23,8 @@ export function useBottomSheetContentContainerStyle(
     return !_style
       ? {}
       : Array.isArray(_style)
-        ? // @ts-ignore
-          (StyleSheet.compose(..._style) as ViewStyle)
-        : (_style as ViewStyle);
+        ? StyleSheet.flatten(_style)
+        : _style;
   }, [_style]);
   const style = useMemo<ViewProps['style']>(() => {
     if (!enableFooterMarginAdjustment) {
@@ -63,7 +63,7 @@ export function useBottomSheetContentContainerStyle(
       if (!enableFooterMarginAdjustment) {
         return;
       }
-      runOnJS(setFooterHeight)(result);
+      scheduleOnRN(setFooterHeight, result);
 
       if (Platform.OS === 'web') {
         /**

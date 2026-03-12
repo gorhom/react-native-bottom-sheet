@@ -29,7 +29,7 @@ export const useReactiveSharedValue = <T>(
       valueRef.current = makeMutable(value);
     }
   } else if (initialValueRef.current !== value) {
-    valueRef.current.value = value as T;
+    valueRef.current.set(value);
   }
 
   useEffect(() => {

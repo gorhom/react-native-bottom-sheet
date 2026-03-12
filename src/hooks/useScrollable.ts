@@ -98,7 +98,7 @@ export const useScrollable = (
     }
   }, []);
 
-  const removeScrollableRef = useCallback((ref: RefObject<Scrollable>) => {
+  const removeScrollableRef = useCallback((ref: RefObject<Scrollable | null>) => {
     // find node handle id
     let id: NodeHandle | null;
     try {

@@ -12,7 +12,9 @@ export function findNodeHandle(
     if (nodeHandle) {
       return nodeHandle;
     }
-  } catch {}
+  } catch {
+    // ignore and try fallbacks
+  }
 
   try {
     // @ts-ignore
@@ -20,7 +22,9 @@ export function findNodeHandle(
     if (nodeHandle) {
       return nodeHandle;
     }
-  } catch {}
+  } catch {
+    // ignore and try fallbacks
+  }
 
   // @ts-ignore https://github.com/facebook/react-native/blob/a314e34d6ee875830d36e4df1789a897c7262056/packages/virtualized-lists/Lists/VirtualizedList.js#L1252
   nodeHandle = componentOrHandle._scrollRef;

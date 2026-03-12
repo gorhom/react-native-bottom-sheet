@@ -30,15 +30,16 @@ function BottomSheetRefreshControlComponent({
   //#endregion
 
   if (!draggableGesture && enableContentPanningGesture) {
-    throw "'BottomSheetRefreshControl' cannot be used out of the BottomSheet!";
+    throw new Error(
+      "'BottomSheetRefreshControl' cannot be used out of the BottomSheet!"
+    );
   }
 
   //#region variables
   const animatedProps = useAnimatedProps(
     () => ({
-      enabled: animatedScrollableState.value === SCROLLABLE_STATUS.UNLOCKED,
-    }),
-    [animatedScrollableState.value]
+      enabled: animatedScrollableState.get() === SCROLLABLE_STATUS.UNLOCKED,
+    })
   );
 
   const gesture = useMemo(

@@ -70,16 +70,16 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     if (!draggableGesture && enableContentPanningGesture) {
-      throw "'Scrollable' cannot be used out of the BottomSheet!";
+      throw new Error("'Scrollable' cannot be used out of the BottomSheet!");
     }
 
     //#region variables
     const scrollableAnimatedProps = useAnimatedProps(
       () => ({
         decelerationRate:
-          SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
+          SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.get()],
         showsVerticalScrollIndicator: showsVerticalScrollIndicator
-          ? animatedScrollableState.value === SCROLLABLE_STATUS.UNLOCKED
+          ? animatedScrollableState.get() === SCROLLABLE_STATUS.UNLOCKED
           : showsVerticalScrollIndicator,
       }),
       [animatedScrollableState, showsVerticalScrollIndicator]

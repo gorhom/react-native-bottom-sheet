@@ -2,7 +2,7 @@ import type React from 'react';
 import type { Insets, StyleProp, View, ViewStyle } from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
-  AnimateStyle,
+  AnimatedStyle,
   ReduceMotion,
   SharedValue,
   WithSpringConfig,
@@ -20,9 +20,7 @@ import type {
   GestureEventsHandlersHookType,
   NullableAccessibilityProps,
 } from '../../types';
-import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
-import type { BottomSheetFooterProps } from '../bottomSheetFooter';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 
 export interface BottomSheetProps
@@ -158,10 +156,11 @@ export interface BottomSheetProps
   /**
    * Defines the keyboard appearance behavior.
    * @enum
+   * - `none`: ignore keyboard-driven sheet repositioning.
    * - `interactive`: offset the sheet by the size of the keyboard.
    * - `extend`: extend the sheet to its maximum snap point.
    * - `fillParent`: extend the sheet to fill parent.
-   * @type `interactive` | `extend` | `fillParent`
+   * @type `none` | `interactive` | `extend` | `fillParent`
    * @default interactive
    */
   keyboardBehavior?: keyof typeof KEYBOARD_BEHAVIOR;
@@ -200,7 +199,7 @@ export interface BottomSheetProps
    * @default undefined
    */
   style?: StyleProp<
-    AnimateStyle<
+    AnimatedStyle<
       Omit<
         ViewStyle,
         | 'flexDirection'
@@ -294,23 +293,16 @@ export interface BottomSheetProps
 
   /**
    * Component to be placed as a sheet backdrop.
-   * @see {BottomSheetBackdropProps}
-   * @type React.FC\<BottomSheetBackdropProps\>
+   * @type React.FC<any>
    * @default undefined
    */
-  backdropComponent?: React.FC<BottomSheetBackdropProps>;
+  backdropComponent?: React.FC<any>;
   /**
    * Component to be placed as a background.
    * @see {BottomSheetBackgroundProps}
    * @type React.FC\<BottomSheetBackgroundProps\>
    */
   backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
-  /**
-   * Component to be placed as a footer.
-   * @see {BottomSheetFooterProps}
-   * @type React.FC\<BottomSheetFooterProps\>
-   */
-  footerComponent?: React.FC<BottomSheetFooterProps>;
   /**
    * A scrollable node or normal view.
    * @type React.ReactNode

@@ -1,8 +1,5 @@
 import { memo } from 'react';
-import {
-  ScrollView as RNScrollView,
-  type ScrollViewProps as RNScrollViewProps,
-} from 'react-native';
+import { ScrollView as RNScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SCROLLABLE_TYPE } from '../../constants';
 import { createBottomSheetScrollableComponent } from './createBottomSheetScrollableComponent';
@@ -12,7 +9,7 @@ import type {
 } from './types';
 
 const AnimatedScrollView =
-  Animated.createAnimatedComponent<RNScrollViewProps>(RNScrollView);
+  Animated.createAnimatedComponent(RNScrollView);
 
 const BottomSheetScrollViewComponent = createBottomSheetScrollableComponent<
   BottomSheetScrollViewMethods,

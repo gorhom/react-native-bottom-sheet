@@ -103,6 +103,7 @@ const MODAL_STACK_BEHAVIOR = {
 };
 
 const KEYBOARD_BEHAVIOR = {
+  none: 'none',
   interactive: 'interactive',
   extend: 'extend',
   fillParent: 'fillParent',

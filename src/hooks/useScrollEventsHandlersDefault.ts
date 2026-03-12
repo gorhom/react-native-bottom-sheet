@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import { useCallback } from 'react';
 import { State } from 'react-native-gesture-handler';
 import { scrollTo } from 'react-native-reanimated';

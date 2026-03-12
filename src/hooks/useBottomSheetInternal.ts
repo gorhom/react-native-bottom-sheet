@@ -18,7 +18,9 @@ export function useBottomSheetInternal(
   const context = useContext(BottomSheetInternalContext);
 
   if (unsafe !== true && context === null) {
-    throw "'useBottomSheetInternal' cannot be used out of the BottomSheet!";
+    throw new Error(
+      "'useBottomSheetInternal' cannot be used out of the BottomSheet!"
+    );
   }
 
   return context;

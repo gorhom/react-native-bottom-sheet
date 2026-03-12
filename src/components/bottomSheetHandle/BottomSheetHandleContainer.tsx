@@ -40,7 +40,7 @@ function BottomSheetHandleContainerComponent({
 
   //#region variables
   const simultaneousHandlers = useMemo<unknown[]>(() => {
-    const refs = [];
+    const refs: unknown[] = [];
 
     if (_internalSimultaneousHandlers) {
       refs.push(_internalSimultaneousHandlers);
