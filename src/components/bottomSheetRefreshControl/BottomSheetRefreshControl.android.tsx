@@ -45,7 +45,6 @@ function BottomSheetRefreshControlComponent({
     () =>
       draggableGesture
         ? Gesture.Native()
-            // @ts-expect-error
             .simultaneousWithExternalGesture(
               ...draggableGesture.toGestureArray(),
               ...scrollableGesture.toGestureArray()

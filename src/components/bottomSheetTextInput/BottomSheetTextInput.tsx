@@ -6,10 +6,7 @@ import React, {
   useImperativeHandle,
   useRef,
 } from 'react';
-import type {
-  NativeSyntheticEvent,
-  TextInputFocusEventData,
-} from 'react-native';
+import type { BlurEvent, FocusEvent } from 'react-native';
 import { TextInput as RNTextInput } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { useBottomSheetInternal } from '../../hooks';
@@ -30,7 +27,7 @@ const BottomSheetTextInputComponent = forwardRef<
 
   //#region callbacks
   const handleOnFocus = useCallback(
-    (args: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    (args: FocusEvent) => {
       animatedKeyboardState.set(state => ({
         ...state,
         target: args.nativeEvent.target,
@@ -42,10 +39,11 @@ const BottomSheetTextInputComponent = forwardRef<
     [onFocus, animatedKeyboardState]
   );
   const handleOnBlur = useCallback(
-    (args: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    (args: BlurEvent) => {
       const keyboardState = animatedKeyboardState.get();
       const currentFocusedInput = findNodeHandle(
-        RNTextInput.State.currentlyFocusedInput()
+        // biome-ignore lint/suspicious/noExplicitAny: <RNTextInput.State.currentlyFocusedInput() returns a ReactNativeElement>
+        RNTextInput.State.currentlyFocusedInput() as any
       );
 
       /**

@@ -38,7 +38,7 @@ export const usePropsValidator = ({
       `'snapPoints' was not provided! please provide at least one snap point.`
     );
 
-    _snapPoints.map(snapPoint => {
+    _snapPoints.forEach(snapPoint => {
       const _snapPoint =
         typeof snapPoint === 'number'
           ? snapPoint
