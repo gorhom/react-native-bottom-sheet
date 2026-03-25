@@ -3,6 +3,7 @@ import {
   KEYBOARD_BLUR_BEHAVIOR,
   KEYBOARD_INPUT_MODE,
   SCREEN_HEIGHT,
+  WINDOW_HEIGHT,
 } from '../../constants';
 
 // default values
@@ -25,7 +26,7 @@ const DEFAULT_KEYBOARD_INDEX = -998;
 // initial values
 const INITIAL_VALUE = Number.NEGATIVE_INFINITY;
 const INITIAL_SNAP_POINT = -999;
-const INITIAL_POSITION = SCREEN_HEIGHT;
+const INITIAL_POSITION = Math.max(SCREEN_HEIGHT, WINDOW_HEIGHT);
 
 // accessibility
 const DEFAULT_ACCESSIBLE = true;
