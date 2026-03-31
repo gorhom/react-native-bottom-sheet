@@ -6,9 +6,14 @@ import type {
   RefObject,
 } from 'react';
 import type {
+  FlatListProps,
+  NodeHandle,
   ScrollResponderMixin,
   ScrollViewComponent,
   ScrollViewProps,
+  SectionListProps,
+  SectionListScrollParams,
+  VirtualizedListProps,
   View,
 } from 'react-native';
 import type { AnimatedProps } from 'react-native-reanimated';
@@ -42,6 +47,48 @@ export interface BottomSheetScrollableProps {
    * @default useScrollEventsHandlersDefault
    */
   scrollEventsHandlersHook?: ScrollEventsHandlersHookType;
+}
+
+export type ScrollableProps<T> =
+  | ScrollViewProps
+  | FlatListProps<T>
+  | SectionListProps<T>;
+
+export type BottomSheetFlatListProps<T> = Omit<
+  AnimatedProps<FlatListProps<T>>,
+  'decelerationRate' | 'onScroll' | 'scrollEventThrottle'
+> &
+  BottomSheetScrollableProps & {
+    ref?: Ref<BottomSheetFlatListMethods>;
+  };
+
+export interface BottomSheetFlatListMethods {
+  scrollToEnd: (params?: { animated?: boolean | null }) => void;
+  scrollToIndex: (params: {
+    animated?: boolean | null;
+    index: number;
+    viewOffset?: number;
+    viewPosition?: number;
+  }) => void;
+  scrollToItem: (params: {
+    animated?: boolean | null;
+    item: any;
+    viewPosition?: number;
+  }) => void;
+  scrollToOffset: (params: {
+    animated?: boolean | null;
+    offset: number;
+  }) => void;
+  recordInteraction: () => void;
+  flashScrollIndicators: () => void;
+  getScrollResponder: () => ScrollResponderMixin | null | undefined;
+  getNativeScrollRef: () =>
+    | RefObject<View>
+    | RefObject<ScrollViewComponent>
+    | null
+    | undefined;
+  getScrollableNode: () => any;
+  setNativeProps: (props: { [key: string]: any }) => void;
 }
 
 export type BottomSheetScrollViewProps = Omit<
@@ -79,4 +126,45 @@ export interface BottomSheetScrollViewMethods {
     | RefObject<ScrollViewComponent>
     | null
     | undefined;
+}
+
+export type BottomSheetSectionListProps<ItemT, SectionT> = Omit<
+  AnimatedProps<SectionListProps<ItemT, SectionT>>,
+  'decelerationRate' | 'scrollEventThrottle'
+> &
+  BottomSheetScrollableProps & {
+    ref?: Ref<BottomSheetSectionListMethods>;
+  };
+
+export interface BottomSheetSectionListMethods {
+  scrollToLocation(params: SectionListScrollParams): void;
+  recordInteraction(): void;
+  flashScrollIndicators(): void;
+  getScrollResponder(): ScrollResponderMixin | undefined;
+  getScrollableNode(): NodeHandle | undefined;
+}
+
+export type BottomSheetVirtualizedListProps<T> = Omit<
+  AnimatedProps<VirtualizedListProps<T>>,
+  'decelerationRate' | 'scrollEventThrottle'
+> &
+  BottomSheetScrollableProps & {
+    ref?: Ref<BottomSheetVirtualizedListMethods>;
+  };
+
+export interface BottomSheetVirtualizedListMethods {
+  scrollToEnd: (params?: { animated?: boolean }) => void;
+  scrollToIndex: (params: {
+    animated?: boolean;
+    index: number;
+    viewOffset?: number;
+    viewPosition?: number;
+  }) => void;
+  scrollToItem: (params: {
+    animated?: boolean;
+    item: any;
+    viewPosition?: number;
+  }) => void;
+  scrollToOffset: (params: { animated?: boolean; offset: number }) => void;
+  recordInteraction: () => void;
 }

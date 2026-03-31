@@ -20,7 +20,9 @@ import type {
   GestureEventsHandlersHookType,
   NullableAccessibilityProps,
 } from '../../types';
+import type { BottomSheetBackdropProps } from '../bottomSheetBackdrop';
 import type { BottomSheetBackgroundProps } from '../bottomSheetBackground';
+import type { BottomSheetFooterProps } from '../bottomSheetFooter';
 import type { BottomSheetHandleProps } from '../bottomSheetHandle';
 
 export interface BottomSheetProps
@@ -293,16 +295,23 @@ export interface BottomSheetProps
 
   /**
    * Component to be placed as a sheet backdrop.
-   * @type React.FC<any>
+   * @see {BottomSheetBackdropProps}
+   * @type React.FC\<BottomSheetBackdropProps\>
    * @default undefined
    */
-  backdropComponent?: React.FC<any>;
+  backdropComponent?: React.FC<BottomSheetBackdropProps>;
   /**
    * Component to be placed as a background.
    * @see {BottomSheetBackgroundProps}
    * @type React.FC\<BottomSheetBackgroundProps\>
    */
   backgroundComponent?: React.FC<BottomSheetBackgroundProps> | null;
+  /**
+   * Component to be placed as a footer.
+   * @see {BottomSheetFooterProps}
+   * @type React.FC\<BottomSheetFooterProps\>
+   */
+  footerComponent?: React.FC<BottomSheetFooterProps>;
   /**
    * A scrollable node or normal view.
    * @type React.ReactNode

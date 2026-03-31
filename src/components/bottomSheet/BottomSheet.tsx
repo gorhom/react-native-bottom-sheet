@@ -57,6 +57,7 @@ import {
 } from "../../utilities";
 import { BottomSheetBackgroundContainer } from "../bottomSheetBackground";
 // import BottomSheetDebugView from '../bottomSheetDebugView';
+import { BottomSheetFooterContainer } from "../bottomSheetFooter";
 import BottomSheetGestureHandlersProvider from "../bottomSheetGestureHandlersProvider";
 import {
   BottomSheetHandle,
@@ -159,6 +160,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       handleComponent = BottomSheetHandle,
       backdropComponent: BackdropComponent,
       backgroundComponent,
+      footerComponent,
       children,
 
       // accessibility
@@ -1877,6 +1879,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   detached={detached}
                 >
                   {children}
+                  {footerComponent ? (
+                    <BottomSheetFooterContainer
+                      footerComponent={footerComponent}
+                    />
+                  ) : null}
                 </BottomSheetContent>
                 {handleComponent !== null ? (
                   <BottomSheetHandleContainer
