@@ -226,7 +226,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       let isContainerHeightCalculated = false;
       const { containerHeight, handleHeight } = animatedLayoutState.get();
       //container height was provided.
-      if (containerHeight !== null || containerHeight !== undefined) {
+      if (containerHeight !== null && containerHeight !== undefined) {
         isContainerHeightCalculated = true;
       }
       // container height did set.
