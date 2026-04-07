@@ -1,5 +1,7 @@
 export { useBottomSheet } from './useBottomSheet';
 export { useBottomSheetInternal } from './useBottomSheetInternal';
+export { useBottomSheetModal } from './useBottomSheetModal';
+export { useBottomSheetModalInternal } from './useBottomSheetModalInternal';
 
 // scrollable
 export { useScrollable } from './useScrollable';

@@ -3,6 +3,8 @@ export { BottomSheetBackdrop } from './components/bottomSheetBackdrop';
 export { BottomSheetFooter, BottomSheetFooterContainer } from './components/bottomSheetFooter';
 export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
 export { default as BottomSheetView } from './components/bottomSheetView';
+export { default as BottomSheetModal } from './components/bottomSheetModal';
+export { default as BottomSheetModalProvider } from './components/bottomSheetModalProvider';
 export {
   BottomSheetFlatList,
   BottomSheetFlashList,
@@ -20,6 +22,8 @@ export { useBottomSheet } from './hooks/useBottomSheet';
 export { useBottomSheetScrollableCreator } from './hooks/useBottomSheetScrollableCreator';
 export { useBottomSheetSpringConfigs } from './hooks/useBottomSheetSpringConfigs';
 export { useBottomSheetTimingConfigs } from './hooks/useBottomSheetTimingConfigs';
+export { useBottomSheetModal } from './hooks/useBottomSheetModal';
+export { useBottomSheetModalInternal } from './hooks/useBottomSheetModalInternal';
 
 export type { BottomSheetProps } from './components/bottomSheet';
 export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop';
@@ -34,3 +38,4 @@ export type {
   BottomSheetVirtualizedListMethods,
   BottomSheetVirtualizedListProps,
 } from './components/bottomSheetScrollable';
+export type { BottomSheetModalProps } from './components/bottomSheetModal';
