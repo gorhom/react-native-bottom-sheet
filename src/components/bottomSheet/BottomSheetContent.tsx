@@ -14,7 +14,6 @@ import { useBottomSheetInternal } from '../../hooks';
 import type { NullableAccessibilityProps } from '../../types';
 import { animate } from '../../utilities';
 import BottomSheetDraggableView from '../bottomSheetDraggableView';
-import {} from './constants';
 import type { BottomSheetProps } from './types';
 
 type BottomSheetContent = {

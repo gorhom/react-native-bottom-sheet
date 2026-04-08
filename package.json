@@ -45,7 +45,7 @@
     "invariant": "^2.2.4"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.2",
+    "@biomejs/biome": "2.4.10",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@release-it/conventional-changelog": "^10.0.1",

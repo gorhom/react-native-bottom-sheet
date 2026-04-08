@@ -90,10 +90,10 @@ export const useScrollable = (
 
     if (currentRefId !== ref.id) {
       if (scrollableRef.current) {
-        // @ts-ignore
+        // @ts-expect-error
         previousScrollableRef.current = scrollableRef.current;
       }
-      // @ts-ignore
+      // @ts-expect-error
       scrollableRef.current = ref;
     }
   }, []);
@@ -116,7 +116,7 @@ export const useScrollable = (
      * the current scrollable ref to the previous one.
      */
     if (id === currentRefId) {
-      // @ts-ignore
+      // @ts-expect-error
       scrollableRef.current = previousScrollableRef.current;
     }
   }, []);

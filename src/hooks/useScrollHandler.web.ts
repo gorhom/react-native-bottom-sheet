@@ -107,9 +107,9 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
     }
 
     try {
-      // @ts-ignore
+      // @ts-expect-error
       window.addEventListener('test', null, {
-        // @ts-ignore
+        // @ts-expect-error
         // biome-ignore lint: to be addressed
         get passive() {
           supportsPassive = true;
@@ -158,7 +158,7 @@ export const useScrollHandler = (_: never, onScroll?: ScrollableEvent) => {
     );
 
     return () => {
-      // @ts-ignore
+      // @ts-expect-error
       window.removeEventListener('test', null);
       element.removeEventListener('touchstart', handleOnTouchStart);
       element.removeEventListener('touchmove', handleOnTouchMove);

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Insets, StyleProp, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import type { ContainerLayoutState, LayoutState } from '../../types';
 import type { BottomSheetProps } from '../bottomSheet/types';

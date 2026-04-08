@@ -23,7 +23,7 @@ interface ScrollableContainerProps {
  * Detect if the current browser is Safari or not.
  */
 const isWebkit = () => {
-  // @ts-ignore
+  // @ts-expect-error
   return navigator.userAgent.indexOf('Safari') > -1;
 };
 
@@ -79,9 +79,9 @@ export const ScrollableContainer = forwardRef<
         if (animatedLayoutState.get().contentHeight !== INITIAL_LAYOUT_VALUE) {
           return;
         }
-        // @ts-ignore
+        // @ts-expect-error
         window.requestAnimationFrame(() => {
-          // @ts-ignore
+          // @ts-expect-error
           setContentSize(event.nativeEvent.target.clientHeight);
         });
       }

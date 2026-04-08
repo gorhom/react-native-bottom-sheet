@@ -1,8 +1,8 @@
 import React from 'react';
 import { type TextProps as RNTextProps, TextInput } from 'react-native';
 import Animated, {
-  type SharedValue,
   type AnimatedProps,
+  type SharedValue,
   useAnimatedProps,
   useDerivedValue,
 } from 'react-native-reanimated';
@@ -62,7 +62,7 @@ const ReText = ({ text, value: _providedValue, style }: TextProps) => {
       editable={false}
       value={providedValue?.get() ?? ''}
       style={style}
-      // @ts-ignore
+      // @ts-expect-error
       animatedProps={animatedProps}
       multiline={true}
     />

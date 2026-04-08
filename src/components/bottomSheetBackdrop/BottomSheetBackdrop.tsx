@@ -9,11 +9,11 @@ import React, {
 import type { ViewProps } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useAnimatedReaction,
-  runOnJS,
   Extrapolation,
+  interpolate,
+  runOnJS,
+  useAnimatedReaction,
+  useAnimatedStyle,
 } from 'react-native-reanimated';
 import { useBottomSheet } from '../../hooks';
 import {

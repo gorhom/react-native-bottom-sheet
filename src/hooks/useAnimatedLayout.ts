@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
-  type SharedValue,
   makeMutable,
+  type SharedValue,
   useAnimatedReaction,
 } from 'react-native-reanimated';
 import { INITIAL_CONTAINER_LAYOUT, INITIAL_LAYOUT_VALUE } from '../constants';

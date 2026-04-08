@@ -1,6 +1,6 @@
 import {
-  type NodeHandle,
   findNodeHandle as _findNodeHandle,
+  type NodeHandle,
 } from 'react-native';
 
 export function findNodeHandle(
@@ -15,14 +15,14 @@ export function findNodeHandle(
   } catch {}
 
   try {
-    // @ts-ignore
+    // @ts-expect-error
     nodeHandle = componentOrHandle.getNativeScrollRef();
     if (nodeHandle) {
       return nodeHandle;
     }
   } catch {}
 
-  // @ts-ignore https://github.com/facebook/react-native/blob/a314e34d6ee875830d36e4df1789a897c7262056/packages/virtualized-lists/Lists/VirtualizedList.js#L1252
+  // @ts-expect-error https://github.com/facebook/react-native/blob/a314e34d6ee875830d36e4df1789a897c7262056/packages/virtualized-lists/Lists/VirtualizedList.js#L1252
   nodeHandle = componentOrHandle._scrollRef;
   if (nodeHandle) {
     return nodeHandle;

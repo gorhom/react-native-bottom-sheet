@@ -162,7 +162,7 @@ const BottomSheetModalProviderWrapper = ({
     return false;
   }, []);
   const handleDismissAll = useCallback(() => {
-    sheetsQueueRef.current.map(item => {
+    sheetsQueueRef.current.forEach(item => {
       item.ref?.current?.dismiss();
     });
   }, []);

@@ -1,4 +1,3 @@
-import type { ReactChild } from 'react';
 import React from 'react';
 import type { BottomSheetProps } from '../bottomSheet/types';
 

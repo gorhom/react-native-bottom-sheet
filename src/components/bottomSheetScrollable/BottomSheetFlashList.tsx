@@ -1,12 +1,12 @@
-// @ts-ignore
+// @ts-expect-error
 import type { FlashListProps } from '@shopify/flash-list';
 import React, { forwardRef, memo, type Ref, useMemo } from 'react';
 import type { ScrollViewProps } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import BottomSheetScrollView from './BottomSheetScrollView';
 import type {
-  BottomSheetScrollViewMethods,
   BottomSheetScrollableProps,
+  BottomSheetScrollViewMethods,
 } from './types';
 
 let FlashList: {
@@ -55,10 +55,10 @@ const BottomSheetFlashListComponent = forwardRef<
   const renderScrollComponent = useMemo(
     () =>
       forwardRef<BottomSheetScrollViewMethods, ScrollViewProps>(
-        // @ts-ignore
+        // @ts-expect-error
         ({ data, ...props }, ref) => {
           return (
-            // @ts-ignore
+            // @ts-expect-error
             <BottomSheetScrollView
               ref={ref}
               {...props}

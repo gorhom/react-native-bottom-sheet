@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import { type LayoutChangeEvent, View } from 'react-native';
 import { SCROLLABLE_TYPE } from '../../constants';
 import {

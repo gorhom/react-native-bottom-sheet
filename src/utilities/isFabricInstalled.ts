@@ -4,6 +4,6 @@
  * @returns {boolean} `true` if Fabric is installed, otherwise `false`.
  */
 export function isFabricInstalled() {
-  // @ts-ignore
+  // @ts-expect-error
   return global?.nativeFabricUIManager != null;
 }
