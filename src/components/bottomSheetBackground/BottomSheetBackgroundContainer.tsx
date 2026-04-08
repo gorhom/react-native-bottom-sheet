@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { BottomSheetBackground } from './BottomSheetBackground';
-import { styles } from './styles';
 import type { BottomSheetBackgroundContainerProps } from './types';
 
 const BottomSheetBackgroundContainerComponent = ({
@@ -12,7 +11,7 @@ const BottomSheetBackgroundContainerComponent = ({
 }: BottomSheetBackgroundContainerProps) => {
   //#region style
   const backgroundStyle = useMemo(
-    () => StyleSheet.flatten([styles.container, _providedBackgroundStyle]),
+    () => [StyleSheet.absoluteFill, _providedBackgroundStyle],
     [_providedBackgroundStyle]
   );
   //#endregion

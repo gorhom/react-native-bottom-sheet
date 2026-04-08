@@ -3,6 +3,7 @@ import {
   type LayoutChangeEvent,
   StatusBar,
   type StyleProp,
+  StyleSheet,
   View,
   type ViewStyle,
 } from 'react-native';
@@ -29,6 +30,7 @@ function BottomSheetHostingContainerComponent({
   const containerStyle = useMemo<StyleProp<ViewStyle>>(
     () => [
       style,
+      StyleSheet.absoluteFill,
       styles.container,
       {
         top: topInset,
