@@ -36,7 +36,8 @@
         {
           "assets": ["./assets"]
         }
-      ]
+      ],
+      "expo-image"
     ]
   }
 }

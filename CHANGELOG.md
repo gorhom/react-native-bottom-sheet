@@ -1,5 +1,26 @@
 # Changelog
 
+## [5.2.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.7...v5.2.8) (2025-12-04)
+
+### 🐛 Bug Fixes
+
+* **mock:** replace JSX syntax with `createElement` ([#2302](https://github.com/gorhom/react-native-bottom-sheet/issues/2302))(by [@huextrat](https://github.com/huextrat)) ([fdeff8f](https://github.com/gorhom/react-native-bottom-sheet/commit/fdeff8f289186672a14013e404d143922a9be232))
+* removed deprecated Easing constant ([#2486](https://github.com/gorhom/react-native-bottom-sheet/issues/2486))(by [@joshua-zbni](https://github.com/joshua-zbni)) ([164d982](https://github.com/gorhom/react-native-bottom-sheet/commit/164d9828b40aeb18f52925731e9602db40c699a5))
+
+### 🧹 Maintenance Chores
+
+* updated example deps ([f3aa263](https://github.com/gorhom/react-native-bottom-sheet/commit/f3aa26310ea6ebc353031c17884e0f4b3a6a3f4d))
+
+## [5.2.7](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.6...v5.2.7) (2025-11-26)
+
+### 🐛 Bug Fixes
+
+* fixed function undefined error in useBoundingClientRect ([#2561](https://github.com/gorhom/react-native-bottom-sheet/issues/2561))(by [@tylerdgenius](https://github.com/tylerdgenius), [@fab-nikhil](https://github.com/fab-nikhil), [@pinpong](https://github.com/pinpong)) ([3a99ee4](https://github.com/gorhom/react-native-bottom-sheet/commit/3a99ee4a2bc69ed280f045951edf4cfcf6bc6581))
+
+### 🧹 Maintenance Chores
+
+* updated ts tags for getBoundingClientRect ([6b22037](https://github.com/gorhom/react-native-bottom-sheet/commit/6b220371a4b591ac694cf1a8e16173f28ccdbba5))
+
 ## [5.2.6](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.5...v5.2.6) (2025-09-05)
 
 ### 🐛 Bug Fixes

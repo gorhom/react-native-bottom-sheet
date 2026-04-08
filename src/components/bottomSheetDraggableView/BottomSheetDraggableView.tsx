@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { BottomSheetDraggableContext } from '../../contexts/gesture';

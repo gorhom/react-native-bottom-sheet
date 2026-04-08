@@ -28,11 +28,7 @@ if (__DEV__) {
       return;
     }
 
-    if (
-      category &&
-      _excludeCategories &&
-      _excludeCategories.includes(category)
-    ) {
+    if (category && _excludeCategories?.includes(category)) {
       return;
     }
 
@@ -52,4 +48,4 @@ if (__DEV__) {
 
 Object.freeze(print);
 
-export { print, enableLogging };
+export { enableLogging, print };

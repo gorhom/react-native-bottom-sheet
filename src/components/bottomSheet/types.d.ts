@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { Insets, StyleProp, View, ViewStyle } from 'react-native';
+import type { Insets, StyleProp, ViewStyle } from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
   AnimateStyle,

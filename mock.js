@@ -50,11 +50,9 @@ class BottomSheetModal extends React.Component {
 
   render() {
     const { children: Content } = this.props;
-    return typeof Content === 'function' ? (
-      <Content data={this.data} />
-    ) : (
-      Content
-    );
+    return typeof Content === 'function'
+      ? React.createElement(Content, { data: this.data })
+      : Content;
   }
 }
 

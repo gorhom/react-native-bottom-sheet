@@ -15,17 +15,17 @@ export const useReactiveSharedValue = <T>(
      * then we do not initialize another one.
      */
   } else if (valueRef.current === null) {
-    // @ts-ignore
+    // @ts-expect-error
     initialValueRef.current = value;
     /**
      * if value is an object, then we need to
      * pass a clone.
      */
     if (typeof value === 'object') {
-      // @ts-ignore
+      // @ts-expect-error
       valueRef.current = makeMutable({ ...value });
     } else {
-      // @ts-ignore
+      // @ts-expect-error
       valueRef.current = makeMutable(value);
     }
   } else if (initialValueRef.current !== value) {
@@ -40,6 +40,6 @@ export const useReactiveSharedValue = <T>(
     };
   }, []);
 
-  // @ts-ignore
+  // @ts-expect-error
   return valueRef.current ?? value;
 };

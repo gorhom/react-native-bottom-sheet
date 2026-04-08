@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { useSharedValue, useDerivedValue } from 'react-native-reanimated';
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   mapContainer: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
   scrollView: {
     flex: 1,

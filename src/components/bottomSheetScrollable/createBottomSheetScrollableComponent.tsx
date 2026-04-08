@@ -15,8 +15,8 @@ import { BottomSheetDraggableContext } from '../../contexts/gesture';
 import {
   useBottomSheetContentContainerStyle,
   useBottomSheetInternal,
-  useScrollHandler,
   useScrollableSetter,
+  useScrollHandler,
   useStableCallback,
 } from '../../hooks';
 import { ScrollableContainer } from './ScrollableContainer';
@@ -89,7 +89,7 @@ export function createBottomSheetScrollableComponent<T, P>(
       () =>
         draggableGesture
           ? Gesture.Native()
-              // @ts-ignore
+              // @ts-expect-error
               .simultaneousWithExternalGesture(draggableGesture)
               .shouldCancelWhenOutside(false)
           : undefined,
@@ -116,7 +116,7 @@ export function createBottomSheetScrollableComponent<T, P>(
     //#endregion
 
     //#region effects
-    // @ts-ignore
+    // @ts-expect-error
     useImperativeHandle(ref, () => scrollableRef.current);
     useScrollableSetter(
       scrollableRef,

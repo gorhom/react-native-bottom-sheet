@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/useHookAtTopLevel: random error needs extra time to debug */
 import { Portal, usePortal } from '@gorhom/portal';
 import React, {
   forwardRef,
@@ -30,11 +31,9 @@ const INITIAL_STATE: BottomSheetModalState = {
   data: undefined,
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
-type BottomSheetModal<T = any> = BottomSheetModalMethods<T>;
+type BottomSheetModal<T = never> = BottomSheetModalMethods<T>;
 
-// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
-function BottomSheetModalComponent<T = any>(
+function BottomSheetModalComponent<T = never>(
   props: BottomSheetModalProps<T>,
   ref: React.ForwardedRef<BottomSheetModal<T>>
 ) {
@@ -186,7 +185,6 @@ function BottomSheetModalComponent<T = any>(
   //#endregion
 
   //#region bottom sheet modal methods
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   // biome-ignore lint/correctness/useExhaustiveDependencies(ref): ref is a stable object
   const handlePresent = useCallback(
     function handlePresent(_data?: T) {
@@ -213,7 +211,6 @@ function BottomSheetModalComponent<T = any>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [key, stackBehavior, mountSheet]
   );
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const handleDismiss = useCallback<BottomSheetModalMethods['dismiss']>(
     function handleDismiss(animationConfigs) {
       if (__DEV__) {
@@ -287,7 +284,6 @@ function BottomSheetModalComponent<T = any>(
     },
     [index]
   );
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const handleRestore = useCallback(function handleRestore() {
     if (__DEV__) {
       print({
@@ -346,7 +342,6 @@ function BottomSheetModalComponent<T = any>(
       render();
     }
   }, []);
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const handleBottomSheetOnChange = useCallback(
     function handleBottomSheetOnChange(
       _index: number,
@@ -388,7 +383,6 @@ function BottomSheetModalComponent<T = any>(
     },
     [_providedOnAnimate]
   );
-  // biome-ignore lint/correctness/useExhaustiveDependencies(BottomSheetModal.name): used for debug only
   const handleBottomSheetOnClose = useCallback(
     function handleBottomSheetOnClose() {
       if (__DEV__) {
@@ -466,8 +460,7 @@ function BottomSheetModalComponent<T = any>(
 }
 
 const BottomSheetModal = memo(forwardRef(BottomSheetModalComponent)) as <
-  // biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
-  T = any,
+  T = never,
 >(
   props: BottomSheetModalProps<T> & {
     ref?: React.ForwardedRef<BottomSheetModal<T>>;

@@ -659,7 +659,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           status === KEYBOARD_STATUS.SHOWN &&
           position !== closedDetentPosition
         ) {
-          index = highestDetentPosition ?? DEFAULT_KEYBOARD_INDEX;
+          if (detents !== undefined && highestDetentPosition !== undefined) {
+            index = detents.indexOf(highestDetentPosition);
+          }
+          if (index === -1) {
+            index = DEFAULT_KEYBOARD_INDEX;
+          }
         }
 
         /**
@@ -1785,7 +1790,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               <BackdropComponent
                 animatedIndex={animatedIndex}
                 animatedPosition={animatedPosition}
-                style={StyleSheet.absoluteFillObject}
+                style={StyleSheet.absoluteFill}
               />
             ) : null}
             <BottomSheetHostingContainer

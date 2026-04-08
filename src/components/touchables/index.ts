@@ -8,7 +8,6 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  // @ts-ignore
 } from './Touchables';
 
 export default {

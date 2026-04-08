@@ -1,4 +1,4 @@
-import { type RefObject, createContext } from 'react';
+import { createContext, type RefObject } from 'react';
 import type { SharedValue } from 'react-native-reanimated';
 import type {
   BottomSheetModalPrivateMethods,

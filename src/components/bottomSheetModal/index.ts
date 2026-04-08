@@ -1,6 +1,6 @@
 export { default } from './BottomSheetModal';
 export type {
-  BottomSheetModalProps,
   BottomSheetModalPrivateMethods,
+  BottomSheetModalProps,
   BottomSheetModalStackBehavior,
 } from './types';

@@ -55,7 +55,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)
             : 0;
-          // @ts-ignore
+          // @ts-expect-error
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = lockPosition;
           return;
@@ -104,7 +104,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)
             : 0;
-          // @ts-ignore
+          // @ts-expect-error
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = lockPosition;
           return;
@@ -134,7 +134,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)
             : 0;
-          // @ts-ignore
+          // @ts-expect-error
           scrollTo(scrollableRef, 0, lockPosition, false);
           scrollableContentOffsetY.value = 0;
           return;

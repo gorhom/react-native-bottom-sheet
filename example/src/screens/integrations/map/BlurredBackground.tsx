@@ -18,10 +18,10 @@ const BlurredBackground = () => {
 
 const styles = StyleSheet.create({
   blurView: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
   container: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     overflow: 'hidden',

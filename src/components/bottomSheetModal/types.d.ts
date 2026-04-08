@@ -1,5 +1,4 @@
 import type React from 'react';
-import type { View } from 'react-native';
 import type { MODAL_STACK_BEHAVIOR } from '../../constants';
 import type { BottomSheetProps } from '../bottomSheet';
 
