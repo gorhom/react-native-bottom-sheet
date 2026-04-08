@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { type TextProps as RNTextProps, TextInput } from 'react-native';
 import Animated, {
+  type AnimatedProps,
   type SharedValue,
   useAnimatedReaction,
   useDerivedValue,
@@ -9,7 +10,7 @@ import Animated, {
 interface TextProps {
   text: string;
   value: SharedValue<number | boolean> | number;
-  style?: Animated.AnimateProps<RNTextProps>['style'];
+  style?: AnimatedProps<RNTextProps>['style'];
 }
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
