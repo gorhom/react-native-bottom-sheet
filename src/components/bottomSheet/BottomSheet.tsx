@@ -1790,7 +1790,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               <BackdropComponent
                 animatedIndex={animatedIndex}
                 animatedPosition={animatedPosition}
-                style={StyleSheet.absoluteFillObject}
+                style={StyleSheet.absoluteFill}
               />
             ) : null}
             <BottomSheetHostingContainer

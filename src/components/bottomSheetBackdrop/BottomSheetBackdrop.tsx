@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import type { ViewProps } from 'react-native';
+import { StyleSheet, type ViewProps } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
@@ -108,7 +108,12 @@ const BottomSheetBackdropComponent = ({
     [animatedIndex, appearsOnIndex, disappearsOnIndex, opacity]
   );
   const containerStyle = useMemo(
-    () => [styles.backdrop, style, containerAnimatedStyle],
+    () => [
+      StyleSheet.absoluteFill,
+      styles.backdrop,
+      style,
+      containerAnimatedStyle,
+    ],
     [style, containerAnimatedStyle]
   );
   //#endregion
