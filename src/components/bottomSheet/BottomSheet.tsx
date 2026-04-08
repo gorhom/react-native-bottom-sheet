@@ -225,12 +225,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const isLayoutCalculated = useDerivedValue(() => {
       let isContainerHeightCalculated = false;
       const { containerHeight, handleHeight } = animatedLayoutState.get();
-      //container height was provided.
-      if (containerHeight !== null && containerHeight !== undefined) {
-        isContainerHeightCalculated = true;
-      }
-      // container height did set.
-      if (containerHeight !== INITIAL_LAYOUT_VALUE) {
+      //container height was provided and set not to initial value
+      if (
+        containerHeight !== null &&
+        containerHeight !== undefined &&
+        containerHeight !== INITIAL_LAYOUT_VALUE
+      ) {
         isContainerHeightCalculated = true;
       }
 
