@@ -1,5 +1,22 @@
 # Changelog
 
+## [5.2.9](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.8...v5.2.9) (2026-04-08)
+
+### 🐛 Bug Fixes
+
+* **#2455:** wrong index reported by modal + TextInput + autofocus ([#2456](https://github.com/gorhom/react-native-bottom-sheet/issues/2456))(by [@pakerwreah](https://github.com/pakerwreah)) ([9fb8093](https://github.com/gorhom/react-native-bottom-sheet/commit/9fb8093e24d2a26806c1ff2beac2fa7b3aed06d8)), closes [#2455](https://github.com/gorhom/react-native-bottom-sheet/issues/2455) [#2455](https://github.com/gorhom/react-native-bottom-sheet/issues/2455)
+* don't delete anything from the array if there is no active sheet ([#2498](https://github.com/gorhom/react-native-bottom-sheet/issues/2498))(by [@bradstiff](https://github.com/bradstiff)) ([5029c37](https://github.com/gorhom/react-native-bottom-sheet/commit/5029c372b7b081fa97d65624d6941b6dd0cf8674))
+* **layout:** correct isLayoutCalculated always returning true ([#2642](https://github.com/gorhom/react-native-bottom-sheet/issues/2642))(by [@spsaucier](https://github.com/spsaucier)) ([eccd823](https://github.com/gorhom/react-native-bottom-sheet/commit/eccd8237689f64e9edc0b439aaa5d6eb55d9e3aa))
+* StyleSheet absoluteFill instead of deprecated absoluteFillObject ([#2637](https://github.com/gorhom/react-native-bottom-sheet/issues/2637))(by [@huextrat](https://github.com/huextrat)) ([3db576b](https://github.com/gorhom/react-native-bottom-sheet/commit/3db576b60e4573d8f239fa88ea814e126b416d59))
+* take into account scrollable content offset y for panning gesture ([#2533](https://github.com/gorhom/react-native-bottom-sheet/issues/2533)) (by [@doanhtu07](https://github.com/doanhtu07)) ([a5f5cf2](https://github.com/gorhom/react-native-bottom-sheet/commit/a5f5cf21ca04d1e7a218c14cab06cb45315ba28e))
+* **web:** React 19 compatibility and type safety for findNodeHandle ([#2595](https://github.com/gorhom/react-native-bottom-sheet/issues/2595))(by @YevheniiKotyrlo) ([3d6c2da](https://github.com/gorhom/react-native-bottom-sheet/commit/3d6c2da14803deb5ecc0205103186cbf3d7ab30c)), closes [#2366](https://github.com/gorhom/react-native-bottom-sheet/issues/2366) [#2237](https://github.com/gorhom/react-native-bottom-sheet/issues/2237)
+
+### 🧹 Maintenance Chores
+
+* updated biome and formatted the code ([cfbe558](https://github.com/gorhom/react-native-bottom-sheet/commit/cfbe558b356e0e81d9f454d26f836d6c1995f626))
+* updated deprecated AnimateProps type ([#2524](https://github.com/gorhom/react-native-bottom-sheet/issues/2524))(by @LinusU) ([09c9044](https://github.com/gorhom/react-native-bottom-sheet/commit/09c9044937976965e337268b8f063234cc5bf4a5))
+* updated example deps ([9b7cb17](https://github.com/gorhom/react-native-bottom-sheet/commit/9b7cb17a43a807b6311b99e6c1c7cf469ee02bd7))
+
 ## [5.2.8](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.7...v5.2.8) (2025-12-04)
 
 ### 🐛 Bug Fixes
