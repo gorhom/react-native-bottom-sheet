@@ -9,4 +9,5 @@ export interface BottomSheetModalRef {
 
 export interface BottomSheetModalProviderProps {
   children?: ReactNode;
+  portalHostName?: string;
 }

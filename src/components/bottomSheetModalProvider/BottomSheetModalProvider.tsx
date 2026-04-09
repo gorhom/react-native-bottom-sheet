@@ -23,6 +23,7 @@ import type {
 
 const BottomSheetModalProviderWrapper = ({
   children,
+  portalHostName
 }: BottomSheetModalProviderProps) => {
   //#region layout variables
   const animatedContainerLayoutState = useSharedValue<ContainerLayoutState>(
@@ -31,7 +32,10 @@ const BottomSheetModalProviderWrapper = ({
   //#endregion
 
   //#region variables
-  const hostName = useMemo(() => `bottom-sheet-portal-${id()}`, []);
+  const hostName = useMemo(
+    () => portalHostName ?? `bottom-sheet-portal-${id()}`,
+    [portalHostName]
+  );
   const sheetsQueueRef = useRef<BottomSheetModalRef[]>([]);
   //#endregion
 
