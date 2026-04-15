@@ -189,6 +189,10 @@ function BottomSheetModalComponent<T = never>(
   const handlePresent = useCallback(
     function handlePresent(_data?: T) {
       requestAnimationFrame(() => {
+        if (mounted.current && bottomSheetRef.current) {
+          forcedDismissed.current = false;
+          bottomSheetRef.current.snapToIndex(index);
+        }
         setState({
           mount: true,
           data: _data,
@@ -209,7 +213,7 @@ function BottomSheetModalComponent<T = never>(
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [key, stackBehavior, mountSheet]
+    [key, stackBehavior, mountSheet, index]
   );
   const handleDismiss = useCallback<BottomSheetModalMethods['dismiss']>(
     function handleDismiss(animationConfigs) {
