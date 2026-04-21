@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.2.10](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.9...v5.2.10) (2026-04-21)
+
+### 🐛 Bug Fixes
+
+* add typeof guard for getBoundingClientRect in useBoundingClientRect ([#2626](https://github.com/gorhom/react-native-bottom-sheet/issues/2626))(by [@magrinj](https://github.com/magrinj)) ([727eb03](https://github.com/gorhom/react-native-bottom-sheet/commit/727eb03facb2fb3a5dfe78fe558bf0d129af5805))
+* inline FlashListProps to remove @shopify/flash-list type dependency ([#2620](https://github.com/gorhom/react-native-bottom-sheet/issues/2620))(by @YevheniiKotyrlo) ([377d2de](https://github.com/gorhom/react-native-bottom-sheet/commit/377d2de0beb478d0bdf328bf18a9c1717dc201d1)), closes [#38628](https://github.com/gorhom/react-native-bottom-sheet/issues/38628) [#2390](https://github.com/gorhom/react-native-bottom-sheet/issues/2390)
+* invoke render function children instead of rendering as JSX component ([#2636](https://github.com/gorhom/react-native-bottom-sheet/issues/2636))(by [@linkeryoon](https://github.com/linkeryoon)) ([8cf9d1b](https://github.com/gorhom/react-native-bottom-sheet/commit/8cf9d1be36d28b98ea07bde0c562569044f02cfc)), closes [#1750](https://github.com/gorhom/react-native-bottom-sheet/issues/1750)
+* prevent rapid present/close from freezing BottomSheetModal ([#2655](https://github.com/gorhom/react-native-bottom-sheet/issues/2655))(by [@adam-sajko](https://github.com/adam-sajko)) ([ad41447](https://github.com/gorhom/react-native-bottom-sheet/commit/ad41447b946e8115c9e35c817df04e1869bc3699))
+
 ## [5.2.9](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.8...v5.2.9) (2026-04-08)
 
 ### 🐛 Bug Fixes
