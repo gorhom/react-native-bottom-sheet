@@ -216,7 +216,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedCurrentIndex = useReactiveSharedValue(
       animateOnMount ? -1 : _providedIndex
     );
-    const animatedPosition = useSharedValue(INITIAL_POSITION);
+
+    const initialPosition = !animateOnMount
+      ? animatedDetentsState.get().detents?.[_providedIndex]
+      : undefined;
+    const animatedPosition = useSharedValue(initialPosition ?? INITIAL_POSITION);
 
     // conditional
     const isAnimatedOnMount = useSharedValue(
