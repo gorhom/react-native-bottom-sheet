@@ -1564,12 +1564,32 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           nextIndex === -1
         ) {
           animateToPosition(closedDetentPosition, ANIMATION_SOURCE.GESTURE);
+          return;
+        }
+
+        /**
+         * When the container resizes (e.g. window resize on web, or layout
+         * changes) while the sheet is closed, ensure the closed position stays
+         * in sync. Without this, the sheet can become partially visible if
+         * the container grows beyond the previous closed position — for
+         * example when the browser viewport expands due to zoom level or
+         * window resize.
+         */
+        if (
+          animationStatus !== ANIMATION_STATUS.RUNNING &&
+          animatedCurrentIndex.value === -1 &&
+          animatedPosition.value < closedDetentPosition
+        ) {
+          setToPosition(closedDetentPosition);
         }
       },
       [
         animatedContainerHeightDidChange,
         animatedAnimationState,
         animatedDetentsState,
+        animatedCurrentIndex,
+        animatedPosition,
+        setToPosition,
       ]
     );
 
