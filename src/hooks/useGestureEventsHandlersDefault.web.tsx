@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { Keyboard, Platform } from 'react-native';
-import { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
+import { useSharedValue } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
@@ -27,7 +28,7 @@ const INITIAL_CONTEXT: GestureEventContextType = {
   isScrollablePositionLocked: false,
 };
 
-const dismissKeyboardOnJs = runOnJS(Keyboard.dismiss);
+const dismissKeyboardOnJs = () => scheduleOnRN(Keyboard.dismiss);
 
 // biome-ignore lint: to be addressed!
 const resetContext = (context: any) => {

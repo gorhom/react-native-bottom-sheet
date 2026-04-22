@@ -20,7 +20,7 @@ A performant interactive bottom sheet with fully configurable options 🚀
 - Support [pull to refresh](https://gorhom.dev/react-native-bottom-sheet/pull-to-refresh) for scrollables.
 - Support `FlatList`, `SectionList`, `ScrollView` & `View` scrolling interactions, [read more](https://gorhom.dev/react-native-bottom-sheet/scrollables).
 - Support `React Navigation` Integration, [read more](https://gorhom.dev/react-native-bottom-sheet/react-navigation-integration).
-- Compatible with `Reanimated` v1-3.
+- Compatible with `Reanimated` v3 and v4.
 - Compatible with `Expo`.
 - Accessibility support.
 - Written in `TypeScript`.
@@ -34,13 +34,22 @@ Check out [the documentation website](https://gorhom.dev/react-native-bottom-she
 
 This library been written in 3 versions of `Reanimated`, and kept all implementation in separate branches:
 
-- **`v5`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md) : written with `Reanimated v3` & `Gesture Handler v2`.
+- **`v5`** | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/master) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/master/CHANGELOG.md) : written with `Reanimated v3` & `Gesture Handler v2`. **Also compatible with `Reanimated v4`**.
 
 - `v4` (not maintained) | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v4) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v4/CHANGELOG.md) : written with `Reanimated v2`.
 
 - `v2` (not maintained) | [branch](https://github.com/gorhom/react-native-bottom-sheet/tree/v2) | [changelog](https://github.com/gorhom/react-native-bottom-sheet/blob/v2/CHANGELOG.md) : written with `Reanimated v1` & compatible with `Reanimated v2`.
 
 > I highly recommend to use `v5` which provides more stability with all latest features.
+
+### React Native Reanimated 4 Support
+
+Starting from v5.1.8, this library supports `react-native-reanimated` v4. When using Reanimated 4:
+
+- **New Architecture is required** - Reanimated 4 only supports the New Architecture
+- **`react-native-worklets` dependency is required** - Install it alongside `react-native-reanimated`
+- The library uses `scheduleOnRN` and `scheduleOnUI` from `react-native-worklets` instead of deprecated `runOnJS` and `runOnUI`
+- The babel plugin has been updated to use `react-native-worklets/plugin`
 
 ## Author
 

@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { Keyboard, Platform } from 'react-native';
-import { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
+import { useSharedValue } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,
@@ -75,7 +76,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
           initialKeyboardStatus === KEYBOARD_STATUS.SHOWN
         ) {
           initialKeyboardStatus = KEYBOARD_STATUS.HIDDEN;
-          runOnJS(dismissKeyboard)();
+          scheduleOnRN(dismissKeyboard);
         }
 
         // store current animated position
@@ -355,7 +356,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
                   animatedKeyboardState.get().heightWithinContainer
             )
           ) {
-            runOnJS(dismissKeyboard)();
+            scheduleOnRN(dismissKeyboard);
           }
         }
 

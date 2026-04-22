@@ -5,7 +5,8 @@ import {
   type ViewProps,
   type ViewStyle,
 } from 'react-native';
-import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
+import { useAnimatedReaction } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 export function useBottomSheetContentContainerStyle(
@@ -63,7 +64,7 @@ export function useBottomSheetContentContainerStyle(
       if (!enableFooterMarginAdjustment) {
         return;
       }
-      runOnJS(setFooterHeight)(result);
+      scheduleOnRN(setFooterHeight, result);
 
       if (Platform.OS === 'web') {
         /**

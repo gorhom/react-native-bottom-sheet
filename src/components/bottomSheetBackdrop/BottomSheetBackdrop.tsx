@@ -11,10 +11,10 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
   interpolate,
-  runOnJS,
   useAnimatedReaction,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { useBottomSheet } from '../../hooks';
 import {
   DEFAULT_ACCESSIBILITY_HINT,
@@ -89,7 +89,7 @@ const BottomSheetBackdropComponent = ({
   //#region tap gesture
   const tapHandler = useMemo(() => {
     const gesture = Gesture.Tap().onEnd(() => {
-      runOnJS(handleOnPress)();
+      scheduleOnRN(handleOnPress);
     });
     return gesture;
   }, [handleOnPress]);
@@ -125,7 +125,7 @@ const BottomSheetBackdropComponent = ({
       if (shouldDisableTouchability === previous) {
         return;
       }
-      runOnJS(handleContainerTouchability)(shouldDisableTouchability);
+      scheduleOnRN(handleContainerTouchability, shouldDisableTouchability);
     },
     [disappearsOnIndex]
   );
