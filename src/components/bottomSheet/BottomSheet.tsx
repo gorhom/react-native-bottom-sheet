@@ -738,7 +738,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         if (__DEV__) {
-          runOnJS(print)({
+          scheduleOnRN(print, {
             component: 'BottomSheet',
             method: 'setToPosition',
             params: {
