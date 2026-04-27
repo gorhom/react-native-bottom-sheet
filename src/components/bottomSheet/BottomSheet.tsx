@@ -14,8 +14,6 @@ import Animated, {
   Extrapolation,
   interpolate,
   ReduceMotion,
-  runOnJS,
-  runOnUI,
   useAnimatedReaction,
   useDerivedValue,
   useReducedMotion,
@@ -23,6 +21,7 @@ import Animated, {
   type WithSpringConfig,
   type WithTimingConfig,
 } from 'react-native-reanimated';
+import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 import {
   ANIMATION_SOURCE,
   ANIMATION_STATUS,
@@ -85,9 +84,8 @@ import {
 } from './constants';
 import type { AnimateToPositionType, BottomSheetProps } from './types';
 
-Animated.addWhitelistedUIProps({
-  decelerationRate: true,
-});
+// NOTE: addWhitelistedUIProps was removed in Reanimated 4
+// and decelerationRate is now handled by default.
 
 type BottomSheet = BottomSheetMethods;
 
@@ -538,7 +536,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         const { nextIndex, nextPosition } = animatedAnimationState.get();
 
         if (__DEV__) {
-          runOnJS(print)({
+          scheduleOnRN(print, {
             component: 'BottomSheet',
             method: 'animateToPositionCompleted',
             params: {
@@ -555,11 +553,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         // callbacks
         if (nextIndex !== animatedCurrentIndex.get()) {
-          runOnJS(handleOnChange)(nextIndex, nextPosition);
+          scheduleOnRN(handleOnChange, nextIndex, nextPosition);
         }
 
         if (nextIndex === -1) {
-          runOnJS(handleOnClose)();
+          scheduleOnRN(handleOnClose);
         }
 
         animatedCurrentIndex.set(nextIndex);
@@ -593,7 +591,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       ) {
         'worklet';
         if (__DEV__) {
-          runOnJS(print)({
+          scheduleOnRN(print, {
             component: 'BottomSheet',
             method: 'animateToPosition',
             params: {
@@ -684,7 +682,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         /**
          * fire `onAnimate` callback
          */
-        runOnJS(handleOnAnimate)(index, position);
+        scheduleOnRN(handleOnAnimate, index, position);
 
         /**
          * start animation
@@ -740,7 +738,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         if (__DEV__) {
-          runOnJS(print)({
+          scheduleOnRN(print, {
             component: 'BottomSheet',
             method: 'setToPosition',
             params: {
@@ -1140,8 +1138,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
        */
       isInTemporaryPosition.value = false;
 
-      runOnUI(animateToPosition)(
-        targetPosition,
+      scheduleOnUI(animateToPosition, targetPosition,
         ANIMATION_SOURCE.USER,
         0,
         animationConfigs
@@ -1189,8 +1186,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = true;
 
-        runOnUI(animateToPosition)(
-          targetPosition,
+        scheduleOnUI(animateToPosition, targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1243,8 +1239,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = false;
 
-        runOnUI(animateToPosition)(
-          targetPosition,
+        scheduleOnUI(animateToPosition, targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1303,8 +1298,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           };
         });
 
-        runOnUI(animateToPosition)(
-          targetPosition,
+        scheduleOnUI(animateToPosition, targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1358,8 +1352,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = false;
 
-        runOnUI(animateToPosition)(
-          targetPosition,
+        scheduleOnUI(animateToPosition, targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1413,8 +1406,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = false;
 
-        runOnUI(animateToPosition)(
-          targetPosition,
+        scheduleOnUI(animateToPosition, targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1601,7 +1593,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         if (__DEV__) {
-          runOnJS(print)({
+          scheduleOnRN(print, {
             component: 'BottomSheet',
             method: 'useAnimatedReaction::OnSnapPointChange',
             category: 'effect',
@@ -1669,7 +1661,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               : Math.abs(height - containerOffset.bottom);
 
         if (__DEV__) {
-          runOnJS(print)({
+          scheduleOnRN(print, {
             component: 'BottomSheet',
             method: 'useAnimatedReaction::OnKeyboardStateChange',
             category: 'effect',
