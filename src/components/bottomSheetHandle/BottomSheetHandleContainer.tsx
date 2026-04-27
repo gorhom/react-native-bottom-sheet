@@ -60,7 +60,6 @@ function BottomSheetHandleContainerComponent({
     let gesture = Gesture.Pan()
       .enabled(enableHandlePanningGesture)
       .shouldCancelWhenOutside(false)
-      .runOnWorkletRootThread(true)
       .onStart(handlePanGestureHandler.handleOnStart)
       .onChange(handlePanGestureHandler.handleOnChange)
       .onEnd(handlePanGestureHandler.handleOnEnd)

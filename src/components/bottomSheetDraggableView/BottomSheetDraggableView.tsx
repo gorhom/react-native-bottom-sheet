@@ -58,7 +58,6 @@ const BottomSheetDraggableViewComponent = ({
     let gesture = Gesture.Pan()
       .enabled(enableContentPanningGesture)
       .shouldCancelWhenOutside(false)
-      .runOnWorkletRootThread(true)
       .onStart(contentPanGestureHandler.handleOnStart)
       .onChange(contentPanGestureHandler.handleOnChange)
       .onEnd(contentPanGestureHandler.handleOnEnd)
