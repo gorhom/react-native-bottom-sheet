@@ -16,6 +16,7 @@ import type {
   BottomSheetModalPrivateMethods,
   BottomSheetModalStackBehavior,
 } from '../bottomSheetModal';
+import { MODAL_STATUS } from '../bottomSheetModal/constants';
 import type {
   BottomSheetModalProviderProps,
   BottomSheetModalRef,
@@ -67,7 +68,13 @@ const BottomSheetModalProviderWrapper = ({
        * - it is not unmounting
        */
       const currentMountedSheet = _sheetsQueue[_sheetsQueue.length - 1];
-      if (currentMountedSheet && !currentMountedSheet.willUnmount) {
+      const currentMountedSheetStatus =
+        currentMountedSheet?.ref.current?.status.current;
+      const currentMountedSheetWillUnmount =
+        currentMountedSheetStatus !== undefined &&
+        currentMountedSheetStatus === MODAL_STATUS.DISMISSING;
+
+      if (currentMountedSheet && !currentMountedSheetWillUnmount) {
         if (stackBehavior === MODAL_STACK_BEHAVIOR.replace) {
           currentMountedSheet.ref?.current?.dismiss();
         } else if (stackBehavior === MODAL_STACK_BEHAVIOR.switch) {
@@ -76,8 +83,7 @@ const BottomSheetModalProviderWrapper = ({
       }
 
       /**
-       * Restore and remove incoming sheet from the queue,
-       * if it was registered.
+       * Restore and remove incoming sheet from the queue, if it was registered.
        */
       if (sheetIndex !== -1) {
         _sheetsQueue.splice(sheetIndex, 1);
@@ -87,7 +93,6 @@ const BottomSheetModalProviderWrapper = ({
       _sheetsQueue.push({
         key,
         ref,
-        willUnmount: false,
       });
       sheetsQueueRef.current = _sheetsQueue;
     },
@@ -115,11 +120,16 @@ const BottomSheetModalProviderWrapper = ({
     const hasMinimizedSheet = sheetsQueueRef.current.length > 0;
     const minimizedSheet =
       sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
+    const minimizedSheetStatus = minimizedSheet?.ref.current?.status.current;
+    const minimizedSheetWillUnmount =
+      minimizedSheetStatus !== undefined &&
+      minimizedSheetStatus === MODAL_STATUS.DISMISSING;
+
     if (
       sheetOnTop &&
       hasMinimizedSheet &&
       minimizedSheet &&
-      !minimizedSheet.willUnmount
+      !minimizedSheetWillUnmount
     ) {
       sheetsQueueRef.current[
         sheetsQueueRef.current.length - 1
@@ -130,14 +140,6 @@ const BottomSheetModalProviderWrapper = ({
     const _sheetsQueue = sheetsQueueRef.current.slice();
     const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
     const sheetOnTop = sheetIndex === _sheetsQueue.length - 1;
-
-    /**
-     * Here we mark the sheet that will unmount,
-     * so it won't be restored.
-     */
-    if (sheetIndex !== -1) {
-      _sheetsQueue[sheetIndex].willUnmount = true;
-    }
 
     /**
      * Here we try to restore previous sheet position,

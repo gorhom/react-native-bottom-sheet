@@ -1,11 +1,13 @@
 import type React from 'react';
 import type { MODAL_STACK_BEHAVIOR } from '../../constants';
 import type { BottomSheetProps } from '../bottomSheet';
+import type { MODAL_STATUS } from './constants';
 
 export interface BottomSheetModalPrivateMethods {
   dismiss: (force?: boolean) => void;
   minimize: () => void;
   restore: () => void;
+  status: React.MutableRefObject<MODAL_STATUS>;
 }
 
 export type BottomSheetModalStackBehavior = keyof typeof MODAL_STACK_BEHAVIOR;
