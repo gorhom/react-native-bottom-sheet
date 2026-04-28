@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.2.11](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.10...v5.2.11) (2026-04-28)
+
+### 🐛 Bug Fixes
+
+* **#2632:** rewrote the modal status logic to prevent getting out of sync ([2b4a338](https://github.com/gorhom/react-native-bottom-sheet/commit/2b4a338ed2b3e85b289346886b68bb3aa1a5c9c9)), closes [#2632](https://github.com/gorhom/react-native-bottom-sheet/issues/2632)
+* **#2639:** removed screen and window layout constants ([325ade6](https://github.com/gorhom/react-native-bottom-sheet/commit/325ade632ad549f7c25cee8ae4282b7620a54aa5)), closes [#2639](https://github.com/gorhom/react-native-bottom-sheet/issues/2639)
+* **#2639:** use window height as initial position ([17ee221](https://github.com/gorhom/react-native-bottom-sheet/commit/17ee22176123f94a17f2041a60ada3017f581463)), closes [#2639](https://github.com/gorhom/react-native-bottom-sheet/issues/2639)
+
+### 🧹 Maintenance Chores
+
+* updated example deps ([b109828](https://github.com/gorhom/react-native-bottom-sheet/commit/b1098289bdc3d580c0556f4038f6221142e24024))
+
 ## [5.2.10](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.9...v5.2.10) (2026-04-21)
 
 ### 🐛 Bug Fixes
