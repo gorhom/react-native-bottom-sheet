@@ -7,7 +7,7 @@ import React, {
   useImperativeHandle,
   useMemo,
 } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
 import Animated, {
   cancelAnimation,
@@ -80,7 +80,6 @@ import {
   DEFAULT_KEYBOARD_INDEX,
   DEFAULT_KEYBOARD_INPUT_MODE,
   DEFAULT_OVER_DRAG_RESISTANCE_FACTOR,
-  INITIAL_POSITION,
   INITIAL_VALUE,
 } from './constants';
 import type { AnimateToPositionType, BottomSheetProps } from './types';
@@ -216,10 +215,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedCurrentIndex = useReactiveSharedValue(
       animateOnMount ? -1 : _providedIndex
     );
-    const animatedPosition = useSharedValue(INITIAL_POSITION);
+    const animatedPosition = useSharedValue(Dimensions.get('screen').height);
 
     // conditional
-    const isAnimatedOnMount = useSharedValue(
+    const didAnimateOnMount = useSharedValue(
       !animateOnMount || _providedIndex === -1
     );
     const isLayoutCalculated = useDerivedValue(() => {
@@ -566,7 +565,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         // reset values
         animatedContainerHeightDidChange.set(false);
-        isAnimatedOnMount.set(true);
+        didAnimateOnMount.set(true);
         animatedAnimationState.set({
           status: ANIMATION_STATUS.STOPPED,
           source: ANIMATION_SOURCE.NONE,
@@ -581,7 +580,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedCurrentIndex,
         animatedAnimationState,
         animatedContainerHeightDidChange,
-        isAnimatedOnMount,
+        didAnimateOnMount,
       ]
     );
     const animateToPosition: AnimateToPositionType = useCallback(
@@ -872,7 +871,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * if the bottom sheet did not animate on mount,
          * then we return the provided index or the closed position.
          */
-        if (!isAnimatedOnMount.value) {
+        if (!didAnimateOnMount.value) {
           return _providedIndex === -1
             ? closedDetentPosition
             : detents[_providedIndex];
@@ -912,7 +911,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedPosition,
         animatedDetentsState,
         isInTemporaryPosition,
-        isAnimatedOnMount,
+        didAnimateOnMount,
         keyboardBehavior,
         keyboardBlurBehavior,
         _providedIndex,
@@ -966,7 +965,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * when evaluating the position while the mount animation not been handled,
          * then we evaluate on mount use cases.
          */
-        if (!isAnimatedOnMount.value) {
+        if (!didAnimateOnMount.value) {
           /**
            * if there's a running animation (like force close), respect it and don't
            * override with mount animation
@@ -987,7 +986,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
             );
           } else {
             setToPosition(proposedPosition);
-            isAnimatedOnMount.value = true;
+            didAnimateOnMount.value = true;
           }
           return;
         }
@@ -1075,7 +1074,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedIndex,
         animatedPosition,
         animatedDetentsState,
-        isAnimatedOnMount,
+        didAnimateOnMount,
         isInTemporaryPosition,
         isLayoutCalculated,
       ]
@@ -1588,7 +1587,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         if (
           JSON.stringify(result) === JSON.stringify(previous) &&
-          isAnimatedOnMount.value
+          didAnimateOnMount.value
         ) {
           return;
         }
@@ -1613,7 +1612,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
         evaluatePosition(ANIMATION_SOURCE.SNAP_POINT_CHANGE);
       },
-      [isLayoutCalculated, isAnimatedOnMount, animatedDetentsState]
+      [isLayoutCalculated, didAnimateOnMount, animatedDetentsState]
     );
 
     /**
@@ -1778,12 +1777,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      */
     useEffect(() => {
       // early exit, if animate on mount is set and it did not animate yet.
-      if (animateOnMount && !isAnimatedOnMount.value) {
+      if (animateOnMount && !didAnimateOnMount.value) {
         return;
       }
 
       handleSnapToIndex(_providedIndex);
-    }, [animateOnMount, _providedIndex, isAnimatedOnMount, handleSnapToIndex]);
+    }, [animateOnMount, _providedIndex, didAnimateOnMount, handleSnapToIndex]);
     //#endregion
 
     // render
