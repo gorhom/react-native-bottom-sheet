@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.2.12](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.11...v5.2.12) (2026-04-29)
+
+### 🐛 Bug Fixes
+
+* updated getting scrollable ref for BottomSheetSectionList on Web 5.2.10 ([#2662](https://github.com/gorhom/react-native-bottom-sheet/issues/2662)) (by [@rozhkovs](https://github.com/rozhkovs)) ([5e4f00d](https://github.com/gorhom/react-native-bottom-sheet/commit/5e4f00d66419fc395cf27a3182a6a487f659af1f))
+
 ## [5.2.11](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.10...v5.2.11) (2026-04-28)
 
 ### 🐛 Bug Fixes
