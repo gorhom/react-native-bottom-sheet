@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.2.13](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.12...v5.2.13) (2026-04-30)
+
+### 🐛 Bug Fixes
+
+* **modal:** restore React mount reset after unmount ([#2664](https://github.com/gorhom/react-native-bottom-sheet/issues/2664))(by [@huextrat](https://github.com/huextrat)) ([03a215c](https://github.com/gorhom/react-native-bottom-sheet/commit/03a215c9751f87383dde223d4fa01bf1c04fe2da))
+
 ## [5.2.12](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.11...v5.2.12) (2026-04-29)
 
 ### 🐛 Bug Fixes
