@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
-import Animated, {
+import {
   cancelAnimation,
   Extrapolation,
   interpolate,
