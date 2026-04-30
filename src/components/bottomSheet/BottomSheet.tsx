@@ -967,10 +967,15 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         if (!didAnimateOnMount.value) {
           /**
-           * if there's a running animation (like force close), respect it and don't
-           * override with mount animation
+           * If a *close* animation is already running, do not override it with the mount
+           * animation (#2655). Keyboard-driven animations can also be RUNNING during this
+           * phase (e.g. TextInput autoFocus); those must not block mount or the sheet stays
+           * misaligned with the keyboard (#2661).
            */
-          if (animationStatus === ANIMATION_STATUS.RUNNING) {
+          if (
+            animationStatus === ANIMATION_STATUS.RUNNING &&
+            (isForcedClosing || nextIndex === -1)
+          ) {
             return;
           }
           /**
