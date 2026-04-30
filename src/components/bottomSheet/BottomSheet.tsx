@@ -686,12 +686,43 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         runOnJS(handleOnAnimate)(index, position);
 
         /**
+         * Sanitize velocity before passing it to the spring animation.
+         *
+         * Reanimated v4 + Gesture Handler v2 can report an excessively high
+         * velocity whose direction is *opposite* to the snap target. When
+         * that velocity is fed straight into `withSpring` the animation
+         * resolves almost instantly (the spring overshoots and settles in a
+         * single frame), giving the appearance of no animation at all.
+         *
+         * To fix this we:
+         *  1. Clamp the absolute velocity so springs stay smooth even on
+         *     very fast flings.
+         *  2. Zero the velocity when it points away from the target so the
+         *     spring never fights the snap direction.
+         *
+         * These guards are safe for all Reanimated versions – large
+         * opposing velocities are never desirable for a snap animation.
+         *
+         * @see https://github.com/gorhom/react-native-bottom-sheet/issues/2470
+         */
+        const MAX_VELOCITY = 500;
+        const clampedVelocity = Math.max(
+          -MAX_VELOCITY,
+          Math.min(MAX_VELOCITY, velocity)
+        );
+        const currentPosition = animatedPosition.value;
+        const movingTowardsTarget =
+          (position > currentPosition && clampedVelocity > 0) ||
+          (position < currentPosition && clampedVelocity < 0);
+        const effectiveVelocity = movingTowardsTarget ? clampedVelocity : 0;
+
+        /**
          * start animation
          */
         animatedPosition.value = animate({
           point: position,
           configs: configs || _providedAnimationConfigs,
-          velocity,
+          velocity: effectiveVelocity,
           overrideReduceMotion: _providedOverrideReduceMotion,
           onComplete: animateToPositionCompleted,
         });
