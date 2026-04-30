@@ -64,6 +64,8 @@ function BottomSheetModalComponent<T = never>(
   //#region state
   const [{ mount, data }, setState] =
     useState<BottomSheetModalState<T>>(INITIAL_STATE);
+  const mountRef = useRef(mount);
+  mountRef.current = mount;
   //#endregion
 
   //#region hooks
@@ -109,6 +111,8 @@ function BottomSheetModalComponent<T = never>(
           method: unmount.name,
         });
       }
+      const hadReactMount = mountRef.current;
+
       // reset variables
       resetVariables();
 
@@ -116,12 +120,8 @@ function BottomSheetModalComponent<T = never>(
       unmountSheet(key);
       unmountPortal(key);
 
-      // unmount the node, if sheet is still mounted
-      if (
-        [MODAL_STATUS.PRESENTED, MODAL_STATUS.ANIMATING].includes(
-          statusRef.current
-        )
-      ) {
+      // unmount the node, if sheet is still mounted in React state
+      if (hadReactMount) {
         setState(INITIAL_STATE);
       }
 
