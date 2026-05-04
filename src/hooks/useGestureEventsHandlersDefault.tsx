@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Dimensions, Keyboard, Platform } from 'react-native';
+import { Keyboard, Platform } from 'react-native';
 import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import {
   ANIMATION_SOURCE,
@@ -345,7 +345,7 @@ export const useGestureEventsHandlersDefault: GestureEventsHandlersHookType =
            *
            * because the the keyboard dismiss is interactive in iOS.
            */
-          const WINDOW_HEIGHT = Dimensions.get('window').height;
+          const WINDOW_HEIGHT = animatedLayoutState.get().containerHeight;
           if (
             !(
               Platform.OS === 'ios' &&
