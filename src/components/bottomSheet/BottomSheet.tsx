@@ -1176,7 +1176,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * - already animating to next position.
          */
         const { nextPosition } = animatedAnimationState.get();
-        if (!isLayoutCalculated || targetPosition === nextPosition) {
+        if (!isLayoutCalculated.value || targetPosition === nextPosition) {
           return;
         }
 
@@ -1391,7 +1391,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         const { nextPosition, nextIndex } = animatedAnimationState.get();
         if (
-          !isLayoutCalculated ||
+          !isLayoutCalculated.value ||
           nextIndex === 0 ||
           targetPosition === nextPosition
         ) {
