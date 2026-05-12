@@ -1126,15 +1126,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
        * exit method if :
        * - layout is not calculated.
        * - already animating to next position.
-       * - sheet is forced closing.
        */
-      const { nextPosition, nextIndex, isForcedClosing } =
-        animatedAnimationState.get();
+      const { nextPosition, nextIndex } = animatedAnimationState.get();
       if (
         !isLayoutCalculated.value ||
         index === nextIndex ||
-        targetPosition === nextPosition ||
-        isForcedClosing
+        targetPosition === nextPosition
       ) {
         return;
       }
@@ -1177,14 +1174,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * exit method if :
          * - layout is not calculated.
          * - already animating to next position.
-         * - sheet is forced closing.
          */
-        const { nextPosition, isForcedClosing } = animatedAnimationState.get();
-        if (
-          !isLayoutCalculated ||
-          targetPosition === nextPosition ||
-          isForcedClosing
-        ) {
+        const { nextPosition } = animatedAnimationState.get();
+        if (!isLayoutCalculated.value || targetPosition === nextPosition) {
           return;
         }
 
@@ -1344,15 +1336,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * exit method if :
          * - layout is not calculated.
          * - already animating to next position.
-         * - sheet is forced closing.
          */
-        const { nextPosition, nextIndex, isForcedClosing } =
-          animatedAnimationState.get();
+        const { nextPosition, nextIndex } = animatedAnimationState.get();
         if (
           !isLayoutCalculated.value ||
           targetIndex === nextIndex ||
-          targetPosition === nextPosition ||
-          isForcedClosing
+          targetPosition === nextPosition
         ) {
           return;
         }
@@ -1399,15 +1388,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * exit method if :
          * - layout is not calculated.
          * - already animating to next position.
-         * - sheet is forced closing.
          */
-        const { nextPosition, nextIndex, isForcedClosing } =
-          animatedAnimationState.get();
+        const { nextPosition, nextIndex } = animatedAnimationState.get();
         if (
-          !isLayoutCalculated ||
+          !isLayoutCalculated.value ||
           nextIndex === 0 ||
-          targetPosition === nextPosition ||
-          isForcedClosing
+          targetPosition === nextPosition
         ) {
           return;
         }
