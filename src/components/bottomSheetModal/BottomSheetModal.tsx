@@ -277,9 +277,11 @@ function BottomSheetModalComponent<T = never>(
        * then we unmount the node and early exit.
        */
       if (
-        [MODAL_STATUS.CLOSED, MODAL_STATUS.MINIMIZED].includes(
-          statusRef.current
-        ) ||
+        [
+          MODAL_STATUS.INITIAL,
+          MODAL_STATUS.CLOSED,
+          MODAL_STATUS.MINIMIZED,
+        ].includes(statusRef.current) ||
         (statusRef.current === MODAL_STATUS.DISMISSING &&
           currentIndexRef.current === -1)
       ) {
