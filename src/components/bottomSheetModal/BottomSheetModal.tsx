@@ -273,13 +273,16 @@ function BottomSheetModalComponent<T = never>(
       }
 
       /**
-       * if the modal position is already in a closed position,
-       * then we unmount the node and early exit.
+       * if the modal has no inner sheet to animate (never presented,
+       * already closed, or minimized), then we unmount the node and
+       * early exit.
        */
       if (
-        [MODAL_STATUS.CLOSED, MODAL_STATUS.MINIMIZED].includes(
-          statusRef.current
-        ) ||
+        [
+          MODAL_STATUS.INITIAL,
+          MODAL_STATUS.CLOSED,
+          MODAL_STATUS.MINIMIZED,
+        ].includes(statusRef.current) ||
         (statusRef.current === MODAL_STATUS.DISMISSING &&
           currentIndexRef.current === -1)
       ) {
