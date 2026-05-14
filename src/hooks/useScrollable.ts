@@ -6,6 +6,7 @@ import {
   useSharedValue,
 } from 'react-native-reanimated';
 import {
+  ANIMATION_SOURCE,
   ANIMATION_STATUS,
   KEYBOARD_STATUS,
   SCROLLABLE_STATUS,
@@ -62,13 +63,24 @@ export const useScrollable = (
     }
 
     /**
-     * if keyboard is shown and sheet is animating
-     * then we do not lock the scrolling to not lose
-     * current scrollable scroll position.
+     * If the sheet is animating because of the keyboard (in either
+     * direction — show or hide), keep the scrollable UNLOCKED so the
+     * scroll position is preserved across the transition. The previous
+     * check only covered keyboard show (`KEYBOARD_STATUS.SHOWN`); during
+     * keyboard dismiss the keyboard status reports `HIDDEN` while the
+     * sheet is still animating back from its keyboard-offset position to
+     * its rest position, and during that window `animatedSheetState`
+     * falls through to `OPENED` (since the position no longer exactly
+     * equals either the extended or the extended-with-keyboard position).
+     * Without this branch, `LOCKED` kicks in mid-animation and
+     * `handleOnScroll` forces `scrollTo(0, 0)` — jumping the user back
+     * to the top.
      */
+    const animationState = animatedAnimationState.get();
     if (
-      animatedKeyboardState.get().status === KEYBOARD_STATUS.SHOWN &&
-      animatedAnimationState.get().status === ANIMATION_STATUS.RUNNING
+      animationState.status === ANIMATION_STATUS.RUNNING &&
+      (animatedKeyboardState.get().status === KEYBOARD_STATUS.SHOWN ||
+        animationState.source === ANIMATION_SOURCE.KEYBOARD)
     ) {
       return SCROLLABLE_STATUS.UNLOCKED;
     }
