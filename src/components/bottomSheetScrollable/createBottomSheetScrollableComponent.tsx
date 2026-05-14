@@ -1,8 +1,10 @@
 import React, {
   forwardRef,
   useContext,
+  useEffect,
   useImperativeHandle,
   useMemo,
+  useRef,
 } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
 import { useAnimatedProps } from 'react-native-reanimated';
@@ -11,7 +13,10 @@ import {
   SCROLLABLE_STATUS,
   type SCROLLABLE_TYPE,
 } from '../../constants';
-import { BottomSheetDraggableContext } from '../../contexts/gesture';
+import {
+  BottomSheetDraggableContext,
+  NativeScrollGestureContext,
+} from '../../contexts/gesture';
 import {
   useBottomSheetContentContainerStyle,
   useBottomSheetInternal,
@@ -55,6 +60,14 @@ export function createBottomSheetScrollableComponent<T, P>(
 
     //#region hooks
     const draggableGesture = useContext(BottomSheetDraggableContext);
+    /**
+     * Registers our native scroll gesture with the outer `BottomSheetDraggableView`,
+     * which adds it to its `simultaneousWithExternalGesture` array on the pan.
+     * This makes the simultaneousness bidirectional — required for RNGH on
+     * Android to coordinate the pan and the native scroll without one
+     * canceling the other.
+     */
+    const nativeScrollGestureCtx = useContext(NativeScrollGestureContext);
     const { scrollableRef, scrollableContentOffsetY, scrollHandler } =
       useScrollHandler(
         scrollEventsHandlersHook,
@@ -95,6 +108,45 @@ export function createBottomSheetScrollableComponent<T, P>(
           : undefined,
       [draggableGesture]
     );
+
+    /**
+     * Register this scrollable's native gesture with the outer
+     * `BottomSheetDraggableView` so it can add the gesture to its pan's
+     * `simultaneousWithExternalGesture` array, completing the bidirectional
+     * simultaneousness declaration. This triggers a re-render of the parent
+     * `BottomSheet` (state update), which recomputes the pan's `useMemo` and
+     * re-attaches its `GestureDetector` with the relation now in place. A
+     * ref-based approach would not work here because RNGH resolves the
+     * gesture object eagerly and would see `null` at registration time;
+     * subsequent ref mutations are not picked up.
+     *
+     * No cleanup on deps change: nulling the registration would re-render
+     * the pan without the scroll in `simultaneousHandlers`, which feeds a
+     * different `draggableGesture` back through context and rebuilds
+     * `scrollableGesture`, which re-fires this effect — an infinite loop.
+     * The parent setter is idempotent (first non-null registration wins),
+     * so subsequent calls during the same component lifetime are no-ops.
+     * Unmount cleanup is handled separately below.
+     */
+    useEffect(() => {
+      if (!nativeScrollGestureCtx || !scrollableGesture) {
+        return;
+      }
+      nativeScrollGestureCtx.setNativeScrollGesture(scrollableGesture);
+    }, [scrollableGesture, nativeScrollGestureCtx]);
+
+    /**
+     * Unmount-only cleanup. Captures the latest context in a ref so the
+     * cleanup callback always nulls the current registration when the
+     * scrollable fully unmounts (e.g. when the bottom sheet closes).
+     */
+    const nativeScrollGestureCtxRef = useRef(nativeScrollGestureCtx);
+    nativeScrollGestureCtxRef.current = nativeScrollGestureCtx;
+    useEffect(() => {
+      return () => {
+        nativeScrollGestureCtxRef.current?.setNativeScrollGesture(null);
+      };
+    }, []);
     //#endregion
 
     //#region callbacks

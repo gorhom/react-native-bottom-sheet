@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useMemo,
+  useState,
 } from 'react';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
@@ -38,6 +39,8 @@ import {
   BottomSheetInternalProvider,
   BottomSheetProvider,
 } from '../../contexts';
+import { NativeScrollGestureContext } from '../../contexts/gesture';
+import type { Gesture as RNGHGesture } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/gesture';
 import {
   useAnimatedDetents,
   useAnimatedKeyboard,
@@ -92,6 +95,41 @@ type BottomSheet = BottomSheetMethods;
 
 const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
   function BottomSheet(props, ref) {
+    /**
+     * Stores the inner scrollable's native gesture so the content pan can
+     * declare `simultaneousWithExternalGesture(nativeScroll)` bidirectionally.
+     * See `NativeScrollGestureContext` for the rationale (one-sided
+     * simultaneousness is insufficient on Android).
+     */
+    const [nativeScrollGesture, setNativeScrollGestureRaw] =
+      useState<RNGHGesture | null>(null);
+    /**
+     * Idempotent setter: once a non-null gesture is registered, subsequent
+     * non-null registrations are ignored. Without this guard the system
+     * loops infinitely — setting the gesture re-renders the pan with new
+     * simultaneousHandlers, which feeds a new `draggableGesture` into the
+     * scrollable via context, which causes the scrollable's `useMemo` to
+     * rebuild `scrollableGesture`, whose new identity re-fires the
+     * registration effect, and so on. The bidirectional relation only needs
+     * to be established once; further updates would only churn the gesture
+     * tree without changing semantics.
+     */
+    const setNativeScrollGesture = useCallback(
+      (gesture: RNGHGesture | null) => {
+        setNativeScrollGestureRaw((prev) => {
+          if (prev !== null && gesture !== null) {
+            return prev;
+          }
+          return gesture;
+        });
+      },
+      []
+    );
+    const nativeScrollGestureContextValue = useMemo(
+      () => ({ nativeScrollGesture, setNativeScrollGesture }),
+      [nativeScrollGesture, setNativeScrollGesture]
+    );
+
     //#region extract props
     const {
       // animations configurations
@@ -1794,6 +1832,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     return (
       <BottomSheetProvider value={externalContextVariables}>
         <BottomSheetInternalProvider value={internalContextVariables}>
+          <NativeScrollGestureContext.Provider value={nativeScrollGestureContextValue}>
           <BottomSheetGestureHandlersProvider
             gestureEventsHandlersHook={gestureEventsHandlersHook}
           >
@@ -1869,6 +1908,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               /> */}
             </BottomSheetHostingContainer>
           </BottomSheetGestureHandlersProvider>
+          </NativeScrollGestureContext.Provider>
         </BottomSheetInternalProvider>
       </BottomSheetProvider>
     );

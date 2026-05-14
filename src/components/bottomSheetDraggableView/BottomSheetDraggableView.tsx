@@ -1,7 +1,10 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useContext, useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import { BottomSheetDraggableContext } from '../../contexts/gesture';
+import {
+  BottomSheetDraggableContext,
+  NativeScrollGestureContext,
+} from '../../contexts/gesture';
 import {
   useBottomSheetGestureHandlers,
   useBottomSheetInternal,
@@ -26,6 +29,16 @@ const BottomSheetDraggableViewComponent = ({
     failOffsetY,
   } = useBottomSheetInternal();
   const { contentPanGestureHandler } = useBottomSheetGestureHandlers();
+  /**
+   * The inner scrollable component registers its native scroll gesture here so
+   * we can declare `simultaneousWithExternalGesture(nativeScroll)` on the pan,
+   * matching the scrollable side's own `simultaneousWithExternalGesture(pan)`
+   * declaration. Without this bidirectional declaration, the parent pan
+   * cancels the child native scroll on every drag on Android (one-sided
+   * simultaneousness is insufficient there).
+   */
+  const nativeScrollGestureCtx = useContext(NativeScrollGestureContext);
+  const nativeScrollGesture = nativeScrollGestureCtx?.nativeScrollGesture;
   //#endregion
 
   //#region variables
@@ -38,6 +51,10 @@ const BottomSheetDraggableViewComponent = ({
 
     if (refreshControlGestureRef) {
       refs.push(refreshControlGestureRef);
+    }
+
+    if (nativeScrollGesture) {
+      refs.push(nativeScrollGesture);
     }
 
     if (_providedSimultaneousHandlers) {
@@ -53,6 +70,7 @@ const BottomSheetDraggableViewComponent = ({
     _providedSimultaneousHandlers,
     nativeGestureRef,
     refreshControlGestureRef,
+    nativeScrollGesture,
   ]);
   const draggableGesture = useMemo(() => {
     let gesture = Gesture.Pan()
