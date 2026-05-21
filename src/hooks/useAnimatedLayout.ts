@@ -106,13 +106,14 @@ export function useAnimatedLayout(
     [state, verticalInset, modal]
   );
   useEffect(() => {
-    Dimensions.addEventListener('change', ({ window }) => {
+    const subscription = Dimensions.addEventListener('change', ({ window: windowDimensions }) => {
       state.modify(_state => {
         'worklet';
-        _state.window = window;
+        _state.window = windowDimensions;
         return _state;
       });
     });
+    return () => subscription.remove();
   }, [state]);
   //#endregion
 
