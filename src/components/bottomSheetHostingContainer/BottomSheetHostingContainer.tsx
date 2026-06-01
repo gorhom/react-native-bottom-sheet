@@ -8,6 +8,7 @@ import {
   View,
   type ViewStyle,
 } from 'react-native';
+import { INITIAL_LAYOUT_VALUE } from '../../constants';
 import { print } from '../../utilities';
 import { styles } from './styles';
 import type { BottomSheetHostingContainerProps } from './types';
@@ -61,6 +62,16 @@ function BottomSheetHostingContainerComponent({
         layoutState.modify(state => {
           'worklet';
           state.rawContainerHeight = height;
+          // `useAnimatedLayout` mirrors `rawContainerHeight` into `containerHeight`
+          // through a `useAnimatedReaction`. On Reanimated 4 that reaction can miss
+          // the initial `INITIAL_LAYOUT_VALUE` -> height transition (the handler does
+          // not fire for the first `modify`), leaving `containerHeight` at the
+          // sentinel so snap points never normalize and the sheet stays off screen.
+          // Seed a non-sentinel value here so layout can complete; the reaction still
+          // refines it (e.g. modal vertical inset) whenever it runs.
+          if (state.containerHeight === INITIAL_LAYOUT_VALUE) {
+            state.containerHeight = height;
+          }
           return state;
         });
       }
