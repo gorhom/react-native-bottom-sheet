@@ -204,8 +204,17 @@ export interface BottomSheetScrollViewMethods {
 //#region SectionList
 export type BottomSheetSectionListProps<ItemT, SectionT> = Omit<
   AnimatedProps<SectionListProps<ItemT, SectionT>>,
-  'decelerationRate' | 'scrollEventThrottle'
-> &
+  | 'decelerationRate'
+  | 'scrollEventThrottle'
+  | 'keyExtractor'
+  | 'renderItem'
+  | 'renderSectionHeader'
+  | 'renderSectionFooter'
+ > &
+  Pick<
+    SectionListProps<ItemT, SectionT>,
+    'keyExtractor' | 'renderItem' | 'renderSectionHeader' | 'renderSectionFooter'
+  > &
   BottomSheetScrollableProps & {
     ref?: Ref<BottomSheetSectionListMethods>;
   };
