@@ -57,8 +57,9 @@ export type ScrollableProps<T> =
 //#region FlatList
 export type BottomSheetFlatListProps<T> = Omit<
   AnimatedProps<FlatListProps<T>>,
-  'decelerationRate' | 'onScroll' | 'scrollEventThrottle'
+  'decelerationRate' | 'onScroll' | 'scrollEventThrottle' | 'keyExtractor' | 'renderItem'
 > &
+  Pick<FlatListProps<T>, 'keyExtractor' | 'renderItem'> &
   BottomSheetScrollableProps & {
     ref?: Ref<BottomSheetFlatListMethods>;
   };
