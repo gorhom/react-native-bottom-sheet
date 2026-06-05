@@ -215,7 +215,12 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedCurrentIndex = useReactiveSharedValue(
       animateOnMount ? -1 : _providedIndex
     );
-    const animatedPosition = useSharedValue(Dimensions.get('window').height);
+    const animatedPosition = useSharedValue(
+      Platform.select({
+        web: Dimensions.get('window').height,
+        default: Dimensions.get('screen').height,
+      })
+    );
 
     // conditional
     const didAnimateOnMount = useSharedValue(
