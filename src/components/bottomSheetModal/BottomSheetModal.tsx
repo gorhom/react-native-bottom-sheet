@@ -432,8 +432,15 @@ function BottomSheetModalComponent<T = never>(
       currentIndexRef.current = _index;
       nextIndexRef.current = null;
 
-      statusRef.current =
-        _index === -1 ? MODAL_STATUS.MINIMIZED : MODAL_STATUS.PRESENTED;
+      const currentStatusIsDismissingOrMinimizing = [
+        MODAL_STATUS.DISMISSING,
+        MODAL_STATUS.MINIMIZING,
+      ].includes(statusRef.current);
+
+      if (!(currentStatusIsDismissingOrMinimizing && _index === -1)) {
+        statusRef.current =
+          _index === -1 ? MODAL_STATUS.MINIMIZED : MODAL_STATUS.PRESENTED;
+      }
 
       if (_providedOnChange) {
         _providedOnChange(_index, _position, _type);
