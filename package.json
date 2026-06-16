@@ -65,16 +65,12 @@
   },
   "peerDependencies": {
     "@types/react": "*",
-    "@types/react-native": "*",
     "react": "*",
     "react-native": "*",
     "react-native-gesture-handler": ">=2.16.1",
     "react-native-reanimated": ">=3.16.0 || >=4.0.0-"
   },
   "peerDependenciesMeta": {
-    "@types/react-native": {
-      "optional": true
-    },
     "@types/react": {
       "optional": true
     }
