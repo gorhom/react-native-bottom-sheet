@@ -125,8 +125,10 @@ function BottomSheetModalComponent<T = never>(
         setState(INITIAL_STATE);
       }
 
-      // fire `onDismiss` callback
-      if (_providedOnDismiss) {
+      // fire `onDismiss` callback only if the sheet was actually presented.
+      // `dismiss()` on a never-presented modal would otherwise fire a phantom
+      // `onDismiss`, mirroring the `hadReactMount` guard used for the unmount above.
+      if (hadReactMount && _providedOnDismiss) {
         _providedOnDismiss();
       }
     },
