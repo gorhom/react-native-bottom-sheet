@@ -30,6 +30,13 @@ import {
 import { styles } from './styles';
 import type { BottomSheetDefaultBackdropProps } from './types';
 
+const BACKDROP_INDEX_EPSILON = 0.01;
+
+const shouldDisableBackdropTouchability = (
+  index: number,
+  disappearsOnIndex: number
+) => index <= disappearsOnIndex + BACKDROP_INDEX_EPSILON;
+
 const BottomSheetBackdropComponent = ({
   animatedIndex,
   opacity: _providedOpacity,
@@ -62,7 +69,18 @@ const BottomSheetBackdropComponent = ({
   //#region variables
   const [pointerEvents, setPointerEvents] = useState<
     ViewProps['pointerEvents']
-  >(enableTouchThrough ? 'none' : 'auto');
+  >(() => {
+    if (enableTouchThrough) {
+      return 'none';
+    }
+
+    return shouldDisableBackdropTouchability(
+      animatedIndex.value,
+      disappearsOnIndex
+    )
+      ? 'none'
+      : 'auto';
+  });
   //#endregion
 
   //#region callbacks
@@ -120,7 +138,8 @@ const BottomSheetBackdropComponent = ({
 
   //#region effects
   useAnimatedReaction(
-    () => animatedIndex.value <= disappearsOnIndex,
+    () =>
+      shouldDisableBackdropTouchability(animatedIndex.value, disappearsOnIndex),
     (shouldDisableTouchability, previous) => {
       if (shouldDisableTouchability === previous) {
         return;
@@ -134,10 +153,20 @@ const BottomSheetBackdropComponent = ({
   // [link](https://github.com/gorhom/react-native-bottom-sheet/issues/1376)
   useEffect(() => {
     isMounted.current = true;
+
+    // Sync pointer events on mount in case the animated reaction fired before
+    // the component was mounted (https://github.com/gorhom/react-native-bottom-sheet/issues/2680)
+    const shouldDisableTouchability = shouldDisableBackdropTouchability(
+      animatedIndex.value,
+      disappearsOnIndex
+    );
+
+    setPointerEvents(shouldDisableTouchability ? 'none' : 'auto');
+
     return () => {
       isMounted.current = false;
     };
-  }, []);
+  }, [animatedIndex, disappearsOnIndex]);
   //#endregion
 
   const AnimatedView = (
