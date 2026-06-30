@@ -5,6 +5,7 @@ import {
   DEFAULT_ACCESSIBILITY_LABEL,
   DEFAULT_ACCESSIBILITY_ROLE,
   DEFAULT_ACCESSIBLE,
+  DEFAULT_IMPORTANT_FOR_ACCESSIBILITY,
 } from './constants';
 import { styles } from './styles';
 import type { BottomSheetDefaultHandleProps } from './types';
@@ -16,6 +17,7 @@ function BottomSheetHandleComponent({
   accessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
+  importantForAccessibility = DEFAULT_IMPORTANT_FOR_ACCESSIBILITY,
   children,
 }: BottomSheetDefaultHandleProps) {
   //#region styles
@@ -37,6 +39,7 @@ function BottomSheetHandleComponent({
       accessibilityRole={accessibilityRole ?? undefined}
       accessibilityLabel={accessibilityLabel ?? undefined}
       accessibilityHint={accessibilityHint ?? undefined}
+      importantForAccessibility={importantForAccessibility ?? undefined}
       collapsable={true}
     >
       <View style={indicatorStyle} />
