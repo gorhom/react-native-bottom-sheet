@@ -75,6 +75,7 @@ import {
   DEFAULT_ENABLE_CONTENT_PANNING_GESTURE,
   DEFAULT_ENABLE_OVER_DRAG,
   DEFAULT_ENABLE_PAN_DOWN_TO_CLOSE,
+  DEFAULT_IMPORTANT_FOR_ACCESSIBILITY,
   DEFAULT_KEYBOARD_BEHAVIOR,
   DEFAULT_KEYBOARD_BLUR_BEHAVIOR,
   DEFAULT_KEYBOARD_INDEX,
@@ -167,6 +168,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
       accessibilityRole:
         _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+      importantForAccessibility:
+        _providedImportantForAccessibility = DEFAULT_IMPORTANT_FOR_ACCESSIBILITY,
     } = props;
     //#endregion
 
@@ -1829,6 +1832,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   accessible={_providedAccessible ?? undefined}
                   accessibilityRole={_providedAccessibilityRole ?? undefined}
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
+                  importantForAccessibility={
+                    _providedImportantForAccessibility ?? undefined
+                  }
                   keyboardBehavior={keyboardBehavior}
                   detached={detached}
                 >

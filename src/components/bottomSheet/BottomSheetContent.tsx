@@ -38,6 +38,7 @@ function BottomSheetContentComponent({
   accessibilityLabel,
   accessibilityHint,
   accessibilityRole,
+  importantForAccessibility,
   children,
 }: BottomSheetContent) {
   //#region hooks
@@ -242,6 +243,7 @@ function BottomSheetContentComponent({
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={accessibilityHint}
       accessibilityRole={accessibilityRole}
+      importantForAccessibility={importantForAccessibility}
       style={contentContainerStyle}
     >
       {children}

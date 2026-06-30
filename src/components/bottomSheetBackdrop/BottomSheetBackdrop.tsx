@@ -24,6 +24,7 @@ import {
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
+  DEFAULT_IMPORTANT_FOR_ACCESSIBILITY,
   DEFAULT_OPACITY,
   DEFAULT_PRESS_BEHAVIOR,
 } from './constants';
@@ -44,6 +45,8 @@ const BottomSheetBackdropComponent = ({
   accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
+  importantForAccessibility:
+    _providedImportantForAccessibility = DEFAULT_IMPORTANT_FOR_ACCESSIBILITY,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
@@ -153,6 +156,9 @@ const BottomSheetBackdropComponent = ({
           : `Tap to ${
               typeof pressBehavior === 'string' ? pressBehavior : 'move'
             } the Bottom Sheet`
+      }
+      importantForAccessibility={
+        _providedImportantForAccessibility ?? undefined
       }
     >
       {children}
