@@ -273,13 +273,15 @@ function BottomSheetModalComponent<T = never>(
       }
 
       /**
-       * if the modal position is already in a closed position,
+       * if the modal was never presented or is already in a closed position,
        * then we unmount the node and early exit.
        */
       if (
-        [MODAL_STATUS.CLOSED, MODAL_STATUS.MINIMIZED].includes(
-          statusRef.current
-        ) ||
+        [
+          MODAL_STATUS.INITIAL,
+          MODAL_STATUS.CLOSED,
+          MODAL_STATUS.MINIMIZED,
+        ].includes(statusRef.current) ||
         (statusRef.current === MODAL_STATUS.DISMISSING &&
           currentIndexRef.current === -1)
       ) {
