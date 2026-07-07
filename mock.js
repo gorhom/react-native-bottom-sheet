@@ -34,9 +34,11 @@ class BottomSheetModal extends React.Component {
   collapse() {}
   close() {
     this.data = null;
+    this.props?.onClose?.();
   }
   forceClose() {
     this.data = null;
+    this.props?.onClose?.();
   }
   present(data) {
     // Store data passed to present
@@ -46,6 +48,7 @@ class BottomSheetModal extends React.Component {
   }
   dismiss() {
     this.data = null;
+    this.props?.onDismiss?.();
   }
 
   render() {
@@ -61,8 +64,12 @@ class BottomSheet extends React.Component {
   snapToPosition() {}
   expand() {}
   collapse() {}
-  close() {}
-  forceClose() {}
+  close() {
+    this.props?.onClose?.();
+  }
+  forceClose() {
+    this.props?.onClose?.();
+  }
 
   render() {
     return this.props.children;
