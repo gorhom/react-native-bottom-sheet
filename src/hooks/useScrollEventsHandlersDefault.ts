@@ -13,6 +13,13 @@ export type ScrollEventContextType = {
   shouldLockInitialPosition: boolean;
 };
 
+/**
+ * Tolerance, in points, for treating the scrollable as already resting at the
+ * lock position. Sub-pixel offsets are reported during scrolling, so an exact
+ * comparison would keep re-issuing `scrollTo` and never settle.
+ */
+const SCROLL_LOCK_EPSILON = 0.5;
+
 export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
   scrollableRef,
   scrollableContentOffsetY
@@ -55,8 +62,17 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)
             : 0;
-          // @ts-expect-error
-          scrollTo(scrollableRef, 0, lockPosition, false);
+          /**
+           * `scrollTo` drives the scrollable, which emits another scroll event,
+           * which re-enters this handler. Issuing it unconditionally, including
+           * when we are already sitting at `lockPosition`, makes that feedback
+           * loop unbounded and overflows the stack. Only correct the offset when
+           * it actually needs correcting.
+           */
+          if (Math.abs(y - lockPosition) > SCROLL_LOCK_EPSILON) {
+            // @ts-expect-error
+            scrollTo(scrollableRef, 0, lockPosition, false);
+          }
           scrollableContentOffsetY.value = lockPosition;
           return;
         }
