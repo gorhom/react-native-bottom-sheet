@@ -17,6 +17,7 @@ function BottomSheetHostingContainerComponent({
   layoutState,
   topInset = 0,
   bottomInset = 0,
+  modal,
   shouldCalculateHeight = true,
   detached,
   style,
@@ -61,6 +62,9 @@ function BottomSheetHostingContainerComponent({
         layoutState.modify(state => {
           'worklet';
           state.rawContainerHeight = height;
+          state.containerHeight = modal
+            ? height - topInset - bottomInset
+            : height;
           return state;
         });
       }
@@ -108,7 +112,7 @@ function BottomSheetHostingContainerComponent({
         });
       }
     },
-    [layoutState, containerLayoutState]
+    [layoutState, containerLayoutState, modal, topInset, bottomInset]
   );
   //#endregion
 

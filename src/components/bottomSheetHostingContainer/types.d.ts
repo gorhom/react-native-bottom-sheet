@@ -10,6 +10,7 @@ export interface BottomSheetHostingContainerProps
   > {
   containerLayoutState?: SharedValue<ContainerLayoutState>;
   layoutState?: SharedValue<LayoutState>;
+  modal?: boolean;
 
   shouldCalculateHeight?: boolean;
   style?: StyleProp<ViewStyle>;

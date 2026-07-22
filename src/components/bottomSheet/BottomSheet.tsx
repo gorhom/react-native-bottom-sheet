@@ -1084,6 +1084,46 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         isLayoutCalculated,
       ]
     );
+
+    /**
+     * Ensure the mount position evaluation runs even when the animated
+     * reaction that normally triggers it never fires.
+     *
+     * On Reanimated v4, every `useAnimatedReaction` attached to a component
+     * instance can fail to fire when the instance mounts while the JS thread
+     * is busy: derived values (detents, isLayoutCalculated) still compute
+     * correctly, but the reaction that evaluates the initial position never
+     * runs, leaving the sheet parked off-screen at the container height.
+     *
+     * This effect re-dispatches the same evaluation from the JS side until
+     * the mount has been handled, then stops. When the reactions are healthy
+     * the first check observes `didAnimateOnMount` already true and does
+     * nothing.
+     */
+    useEffect(() => {
+      let attempts = 0;
+      const enforceMountPosition = setInterval(() => {
+        if (didAnimateOnMount.value || attempts >= 20) {
+          clearInterval(enforceMountPosition);
+          return;
+        }
+        attempts += 1;
+        runOnUI(() => {
+          'worklet';
+          if (didAnimateOnMount.value) {
+            return;
+          }
+          if (
+            animatedAnimationState.get().status === ANIMATION_STATUS.RUNNING
+          ) {
+            return;
+          }
+          evaluatePosition(ANIMATION_SOURCE.MOUNT);
+        })();
+      }, 100);
+      return () => clearInterval(enforceMountPosition);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     //#endregion
 
     //#region public methods
@@ -1811,6 +1851,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
               containerLayoutState={containerLayoutState}
               topInset={topInset}
               bottomInset={bottomInset}
+              modal={$modal}
               detached={detached}
               style={_providedContainerStyle}
             >
