@@ -1,9 +1,6 @@
-import { Dimensions, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { Easing } from 'react-native-reanimated';
 import type { SpringConfig, TimingConfig } from './types';
-
-const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
-const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 enum GESTURE_SOURCE {
   UNDETERMINED = 0,
@@ -147,13 +144,9 @@ export {
   KEYBOARD_INPUT_MODE,
   KEYBOARD_STATUS,
   MODAL_STACK_BEHAVIOR,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
   SCROLLABLE_DECELERATION_RATE_MAPPER,
   SCROLLABLE_STATUS,
   SCROLLABLE_TYPE,
   SHEET_STATE,
   SNAP_POINT_TYPE,
-  WINDOW_HEIGHT,
-  WINDOW_WIDTH,
 };

@@ -12,6 +12,7 @@ import {
 interface ScrollComponentInternals {
   /** Available on ScrollView, FlatList, etc. to get the underlying native scroll ref */
   getNativeScrollRef?: () => NodeHandle | null;
+  getScrollableNode?: () => NodeHandle | null;
   /** Internal property on VirtualizedList storing the scroll ref */
   _scrollRef?: NodeHandle | null;
 }
@@ -39,6 +40,15 @@ export function findNodeHandle(
   try {
     if (typeof scrollable.getNativeScrollRef === 'function') {
       nodeHandle = scrollable.getNativeScrollRef();
+      if (nodeHandle) {
+        return nodeHandle;
+      }
+    }
+  } catch {}
+
+  try {
+    if (typeof scrollable.getScrollableNode === 'function') {
+      nodeHandle = scrollable.getScrollableNode();
       if (nodeHandle) {
         return nodeHandle;
       }

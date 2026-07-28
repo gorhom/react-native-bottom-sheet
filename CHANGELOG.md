@@ -1,5 +1,36 @@
 # Changelog
 
+## [5.2.14](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.13...v5.2.14) (2026-05-09)
+
+### 🐛 Bug Fixes
+
+* allow mount animation alongside keyboard during initial open ([#2661](https://github.com/gorhom/react-native-bottom-sheet/issues/2661)) ([#2665](https://github.com/gorhom/react-native-bottom-sheet/issues/2665))(by [@huextrat](https://github.com/huextrat)) ([782e00c](https://github.com/gorhom/react-native-bottom-sheet/commit/782e00c959257bbf440dd44455a712f73fdba46d)), closes [#2655](https://github.com/gorhom/react-native-bottom-sheet/issues/2655)
+* read window height from a shared value on ui thread ([5853f11](https://github.com/gorhom/react-native-bottom-sheet/commit/5853f1177555219be72ff90bd974b3a50899cebd))
+
+## [5.2.13](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.12...v5.2.13) (2026-04-30)
+
+### 🐛 Bug Fixes
+
+* **modal:** restore React mount reset after unmount ([#2664](https://github.com/gorhom/react-native-bottom-sheet/issues/2664))(by [@huextrat](https://github.com/huextrat)) ([03a215c](https://github.com/gorhom/react-native-bottom-sheet/commit/03a215c9751f87383dde223d4fa01bf1c04fe2da))
+
+## [5.2.12](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.11...v5.2.12) (2026-04-29)
+
+### 🐛 Bug Fixes
+
+* updated getting scrollable ref for BottomSheetSectionList on Web 5.2.10 ([#2662](https://github.com/gorhom/react-native-bottom-sheet/issues/2662)) (by [@rozhkovs](https://github.com/rozhkovs)) ([5e4f00d](https://github.com/gorhom/react-native-bottom-sheet/commit/5e4f00d66419fc395cf27a3182a6a487f659af1f))
+
+## [5.2.11](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.10...v5.2.11) (2026-04-28)
+
+### 🐛 Bug Fixes
+
+* **#2632:** rewrote the modal status logic to prevent getting out of sync ([2b4a338](https://github.com/gorhom/react-native-bottom-sheet/commit/2b4a338ed2b3e85b289346886b68bb3aa1a5c9c9)), closes [#2632](https://github.com/gorhom/react-native-bottom-sheet/issues/2632)
+* **#2639:** removed screen and window layout constants ([325ade6](https://github.com/gorhom/react-native-bottom-sheet/commit/325ade632ad549f7c25cee8ae4282b7620a54aa5)), closes [#2639](https://github.com/gorhom/react-native-bottom-sheet/issues/2639)
+* **#2639:** use window height as initial position ([17ee221](https://github.com/gorhom/react-native-bottom-sheet/commit/17ee22176123f94a17f2041a60ada3017f581463)), closes [#2639](https://github.com/gorhom/react-native-bottom-sheet/issues/2639)
+
+### 🧹 Maintenance Chores
+
+* updated example deps ([b109828](https://github.com/gorhom/react-native-bottom-sheet/commit/b1098289bdc3d580c0556f4038f6221142e24024))
+
 ## [5.2.10](https://github.com/gorhom/react-native-bottom-sheet/compare/v5.2.9...v5.2.10) (2026-04-21)
 
 ### 🐛 Bug Fixes

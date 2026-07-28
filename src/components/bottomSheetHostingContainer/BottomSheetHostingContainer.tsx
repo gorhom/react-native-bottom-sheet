@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
 import {
+  Dimensions,
   type LayoutChangeEvent,
   StatusBar,
   type StyleProp,
@@ -7,7 +8,6 @@ import {
   View,
   type ViewStyle,
 } from 'react-native';
-import { WINDOW_HEIGHT } from '../../constants';
 import { print } from '../../utilities';
 import { styles } from './styles';
 import type { BottomSheetHostingContainerProps } from './types';
@@ -65,6 +65,7 @@ function BottomSheetHostingContainerComponent({
         });
       }
 
+      const WINDOW_HEIGHT = Dimensions.get('window').height;
       containerRef.current?.measure(
         (_x, _y, _width, _height, _pageX, pageY) => {
           const offset = {

@@ -7,7 +7,6 @@ import {
   GESTURE_SOURCE,
   KEYBOARD_STATUS,
   SCROLLABLE_TYPE,
-  WINDOW_HEIGHT,
 } from '../constants';
 import type { GestureEventHandlerCallbackType } from '../types';
 import { clamp } from '../utilities/clamp';
@@ -330,12 +329,13 @@ export const useGestureEventsHandlersDefault = () => {
          *
          * because the the keyboard dismiss is interactive in iOS.
          */
+        const { window } = animatedLayoutState.get();
         if (
           !(
             Platform.OS === 'ios' &&
             isScrollable &&
             absoluteY >
-              WINDOW_HEIGHT - animatedKeyboardState.get().heightWithinContainer
+              window.height - animatedKeyboardState.get().heightWithinContainer
           )
         ) {
           dismissKeyboardOnJs();
@@ -397,6 +397,7 @@ export const useGestureEventsHandlersDefault = () => {
       animatedDetentsState,
       animatedKeyboardState,
       animatedPosition,
+      animatedLayoutState,
       animateToPosition,
       context,
     ]

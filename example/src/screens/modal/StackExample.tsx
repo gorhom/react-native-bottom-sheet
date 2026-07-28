@@ -63,7 +63,7 @@ const StackExample = () => {
   // renders
   const renderHeaderHandle = useCallback(
     (title: string) => (props: BottomSheetHandleProps) => (
-      <HeaderHandle {...props} children={title} />
+      <HeaderHandle {...props}>{title}</HeaderHandle>
     ),
     []
   );
@@ -101,8 +101,8 @@ const StackExample = () => {
           <Button label="Dismiss Modal C" onPress={handleDismissCPress} />
         </View>
       </View>
-      <Button label="Dismiss All Modals" onPress={handleDismissAllPress} />
-      <Button label="Dismiss All By Hook" onPress={handleDismissByHookPress} />
+      <Button label="Dismiss All Modal 'A' By Hook" onPress={handleDismissByHookPress} />
+      <Button label="Dismiss All Modals by Hook" onPress={handleDismissAllPress} />
 
       <BottomSheetModal
         name="A"

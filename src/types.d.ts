@@ -30,7 +30,6 @@ import type {
   ANIMATION_STATUS,
   GESTURE_SOURCE,
   KEYBOARD_STATUS,
-  SCROLLABLE_STATUS,
   SCROLLABLE_TYPE,
 } from './constants';
 
@@ -301,6 +300,13 @@ export type ContainerLayoutState = {
  * Represents the layout state of the bottom sheet components.
  */
 export type LayoutState = {
+  /**
+   * Getting latest window layout on a shared value
+   */
+  window: {
+    height: number;
+    width: number;
+  };
   /**
    * The original height of the container before any adjustments.
    */

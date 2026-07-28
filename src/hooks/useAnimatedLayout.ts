@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Dimensions } from 'react-native';
 import {
   makeMutable,
   type SharedValue,
@@ -8,6 +9,7 @@ import { INITIAL_CONTAINER_LAYOUT, INITIAL_LAYOUT_VALUE } from '../constants';
 import type { ContainerLayoutState, LayoutState } from '../types';
 
 const INITIAL_STATE: LayoutState = {
+  window: Dimensions.get('window'),
   rawContainerHeight: INITIAL_LAYOUT_VALUE,
   containerHeight: INITIAL_LAYOUT_VALUE,
   containerOffset: INITIAL_CONTAINER_LAYOUT.offset,
@@ -103,6 +105,15 @@ export function useAnimatedLayout(
     },
     [state, verticalInset, modal]
   );
+  useEffect(() => {
+    Dimensions.addEventListener('change', ({ window }) => {
+      state.modify(_state => {
+        'worklet';
+        _state.window = window;
+        return _state;
+      });
+    });
+  }, [state]);
   //#endregion
 
   return state;
