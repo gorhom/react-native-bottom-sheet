@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useMemo,
+  useState,
 } from 'react';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { State } from 'react-native-gesture-handler';
@@ -277,6 +278,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         ? userReduceMotionSetting
         : _providedOverrideReduceMotion === ReduceMotion.Always;
     }, [userReduceMotionSetting, _providedOverrideReduceMotion]);
+
+    const [, _forceUpdate] = useState(0);
+    const handleReduceMotionMountFlush = useCallback(() => {
+      if (Platform.OS === 'android' && reduceMotion) {
+        _forceUpdate((prev: number) => prev + 1);
+      }
+    }, [reduceMotion]);
     //#endregion
 
     //#region state/dynamic variables
@@ -980,7 +988,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
            * if animate on mount is set to true, then we animate to the propose position,
            * else, we set the position with out animation.
            */
-          if (animateOnMount) {
+          if (animateOnMount && !(Platform.OS === 'android' && reduceMotion)) {
             animateToPosition(
               proposedPosition,
               ANIMATION_SOURCE.MOUNT,
@@ -990,6 +998,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           } else {
             setToPosition(proposedPosition);
             didAnimateOnMount.value = true;
+            runOnJS(handleReduceMotionMountFlush)();
           }
           return;
         }
@@ -1080,6 +1089,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         didAnimateOnMount,
         isInTemporaryPosition,
         isLayoutCalculated,
+        handleReduceMotionMountFlush,
       ]
     );
     //#endregion
