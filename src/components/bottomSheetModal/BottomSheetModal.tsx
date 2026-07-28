@@ -379,7 +379,7 @@ function BottomSheetModalComponent<T = never>(
 
   //#region callbacks
   const handlePortalOnUnmount = useCallback(
-    function handlePortalOnUnmount() {
+    function handlePortalOnUnmount(removePortalFromHost?: () => void) {
       if (__DEV__) {
         print({
           component: 'BottomSheetModal',
@@ -391,6 +391,27 @@ function BottomSheetModalComponent<T = never>(
       }
 
       if (statusRef.current === MODAL_STATUS.INITIAL) {
+        /**
+         * The sheet is already fully torn down — `unmount()` removed this portal
+         * from the host and reset the status.
+         *
+         * However `Portal`'s `handleOnUpdate` effect is keyed on `children`, whose
+         * element identity changes on every parent render. A trailing update can
+         * therefore land in the window between `unmount()`'s `removePortal` and
+         * this component actually unmounting, RE-ADDING the entry we just removed.
+         *
+         * Left behind, that orphan makes the host keep rendering the stale node,
+         * so the inner `BottomSheet` is never unmounted. The next `present()` then
+         * cannot open it: `handlePresent` reads a captured `mount` of `false`, so
+         * it skips the `snapToIndex` branch, while the still-mounted sheet already
+         * has `didAnimateOnMount === true` and so runs no mount animation either.
+         * The sheet silently never opens again, and every closed sheet leaks a
+         * live subtree.
+         *
+         * This is the last chance to drop that orphan. `removePortal` is
+         * idempotent, so this is a no-op when there is nothing stale to remove.
+         */
+        removePortalFromHost?.();
         return;
       }
 
