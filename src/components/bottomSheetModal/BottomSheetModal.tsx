@@ -273,6 +273,23 @@ function BottomSheetModalComponent<T = never>(
       }
 
       /**
+       * if the modal was never presented, or has already been fully torn down
+       * (`unmount()` resets the status back to `INITIAL`), then there is nothing
+       * to dismiss and no inner sheet to close.
+       *
+       * Falling through would set the status to `DISMISSING` and call
+       * `forceClose()` on a `bottomSheetRef` that is still `null` — a silent
+       * no-op. Since nothing is animating, `onClose` never fires, so nothing ever
+       * transitions the status out of `DISMISSING`, and `handlePortalRender`
+       * suppresses every subsequent render. The modal is then permanently wedged:
+       * later `present()` calls mount the portal but render nothing, with no
+       * error or warning.
+       */
+      if (statusRef.current === MODAL_STATUS.INITIAL) {
+        return;
+      }
+
+      /**
        * if the modal position is already in a closed position,
        * then we unmount the node and early exit.
        */
