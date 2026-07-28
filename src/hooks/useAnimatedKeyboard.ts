@@ -7,10 +7,7 @@ import {
   type KeyboardEventName,
   Platform,
 } from 'react-native';
-import {
-  useAnimatedReaction,
-  useSharedValue,
-} from 'react-native-reanimated';
+import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnUI } from 'react-native-worklets';
 import { KEYBOARD_STATUS } from '../constants';
 import type { KeyboardState } from '../types';

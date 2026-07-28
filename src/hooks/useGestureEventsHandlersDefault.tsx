@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Keyboard, Platform } from 'react-native';
-import { scheduleOnRN } from 'react-native-worklets';
 import { useSharedValue } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import {
   ANIMATION_SOURCE,
   GESTURE_SOURCE,

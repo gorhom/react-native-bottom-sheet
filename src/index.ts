@@ -7,36 +7,37 @@ export { default as BottomSheetModalProvider } from './components/bottomSheetMod
 
 //#region hooks
 export { useBottomSheet } from './hooks/useBottomSheet';
+export { useBottomSheetGestureHandlers } from './hooks/useBottomSheetGestureHandlers';
+export { useBottomSheetInternal } from './hooks/useBottomSheetInternal';
 export { useBottomSheetModal } from './hooks/useBottomSheetModal';
+export { useBottomSheetModalInternal } from './hooks/useBottomSheetModalInternal';
+export { useBottomSheetScrollableCreator } from './hooks/useBottomSheetScrollableCreator';
 export { useBottomSheetSpringConfigs } from './hooks/useBottomSheetSpringConfigs';
 export { useBottomSheetTimingConfigs } from './hooks/useBottomSheetTimingConfigs';
-export { useBottomSheetInternal } from './hooks/useBottomSheetInternal';
-export { useBottomSheetModalInternal } from './hooks/useBottomSheetModalInternal';
-export { useScrollEventsHandlersDefault } from './hooks/useScrollEventsHandlersDefault';
 export { useGestureEventsHandlersDefault } from './hooks/useGestureEventsHandlersDefault';
-export { useBottomSheetGestureHandlers } from './hooks/useBottomSheetGestureHandlers';
-export { useScrollHandler } from './hooks/useScrollHandler';
 export { useScrollableSetter } from './hooks/useScrollableSetter';
-export { useBottomSheetScrollableCreator } from './hooks/useBottomSheetScrollableCreator';
+export { useScrollEventsHandlersDefault } from './hooks/useScrollEventsHandlersDefault';
+export { useScrollHandler } from './hooks/useScrollHandler';
+
 //#endregion
 
-//#region components
-export {
-  BottomSheetScrollView,
-  BottomSheetSectionList,
-  BottomSheetFlatList,
-  BottomSheetVirtualizedList,
-  BottomSheetFlashList,
-} from './components/bottomSheetScrollable';
-export { BottomSheetHandle } from './components/bottomSheetHandle';
-export { default as BottomSheetDraggableView } from './components/bottomSheetDraggableView';
-export { default as BottomSheetView } from './components/bottomSheetView';
-export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
 export { BottomSheetBackdrop } from './components/bottomSheetBackdrop';
+export { default as BottomSheetDraggableView } from './components/bottomSheetDraggableView';
 export {
   BottomSheetFooter,
   BottomSheetFooterContainer,
 } from './components/bottomSheetFooter';
+export { BottomSheetHandle } from './components/bottomSheetHandle';
+//#region components
+export {
+  BottomSheetFlashList,
+  BottomSheetFlatList,
+  BottomSheetScrollView,
+  BottomSheetSectionList,
+  BottomSheetVirtualizedList,
+} from './components/bottomSheetScrollable';
+export { default as BottomSheetTextInput } from './components/bottomSheetTextInput';
+export { default as BottomSheetView } from './components/bottomSheetView';
 
 // touchables
 import BottomSheetTouchable from './components/touchables';
@@ -51,25 +52,25 @@ export { createBottomSheetScrollableComponent } from './components/bottomSheetSc
 
 //#region types
 export type { BottomSheetProps } from './components/bottomSheet';
-export type { BottomSheetModalProps } from './components/bottomSheetModal';
-export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
-export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
 export type { BottomSheetBackdropProps } from './components/bottomSheetBackdrop';
+export type { BottomSheetBackgroundProps } from './components/bottomSheetBackground';
 export type { BottomSheetFooterProps } from './components/bottomSheetFooter';
+export type { BottomSheetHandleProps } from './components/bottomSheetHandle';
+export type { BottomSheetModalProps } from './components/bottomSheetModal';
 
 export type {
   BottomSheetFlatListMethods,
+  BottomSheetScrollableProps,
   BottomSheetScrollViewMethods,
   BottomSheetSectionListMethods,
   BottomSheetVirtualizedListMethods,
-  BottomSheetScrollableProps,
 } from './components/bottomSheetScrollable';
 
 export type {
-  ScrollEventsHandlersHookType,
+  GestureEventHandlerCallbackType,
   GestureEventsHandlersHookType,
   ScrollEventHandlerCallbackType,
-  GestureEventHandlerCallbackType,
+  ScrollEventsHandlersHookType,
 } from './types';
 //#endregion
 

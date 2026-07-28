@@ -1,7 +1,7 @@
-export { normalizeSnapPoint } from './normalizeSnapPoint';
 export { animate } from './animate';
+export { findNodeHandle } from './findNodeHandle';
 export { getKeyboardAnimationConfigs } from './getKeyboardAnimationConfigs';
+export { isFabricInstalled } from './isFabricInstalled';
 export { print } from './logger';
 export { noop, workletNoop } from './noop';
-export { isFabricInstalled } from './isFabricInstalled';
-export { findNodeHandle } from './findNodeHandle';
+export { normalizeSnapPoint } from './normalizeSnapPoint';

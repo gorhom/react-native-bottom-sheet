@@ -51,7 +51,7 @@ export function useBoundingClientRect(
 
   // biome-ignore lint/correctness/useHookAtTopLevel: `isFabricInstalled` is a constant that will not change during the runtime
   useLayoutEffect(() => {
-    if (!ref || !ref.current) {
+    if (!ref?.current) {
       return;
     }
 

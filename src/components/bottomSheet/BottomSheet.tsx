@@ -998,7 +998,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           } else {
             setToPosition(proposedPosition);
             didAnimateOnMount.value = true;
-            runOnJS(handleReduceMotionMountFlush)();
+            scheduleOnRN(handleReduceMotionMountFlush);
           }
           return;
         }
@@ -1152,7 +1152,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
        */
       isInTemporaryPosition.value = false;
 
-      scheduleOnUI(animateToPosition, targetPosition,
+      scheduleOnUI(
+        animateToPosition,
+        targetPosition,
         ANIMATION_SOURCE.USER,
         0,
         animationConfigs
@@ -1200,7 +1202,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = true;
 
-        scheduleOnUI(animateToPosition, targetPosition,
+        scheduleOnUI(
+          animateToPosition,
+          targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1253,7 +1257,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = false;
 
-        scheduleOnUI(animateToPosition, targetPosition,
+        scheduleOnUI(
+          animateToPosition,
+          targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1312,7 +1318,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           };
         });
 
-        scheduleOnUI(animateToPosition, targetPosition,
+        scheduleOnUI(
+          animateToPosition,
+          targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1366,7 +1374,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = false;
 
-        scheduleOnUI(animateToPosition, targetPosition,
+        scheduleOnUI(
+          animateToPosition,
+          targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
@@ -1420,7 +1430,9 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          */
         isInTemporaryPosition.value = false;
 
-        scheduleOnUI(animateToPosition, targetPosition,
+        scheduleOnUI(
+          animateToPosition,
+          targetPosition,
           ANIMATION_SOURCE.USER,
           0,
           animationConfigs
