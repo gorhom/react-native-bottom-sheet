@@ -32,9 +32,11 @@ const INITIAL_STATE: BottomSheetModalState = {
   data: undefined,
 };
 
-type BottomSheetModal<T = never> = BottomSheetModalMethods<T>;
+// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+type BottomSheetModal<T = any> = BottomSheetModalMethods<T>;
 
-function BottomSheetModalComponent<T = never>(
+// biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+function BottomSheetModalComponent<T = any>(
   props: BottomSheetModalProps<T>,
   ref: React.ForwardedRef<BottomSheetModal<T>>
 ) {
@@ -565,7 +567,8 @@ function BottomSheetModalComponent<T = never>(
 }
 
 const BottomSheetModal = memo(forwardRef(BottomSheetModalComponent)) as <
-  T = never,
+  // biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
+  T = any,
 >(
   props: BottomSheetModalProps<T> & {
     ref?: React.ForwardedRef<BottomSheetModal<T>>;
