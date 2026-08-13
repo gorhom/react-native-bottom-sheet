@@ -667,6 +667,23 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         }
 
         /**
+         * a temporary position is not part of the detents array either, and unlike the
+         * closed position it is not a dismissal: `snapToPosition` asks for one deliberately.
+         * left at -1 it is written to `nextIndex`, and `animateToPositionCompleted` fires
+         * `onClose` for that index — which unmounts a modal. report the index the sheet
+         * already holds instead, as `animatedIndex` does while in a temporary position, so
+         * the reposition is invisible to `onChange` too.
+         */
+        if (
+          index === -1 &&
+          source === ANIMATION_SOURCE.USER &&
+          position !== closedDetentPosition &&
+          animatedCurrentIndex.get() !== -1
+        ) {
+          index = animatedCurrentIndex.get();
+        }
+
+        /**
          * set the animation state
          */
         animatedAnimationState.set(state => {
@@ -705,6 +722,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedOverrideReduceMotion,
         animatedDetentsState,
         animatedAnimationState,
+        animatedCurrentIndex,
         animatedKeyboardState,
         animatedPosition,
         animatedSheetState,
