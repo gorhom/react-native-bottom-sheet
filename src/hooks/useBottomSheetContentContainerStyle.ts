@@ -19,12 +19,7 @@ export function useBottomSheetContentContainerStyle(
 
   //#region styles
   const flattenStyle = useMemo<ViewStyle>(() => {
-    return !_style
-      ? {}
-      : Array.isArray(_style)
-        ? // @ts-ignore
-          (StyleSheet.compose(..._style) as ViewStyle)
-        : (_style as ViewStyle);
+    return _style ? StyleSheet.flatten(_style) : {};
   }, [_style]);
   const style = useMemo<ViewProps['style']>(() => {
     if (!enableFooterMarginAdjustment) {
