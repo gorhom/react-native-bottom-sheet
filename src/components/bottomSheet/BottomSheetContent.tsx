@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import type { ViewProps, ViewStyle } from 'react-native';
-import Animated, {
+import {
   type AnimatedStyle,
   useAnimatedStyle,
   useDerivedValue,
@@ -44,7 +44,6 @@ function BottomSheetContentComponent({
   const {
     enableDynamicSizing,
     overDragResistanceFactor,
-    enableContentPanningGesture,
     animatedPosition,
     animatedLayoutState,
     animatedDetentsState,
@@ -233,11 +232,8 @@ function BottomSheetContentComponent({
   //#endregion
 
   //#region render
-  const DraggableView = enableContentPanningGesture
-    ? BottomSheetDraggableView
-    : Animated.View;
   return (
-    <DraggableView
+    <BottomSheetDraggableView
       accessible={accessible}
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={accessibilityHint}
@@ -245,7 +241,7 @@ function BottomSheetContentComponent({
       style={contentContainerStyle}
     >
       {children}
-    </DraggableView>
+    </BottomSheetDraggableView>
   );
   //#endregion
 }
