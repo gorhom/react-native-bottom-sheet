@@ -1,5 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import type { ViewProps, ViewStyle } from 'react-native';
+import { State } from 'react-native-gesture-handler';
 import Animated, {
   type AnimatedStyle,
   useAnimatedStyle,
@@ -51,6 +52,8 @@ function BottomSheetContentComponent({
     animatedSheetHeight,
     animatedKeyboardState,
     isInTemporaryPosition,
+    animatedContentGestureState,
+    animatedHandleGestureState,
   } = useBottomSheetInternal();
   //#endregion
 
@@ -199,6 +202,28 @@ function BottomSheetContentComponent({
     const paddingBottom = detached ? 0 : animatedPaddingBottom.get();
     const height = animatedContentHeightMax.get() + paddingBottom;
 
+    /**
+     * if user is actively panning the sheet (handle or content gesture),
+     * bypass animate() to prevent mask geometry desync during the gesture.
+     * this fixes the Android Reanimated 4.x bug where the content mask
+     * temporarily collapses during a slow pan-down, causing the screen
+     * behind to flash through.
+     * @see https://github.com/gorhom/react-native-bottom-sheet/issues/2716
+     * @see https://github.com/gorhom/react-native-bottom-sheet/issues/2702
+     */
+    const hasActiveGesture =
+      animatedContentGestureState.get() === State.ACTIVE ||
+      animatedContentGestureState.get() === State.BEGAN ||
+      animatedHandleGestureState.get() === State.ACTIVE ||
+      animatedHandleGestureState.get() === State.BEGAN;
+
+    if (hasActiveGesture) {
+      return {
+        paddingBottom,
+        height,
+      };
+    }
+
     return {
       paddingBottom: animate({
         point: paddingBottom,
@@ -219,7 +244,8 @@ function BottomSheetContentComponent({
     overrideReduceMotion,
     animatedLayoutState,
     animatedContentHeightMax,
-    animatedLayoutState,
+    animatedContentGestureState,
+    animatedHandleGestureState,
   ]);
   const contentContainerStyle = useMemo(
     () => [

@@ -77,3 +77,53 @@ docs/.env.production.local
 docs/npm-debug.log*
 docs/yarn-debug.log*
 docs/yarn-error.log*
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+target/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Testing
+.pytest_cache/
+.mypy_cache/
+
+# Distribution / packaging
+*.tar.gz
+*.whl
+*.egg
+
+# Temporary files
+*.tmp
+*~

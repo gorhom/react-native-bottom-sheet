@@ -7,11 +7,8 @@ import {
   type KeyboardEventName,
   Platform,
 } from 'react-native';
-import {
-  runOnUI,
-  useAnimatedReaction,
-  useSharedValue,
-} from 'react-native-reanimated';
+import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { scheduleOnUI } from 'react-native-worklets';
 import { KEYBOARD_STATUS } from '../constants';
 import type { KeyboardState } from '../types';
 
@@ -109,7 +106,8 @@ export const useAnimatedKeyboard = () => {
   useEffect(() => {
     const SCREEN_HEIGHT = Dimensions.get('screen').height;
     const handleOnKeyboardShow = (event: KeyboardEvent) => {
-      runOnUI(handleKeyboardEvent)(
+      scheduleOnUI(
+        handleKeyboardEvent,
         KEYBOARD_STATUS.SHOWN,
         event.endCoordinates.height,
         event.duration,
@@ -120,7 +118,8 @@ export const useAnimatedKeyboard = () => {
       );
     };
     const handleOnKeyboardHide = (event: KeyboardEvent) => {
-      runOnUI(handleKeyboardEvent)(
+      scheduleOnUI(
+        handleKeyboardEvent,
         KEYBOARD_STATUS.HIDDEN,
         event.endCoordinates.height,
         event.duration,

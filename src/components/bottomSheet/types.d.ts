@@ -2,7 +2,7 @@ import type React from 'react';
 import type { Insets, StyleProp, ViewStyle } from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
-  AnimateStyle,
+  AnimatedStyle,
   ReduceMotion,
   SharedValue,
   WithSpringConfig,
@@ -196,11 +196,11 @@ export interface BottomSheetProps
   /**
    * View style to be applied to the sheet container component,
    * it also could be an Animated Style.
-   * @type AnimateStyle<ViewStyle>
+   * @type AnimatedStyle<ViewStyle>
    * @default undefined
    */
   style?: StyleProp<
-    AnimateStyle<
+    AnimatedStyle<
       Omit<
         ViewStyle,
         | 'flexDirection'
