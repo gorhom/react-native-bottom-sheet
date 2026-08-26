@@ -215,7 +215,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const animatedCurrentIndex = useReactiveSharedValue(
       animateOnMount ? -1 : _providedIndex
     );
-    const animatedPosition = useSharedValue(Dimensions.get('window').height);
+    // Keep the closed sheet below edge-to-edge containers on Android.
+    const animatedPosition = useSharedValue(
+      Dimensions.get(Platform.OS === 'android' ? 'screen' : 'window').height
+    );
 
     // conditional
     const didAnimateOnMount = useSharedValue(
