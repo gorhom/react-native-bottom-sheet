@@ -370,7 +370,10 @@ export const useGestureEventsHandlersDefault = () => {
        * if destination point is the same as the current position,
        * then no need to perform animation.
        */
-      if (destinationPoint === animatedPosition.value) {
+      if (
+        destinationPoint === animatedPosition.value &&
+        destinationPoint !== closedDetentPosition
+      ) {
         return;
       }
 
