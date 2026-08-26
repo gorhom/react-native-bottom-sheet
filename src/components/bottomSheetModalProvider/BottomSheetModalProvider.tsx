@@ -26,9 +26,10 @@ const BottomSheetModalProviderWrapper = ({
   children,
 }: BottomSheetModalProviderProps) => {
   //#region layout variables
-  const animatedContainerLayoutState = useSharedValue<ContainerLayoutState>(
-    INITIAL_CONTAINER_LAYOUT
-  );
+  const animatedContainerLayoutState = useSharedValue<ContainerLayoutState>({
+    ...INITIAL_CONTAINER_LAYOUT,
+    offset: { ...INITIAL_CONTAINER_LAYOUT.offset },
+  });
   //#endregion
 
   //#region variables
