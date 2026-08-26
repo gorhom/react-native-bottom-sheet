@@ -607,26 +607,6 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           return;
         }
 
-        if (position === animatedPosition.get()) {
-          return;
-        }
-
-        // early exit if there is a running animation to
-        // the same position
-        const { status: animationStatus, nextPosition } =
-          animatedAnimationState.get();
-        if (
-          animationStatus === ANIMATION_STATUS.RUNNING &&
-          position === nextPosition
-        ) {
-          return;
-        }
-
-        // stop animation if it is running
-        if (animationStatus === ANIMATION_STATUS.RUNNING) {
-          stopAnimation();
-        }
-
         /**
          * offset the position if keyboard is shown and behavior not extend.
          */
@@ -666,6 +646,34 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           }
         }
 
+        const isSamePosition = position === animatedPosition.get();
+        const shouldSettleGestureClose =
+          isSamePosition &&
+          source === ANIMATION_SOURCE.GESTURE &&
+          position === closedDetentPosition &&
+          index !== animatedCurrentIndex.get();
+
+        if (isSamePosition && !shouldSettleGestureClose) {
+          return;
+        }
+
+        // early exit if there is a running animation to
+        // the same position
+        const { status: animationStatus, nextPosition } =
+          animatedAnimationState.get();
+        if (
+          !isSamePosition &&
+          animationStatus === ANIMATION_STATUS.RUNNING &&
+          position === nextPosition
+        ) {
+          return;
+        }
+
+        // stop animation if it is running
+        if (animationStatus === ANIMATION_STATUS.RUNNING) {
+          stopAnimation();
+        }
+
         /**
          * set the animation state
          */
@@ -684,6 +692,16 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
          * fire `onAnimate` callback
          */
         runOnJS(handleOnAnimate)(index, position);
+
+        /**
+         * A web gesture can already move the sheet to the closed position
+         * before its end event is handled. In that case, settle the pending
+         * index transition so the close lifecycle still completes.
+         */
+        if (shouldSettleGestureClose) {
+          animateToPositionCompleted(true);
+          return;
+        }
 
         /**
          * start animation
@@ -705,6 +723,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedOverrideReduceMotion,
         animatedDetentsState,
         animatedAnimationState,
+        animatedCurrentIndex,
         animatedKeyboardState,
         animatedPosition,
         animatedSheetState,
