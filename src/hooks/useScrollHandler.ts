@@ -30,43 +30,31 @@ export const useScrollHandler = (
   } = useScrollEventsHandlers(scrollableRef, scrollableContentOffsetY);
 
   // callbacks
-  const scrollHandler = useAnimatedScrollHandler(
-    {
-      onScroll: (event, context) => {
-        handleOnScroll(event, context);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event, context) => {
+      handleOnScroll(event, context);
 
-        if (onScroll) {
-          runOnJS(onScroll)({ nativeEvent: event });
-        }
-      },
-      onBeginDrag: (event, context) => {
-        handleOnBeginDrag(event, context);
-
-        if (onScrollBeginDrag) {
-          runOnJS(onScrollBeginDrag)({ nativeEvent: event });
-        }
-      },
-      onEndDrag: (event, context) => {
-        handleOnEndDrag(event, context);
-
-        if (onScrollEndDrag) {
-          runOnJS(onScrollEndDrag)({ nativeEvent: event });
-        }
-      },
-      onMomentumBegin: handleOnMomentumBegin,
-      onMomentumEnd: handleOnMomentumEnd,
+      if (onScroll) {
+        runOnJS(onScroll)({ nativeEvent: event });
+      }
     },
-    [
-      handleOnScroll,
-      handleOnBeginDrag,
-      handleOnEndDrag,
-      handleOnMomentumBegin,
-      handleOnMomentumEnd,
-      onScroll,
-      onScrollBeginDrag,
-      onScrollEndDrag,
-    ]
-  );
+    onBeginDrag: (event, context) => {
+      handleOnBeginDrag(event, context);
+
+      if (onScrollBeginDrag) {
+        runOnJS(onScrollBeginDrag)({ nativeEvent: event });
+      }
+    },
+    onEndDrag: (event, context) => {
+      handleOnEndDrag(event, context);
+
+      if (onScrollEndDrag) {
+        runOnJS(onScrollEndDrag)({ nativeEvent: event });
+      }
+    },
+    onMomentumBegin: handleOnMomentumBegin,
+    onMomentumEnd: handleOnMomentumEnd,
+  });
 
   return { scrollHandler, scrollableRef, scrollableContentOffsetY };
 };
