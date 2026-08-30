@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 import { State } from 'react-native-gesture-handler';
-import { scrollTo } from 'react-native-reanimated';
+import { scrollTo, useSharedValue } from 'react-native-reanimated';
 import { ANIMATION_STATUS, SCROLLABLE_STATUS, SHEET_STATE } from '../constants';
 import type {
   ScrollEventHandlerCallbackType,
   ScrollEventsHandlersHookType,
 } from '../types';
+import { executeWithLock } from './executeWithLock';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
 
 export type ScrollEventContextType = {
@@ -25,8 +26,19 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     animatedAnimationState,
     animatedHandleGestureState,
   } = useBottomSheetInternal();
+  const isLocking = useSharedValue(false);
 
   //#region callbacks
+  const lockScrollableTo = useCallback(
+    (position: number) => {
+      'worklet';
+      executeWithLock(isLocking, () => {
+        // @ts-expect-error
+        scrollTo(scrollableRef, 0, position, false);
+      });
+    },
+    [isLocking, scrollableRef]
+  );
   const handleOnScroll: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useCallback(
       ({ contentOffset: { y } }, context) => {
@@ -55,14 +67,13 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)
             : 0;
-          // @ts-expect-error
-          scrollTo(scrollableRef, 0, lockPosition, false);
+          lockScrollableTo(lockPosition);
           scrollableContentOffsetY.value = lockPosition;
           return;
         }
       },
       [
-        scrollableRef,
+        lockScrollableTo,
         scrollableContentOffsetY,
         animatedScrollableStatus,
         animatedSheetState,
@@ -104,8 +115,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)
             : 0;
-          // @ts-expect-error
-          scrollTo(scrollableRef, 0, lockPosition, false);
+          lockScrollableTo(lockPosition);
           scrollableContentOffsetY.value = lockPosition;
           return;
         }
@@ -119,7 +129,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
         }
       },
       [
-        scrollableRef,
+        lockScrollableTo,
         scrollableContentOffsetY,
         animatedAnimationState,
         animatedScrollableStatus,
@@ -134,8 +144,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
           const lockPosition = context.shouldLockInitialPosition
             ? (context.initialContentOffsetY ?? 0)
             : 0;
-          // @ts-expect-error
-          scrollTo(scrollableRef, 0, lockPosition, false);
+          lockScrollableTo(lockPosition);
           scrollableContentOffsetY.value = 0;
           return;
         }
@@ -150,7 +159,7 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
       },
       [
         scrollableContentOffsetY,
-        scrollableRef,
+        lockScrollableTo,
         animatedAnimationState,
         animatedScrollableStatus,
         animatedScrollableState,

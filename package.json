@@ -30,6 +30,7 @@
   },
   "homepage": "https://gorhom.dev/react-native-bottom-sheet/",
   "scripts": {
+    "test": "node --test tests/*.test.cjs",
     "typescript": "tsc --skipLibCheck --noEmit",
     "lint": "biome lint --error-on-warnings ./src",
     "build": "bob build && yarn copy-dts && yarn delete-dts.js && yarn delete-debug-view",
