@@ -31,6 +31,7 @@
   "homepage": "https://gorhom.dev/react-native-bottom-sheet/",
   "scripts": {
     "typescript": "tsc --skipLibCheck --noEmit",
+    "test": "node --test",
     "lint": "biome lint --error-on-warnings ./src",
     "build": "bob build && yarn copy-dts && yarn delete-dts.js && yarn delete-debug-view",
     "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" lib/typescript",
