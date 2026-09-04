@@ -240,6 +240,34 @@ function BottomSheetModalComponent<T = never>(
         });
       }
 
+      /**
+       * a dismissal that never landed must not outlive a request to present.
+       *
+       * `DISMISSING` has exactly one exit: `handleBottomSheetOnClose`, fired
+       * when the inner sheet's close animation completes. Interrupt that
+       * animation and the status is stranded there for the life of the
+       * instance — and from there the failure is self-sustaining:
+       * `handlePortalRender` returns early on `DISMISSING`, so the inner sheet
+       * is never mounted and `bottomSheetRef` stays `null`, so the only line
+       * that clears the status — inside the callback below, behind
+       * `mount && bottomSheetRef.current` — never runs. The guard that blocks
+       * rendering is what keeps the ref `null`, and the `null` ref is what
+       * preserves the guard. `present()` is then a permanent, silent no-op.
+       *
+       * `handleForceDismiss` can escape through its
+       * `DISMISSING && currentIndexRef === -1` branch, but `handleDismiss` has
+       * no `DISMISSING` branch, and here the index never reached `-1`, so
+       * neither recovers. `statusRef` is a ref, so nothing outside the
+       * component can break the cycle either.
+       *
+       * Calling `present()` is unambiguous intent to SHOW, which supersedes a
+       * dismissal still notionally in flight. A dismissal progressing normally
+       * never reaches this line, because nothing calls `present()` during it.
+       */
+      if (statusRef.current === MODAL_STATUS.DISMISSING) {
+        statusRef.current = MODAL_STATUS.INITIAL;
+      }
+
       requestAnimationFrame(() => {
         if (mount && bottomSheetRef.current) {
           statusRef.current = MODAL_STATUS.ANIMATING;
