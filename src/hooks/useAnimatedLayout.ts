@@ -50,9 +50,13 @@ export function useAnimatedLayout(
 
     if (containerLayoutState) {
       const containerLayout = containerLayoutState.get();
-      _state.containerHeight = modal
-        ? containerLayout.height - verticalInset
-        : containerLayout.height;
+      // keep an unmeasured container unmeasured, subtracting the insets from
+      // `INITIAL_LAYOUT_VALUE` would read as a real (negative) height.
+      if (containerLayout.height !== INITIAL_LAYOUT_VALUE) {
+        _state.containerHeight = modal
+          ? containerLayout.height - verticalInset
+          : containerLayout.height;
+      }
       _state.containerOffset = containerLayout.offset;
     }
 
