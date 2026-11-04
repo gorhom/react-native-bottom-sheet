@@ -40,6 +40,27 @@ Dismiss the modal when it is closed, this will unmount the modal.
 | ------- | ------- | -------- |
 | boolean | true    | NO       |
 
+## Accessibility
+
+### initialAccessibilityFocusRef
+
+Ref to a mounted, accessible native `View`, `Text`, or `TextInput` inside the
+modal. On iOS and Android, accessibility focus moves to this element after the
+sheet finishes presenting. Without a ref, the default handle receives focus.
+Custom handles must forward `accessibilityFocusRef` to their accessible native
+view, or provide `initialAccessibilityFocusRef` instead.
+
+### restoreAccessibilityFocusRef
+
+Ref to the accessible native element that opened the modal. On iOS and Android,
+focus returns to this element after closing or dismissing the last visible
+modal. When another modal remains visible, focus moves to that modal instead.
+The referenced opener must still be mounted. React Native does not expose a
+portable API to capture the previous accessibility focus automatically.
+
+See the [accessibility guide](../guides/accessibility) for examples and the native
+test checklist.
+
 ## Callbacks
 
 ### onDismiss

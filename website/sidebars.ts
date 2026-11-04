@@ -70,6 +70,7 @@ const sidebars: SidebarsConfig = {
       label: 'Guides',
       items: [
         'guides/web-support',
+        'guides/accessibility',
         'guides/dynamic-sizing',
         'guides/custom-handle',
         'guides/custom-backdrop',
