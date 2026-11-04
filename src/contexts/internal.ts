@@ -42,6 +42,7 @@ export interface BottomSheetInternalContextType
   // scrollable
   animatedScrollableState: SharedValue<ScrollableState>;
   animatedScrollableStatus: SharedValue<SCROLLABLE_STATUS>;
+  screenReaderEnabled: SharedValue<boolean>;
 
   // animated values
   animatedPosition: SharedValue<number>;

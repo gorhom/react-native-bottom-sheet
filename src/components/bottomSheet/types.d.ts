@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { Insets, StyleProp, ViewStyle } from 'react-native';
+import type { Insets, StyleProp, View, ViewStyle } from 'react-native';
 import type { PanGesture } from 'react-native-gesture-handler';
 import type {
   AnimateStyle,
@@ -324,6 +324,7 @@ export interface BottomSheetProps
    * @type boolean
    */
   $modal?: boolean;
+  $accessibilityFocusRef?: React.RefObject<View>;
   //#endregion
 }
 

@@ -8,11 +8,15 @@ import type { ContainerLayoutState } from '../../types';
 
 export interface BottomSheetModalInternalContextType {
   hostName: string;
+  activeSheetKey: string | null;
+  setSheetVisible: (key: string, visible: boolean) => void;
+  restoreAccessibilityFocus: (focus: () => void) => void;
   containerLayoutState: SharedValue<ContainerLayoutState>;
   mountSheet: (
     key: string,
     ref: RefObject<BottomSheetModalPrivateMethods>,
-    stackBehavior: BottomSheetModalStackBehavior
+    stackBehavior: BottomSheetModalStackBehavior,
+    visible?: boolean
   ) => void;
   unmountSheet: (key: string) => void;
   willUnmountSheet: (key: string) => void;

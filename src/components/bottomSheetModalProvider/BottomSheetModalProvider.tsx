@@ -1,5 +1,6 @@
-import { PortalProvider } from '@gorhom/portal';
+import { PortalHost, PortalProvider } from '@gorhom/portal';
 import React, { useCallback, useMemo, useRef } from 'react';
+import { View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import {
   INITIAL_CONTAINER_LAYOUT,
@@ -9,6 +10,7 @@ import {
   BottomSheetModalInternalProvider,
   BottomSheetModalProvider,
 } from '../../contexts';
+import { useBottomSheetModalAccessibilityState } from '../../hooks/accessibility/useBottomSheetModalAccessibilityState';
 import type { ContainerLayoutState } from '../../types';
 import { id } from '../../utilities/id';
 import { BottomSheetHostingContainer } from '../bottomSheetHostingContainer';
@@ -34,6 +36,8 @@ const BottomSheetModalProviderWrapper = ({
   //#region variables
   const hostName = useMemo(() => `bottom-sheet-portal-${id()}`, []);
   const sheetsQueueRef = useRef<BottomSheetModalRef[]>([]);
+  const { activeSheetKey, setSheetVisible, restoreAccessibilityFocus } =
+    useBottomSheetModalAccessibilityState(sheetsQueueRef);
   //#endregion
 
   //#region private methods
@@ -41,7 +45,8 @@ const BottomSheetModalProviderWrapper = ({
     (
       key: string,
       ref: React.RefObject<BottomSheetModalPrivateMethods>,
-      stackBehavior: BottomSheetModalStackBehavior
+      stackBehavior: BottomSheetModalStackBehavior,
+      visible = true
     ) => {
       const _sheetsQueue = sheetsQueueRef.current.slice();
       const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
@@ -52,6 +57,7 @@ const BottomSheetModalProviderWrapper = ({
        * and at the top.
        */
       if (sheetIndex !== -1 && sheetOnTop) {
+        setSheetVisible(key, visible);
         return;
       }
 
@@ -95,47 +101,52 @@ const BottomSheetModalProviderWrapper = ({
         ref,
       });
       sheetsQueueRef.current = _sheetsQueue;
+      setSheetVisible(key, visible);
     },
-    []
+    [setSheetVisible]
   );
-  const handleUnmountSheet = useCallback((key: string) => {
-    const _sheetsQueue = sheetsQueueRef.current.slice();
-    const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
-    const sheetOnTop = sheetIndex === _sheetsQueue.length - 1;
+  const handleUnmountSheet = useCallback(
+    (key: string) => {
+      const _sheetsQueue = sheetsQueueRef.current.slice();
+      const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
+      const sheetOnTop = sheetIndex === _sheetsQueue.length - 1;
 
-    /**
-     * Here we remove the unmounted sheet and update
-     * the sheets queue.
-     */
-    if (sheetIndex !== -1) {
-      _sheetsQueue.splice(sheetIndex, 1);
-      sheetsQueueRef.current = _sheetsQueue;
-    }
+      /**
+       * Here we remove the unmounted sheet and update
+       * the sheets queue.
+       */
+      if (sheetIndex !== -1) {
+        _sheetsQueue.splice(sheetIndex, 1);
+        sheetsQueueRef.current = _sheetsQueue;
+      }
+      setSheetVisible(key, false);
 
-    /**
-     * Here we try to restore previous sheet position if unmounted
-     * sheet was on top. This is needed when user dismiss
-     * the modal by panning down.
-     */
-    const hasMinimizedSheet = sheetsQueueRef.current.length > 0;
-    const minimizedSheet =
-      sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
-    const minimizedSheetStatus = minimizedSheet?.ref.current?.status.current;
-    const minimizedSheetWillUnmount =
-      minimizedSheetStatus !== undefined &&
-      minimizedSheetStatus === MODAL_STATUS.DISMISSING;
+      /**
+       * Here we try to restore previous sheet position if unmounted
+       * sheet was on top. This is needed when user dismiss
+       * the modal by panning down.
+       */
+      const hasMinimizedSheet = sheetsQueueRef.current.length > 0;
+      const minimizedSheet =
+        sheetsQueueRef.current[sheetsQueueRef.current.length - 1];
+      const minimizedSheetStatus = minimizedSheet?.ref.current?.status.current;
+      const minimizedSheetWillUnmount =
+        minimizedSheetStatus !== undefined &&
+        minimizedSheetStatus === MODAL_STATUS.DISMISSING;
 
-    if (
-      sheetOnTop &&
-      hasMinimizedSheet &&
-      minimizedSheet &&
-      !minimizedSheetWillUnmount
-    ) {
-      sheetsQueueRef.current[
-        sheetsQueueRef.current.length - 1
-      ].ref?.current?.restore();
-    }
-  }, []);
+      if (
+        sheetOnTop &&
+        hasMinimizedSheet &&
+        minimizedSheet &&
+        !minimizedSheetWillUnmount
+      ) {
+        sheetsQueueRef.current[
+          sheetsQueueRef.current.length - 1
+        ].ref?.current?.restore();
+      }
+    },
+    [setSheetVisible]
+  );
   const handleWillUnmountSheet = useCallback((key: string) => {
     const _sheetsQueue = sheetsQueueRef.current.slice();
     const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
@@ -183,6 +194,9 @@ const BottomSheetModalProviderWrapper = ({
   const internalContextVariables = useMemo(
     () => ({
       hostName,
+      activeSheetKey,
+      setSheetVisible,
+      restoreAccessibilityFocus,
       containerLayoutState: animatedContainerLayoutState,
       mountSheet: handleMountSheet,
       unmountSheet: handleUnmountSheet,
@@ -190,6 +204,9 @@ const BottomSheetModalProviderWrapper = ({
     }),
     [
       hostName,
+      activeSheetKey,
+      setSheetVisible,
+      restoreAccessibilityFocus,
       animatedContainerLayoutState,
       handleMountSheet,
       handleUnmountSheet,
@@ -205,7 +222,20 @@ const BottomSheetModalProviderWrapper = ({
         <BottomSheetHostingContainer
           containerLayoutState={animatedContainerLayoutState}
         />
-        <PortalProvider rootHostName={hostName}>{children}</PortalProvider>
+        <PortalProvider rootHostName={hostName} shouldAddRootHost={false}>
+          <View
+            style={{ flex: 1 }}
+            collapsable={false}
+            accessible={false}
+            accessibilityElementsHidden={activeSheetKey !== null}
+            importantForAccessibility={
+              activeSheetKey !== null ? 'no-hide-descendants' : 'auto'
+            }
+          >
+            {children}
+          </View>
+          <PortalHost name={hostName} />
+        </PortalProvider>
       </BottomSheetModalInternalProvider>
     </BottomSheetModalProvider>
   );

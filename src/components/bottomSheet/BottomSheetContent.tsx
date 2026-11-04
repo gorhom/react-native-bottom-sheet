@@ -38,6 +38,7 @@ function BottomSheetContentComponent({
   accessibilityLabel,
   accessibilityHint,
   accessibilityRole,
+  onAccessibilityEscape,
   children,
 }: BottomSheetContent) {
   //#region hooks
@@ -238,10 +239,12 @@ function BottomSheetContentComponent({
     : Animated.View;
   return (
     <DraggableView
-      accessible={accessible}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityHint={accessibilityHint}
-      accessibilityRole={accessibilityRole}
+      accessible={accessible === true}
+      importantForAccessibility={accessible === true ? 'auto' : 'no'}
+      accessibilityLabel={accessible === true ? accessibilityLabel : undefined}
+      accessibilityHint={accessible === true ? accessibilityHint : undefined}
+      accessibilityRole={accessible === true ? accessibilityRole : undefined}
+      onAccessibilityEscape={onAccessibilityEscape}
       style={contentContainerStyle}
     >
       {children}

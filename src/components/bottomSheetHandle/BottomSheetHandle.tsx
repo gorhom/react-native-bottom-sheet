@@ -16,6 +16,11 @@ function BottomSheetHandleComponent({
   accessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
   accessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
   accessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
+  accessibilityActions,
+  accessibilityValue,
+  onAccessibilityAction,
+  onAccessibilityEscape,
+  accessibilityFocusRef,
   children,
 }: BottomSheetDefaultHandleProps) {
   //#region styles
@@ -32,12 +37,17 @@ function BottomSheetHandleComponent({
   // render
   return (
     <View
+      ref={accessibilityFocusRef}
       style={containerStyle}
       accessible={accessible ?? undefined}
       accessibilityRole={accessibilityRole ?? undefined}
       accessibilityLabel={accessibilityLabel ?? undefined}
       accessibilityHint={accessibilityHint ?? undefined}
-      collapsable={true}
+      accessibilityActions={accessibilityActions}
+      accessibilityValue={accessibilityValue}
+      onAccessibilityAction={onAccessibilityAction}
+      onAccessibilityEscape={onAccessibilityEscape}
+      collapsable={false}
     >
       <View style={indicatorStyle} />
       {children}

@@ -12,10 +12,12 @@ import React, {
 } from 'react';
 import type { SNAP_POINT_TYPE } from '../../constants';
 import { useBottomSheetModalInternal } from '../../hooks';
+import { useBottomSheetModalAccessibility } from '../../hooks/accessibility/useBottomSheetModalAccessibility';
 import type { BottomSheetMethods, BottomSheetModalMethods } from '../../types';
 import { print } from '../../utilities';
 import { id } from '../../utilities/id';
 import BottomSheet from '../bottomSheet';
+import { BottomSheetModalAccessibilityContainer } from './BottomSheetModalAccessibilityContainer';
 import {
   DEFAULT_ENABLE_DISMISS_ON_CLOSE,
   DEFAULT_STACK_BEHAVIOR,
@@ -45,6 +47,8 @@ function BottomSheetModalComponent<T = never>(
     enableDismissOnClose = DEFAULT_ENABLE_DISMISS_ON_CLOSE,
     onDismiss: _providedOnDismiss,
     onAnimate: _providedOnAnimate,
+    initialAccessibilityFocusRef,
+    restoreAccessibilityFocusRef,
 
     // bottom sheet props
     index = 0,
@@ -66,6 +70,7 @@ function BottomSheetModalComponent<T = never>(
     useState<BottomSheetModalState<T>>(INITIAL_STATE);
   const mountRef = useRef(mount);
   mountRef.current = mount;
+  const [isPresented, setIsPresented] = useState(!animateOnMount && index >= 0);
   //#endregion
 
   //#region hooks
@@ -75,6 +80,9 @@ function BottomSheetModalComponent<T = never>(
     mountSheet,
     unmountSheet,
     willUnmountSheet,
+    activeSheetKey,
+    setSheetVisible,
+    restoreAccessibilityFocus,
   } = useBottomSheetModalInternal();
   const { removePortal: unmountPortal } = usePortal(hostName);
   //#endregion
@@ -89,6 +97,14 @@ function BottomSheetModalComponent<T = never>(
 
   //#region variables
   const key = useMemo(() => name || `bottom-sheet-modal-${id()}`, [name]);
+  const { accessibilityFocusRef, focusOpener } =
+    useBottomSheetModalAccessibility({
+      mount,
+      isActive: activeSheetKey === key,
+      isPresented,
+      initialAccessibilityFocusRef,
+      restoreAccessibilityFocusRef,
+    });
   //#endregion
 
   //#region private methods
@@ -119,6 +135,8 @@ function BottomSheetModalComponent<T = never>(
       // unmount sheet and portal
       unmountSheet(key);
       unmountPortal(key);
+      setIsPresented(false);
+      restoreAccessibilityFocus(focusOpener);
 
       // unmount the node, if sheet is still mounted in React state
       if (hadReactMount) {
@@ -130,7 +148,15 @@ function BottomSheetModalComponent<T = never>(
         _providedOnDismiss();
       }
     },
-    [key, resetVariables, unmountSheet, unmountPortal, _providedOnDismiss]
+    [
+      key,
+      resetVariables,
+      unmountSheet,
+      unmountPortal,
+      _providedOnDismiss,
+      restoreAccessibilityFocus,
+      focusOpener,
+    ]
   );
   //#endregion
 
@@ -241,6 +267,9 @@ function BottomSheetModalComponent<T = never>(
       }
 
       requestAnimationFrame(() => {
+        if (!mount) {
+          setIsPresented(!animateOnMount && index >= 0);
+        }
         if (mount && bottomSheetRef.current) {
           statusRef.current = MODAL_STATUS.ANIMATING;
           bottomSheetRef.current.snapToIndex(index);
@@ -254,11 +283,12 @@ function BottomSheetModalComponent<T = never>(
         mountSheet(
           key,
           ref as unknown as RefObject<BottomSheetModalPrivateMethods>,
-          stackBehavior
+          stackBehavior,
+          index >= 0
         );
       });
     },
-    [index, key, stackBehavior, mount, mountSheet]
+    [index, key, stackBehavior, mount, mountSheet, animateOnMount]
   );
   const handleDismiss = useCallback<BottomSheetModalMethods['dismiss']>(
     function handleDismiss(animationConfigs) {
@@ -431,6 +461,8 @@ function BottomSheetModalComponent<T = never>(
       }
       currentIndexRef.current = _index;
       nextIndexRef.current = null;
+      setIsPresented(_index >= 0);
+      setSheetVisible(key, _index >= 0);
 
       statusRef.current =
         _index === -1 ? MODAL_STATUS.MINIMIZED : MODAL_STATUS.PRESENTED;
@@ -439,7 +471,7 @@ function BottomSheetModalComponent<T = never>(
         _providedOnChange(_index, _position, _type);
       }
     },
-    [_providedOnChange]
+    [_providedOnChange, key, setSheetVisible]
   );
   const handleBottomSheetOnAnimate = useCallback(
     (
@@ -504,12 +536,21 @@ function BottomSheetModalComponent<T = never>(
       }
 
       if (statusRef.current !== MODAL_STATUS.DISMISSED) {
+        setSheetVisible(key, false);
+        restoreAccessibilityFocus(focusOpener);
         return;
       }
 
       unmount();
     },
-    [enableDismissOnClose, unmount]
+    [
+      enableDismissOnClose,
+      unmount,
+      key,
+      setSheetVisible,
+      restoreAccessibilityFocus,
+      focusOpener,
+    ]
   );
   //#endregion
 
@@ -543,22 +584,35 @@ function BottomSheetModalComponent<T = never>(
       handleOnUnmount={handlePortalOnUnmount}
     >
       <ContainerComponent key={key}>
-        <BottomSheet
-          {...bottomSheetProps}
-          ref={bottomSheetRef}
-          key={key}
-          index={index}
-          snapPoints={snapPoints}
-          enablePanDownToClose={enablePanDownToClose}
-          animateOnMount={animateOnMount}
-          containerLayoutState={containerLayoutState}
-          onChange={handleBottomSheetOnChange}
-          onClose={handleBottomSheetOnClose}
-          onAnimate={handleBottomSheetOnAnimate}
-          $modal={true}
+        <BottomSheetModalAccessibilityContainer
+          name={key}
+          onAccessibilityEscape={
+            bottomSheetProps.onAccessibilityEscape ??
+            (enablePanDownToClose ? () => handleDismiss() : undefined)
+          }
         >
-          {typeof Content === 'function' ? Content({ data }) : Content}
-        </BottomSheet>
+          <BottomSheet
+            {...bottomSheetProps}
+            ref={bottomSheetRef}
+            key={key}
+            index={index}
+            snapPoints={snapPoints}
+            enablePanDownToClose={enablePanDownToClose}
+            animateOnMount={animateOnMount}
+            containerLayoutState={containerLayoutState}
+            onChange={handleBottomSheetOnChange}
+            onClose={handleBottomSheetOnClose}
+            onAnimate={handleBottomSheetOnAnimate}
+            $modal={true}
+            $accessibilityFocusRef={accessibilityFocusRef}
+            onAccessibilityEscape={
+              bottomSheetProps.onAccessibilityEscape ??
+              (enablePanDownToClose ? () => handleDismiss() : undefined)
+            }
+          >
+            {typeof Content === 'function' ? Content({ data }) : Content}
+          </BottomSheet>
+        </BottomSheetModalAccessibilityContainer>
       </ContainerComponent>
     </Portal>
   ) : null;

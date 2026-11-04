@@ -26,9 +26,9 @@ const INITIAL_VALUE = Number.NEGATIVE_INFINITY;
 const INITIAL_SNAP_POINT = -999;
 
 // accessibility
-const DEFAULT_ACCESSIBLE = true;
+const DEFAULT_ACCESSIBLE = false;
 const DEFAULT_ACCESSIBILITY_LABEL = 'Bottom Sheet';
-const DEFAULT_ACCESSIBILITY_ROLE = 'adjustable';
+const DEFAULT_ACCESSIBILITY_ROLE = 'none';
 
 export {
   DEFAULT_ACCESSIBILITY_LABEL,

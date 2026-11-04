@@ -1,4 +1,5 @@
 import type React from 'react';
+import type { Text, TextInput, View } from 'react-native';
 import type { MODAL_STACK_BEHAVIOR } from '../../constants';
 import type { BottomSheetProps } from '../bottomSheet';
 import type { MODAL_STATUS } from './constants';
@@ -15,6 +16,8 @@ export type BottomSheetModalStackBehavior = keyof typeof MODAL_STACK_BEHAVIOR;
 // biome-ignore lint/suspicious/noExplicitAny: Using 'any' allows users to define their own strict types for 'data' property.
 export interface BottomSheetModalProps<T = any>
   extends Omit<BottomSheetProps, 'containerHeight' | 'onClose'> {
+  initialAccessibilityFocusRef?: React.RefObject<View | Text | TextInput>;
+  restoreAccessibilityFocusRef?: React.RefObject<View | Text | TextInput>;
   /**
    * Modal name to help identify the modal for later on.
    * @type string

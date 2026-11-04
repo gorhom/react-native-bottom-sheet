@@ -2,6 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { Platform } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { useBottomSheetInternal } from '../../hooks';
+import { useBottomSheetAccessibilityVisibility } from '../../hooks/accessibility/useBottomSheetAccessibilityVisibility';
 import type { BottomSheetProps } from '../bottomSheet/types';
 import { styles } from './styles';
 
@@ -13,6 +14,8 @@ type BottomSheetBodyProps = {
 function BottomSheetBodyComponent({ style, children }: BottomSheetBodyProps) {
   //#region hooks
   const { animatedIndex, animatedPosition } = useBottomSheetInternal();
+  const accessibilityProps =
+    useBottomSheetAccessibilityVisibility(animatedIndex);
   //#endregion
 
   //#region styles
@@ -34,7 +37,11 @@ function BottomSheetBodyComponent({ style, children }: BottomSheetBodyProps) {
   //#endregion
 
   return (
-    <Animated.View style={containerStyle} collapsable={true}>
+    <Animated.View
+      style={containerStyle}
+      collapsable={false}
+      {...accessibilityProps}
+    >
       {children}
     </Animated.View>
   );
