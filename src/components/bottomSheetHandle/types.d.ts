@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { ViewProps } from 'react-native';
+import type { AccessibilityProps, View, ViewProps } from 'react-native';
 import type { PanGestureHandlerProperties } from 'react-native-gesture-handler';
 import type { useInteractivePanGestureHandlerConfigs } from '../../hooks/useGestureHandler';
 import type {
@@ -8,10 +8,11 @@ import type {
 } from '../../types';
 import type { BottomSheetProps } from '../bottomSheet';
 
-export type BottomSheetHandleProps = BottomSheetVariables;
-export interface BottomSheetDefaultHandleProps
-  extends BottomSheetHandleProps,
-    NullableAccessibilityProps {
+export type BottomSheetHandleProps = BottomSheetVariables &
+  NullableAccessibilityProps & {
+    accessibilityFocusRef?: React.RefObject<View>;
+  };
+export interface BottomSheetDefaultHandleProps extends BottomSheetHandleProps {
   /**
    * View style to be applied to the handle container.
    * @type ViewStyle
@@ -37,6 +38,8 @@ export type BottomSheetHandleContainerProps = Pick<
   'simultaneousHandlers'
 > & {
   handleComponent: React.FC<BottomSheetDefaultHandleProps>;
+  accessibilityFocusRef?: React.RefObject<View>;
+  onAccessibilityEscape?: AccessibilityProps['onAccessibilityEscape'];
 } & Pick<
     BottomSheetProps,
     'enableHandlePanningGesture' | 'handleIndicatorStyle' | 'handleStyle'

@@ -152,6 +152,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
 
       // private
       $modal = false,
+      $accessibilityFocusRef,
       detached = false,
 
       // components
@@ -167,6 +168,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
       accessibilityRole:
         _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
+      onAccessibilityEscape,
     } = props;
     //#endregion
 
@@ -352,6 +354,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
     const {
       state: animatedScrollableState,
       status: animatedScrollableStatus,
+      screenReaderEnabled,
       setScrollableRef,
       removeScrollableRef,
     } = useScrollable(
@@ -1456,6 +1459,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedSheetState,
         animatedScrollableState,
         animatedScrollableStatus,
+        screenReaderEnabled,
         animatedContentGestureState,
         animatedHandleGestureState,
         animatedKeyboardState,
@@ -1490,6 +1494,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animatedSheetState,
         animatedScrollableState,
         animatedScrollableStatus,
+        screenReaderEnabled,
         animatedDetentsState,
         isInTemporaryPosition,
         enableContentPanningGesture,
@@ -1826,6 +1831,10 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 )}
                 <BottomSheetContent
                   pointerEvents="box-none"
+                  onAccessibilityEscape={
+                    onAccessibilityEscape ??
+                    (enablePanDownToClose ? handleClose : undefined)
+                  }
                   accessible={_providedAccessible ?? undefined}
                   accessibilityRole={_providedAccessibilityRole ?? undefined}
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
@@ -1842,6 +1851,8 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                 {handleComponent !== null ? (
                   <BottomSheetHandleContainer
                     key="BottomSheetHandleContainer"
+                    accessibilityFocusRef={$accessibilityFocusRef}
+                    onAccessibilityEscape={onAccessibilityEscape}
                     animatedIndex={animatedIndex}
                     animatedPosition={animatedPosition}
                     enableHandlePanningGesture={enableHandlePanningGesture}

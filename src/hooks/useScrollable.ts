@@ -20,6 +20,7 @@ import type {
   ScrollableState,
 } from '../types';
 import { findNodeHandle } from '../utilities';
+import { useScreenReaderEnabled } from './accessibility/useScreenReaderEnabled';
 
 export const useScrollable = (
   enableContentPanningGesture: boolean,
@@ -30,6 +31,7 @@ export const useScrollable = (
   //#region refs
   const scrollableRef = useRef<ScrollableRef>(null);
   const previousScrollableRef = useRef<ScrollableRef>(null);
+  const screenReaderEnabled = useScreenReaderEnabled();
   //#endregion
 
   //#region variables
@@ -43,7 +45,7 @@ export const useScrollable = (
      * if user had disabled content panning gesture, then we unlock
      * the scrollable state.
      */
-    if (!enableContentPanningGesture) {
+    if (!enableContentPanningGesture || screenReaderEnabled.value) {
       return SCROLLABLE_STATUS.UNLOCKED;
     }
 
@@ -76,6 +78,7 @@ export const useScrollable = (
     return SCROLLABLE_STATUS.LOCKED;
   }, [
     enableContentPanningGesture,
+    screenReaderEnabled,
     animatedSheetState,
     animatedKeyboardState,
     animatedAnimationState,
@@ -125,6 +128,7 @@ export const useScrollable = (
   return {
     state,
     status,
+    screenReaderEnabled,
     setScrollableRef,
     removeScrollableRef,
   };

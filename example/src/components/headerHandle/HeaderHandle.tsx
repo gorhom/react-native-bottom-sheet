@@ -3,23 +3,39 @@ import {
   type BottomSheetHandleProps,
 } from '@gorhom/bottom-sheet';
 import React, { memo } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-interface HeaderHandleProps extends BottomSheetHandleProps {}
+interface HeaderHandleProps extends BottomSheetHandleProps {
+  titleRef?: React.RefObject<View>;
+}
 
-const HeaderHandleComponent = ({ children, ...rest }: HeaderHandleProps) => {
+const HeaderHandleComponent = ({
+  children,
+  titleRef,
+  accessibilityFocusRef,
+  ...rest
+}: HeaderHandleProps) => {
+  const hasTitle = typeof children === 'string';
   return (
-    <BottomSheetHandle
-      style={styles.container}
-      indicatorStyle={styles.indicator}
-      {...rest}
-    >
-      {typeof children === 'string' ? (
-        <Text style={styles.title}>{children}</Text>
-      ) : (
-        children
-      )}
-    </BottomSheetHandle>
+    <View style={styles.container}>
+      <BottomSheetHandle
+        indicatorStyle={styles.indicator}
+        {...rest}
+        accessibilityFocusRef={hasTitle ? undefined : accessibilityFocusRef}
+      >
+        {hasTitle ? null : children}
+      </BottomSheetHandle>
+      {hasTitle ? (
+        <View
+          ref={titleRef ?? accessibilityFocusRef}
+          accessible={true}
+          accessibilityRole="header"
+          accessibilityLabel={children}
+        >
+          <Text style={styles.title}>{children}</Text>
+        </View>
+      ) : null}
+    </View>
   );
 };
 

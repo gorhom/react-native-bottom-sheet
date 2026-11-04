@@ -16,11 +16,8 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import { useBottomSheet } from '../../hooks';
+import { useBottomSheetBackdropAccessibility } from '../../hooks/accessibility/useBottomSheetBackdropAccessibility';
 import {
-  DEFAULT_ACCESSIBILITY_HINT,
-  DEFAULT_ACCESSIBILITY_LABEL,
-  DEFAULT_ACCESSIBILITY_ROLE,
-  DEFAULT_ACCESSIBLE,
   DEFAULT_APPEARS_ON_INDEX,
   DEFAULT_DISAPPEARS_ON_INDEX,
   DEFAULT_ENABLE_TOUCH_THROUGH,
@@ -40,10 +37,13 @@ const BottomSheetBackdropComponent = ({
   onPress,
   style,
   children,
-  accessible: _providedAccessible = DEFAULT_ACCESSIBLE,
-  accessibilityRole: _providedAccessibilityRole = DEFAULT_ACCESSIBILITY_ROLE,
-  accessibilityLabel: _providedAccessibilityLabel = DEFAULT_ACCESSIBILITY_LABEL,
-  accessibilityHint: _providedAccessibilityHint = DEFAULT_ACCESSIBILITY_HINT,
+  accessible: _providedAccessible,
+  accessibilityRole: _providedAccessibilityRole,
+  accessibilityLabel: _providedAccessibilityLabel,
+  accessibilityHint: _providedAccessibilityHint,
+  onAccessibilityTap,
+  onAccessibilityAction,
+  accessibilityActions,
 }: BottomSheetDefaultBackdropProps) => {
   //#region hooks
   const { snapToIndex, close } = useBottomSheet();
@@ -62,7 +62,14 @@ const BottomSheetBackdropComponent = ({
   //#region variables
   const [pointerEvents, setPointerEvents] = useState<
     ViewProps['pointerEvents']
-  >(enableTouchThrough ? 'none' : 'auto');
+  >(
+    enableTouchThrough || animatedIndex.value <= disappearsOnIndex
+      ? 'none'
+      : 'auto'
+  );
+  const [isHidden, setIsHidden] = useState(
+    animatedIndex.value <= disappearsOnIndex
+  );
   //#endregion
 
   //#region callbacks
@@ -77,12 +84,30 @@ const BottomSheetBackdropComponent = ({
       snapToIndex(pressBehavior);
     }
   }, [snapToIndex, close, disappearsOnIndex, pressBehavior, onPress]);
+  const accessibilityProps = useBottomSheetBackdropAccessibility({
+    accessible: _providedAccessible,
+    accessibilityRole: _providedAccessibilityRole,
+    accessibilityLabel: _providedAccessibilityLabel,
+    accessibilityHint: _providedAccessibilityHint,
+    accessibilityActions,
+    onAccessibilityTap,
+    onAccessibilityAction,
+    pressBehavior,
+    onPress,
+    isHidden,
+    handleOnPress,
+  });
   const handleContainerTouchability = useCallback(
     (shouldDisableTouchability: boolean) => {
-      isMounted.current &&
-        setPointerEvents(shouldDisableTouchability ? 'none' : 'auto');
+      if (!isMounted.current) {
+        return;
+      }
+      setIsHidden(shouldDisableTouchability);
+      setPointerEvents(
+        shouldDisableTouchability || enableTouchThrough ? 'none' : 'auto'
+      );
     },
-    []
+    [enableTouchThrough]
   );
   //#endregion
 
@@ -144,16 +169,7 @@ const BottomSheetBackdropComponent = ({
     <Animated.View
       style={containerStyle}
       pointerEvents={pointerEvents}
-      accessible={_providedAccessible ?? undefined}
-      accessibilityRole={_providedAccessibilityRole ?? undefined}
-      accessibilityLabel={_providedAccessibilityLabel ?? undefined}
-      accessibilityHint={
-        _providedAccessibilityHint
-          ? _providedAccessibilityHint
-          : `Tap to ${
-              typeof pressBehavior === 'string' ? pressBehavior : 'move'
-            } the Bottom Sheet`
-      }
+      {...accessibilityProps}
     >
       {children}
     </Animated.View>

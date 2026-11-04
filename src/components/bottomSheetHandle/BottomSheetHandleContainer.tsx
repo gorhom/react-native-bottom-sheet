@@ -4,10 +4,12 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import {
   type BoundingClientRect,
+  useBottomSheet,
   useBottomSheetGestureHandlers,
   useBottomSheetInternal,
   useBoundingClientRect,
 } from '../../hooks';
+import { useBottomSheetHandleAccessibility } from '../../hooks/accessibility/useBottomSheetHandleAccessibility';
 import { print } from '../../utilities';
 import { DEFAULT_ENABLE_HANDLE_PANNING_GESTURE } from '../bottomSheet/constants';
 import type { BottomSheetHandleContainerProps } from './types';
@@ -17,9 +19,12 @@ function BottomSheetHandleContainerComponent({
   animatedPosition,
   simultaneousHandlers: _internalSimultaneousHandlers,
   enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
+  enablePanDownToClose,
   handleComponent: HandleComponent,
   handleStyle: _providedHandleStyle,
   handleIndicatorStyle: _providedIndicatorStyle,
+  accessibilityFocusRef,
+  onAccessibilityEscape,
 }: BottomSheetHandleContainerProps) {
   //#region refs
   const ref = useRef<View>(null);
@@ -28,6 +33,7 @@ function BottomSheetHandleContainerComponent({
   //#region hooks
   const {
     animatedLayoutState,
+    animatedDetentsState,
     activeOffsetX,
     activeOffsetY,
     failOffsetX,
@@ -36,6 +42,15 @@ function BottomSheetHandleContainerComponent({
     simultaneousHandlers: _providedSimultaneousHandlers,
   } = useBottomSheetInternal();
   const { handlePanGestureHandler } = useBottomSheetGestureHandlers();
+  const { snapToIndex, close } = useBottomSheet();
+  const accessibilityProps = useBottomSheetHandleAccessibility({
+    animatedIndex,
+    animatedDetentsState,
+    snapToIndex,
+    close,
+    enablePanDownToClose,
+    onAccessibilityEscape,
+  });
   //#endregion
 
   //#region variables
@@ -170,8 +185,10 @@ function BottomSheetHandleContainerComponent({
         key="BottomSheetHandleContainer"
       >
         <HandleComponent
+          accessibilityFocusRef={accessibilityFocusRef}
           animatedIndex={animatedIndex}
           animatedPosition={animatedPosition}
+          {...accessibilityProps}
           style={_providedHandleStyle}
           indicatorStyle={_providedIndicatorStyle}
         />

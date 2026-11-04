@@ -1,16 +1,18 @@
 import { useCallback } from 'react';
 import { State } from 'react-native-gesture-handler';
-import { scrollTo } from 'react-native-reanimated';
+import { runOnJS, scrollTo } from 'react-native-reanimated';
 import { ANIMATION_STATUS, SCROLLABLE_STATUS, SHEET_STATE } from '../constants';
 import type {
   ScrollEventHandlerCallbackType,
   ScrollEventsHandlersHookType,
 } from '../types';
 import { useBottomSheetInternal } from './useBottomSheetInternal';
+import { useBottomSheet } from './useBottomSheet';
 
 export type ScrollEventContextType = {
   initialContentOffsetY: number;
   shouldLockInitialPosition: boolean;
+  accessibilityExpansionRequested?: boolean;
 };
 
 export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
@@ -24,13 +26,42 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
     animatedScrollableStatus,
     animatedAnimationState,
     animatedHandleGestureState,
+    screenReaderEnabled,
   } = useBottomSheetInternal();
+  const { expand } = useBottomSheet();
 
   //#region callbacks
   const handleOnScroll: ScrollEventHandlerCallbackType<ScrollEventContextType> =
     useCallback(
       ({ contentOffset: { y } }, context) => {
         'worklet';
+        if (screenReaderEnabled.value) {
+          const previousOffsetY = scrollableContentOffsetY.value;
+          context.shouldLockInitialPosition = false;
+          scrollableContentOffsetY.value = y;
+          animatedScrollableState.set(state => ({
+            ...state,
+            contentOffsetY: y,
+          }));
+          if (
+            animatedSheetState.value === SHEET_STATE.EXTENDED ||
+            animatedSheetState.value === SHEET_STATE.FILL_PARENT ||
+            y <= 0
+          ) {
+            context.accessibilityExpansionRequested = false;
+          } else if (
+            y > previousOffsetY &&
+            animatedSheetState.value === SHEET_STATE.OPENED &&
+            animatedHandleGestureState.value !== State.ACTIVE &&
+            animatedAnimationState.get().status !== ANIMATION_STATUS.RUNNING &&
+            !context.accessibilityExpansionRequested
+          ) {
+            context.accessibilityExpansionRequested = true;
+            runOnJS(expand)();
+          }
+          return;
+        }
+        context.accessibilityExpansionRequested = false;
         /**
          * if sheet position is extended or fill parent, then we reset
          * `shouldLockInitialPosition` value to false.
@@ -67,6 +98,10 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
         animatedScrollableStatus,
         animatedSheetState,
         animatedHandleGestureState,
+        animatedScrollableState,
+        animatedAnimationState,
+        screenReaderEnabled,
+        expand,
       ]
     );
   const handleOnBeginDrag: ScrollEventHandlerCallbackType<ScrollEventContextType> =
