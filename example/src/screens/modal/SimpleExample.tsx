@@ -2,6 +2,7 @@ import {
   type BottomSheetHandleProps,
   BottomSheetModal,
 } from '@gorhom/bottom-sheet';
+import { ShowcaseLabel } from '@gorhom/showcase-template';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../components/button';
@@ -69,9 +70,8 @@ export const SimpleExample = () => {
         ref={openerRef}
         accessibilityRole="button"
         onPress={handlePresentPress}
-        style={styles.action}
       >
-        <Text>Present Modal</Text>
+      <Button label="Present Modal" onPress={()=>{}} />
       </Pressable>
       <Button label="Dismiss Modal" onPress={handleDismissPress} />
       <Button label="Expand" onPress={handleExpandPress} />
