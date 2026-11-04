@@ -7,7 +7,7 @@ const DEFAULT_PRESS_BEHAVIOR = 'close' as const;
 const DEFAULT_ACCESSIBLE = true;
 const DEFAULT_ACCESSIBILITY_ROLE = 'button';
 const DEFAULT_ACCESSIBILITY_LABEL = 'Bottom sheet backdrop';
-const DEFAULT_ACCESSIBILITY_HINT = 'Tap to close the bottom sheet';
+const DEFAULT_ACCESSIBILITY_HINT = 'Closes the bottom sheet';
 
 export {
   DEFAULT_ACCESSIBILITY_HINT,
