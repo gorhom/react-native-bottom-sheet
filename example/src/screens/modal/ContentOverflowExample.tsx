@@ -12,7 +12,6 @@ const ContentOverflowExample = () => {
       <Button title="Present" onPress={() => sheetRef.current?.present()} />
       <BottomSheetModal
         ref={sheetRef}
-        handleComponent={null}
         contentOverflow={visible ? 'visible' : 'hidden'}
       >
         <BottomSheetView style={styles.content}>
