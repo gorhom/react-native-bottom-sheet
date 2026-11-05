@@ -61,6 +61,12 @@ export interface BottomSheetProps
    */
   detached?: boolean;
   /**
+   * Controls clipping at the sheet content boundary, without changing layout
+   * or extending touch targets outside the sheet.
+   * Defaults to 'hidden' for attached sheets and 'visible' for detached sheets.
+   */
+  contentOverflow?: 'hidden' | 'visible';
+  /**
    * Enable content panning gesture interaction.
    * @type boolean
    * @default true
