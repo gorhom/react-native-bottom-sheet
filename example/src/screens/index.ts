@@ -62,6 +62,11 @@ const modalSection = {
       getScreen: () => require('./modal/BackdropExample').default,
     },
     {
+      name: 'Content Overflow',
+      slug: 'Modal/ContentOverflowExample',
+      getScreen: () => require('./modal/ContentOverflowExample').default,
+    },
+    {
       name: 'Stack Modals',
       slug: 'Modal/StackExample',
       getScreen: () => require('./modal/StackExample').default,

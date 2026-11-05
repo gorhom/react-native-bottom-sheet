@@ -153,6 +153,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       // private
       $modal = false,
       detached = false,
+      contentOverflow,
 
       // components
       handleComponent = BottomSheetHandle,
@@ -1831,6 +1832,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
                   accessibilityLabel={_providedAccessibilityLabel ?? undefined}
                   keyboardBehavior={keyboardBehavior}
                   detached={detached}
+                  contentOverflow={contentOverflow}
                 >
                   {children}
                   {footerComponent ? (

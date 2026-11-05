@@ -55,6 +55,20 @@ Defines whether the bottom sheet is attached to the bottom or no.
 | ------- | ------- | -------- |
 | boolean | false   | NO       |
 
+### contentOverflow
+
+Controls clipping at the sheet content boundary. Set to `'visible'` to allow visual effects such as shadows or pressed effects to extend beyond that boundary without adding content padding. Also available on `BottomSheetModal`.
+
+| type                    | default                                                | required |
+| ----------------------- | ------------------------------------------------------ | -------- |
+| 'hidden' \| 'visible' | 'hidden' when attached, 'visible' when `detached={true}` | NO       |
+
+This does not change layout, keyboard handling, overscroll padding, or the outer hosting container's clipping. Scrollables and child views may still clip their own content. Visible overflow does not extend touch targets outside their bounds.
+
+Use this for small visual effects with care: content can draw over the handle or outside the sheet while resizing or closing. On iOS and web, persistent content extending above a closed sheet can remain visible if the sheet stays mounted. Dismissing a modal with the default `enableDismissOnClose` unmounts it.
+
+See **Modal → Content Overflow** in the example app for a zero-top-padding comparison.
+
 ### enableContentPanningGesture
 
 Enable content panning gesture interaction.

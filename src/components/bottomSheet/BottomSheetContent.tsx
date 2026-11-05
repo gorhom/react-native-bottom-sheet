@@ -22,6 +22,7 @@ type BottomSheetContent = {
   BottomSheetProps,
   | 'children'
   | 'detached'
+  | 'contentOverflow'
   | 'animationConfigs'
   | 'overrideReduceMotion'
   | 'keyboardBehavior'
@@ -31,6 +32,7 @@ type BottomSheetContent = {
 
 function BottomSheetContentComponent({
   detached,
+  contentOverflow,
   animationConfigs,
   overrideReduceMotion,
   keyboardBehavior,
@@ -223,12 +225,10 @@ function BottomSheetContentComponent({
   ]);
   const contentContainerStyle = useMemo(
     () => [
-      detached
-        ? { overflow: 'visible' as const }
-        : { overflow: 'hidden' as const },
+      { overflow: contentOverflow ?? (detached ? 'visible' : 'hidden') },
       contentMaskContainerAnimatedStyle,
     ],
-    [contentMaskContainerAnimatedStyle, detached]
+    [contentMaskContainerAnimatedStyle, detached, contentOverflow]
   );
   //#endregion
 
