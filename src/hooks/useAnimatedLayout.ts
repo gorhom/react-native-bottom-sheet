@@ -70,7 +70,13 @@ export function useAnimatedLayout(
 
   //#region effects
   useAnimatedReaction(
-    () => state.value.rawContainerHeight,
+    () => {
+      const height = state.value.rawContainerHeight;
+      if (height === INITIAL_LAYOUT_VALUE) {
+        return INITIAL_LAYOUT_VALUE;
+      }
+      return modal ? height - verticalInset : height;
+    },
     (result, previous) => {
       if (result === previous) {
         return;
@@ -81,16 +87,22 @@ export function useAnimatedLayout(
 
       state.modify(_state => {
         'worklet';
-        _state.containerHeight = modal ? result - verticalInset : result;
+        _state.containerHeight = result;
         return _state;
       });
     },
     [state, verticalInset, modal]
   );
   useAnimatedReaction(
-    () => containerLayoutState?.get().height,
+    () => {
+      const height = containerLayoutState?.get().height;
+      if (!height || height === INITIAL_LAYOUT_VALUE) {
+        return INITIAL_LAYOUT_VALUE;
+      }
+      return modal ? height - verticalInset : height;
+    },
     (result, previous) => {
-      if (!result || result === previous) {
+      if (result === previous) {
         return;
       }
       if (result === INITIAL_LAYOUT_VALUE) {
@@ -99,7 +111,7 @@ export function useAnimatedLayout(
 
       state.modify(_state => {
         'worklet';
-        _state.containerHeight = modal ? result - verticalInset : result;
+        _state.containerHeight = result;
         return _state;
       });
     },
