@@ -320,6 +320,16 @@ function BottomSheetModalComponent<T = never>(
       }
 
       /**
+       * a closed modal (kept mounted by `enableDismissOnClose={false}`)
+       * has nothing to minimize, and must not be opened again when the
+       * modal above it gets dismissed.
+       */
+      if (statusRef.current === MODAL_STATUS.CLOSED) {
+        restoreIndexRef.current = -1;
+        return;
+      }
+
+      /**
        * if modal got minimized before it finish its mounting
        * animation, we set the `restoreIndexRef` to the
        * provided index.
@@ -354,6 +364,13 @@ function BottomSheetModalComponent<T = never>(
       MODAL_STATUS.MINIMIZED,
     ].includes(statusRef.current);
     if (!minimizedOrGoingToBe) {
+      return;
+    }
+
+    /**
+     * nothing to restore to.
+     */
+    if (restoreIndexRef.current === -1) {
       return;
     }
     bottomSheetRef.current?.snapToIndex(restoreIndexRef.current);
