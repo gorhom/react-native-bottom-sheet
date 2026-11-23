@@ -1627,7 +1627,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      */
     useAnimatedReaction(
       () =>
-        animatedKeyboardState.get().status + animatedKeyboardState.get().height,
+        `${animatedKeyboardState.get().status}:${animatedKeyboardState.get().height}:${bottomInset}`,
       (result, _previousResult) => {
         /**
          * if keyboard state is equal to the previous state, then exit the method
@@ -1667,10 +1667,11 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           height === 0
             ? 0
             : $modal
-              ? Math.abs(
+              ? Math.max(
+                          0,
                   height - Math.abs(bottomInset - containerOffset.bottom)
                 )
-              : Math.abs(height - containerOffset.bottom);
+              : Math.max(0, height - containerOffset.bottom);
 
         if (__DEV__) {
           runOnJS(print)({
