@@ -107,14 +107,14 @@ export const useAnimatedKeyboard = () => {
 
   //#region effects
   useEffect(() => {
-    const SCREEN_HEIGHT = Dimensions.get('screen').height;
     const handleOnKeyboardShow = (event: KeyboardEvent) => {
+          const { height: currentHeight } = Dimensions.get(Platform.OS === 'ios' ? 'window' : 'screen');
       runOnUI(handleKeyboardEvent)(
         KEYBOARD_STATUS.SHOWN,
         event.endCoordinates.height,
         event.duration,
         event.easing,
-        SCREEN_HEIGHT -
+        currentHeight -
           event.endCoordinates.height -
           event.endCoordinates.screenY
       );
