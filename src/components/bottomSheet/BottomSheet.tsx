@@ -257,6 +257,7 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
       );
     }, [animatedLayoutState, animatedDetentsState, handleComponent]);
     const isInTemporaryPosition = useSharedValue(false);
+    const animatedPendingIndex = useSharedValue<number | undefined>(undefined);
     const animatedContainerHeightDidChange = useSharedValue(false);
 
     // gesture
@@ -1151,6 +1152,68 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         animationConfigs
       );
     });
+    /**
+     * Snap to the provided `index` prop.
+     *
+     * When `index` and `snapPoints` change in the same render, the detents
+     * state still holds the previous snap points at this point, since it is
+     * derived on the UI thread after the commit. In that case we defer the
+     * snap until the detents reflect the provided snap points, instead of
+     * validating the index against the stale ones.
+     *
+     * https://github.com/gorhom/react-native-bottom-sheet/issues/2803
+     */
+    const handleSnapToProvidedIndex = useStableCallback(
+      function handleSnapToProvidedIndex(index: number) {
+        /**
+         * exit method if the `index` prop changed again since this was
+         * deferred, as the newer value has been handled already.
+         */
+        if (index !== _providedIndex) {
+          return;
+        }
+
+        const { detents } = animatedDetentsState.get();
+        const providedSnapPoints = _providedSnapPoints
+          ? 'value' in _providedSnapPoints
+            ? _providedSnapPoints.value
+            : _providedSnapPoints
+          : [];
+        const providedDetentsCount =
+          providedSnapPoints.length + (enableDynamicSizing ? 1 : 0);
+
+        if (
+          detents !== undefined &&
+          index > detents.length - 1 &&
+          index < providedDetentsCount
+        ) {
+          runOnUI(deferSnapToProvidedIndex)(index);
+          return;
+        }
+
+        handleSnapToIndex(index);
+      }
+    );
+    const deferSnapToProvidedIndex = useCallback(
+      function deferSnapToProvidedIndex(index: number) {
+        'worklet';
+        const { detents } = animatedDetentsState.get();
+
+        /**
+         * the detents did update before this ran, then we snap right away.
+         */
+        if (detents !== undefined && index <= detents.length - 1) {
+          runOnJS(handleSnapToProvidedIndex)(index);
+          return;
+        }
+
+        /**
+         * otherwise, we let the snap points change reaction handle it.
+         */
+        animatedPendingIndex.value = index;
+      },
+      [animatedDetentsState, animatedPendingIndex, handleSnapToProvidedIndex]
+    );
     const handleSnapToPosition = useCallback(
       function handleSnapToPosition(
         position: number | string,
@@ -1615,9 +1678,26 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
           });
         }
 
+        /**
+         * if the `index` prop was changed along with the `snapPoints` prop,
+         * then we snap to it now that the detents reflect the new snap points.
+         */
+        const pendingIndex = animatedPendingIndex.value;
+        if (pendingIndex !== undefined) {
+          animatedPendingIndex.value = undefined;
+          runOnJS(handleSnapToProvidedIndex)(pendingIndex);
+          return;
+        }
+
         evaluatePosition(ANIMATION_SOURCE.SNAP_POINT_CHANGE);
       },
-      [isLayoutCalculated, didAnimateOnMount, animatedDetentsState]
+      [
+        isLayoutCalculated,
+        animatedPendingIndex,
+        didAnimateOnMount,
+        animatedDetentsState,
+        handleSnapToProvidedIndex,
+      ]
     );
 
     /**
@@ -1786,8 +1866,13 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
         return;
       }
 
-      handleSnapToIndex(_providedIndex);
-    }, [animateOnMount, _providedIndex, didAnimateOnMount, handleSnapToIndex]);
+      handleSnapToProvidedIndex(_providedIndex);
+    }, [
+      animateOnMount,
+      _providedIndex,
+      didAnimateOnMount,
+      handleSnapToProvidedIndex,
+    ]);
     //#endregion
 
     // render
