@@ -1626,13 +1626,21 @@ const BottomSheetComponent = forwardRef<BottomSheet, BottomSheetProps>(
      * @alias OnKeyboardStateChange
      */
     useAnimatedReaction(
-      () =>
-        animatedKeyboardState.get().status + animatedKeyboardState.get().height,
+      () => ({
+        status: animatedKeyboardState.get().status,
+        height: animatedKeyboardState.get().height,
+      }),
       (result, _previousResult) => {
         /**
-         * if keyboard state is equal to the previous state, then exit the method
+         * if keyboard state is equal to the previous state, then exit the method.
+         *
+         * status and height are compared separately: their sum is not unique,
+         * e.g. HIDDEN (2) + h equals SHOWN (1) + (h + 1).
          */
-        if (result === _previousResult) {
+        if (
+          result.status === _previousResult?.status &&
+          result.height === _previousResult?.height
+        ) {
           return;
         }
 
